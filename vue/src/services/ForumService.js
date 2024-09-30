@@ -1,16 +1,24 @@
-import axios from 'axios';
+import axios from "axios";
 
 const http = axios.create({
-  baseURL: import.meta.env.VITE_REMOTE_API
+  baseURL: import.meta.env.VITE_REMOTE_API,
 });
 
 export default {
-
-    createForum(forum) {
-        return http.post('/forums', forum);
-    },
-
-    getForums() {
-        return http.get('/forums');
-    }
-}
+  // Create Forum
+  createForum(forum) {
+    return http.post("/forums", forum);
+  },
+  // Get all Forums
+  getForums() {
+    return http.get("/forums");
+  },
+  // Get Specific Forum
+  getForum(forumId) {
+    return http.get(`/forum/${forumId}`);
+  },
+  //Get Specific Topic
+  getForumTopic(topicId) {
+    return http.get(`/forums/${topicId}`);
+  },
+};
