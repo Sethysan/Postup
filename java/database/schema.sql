@@ -10,4 +10,12 @@ CREATE TABLE users (
 	CONSTRAINT PK_user PRIMARY KEY (user_id)
 );
 
+CREATE TABLE forums (
+    forum_id SERIAL,
+    topic varchar(200) NOT NULL,
+    author varchar(50) NOT NULL,
+    CONSTRAINT PK_forum PRIMARY KEY (forum_id),
+    CONSTRAINT FK_forum_author FOREIGN KEY (author) REFERENCES users(username)
+);
+
 COMMIT TRANSACTION;
