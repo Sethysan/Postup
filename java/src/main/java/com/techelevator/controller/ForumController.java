@@ -2,22 +2,17 @@ package com.techelevator.controller;
 
 import com.techelevator.dao.ForumsDao;
 import com.techelevator.model.Forum;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class ForumController {
-
+    @Autowired
     private ForumsDao forumsDao;
-
-    public ForumController(ForumsDao forumsDao) {
-        this.forumsDao = forumsDao;
-    }
 
     @GetMapping("/forums")
     public List<Forum> getListOfForums() {
