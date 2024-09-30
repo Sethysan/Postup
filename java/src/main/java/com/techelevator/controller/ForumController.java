@@ -3,6 +3,7 @@ package com.techelevator.controller;
 import com.techelevator.dao.ForumsDao;
 import com.techelevator.model.Forum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -20,6 +21,7 @@ public class ForumController {
     }
 
     @PostMapping("/forums/create")
+    @PreAuthorize( "isAuthenticated()")
     public void createForum(@RequestBody String forum, Principal user) {
         forumsDao.createForum(forum, user.getName());
     }

@@ -18,8 +18,8 @@ data() {
         forum: {
             id: 0,
             topic: '',
-            author: this.forum.author,
-            date: this.forum.date
+            author: '',
+            date: ''
             }   
         }
     }
