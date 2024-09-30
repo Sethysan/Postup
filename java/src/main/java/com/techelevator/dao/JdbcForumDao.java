@@ -18,7 +18,7 @@ public class JdbcForumDao implements ForumsDao{
 
     public List<Forum> getForums(){
         List<Forum> list = new ArrayList<>();
-        String sql = "SELECT * FROM forums";
+        String sql = "SELECT * FROM forums;";
 
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
@@ -30,6 +30,11 @@ public class JdbcForumDao implements ForumsDao{
             throw new DaoException("Unable to connect to server or database", e);
         }
         return list;
+    }
+
+    public void createForum(String topic, String author) {
+        String sql = "INSERT INTO forums (topic, author) VALUES (?,?);";
+        jdbcTemplate.update(sql, topic, author);
     }
 
     private Forum mapRowToForum(SqlRowSet rs) {

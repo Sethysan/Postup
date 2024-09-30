@@ -7,4 +7,6 @@ import java.util.List;
 public interface ForumsDao {
 
     List<Forum> getForums();
+
+    void createForum(String topic, String author);
 }
