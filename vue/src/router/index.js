@@ -63,7 +63,7 @@ const routes = [
     name: "create-forums",
     component: AddForumView,
     meta: {
-      requiresAuth: false
+      requiresAuth: true
     }
   }
 ];
