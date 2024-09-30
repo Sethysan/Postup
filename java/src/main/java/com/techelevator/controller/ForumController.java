@@ -19,6 +19,11 @@ public class ForumController {
         return forumsDao.getForums();
     }
 
+    @GetMapping("/forums/{forumId}")
+    public Forum getForumById(@PathVariable int forumId) {
+        return forumsDao.getForumById(forumId);
+    }
+
     @PostMapping("/forums")
     public void createForum(@RequestBody String forum, Principal user) {
         forumsDao.createForum(forum, user.getName());
