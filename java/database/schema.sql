@@ -15,6 +15,7 @@ CREATE TABLE forums (
     forum_id SERIAL,
     topic varchar(200) NOT NULL,
     author varchar(50) NOT NULL,
+    time_of_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT PK_forum PRIMARY KEY (forum_id),
     CONSTRAINT FK_forum_author FOREIGN KEY (author) REFERENCES users(username)
 );

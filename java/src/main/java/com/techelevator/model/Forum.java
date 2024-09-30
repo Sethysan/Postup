@@ -1,11 +1,12 @@
 package com.techelevator.model;
 
+import java.sql.Timestamp;
+
 public class Forum {
     private int id;
-
     private String topic;
-
     private String author;
+    private Timestamp timeOfCreation;
 
     public int getId() {
         return id;
@@ -29,5 +30,13 @@ public class Forum {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public Timestamp getTimeOfCreation() {
+        return timeOfCreation;
+    }
+
+    public void setTimeOfCreation(Timestamp timeOfCreation) {
+        this.timeOfCreation = timeOfCreation;
     }
 }
