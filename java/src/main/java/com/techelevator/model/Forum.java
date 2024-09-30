@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 public class Forum {
     private int id;
     private String topic;
+    private String description;
     private String author;
     private Timestamp timeOfCreation;
 
@@ -22,6 +23,14 @@ public class Forum {
 
     public void setTopic(String topic) {
         this.topic = topic;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getAuthor() {

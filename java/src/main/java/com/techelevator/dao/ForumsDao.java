@@ -10,7 +10,7 @@ public interface ForumsDao {
 
     Forum getForumById(int forumId);
 
-    Forum getForumByTopic(String topic);
+    List<Forum> getForumsByTopic(String topic);
 
-    void createForum(String topic, String author);
+    void createForum(String topic, String Description,String author);
 }

@@ -47,21 +47,22 @@ public class JdbcForumDao implements ForumsDao{
         return forum;
     }
 
-    public Forum getForumByTopic(String topic) {
-        Forum forum = null;
+    public List<Forum> getForumsByTopic(String topic) {
+        List<Forum> list = new ArrayList<>();
         String sql = "SELECT * FROM forums WHERE topic = ?;";
 
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, topic);
 
-        if (result.next()) {
-            forum = mapRowToForum(result);
+        while (result.next()) {
+            Forum forum = mapRowToForum(result);
+            list.add(forum);
         }
-        return forum;
+        return list;
     }
 
-    public void createForum(String topic, String author) {
-        String sql = "INSERT INTO forums (topic, author) VALUES (?,?);";
-        jdbcTemplate.update(sql, topic, author);
+    public void createForum(String topic,String Description,String author) {
+        String sql = "INSERT INTO forums (topic,description , author) VALUES (?,?,?);";
+        jdbcTemplate.update(sql, topic,Description , author);
     }
 
     private Forum mapRowToForum(SqlRowSet rs) {
