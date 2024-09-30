@@ -19,7 +19,7 @@ public class ForumController {
         return forumsDao.getForums();
     }
 
-    @PostMapping("/forums")
+    @PostMapping("/forums/create")
     public void createForum(@RequestBody String forum, Principal user) {
         forumsDao.createForum(forum, user.getName());
     }

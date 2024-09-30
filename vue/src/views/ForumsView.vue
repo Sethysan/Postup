@@ -5,6 +5,7 @@
         <p> {{ forum.timeOfCreation }} </p>
 
         <!-- Topic Timestamp -->
+        <router-link :to="{ name: 'create-forums' }">Add Forum</router-link>
     
     </div>
 
