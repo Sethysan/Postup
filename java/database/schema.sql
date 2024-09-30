@@ -15,7 +15,8 @@ CREATE TABLE users (
 
 CREATE TABLE forums (
     forum_id SERIAL,
-    topic varchar(200) NOT NULL UNIQUE,
+    topic varchar(200) NOT NULL,
+    description varchar(1000),
     author varchar(50) NOT NULL,
     time_of_creation DATE DEFAULT CURRENT_TIMESTAMP,
     time_of_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -25,7 +26,7 @@ CREATE TABLE forums (
 
 CREATE TABLE posts (
     post_id SERIAL,
-    description varchar(1000) NOT NULL,
+    description varchar(1000),
     image varchar(255),
     likes int,
     dislikes int,

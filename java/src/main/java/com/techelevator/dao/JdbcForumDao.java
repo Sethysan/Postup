@@ -2,6 +2,7 @@ package com.techelevator.dao;
 
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.Forum;
+import org.springframework.data.relational.core.sql.From;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -32,6 +33,30 @@ public class JdbcForumDao implements ForumsDao{
             throw new DaoException("Unable to connect to server or database", e);
         }
         return list;
+    }
+
+    public Forum getForumById(int forumId) {
+        Forum forum = null;
+        String sql = "SELECT * FROM forums WHERE forum_id = ?;";
+
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, forumId);
+
+        if (result.next()) {
+            forum = mapRowToForum(result);
+        }
+        return forum;
+    }
+
+    public Forum getForumByTopic(String topic) {
+        Forum forum = null;
+        String sql = "SELECT * FROM forums WHERE topic = ?;";
+
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, topic);
+
+        if (result.next()) {
+            forum = mapRowToForum(result);
+        }
+        return forum;
     }
 
     public void createForum(String topic, String author) {
