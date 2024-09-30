@@ -32,7 +32,7 @@ export default {
             // if I had multiple arguements in my call back. Let's say I cerate a function that takes res and filter
             //.then((res, filter) => {}) like that because you have 2 arguements in the arguements list
             // nope, that is just a style choice
-            service.getPostsByForum(forum)
+            service.getPostsByForum(this.forumId)
                 .then(res => {
                     this.posts = res.data;
                 })
@@ -41,11 +41,11 @@ export default {
                 })
         }
         else if(this.filter === "recent"){
-            service.getRecentPostByForum(forum)
+            service.getRecentPostByForum(this.forumId)
                 .then(res => this.posts = res.data)
         }
         else if (this.filter === "popularity"){
-            service.getPopularPostByForum(forum)
+            service.getPopularPostByForum(this.forumId)
                 .then(res => this.posts = res.data)
         }
     }
