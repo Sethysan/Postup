@@ -18,6 +18,7 @@ CREATE TABLE forums (
     topic varchar(200) NOT NULL,
     description varchar(1000),
     author varchar(50) NOT NULL,
+    time_of_creation DATE DEFAULT CURRENT_TIMESTAMP,
     time_of_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT PK_forum PRIMARY KEY (forum_id),
     CONSTRAINT FK_forum_author FOREIGN KEY (author) REFERENCES users(username)
