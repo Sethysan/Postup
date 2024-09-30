@@ -66,8 +66,8 @@ export default {
         validateForm() {
         let msg = '';
 
-        this.editForum.title = this.editForum.title.trim();
-        if (this.editForum.title.length === 0) {
+        this.editForum.topic = this.editForum.topic.trim();
+        if (this.editForum.topic.length === 0) {
            msg += 'The new forum must have a title. ';
         }
 
