@@ -1,15 +1,13 @@
 <template>
     <div v-for="forum in forums" :key="forum.id" v-bind:value=" forum.id" class="container">
         <!-- Forum Topic name  -->
-        <h1>{{ forum.topicName }}</h1>
+        <h1>{{ forum.topic }}</h1>
         <p> {{ forum.timeOfCreation }} </p>
 
         <!-- Topic Timestamp -->
         <router-link :to="{ name: 'create-forums' }">Add Forum</router-link>
     
     </div>
-
-
 </template>
 
 <script>
@@ -24,15 +22,18 @@ export default {
         if (this.$route.params.topicId) {
             ForumService.getForumsByTopic(this.$route.params.topicId).then(
                 (response) => {
+                    alert(response.status)
                     this.forums = response.data;
                 }
             )
         } else {
             ForumService.getForums().then(
                 (response) => {
+                    alert(response.status);
                     this.forums = response.data;
                 }
             )
+            .catch(err => alert(err))
         }
     },
 

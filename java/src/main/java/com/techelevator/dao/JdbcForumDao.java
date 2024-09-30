@@ -20,7 +20,7 @@ public class JdbcForumDao implements ForumsDao{
 
     public List<Forum> getForums(){
         List<Forum> list = new ArrayList<>();
-        String sql = "SELECT * FROM forums;";
+        String sql = "SELECT * FROM forums";
 
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
