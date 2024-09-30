@@ -3,7 +3,7 @@
         <div class="forum-form">
             <h1>Forum Form</h1>
             <label for="title">Title</label>
-            <input type="text" id="title" name="title" v-model="editForum.title" />
+            <input type="text" id="title" name="title" v-model="editForum.topic" />
             <button class ="btn-submit" type="submit">Submit</button>
             <button class="btn-cancel" type="button" v-on:click="cancelForm">Cancel</button>
         </div>
