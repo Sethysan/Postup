@@ -1,5 +1,4 @@
 <template>
-    {{ this.$store }}
     <form v-on:submit.prevent="submitForm">
         <div class="forum-form">
             <h1>Forum Form</h1>

@@ -1,8 +1,8 @@
 <template>
     <div>
-    <h1>Add New Forum</h1>
-    <forum-form v-bind:forum="forum" />
-  </div>
+        <h1>Add New Forum</h1>
+        <forum-form v-bind:forum="forum" />
+    </div>
 </template>
 
 <script>
