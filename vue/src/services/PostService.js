@@ -23,5 +23,5 @@ export default {
   },
   deletePost(id){
     return http.delete(`api/posts/${id}`);
-  },
+  }
 };

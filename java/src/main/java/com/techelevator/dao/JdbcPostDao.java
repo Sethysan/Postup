@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +65,8 @@ public class JdbcPostDao implements PostDao {
         return this.getPostById(id);
     }
 
+    // added at transactional to turn DAO function into a transaction. Equiv of setting BEGIN TRANSACTION at the begining of a sql statement
+    @Transactional
     @Override
     public void deletePost(long id) {
         String sql1 = "DELETE FROM replies WHERE post_id = ?";

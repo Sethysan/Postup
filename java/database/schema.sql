@@ -1,6 +1,8 @@
 BEGIN TRANSACTION;
 
-DROP TABLE IF EXISTS replies;
+DROP TABLE IF EXISTS replies; -- TODO: everyone delete this after you rerun this script
+DROP TABLE IF EXISTS comment_replies;
+DROP TABLE IF EXISTS post_replies;
 DROP TABLE IF EXISTS posts;
 DROP TABLE IF EXISTS forums;
 DROP TABLE IF EXISTS users;
@@ -23,6 +25,7 @@ CREATE TABLE forums (
     CONSTRAINT FK_forum_author FOREIGN KEY (author) REFERENCES users(username)
 );
 
+-- added a cascade effect, this should make it where all posts are deleted automatically when we delete a forum
 CREATE TABLE posts (
     post_id SERIAL,
     title varchar(300),
@@ -35,16 +38,29 @@ CREATE TABLE posts (
     time_of_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT PK_post PRIMARY KEY (post_id),
     CONSTRAINT FK_posts_author FOREIGN KEY (author) REFERENCES users(username),
-    CONSTRAINT FK_post_forum FOREIGN KEY (forum_id) REFERENCES forums(forum_id)
+    CONSTRAINT FK_post_forum FOREIGN KEY (forum_id) REFERENCES forums(forum_id) ON DELETE CASCADE
 );
 
-CREATE TABLE Replies (
+-- changed replies to lowercase for constistency
+-- I did not add cascade here as the replies might need to work a little different to immitate reddit properly
+CREATE TABLE post_replies (
     reply_id SERIAL,
     description varchar(200),
-    post_id int,
     time_of_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    post_id int,
+    user_id int,
     CONSTRAINT PK_reply PRIMARY KEY (reply_id),
-    CONSTRAINT FK_replies_post FOREIGN KEY (post_id) REFERENCES posts(post_id)
+    CONSTRAINT FK_replies_post FOREIGN KEY (post_id) REFERENCES posts(post_id),
+    CONSTRAINT FK_replies_user FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+-- replies to replies for threaded replies
+CREATE TABLE comment_replies (
+    reply_id SERIAL,
+    description varchar(200),
+    time_of_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    parent_reply int,
+    CONSTRAINT FK_replies_parent FOREIGN KEY (parent_reply) REFERENCES post_replies(reply_id)
 );
 
 COMMIT TRANSACTION;
