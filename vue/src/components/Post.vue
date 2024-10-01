@@ -1,8 +1,10 @@
 <template>
   <div class="post">
     <h2>place holder for title</h2>
-    <p>{{ curretPost.description }}</p>
-    <button :onclick=""></button><p>{{ curretPost.upvotes }}</p><button></button><p>{{ curretPost.downvotes }}</p>
+    <p>{{ post.description }}</p>
+    <div v-if="this.$store.user">
+        <button :onclick="upvote">Upvote</button><p>{{ post.upvotes }}</p><button :onclick="downvote">Downvote</button><p>{{ post.downvotes }}</p>
+    </div>
   </div>
 </template>
 
@@ -13,20 +15,45 @@ export default {
     props: ['post'],
     data () {
         return {
-            curretPost: {},
             upvoted: false,
             downvoted: false
         }
     },
-    create () {
-        this.curretPost = this.post ? this.post : service.getPostById(this.$route.params.post).then(res => this.curretPost = res.data)
-    },
     methods : {
         upvote(){
-
+            alert("upvoting")
+            if(this.upvoted){
+                service.upvotePost(this.post.id)
+                .then(res => {
+                    this.post.upvotes++;
+                    this.upvoted = !this.upvoted
+                })
+                .catch(err => {alert("failed to upvote")})
+                return;
+            }
+            service.unvotingLike(this.post.id)
+            .then(res => {
+                this.post.upvotes--; 
+                this.upvoted = !this.upvoted
+            })
+            .catch(err => alert("failed to undo upvote"))
         },
         downvote(){
-
+            if(this.downvoted){
+                service.upvotePost(this.post.id)
+                .then(res => {
+                    this.post.upvotes++;
+                    this.upvoted = !this.upvoted
+                })
+                .catch(err => {alert("failed to upvote")})
+                return;
+            }
+            service.unvotingDislike(this.post.id)
+            .then(res => {
+                this.post.upvotes--; 
+                this.upvoted = !this.upvoted
+            })
+            .catch(err => alert("failed to undo upvote"))
         }
     }
 }
