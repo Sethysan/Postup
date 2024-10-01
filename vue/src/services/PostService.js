@@ -23,5 +23,17 @@ export default {
   },
   deletePost(id){
     return http.delete(`api/posts/${id}`);
+  },
+  upvotePost(id){
+    return http.put(`api/posts/${id}/upvote`);
+  },
+  downvotePost(id){
+    return http.put(`api/posts/${id}/downvote`);
+  },
+  unvotingLike(id){
+    return http.put(`api/posts/${id}/upvote/unlike`);
+  },
+  unvotingDislike(id){
+    return http.put(`api/posts/${id}/downvote/undislike`);
   }
 };
