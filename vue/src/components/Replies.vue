@@ -1,6 +1,5 @@
 <template>
   <div class="replies-list">
-    {{ replies }}
     <reply v-for="reply in replies" :key="reply.id" :reply="reply"></reply>
   </div>
 </template>
