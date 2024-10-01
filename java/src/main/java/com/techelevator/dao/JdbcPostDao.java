@@ -32,7 +32,7 @@ public class JdbcPostDao implements PostDao {
     @Override
     public List<PostResponseDto> getPosts(long forum, String keyword, int limit, boolean sorBytPopularity) {
         List<PostResponseDto> posts = new ArrayList<>();
-        String sql = "SELECT * FROM posts JOIN replies ON replies.post_id = posts.post_id WHERE description ILIKE ?";
+        String sql = "SELECT * FROM posts JOIN replies ON replies.post_id = posts.post_id WHERE posts.description ILIKE ? OR replies.description ILIKE ?";
         if(forum > 0){
             sql += " AND forum_id = " + forum;
         }
@@ -44,7 +44,7 @@ public class JdbcPostDao implements PostDao {
             keyword = "%" + keyword;
         }
         keyword += "%";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, keyword);
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, keyword,keyword);
         while(results.next()){
             posts.add(mapRowToPost(results));
         }

@@ -18,7 +18,7 @@
 </template>
 
 <script>
-
+import PostService from "../services/PostService.js";
 import ForumService from "../services/ForumService.js";
 
 // importing a library to handle time conversions
@@ -30,7 +30,8 @@ dayjs.extend(relativeTime);
 export default {
     data() {
         return {
-            forums: []
+            forums: [],
+            posts:[]
         }
     },
     created() {
