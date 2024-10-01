@@ -1,16 +1,17 @@
 <template>
-    {{ this.$store }}
     <form v-on:submit.prevent="submitForm">
         <div class="forum-form">
             <h1>Forum Form</h1>
             <div>
                 <label for="title">Title</label>
                 <input type="text" id="title" name="title" v-model="editForum.topic" />
+                <div>
+                    <label for="description">Description</label>
+                    <input type="text" id="description" name="description" v-model="editForum.description" />
+                </div>
             </div>
-            <div>
-                <label for="author">Author</label>
-                <input :value="author" id="author" readonly />
-            </div>
+            <div>Author: {{ author }} </div>
+            <br>
             <button class="btn-submit" type="submit">Submit</button>
             <button class="btn-cancel" type="button" v-on:click="cancelForm">Cancel</button>
         </div>
@@ -32,13 +33,14 @@ export default {
             editForum: {
                 id: this.forum.id,
                 topic: this.forum.topic,
+                description: this.description,
                 author: this.forum.author,
                 date: this.forum.date
-            }          
+            }
         }
     },
     computed: {
-        author(){
+        author() {
             return this.$store.state.user?.username || JSON.parse(localStorage.getItem('user')).username || 'Unknown';
         }
     },
