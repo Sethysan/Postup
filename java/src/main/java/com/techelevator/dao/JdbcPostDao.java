@@ -66,8 +66,26 @@ public class JdbcPostDao implements PostDao {
 
     @Override
     public void deletePost(long id) {
-        String sql = "DELETE FROM posts WHERE post_id = ?";
-        jdbcTemplate.update(sql);
+        String sql1 = "DELETE FROM replies WHERE post_id = ?";
+        String sql2 = "DELETE FROM posts WHERE post_id = ?";
+        jdbcTemplate.update(sql1, id);
+        jdbcTemplate.update(sql2, id);
+    }
+
+    public void addVote(long id, int route) {
+        String sql = "UPDATE posts ON likes = likes + 1 WHERE post_id = ?;";
+        if (route == 1) {
+            sql = "UPDATE posts ON dislikes = dislike + 1 WHERE post_id = ?;";
+        }
+        jdbcTemplate.update(sql, id);
+    }
+
+    public void unvote(long id, int route) {
+        String sql = "UPDATE posts ON likes = likes - 1 WHERE post_id = ?;";
+        if (route == 1) {
+            sql = "UPDATE posts ON dislikes = dislike - 1 WHERE post_id = ?;";
+        }
+        jdbcTemplate.update(sql, id);
     }
 
     private PostResponseDto mapRowToPost(SqlRowSet row) {

@@ -55,4 +55,24 @@ public class PostController {
     public PostResponseDto updatePost(@PathVariable long id, @RequestBody CreatePostDto post){
         return postDao.updatePost(id, post);
     }
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("posts/{id}/upvote")
+    public void upvotePost(@PathVariable long id) {
+        postDao.addVote(id, 0);
+    }
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("posts/{id}/upvote/unlike")
+    public void unvotingLike(@PathVariable long id) {
+        postDao.unvote(id, 0);
+    }
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("posts/{id}/downvote")
+    public void downvotePost(@PathVariable long id) {
+        postDao.addVote(id, 1);
+    }
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("posts/{id}/downvote/undislike")
+    public void unvotingDislike(@PathVariable long id) {
+        postDao.unvote(id, 1);
+    }
 }
