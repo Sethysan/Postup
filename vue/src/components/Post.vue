@@ -6,14 +6,17 @@
         <button :onclick="upvote">Upvote</button><p>{{ post.upvotes }}</p><button :onclick="downvote">Downvote</button><p>{{ post.downvotes }}</p>
         <button class="btn btn-delete deletePost" :onclick="deletePost">Delete</button>
     </div>
+    <replies :replies="replies"></replies>
   </div>
 </template>
 
 <script>
 import service from '../services/PostService';
+import Replies from './Replies.vue';
 
 export default {
-    props: ['post'],
+  components: { Replies },
+    props: ['post', 'replies'],
     data () {
         return {
             upvoted: false,
@@ -71,7 +74,7 @@ export default {
                     if (error.response.status === 404) {
                         this.$store.commit('SET_NOTIFICATION',
                         "Error: Post " + postId + " was not found. This post may have been deleted or you have entered an invalid post ID.");
-                        this.$router.push({ name: 'HomeView' });
+                        this.$router.push({ name: 'forum' });
                     } else {
                         this.$store.commit('SET_NOTIFICATION',
                         "Error getting post " + postId + ". Response received was '" + error.response.statusText + "'.");

@@ -18,7 +18,8 @@ export default {
     return http.get(`/forums/${forumId}`);
   },
   //Get Specific Topic
-  getForumTopic(topicId) {
-    return http.get(`/forums/${topicId}`);
+  //adjusted for back end changes to include Request Param
+  getForumTopic(topic) {
+    return http.get(`/forums/topic`, { params: { topic } });
   },
 };

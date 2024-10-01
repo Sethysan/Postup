@@ -28,7 +28,7 @@ public class ForumController {
     }
 
     @GetMapping("/forums/topic")
-    public List<Forum> getForumsByTopic(@RequestBody String topic) {
+    public List<Forum> getForumsByTopic(@RequestParam String topic) {
         return forumsDao.getForumsByTopic(topic);
     }
 
