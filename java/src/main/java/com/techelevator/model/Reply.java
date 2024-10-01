@@ -1,6 +1,6 @@
 package com.techelevator.model;
 
-public class Rely {
+public class Reply {
 
     private int replyId;
     private String description;

@@ -17,7 +17,7 @@ CREATE TABLE forums (
     forum_id SERIAL,
     topic varchar(200) NOT NULL,
     description varchar(1000),
-    author varchar(50) NOT NULL,
+    author varchar(25) NOT NULL,
     time_of_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT PK_forum PRIMARY KEY (forum_id),
     CONSTRAINT FK_forum_author FOREIGN KEY (author) REFERENCES users(username)
@@ -25,11 +25,12 @@ CREATE TABLE forums (
 
 CREATE TABLE posts (
     post_id SERIAL,
-    description varchar(1000),
+    title varchar(300),
+    description varchar(20000),
     image varchar(255),
     likes int,
     dislikes int,
-    author varchar(50) NOT NULL,
+    author varchar(25) NOT NULL,
     forum_id int,
     CONSTRAINT PK_post PRIMARY KEY (post_id),
     CONSTRAINT FK_posts_author FOREIGN KEY (author) REFERENCES users(username),
