@@ -8,6 +8,8 @@ import LogoutView from '../views/LogoutView.vue';
 import RegisterView from '../views/RegisterView.vue';
 import ForumsView from '../views/ForumsView.vue';
 import AddForumView from '../views/AddForumView.vue';
+import PostView from '../views/PostView.vue';
+import ForumView from '../views/ForumView.vue';
 
 /**
  * The Vue Router is used to "direct" the browser to render a specific view component
@@ -64,6 +66,22 @@ const routes = [
     component: AddForumView,
     meta: {
       requiresAuth: true
+    }
+  },
+  {
+    path: "/forums/:id",
+    name: "forum",
+    component: ForumView,
+    meta: {
+      requiresAuth: false
+    }
+  },
+  {
+    path: "/forums/:forum/posts",
+    name: "forum-post",
+    component: PostView,
+    meta: {
+      requiresAuth: false
     }
   }
 ];

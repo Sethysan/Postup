@@ -1,4 +1,5 @@
 <template>
+    {{ this.$store }}
     <form v-on:submit.prevent="submitForm">
         <div class="forum-form">
             <h1>Forum Form</h1>
@@ -50,6 +51,7 @@ export default {
         this.$router.back();
         },
         handleErrorResponse(error, verb) {
+            alert(error.response.status)
         if (error.response) {
             if (error.response.status == 404) {
             this.$router.push({name: 'NotFoundView'});

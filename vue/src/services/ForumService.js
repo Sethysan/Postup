@@ -15,7 +15,7 @@ export default {
   },
   // Get Specific Forum
   getForum(forumId) {
-    return http.get(`/forum/${forumId}`);
+    return http.get(`/forums/${forumId}`);
   },
   //Get Specific Topic
   getForumTopic(topicId) {
