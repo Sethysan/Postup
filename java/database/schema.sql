@@ -18,7 +18,6 @@ CREATE TABLE forums (
     topic varchar(200) NOT NULL,
     description varchar(1000),
     author varchar(50) NOT NULL,
-    time_of_creation DATE DEFAULT CURRENT_TIMESTAMP,
     time_of_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT PK_forum PRIMARY KEY (forum_id),
     CONSTRAINT FK_forum_author FOREIGN KEY (author) REFERENCES users(username)
@@ -30,7 +29,7 @@ CREATE TABLE posts (
     image varchar(255),
     likes int,
     dislikes int,
-    author varchar,
+    author varchar(50),
     forum_id int,
     CONSTRAINT PK_post PRIMARY KEY (post_id),
     CONSTRAINT FK_posts_author FOREIGN KEY (author) REFERENCES users(username),

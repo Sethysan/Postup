@@ -2,9 +2,15 @@
     <form v-on:submit.prevent="submitForm">
         <div class="forum-form">
             <h1>Forum Form</h1>
-            <label for="title">Title</label>
-            <input type="text" id="title" name="title" v-model="editForum.topic" />
-            <button class ="btn-submit" type="submit">Submit</button>
+            <div>
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" v-model="editForum.topic" />
+            </div>
+            <div>
+                <label for="author">Author</label>
+                <input :value="author" id="author" readonly />
+            </div>
+            <button class="btn-submit" type="submit">Submit</button>
             <button class="btn-cancel" type="button" v-on:click="cancelForm">Cancel</button>
         </div>
     </form>
@@ -27,36 +33,47 @@ export default {
                 topic: this.forum.topic,
                 author: this.forum.author,
                 date: this.forum.date
-            }
+            }          
+        }
+    },
+    computed: {
+        author(){
+            return this.$store.state.user?.username || JSON.parse(localStorage.getItem('user')).username || 'Unknown';
         }
     },
     methods: {
         submitForm() {
-            if(!this.validateForm()) {
+            if (!this.validateForm()) {
                 return;
             }
-                if (this.editForum.id === 0) {
-                forumService.createForum(this.editForum)
-                .then(() => {
-                    this.$store.commit('SET_NOTIFICATION', 'Forum created successfully.');
-                    this.$router.push('/forums');
-                })
-                .catch(error => {
-                    this.handleErrorResponse(error, 'adding');
-                });
+            const token = this.$store.state.authToken || localStorage.getItem("token");
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}` // Add token to the Authorization header
+                }
+            };
+            if (this.editForum.id === 0) {
+                forumService.createForum(this.editForum, config)
+                    .then(() => {
+                        this.$store.commit('SET_NOTIFICATION', 'Forum created successfully.');
+                        this.$router.push('/forums');
+                    })
+                    .catch(error => {
+                        this.handleErrorResponse(error, 'adding');
+                    });
             }
         },
         cancelForm() {
-        this.$router.back();
+            this.$router.back();
         },
         handleErrorResponse(error, verb) {
-        if (error.response) {
-            if (error.response.status == 404) {
-            this.$router.push({name: 'NotFoundView'});
-            } else {
-            this.$store.commit('SET_NOTIFICATION',
-            `Error ${verb} forum. Response received was "${error.response.statusText}".`);
-            }
+            if (error.response) {
+                if (error.response.status == 404) {
+                    this.$router.push({ name: 'NotFoundView' });
+                } else {
+                    this.$store.commit('SET_NOTIFICATION',
+                        `Error ${verb} forum. Response received was "${error.response.statusText}".`);
+                }
             } else if (error.request) {
                 this.$store.commit('SET_NOTIFICATION', `Error ${verb} forum. Server could not be reached.`);
             } else {
@@ -64,23 +81,21 @@ export default {
             }
         },
         validateForm() {
-        let msg = '';
+            let msg = '';
 
-        this.editForum.topic = this.editForum.topic.trim();
-        if (this.editForum.topic.length === 0) {
-           msg += 'The new forum must have a title. ';
-        }
+            this.editForum.topic = this.editForum.topic.trim();
+            if (this.editForum.topic.length === 0) {
+                msg += 'The new forum must have a title. ';
+            }
 
-        if (msg.length > 0) {
-            this.$store.commit('SET_NOTIFICATION', msg);
-            return false;
-        }
-        return true;
+            if (msg.length > 0) {
+                this.$store.commit('SET_NOTIFICATION', msg);
+                return false;
+            }
+            return true;
         }
     }
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
