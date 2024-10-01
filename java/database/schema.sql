@@ -55,8 +55,8 @@ CREATE TABLE replies (
 
 -- replies to replies for threaded replies
 CREATE TABLE comment_replies (
-    parent_id int,
-    reply_id int UNIQUE,
+    parent_id INT,
+    reply_id INT UNIQUE,
     CONSTRAINT PK_primary_key PRIMARY KEY (reply_id, parent_id),
     CONSTRAINT FK_replies_child FOREIGN KEY (reply_id) REFERENCES replies(reply_id),
     CONSTRAINT FK_replies_parent FOREIGN KEY (parent_id) REFERENCES replies(reply_id)
