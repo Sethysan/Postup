@@ -55,6 +55,14 @@ public class PostController {
     public PostResponseDto updatePost(@PathVariable long id, @RequestBody CreatePostDto post){
         return postDao.updatePost(id, post);
     }
+
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    @DeleteMapping("posts/{id}/delete")
+    public void deletePost(@PathVariable long id){
+        postDao.deletePost(id);
+    }
+
     @PreAuthorize("isAuthenticated()")
     @PutMapping("posts/{id}/upvote")
     public void upvotePost(@PathVariable long id) {
