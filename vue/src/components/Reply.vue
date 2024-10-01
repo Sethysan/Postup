@@ -1,5 +1,6 @@
 <template>
   <div class="thread">
+    {{ reply }}
     <!-- "id": 5,
                 "postId": 1,
                 "root": 0,

@@ -12,8 +12,10 @@
 
 <script>
 import service from '../services/PostService';
+import Replies from './Replies.vue';
 
 export default {
+  components: { Replies },
     props: ['post', 'replies'],
     data () {
         return {
