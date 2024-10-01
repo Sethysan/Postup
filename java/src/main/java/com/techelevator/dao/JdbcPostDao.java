@@ -1,7 +1,83 @@
 package com.techelevator.dao;
-
+import com.techelevator.model.request.CreatePostDto;
+import com.techelevator.model.responses.PostResponseDto;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
-public class JdbcPostDao implements PostDao{
+public class JdbcPostDao implements PostDao {
+    private JdbcTemplate jdbcTemplate;
+
+    public JdbcPostDao(JdbcTemplate jdbcTemplate){
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Override
+    public PostResponseDto getPostById(long id) {
+        PostResponseDto post = null;
+        String sql = "SELECT * FROM posts WHERE post_id = ?";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+        if(results.next()){
+            post = mapRowToPost(results);
+        }
+        return post;
+    }
+
+    @Override
+    public List<PostResponseDto> getPosts(long forum, String keyword, int limit, boolean sorBytPopularity) {
+        List<PostResponseDto> posts = new ArrayList<>();
+        String sql = "SELECT * FROM posts WHERE description ILIKE ?";
+        if(forum > 0){
+            sql += " AND forum_id = " + forum;
+        }
+        sql += sorBytPopularity ? " ORDER BY likes - dislikes DESC" : " ORDER BY post_id DESC";
+        if(limit > 0){
+            sql += " LIMIT " + limit;
+        }
+        if(!keyword.isBlank()){
+            keyword = "%" + keyword;
+        }
+        keyword += "%";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, keyword);
+        while(results.next()){
+            posts.add(mapRowToPost(results));
+        }
+        return posts;
+    }
+
+    @Override
+    public PostResponseDto createPost(CreatePostDto post) {
+        String sql = "INSERT INTO posts(description, author, likes, dislikes, forum_id) VALUES (?, ?, ?, ?, ?) RETURNING post_id";
+        long id = jdbcTemplate.queryForObject(sql, long.class, post.getDescription(), post.getCreator_username(), 0, 0, post.getForum_Id());
+        return this.getPostById(id);
+    }
+
+    @Override
+    public PostResponseDto updatePost(long id, CreatePostDto post) {
+        String sql = "UPDATE posts SET description = ? WHERE post_id = ?";
+        jdbcTemplate.update(sql, post.getDescription(), id);
+        return this.getPostById(id);
+    }
+
+    @Override
+    public void deletePost(long id) {
+        String sql = "DELETE FROM posts WHERE post_id = ?";
+        jdbcTemplate.update(sql);
+    }
+
+    private PostResponseDto mapRowToPost(SqlRowSet row) {
+        PostResponseDto post = new PostResponseDto();
+        post.setDescription(row.getString("description"));
+        post.setDownvotes(row.getInt("dislikes"));
+        post.setUpvotes(row.getInt("likes"));
+        post.setCreator_username(row.getString("author"));
+        post.setId(row.getLong("post_id"));
+        post.setForum_id(row.getLong("forum_id"));
+        return post;
+    }
 }

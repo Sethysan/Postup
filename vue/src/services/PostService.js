@@ -6,13 +6,19 @@ const http = axios.create({
 
 export default {
   // Get all Forums
-  getPostsByForum(forum) {
-    return http.get(`/posts/${forum}`);
+  getPopularPosts() {
+    return http.get(`/api/posts/?filter=popularity&limit=10`)
   },
-  getRecentPostByForum(forum) {
-    return http.get(`/posts/${forum}?filter=recent`)
+  getForumPosts(forum, filter) {
+    return http.get(`/api/forum/${forum}/posts?filter=${filter}`)
   },
-  getPopularPostByForum(forum){
-    return http.get(`/posts/${forum}?filter=popular`)
+  getPostById(id){
+    return http.get(`/api/posts/${id}`)
+  },
+  createPost(forum, post){
+    return http.post(`/api/forum/${forum}/posts`, post);
+  },
+  updatePost(id, post){
+    return http.post(`api/posts/${id}`, post);
   }
 };
