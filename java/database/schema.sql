@@ -48,6 +48,8 @@ CREATE TABLE replies (
     time_of_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     post_id int,
     user_id int,
+    likes int,
+    dislikes int,
     CONSTRAINT PK_reply PRIMARY KEY (reply_id),
     CONSTRAINT FK_replies_post FOREIGN KEY (post_id) REFERENCES posts(post_id),
     CONSTRAINT FK_replies_user FOREIGN KEY (user_id) REFERENCES users(user_id)
