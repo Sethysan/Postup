@@ -49,6 +49,7 @@ export default {
           }
         })
         .catch(error => {
+          
           const response = error.response;
 
           if (response.status === 401) {
