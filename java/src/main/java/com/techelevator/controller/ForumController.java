@@ -27,8 +27,8 @@ public class ForumController {
         return forumsDao.getForumById(forumId);
     }
 
-    @GetMapping("/forums/{topic}")
-    public List<Forum> getForumsByTopic(@PathVariable String topic) {
+    @GetMapping("/forums/topic")
+    public List<Forum> getForumsByTopic(@RequestBody String topic) {
         return forumsDao.getForumsByTopic(topic);
     }
 
@@ -36,5 +36,11 @@ public class ForumController {
     @PreAuthorize("isAuthenticated()")
     public void createForum(@RequestBody ForumDto forum, Principal user) {
         forumsDao.createForum(forum.getTopic(),forum.getDescription(),  user.getName());
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/forums/{id}/delete")
+    public void deleteForum(@PathVariable long id) {
+        
     }
 }
