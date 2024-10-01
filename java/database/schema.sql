@@ -32,6 +32,7 @@ CREATE TABLE posts (
     dislikes int,
     author varchar(25) NOT NULL,
     forum_id int,
+    time_of_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT PK_post PRIMARY KEY (post_id),
     CONSTRAINT FK_posts_author FOREIGN KEY (author) REFERENCES users(username),
     CONSTRAINT FK_post_forum FOREIGN KEY (forum_id) REFERENCES forums(forum_id)
@@ -41,6 +42,7 @@ CREATE TABLE Replies (
     reply_id SERIAL,
     description varchar(200),
     post_id int,
+    time_of_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT PK_reply PRIMARY KEY (reply_id),
     CONSTRAINT FK_replies_post FOREIGN KEY (post_id) REFERENCES posts(post_id)
 );
