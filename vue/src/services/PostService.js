@@ -20,5 +20,8 @@ export default {
   },
   updatePost(id, post){
     return http.post(`api/posts/${id}`, post);
-  }
+  },
+  deletePost(id){
+    return http.delete(`api/posts/${id}`);
+  },
 };
