@@ -6,8 +6,8 @@ const http = axios.create({
 
 export default {
   // Create Forum
-  createForum(forum) {
-    return http.post("/forums/create", forum);
+  createForum(forum, config) {
+    return http.post("/forums/create", forum, config);
   },
   // Get all Forums
   getForums() {

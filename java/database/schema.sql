@@ -29,7 +29,7 @@ CREATE TABLE posts (
     image varchar(255),
     likes int,
     dislikes int,
-    author varchar,
+    author varchar(50),
     forum_id int,
     CONSTRAINT PK_post PRIMARY KEY (post_id),
     CONSTRAINT FK_posts_author FOREIGN KEY (author) REFERENCES users(username),
