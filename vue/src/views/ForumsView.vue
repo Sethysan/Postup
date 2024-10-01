@@ -2,7 +2,8 @@
     <router-link :to="{ name: 'create-forums' }">Add Forum</router-link>
     <div v-for="forum in forums" :key="forum.id" v-bind:value=" forum.id" class="container">
         <!-- Forum Topic name  -->
-        <h1>{{ forum.topic }}</h1>
+        <h2>{{ forum.topic }}</h2>
+        <p>{{ forum.description }}</p>
         <p> {{ forum.timeOfCreation }} </p>
 
         <!-- Topic Timestamp -->
