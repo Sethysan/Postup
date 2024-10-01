@@ -1,5 +1,5 @@
 <template>
-  {{ forum }}
+  <forum :forum="forum"></forum>
   <post-list :forum="forumId"></post-list>
 </template>
 
