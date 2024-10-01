@@ -69,6 +69,7 @@ public class JdbcForumDao implements ForumsDao{
         Forum forum = new Forum();
         forum.setId(rs.getInt("forum_id"));
         forum.setTopic(rs.getString("topic"));
+        forum.setDescription(rs.getString("description"));
         forum.setAuthor(rs.getString("author"));
         forum.setTimeOfCreation(rs.getTimestamp("time_of_creation"));
         return forum;
