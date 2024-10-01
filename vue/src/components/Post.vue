@@ -6,13 +6,6 @@
   </div>
 </template>
 
-<!-- "id": 4,
-        "forum_id": 1,
-        "description": "awful post",
-        "upvotes": 2,
-        "downvotes": 20,
-        "creator_username": "user" -->
-
 <script>
 import service from '../services/PostService';
 

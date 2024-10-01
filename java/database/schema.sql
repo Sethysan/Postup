@@ -1,8 +1,7 @@
 BEGIN TRANSACTION;
 
-DROP TABLE IF EXISTS replies; -- TODO: everyone delete this after you rerun this script
 DROP TABLE IF EXISTS comment_replies;
-DROP TABLE IF EXISTS post_replies;
+DROP TABLE IF EXISTS replies;
 DROP TABLE IF EXISTS posts;
 DROP TABLE IF EXISTS forums;
 DROP TABLE IF EXISTS users;
@@ -43,7 +42,7 @@ CREATE TABLE posts (
 
 -- changed replies to lowercase for constistency
 -- I did not add cascade here as the replies might need to work a little different to immitate reddit properly
-CREATE TABLE post_replies (
+CREATE TABLE replies (
     reply_id SERIAL,
     description varchar(200),
     time_of_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -56,11 +55,11 @@ CREATE TABLE post_replies (
 
 -- replies to replies for threaded replies
 CREATE TABLE comment_replies (
-    reply_id SERIAL,
-    description varchar(200),
-    time_of_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    parent_reply int,
-    CONSTRAINT FK_replies_parent FOREIGN KEY (parent_reply) REFERENCES post_replies(reply_id)
+    parent_id int,
+    reply_id int UNIQUE,
+    CONSTRAINT PK_primary_key PRIMARY KEY (reply_id, parent_id),
+    CONSTRAINT FK_replies_child FOREIGN KEY (reply_id) REFERENCES replies(reply_id),
+    CONSTRAINT FK_replies_parent FOREIGN KEY (parent_reply) REFERENCES replies(reply_id)
 );
 
 COMMIT TRANSACTION;
