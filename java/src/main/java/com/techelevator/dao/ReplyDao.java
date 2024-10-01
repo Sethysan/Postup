@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface ReplyDao {
     public List<ReplyResponseDto> getReplies();
-    public List<ReplyResponseDto> getRepliesByThread(long threadId);
     public ReplyResponseDto getReplyById(long id);
+    public List<ReplyResponseDto> getReplyByUser(long userId);
     public ReplyResponseDto createReply(CreateReplyDto reply);
     public ReplyResponseDto updateReply(long id, CreateReplyDto reply);
     public List<ReplyResponseDto> getPostThreads(long postId);

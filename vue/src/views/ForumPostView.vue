@@ -10,7 +10,8 @@ export default {
   data (){
     return {
         postId: 0,
-        post: {}
+        post: {},
+        replies: []
     }
   },
   created(){
@@ -20,6 +21,7 @@ export default {
         .then(res => this.post = res.data)
         .catch(err => alert("unable to fetch"));
     }
+
   }
 }
 </script>

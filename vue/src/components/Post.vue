@@ -5,6 +5,7 @@
     <div v-if="this.$store.user">
         <button :onclick="upvote">Upvote</button><p>{{ post.upvotes }}</p><button :onclick="downvote">Downvote</button><p>{{ post.downvotes }}</p>
     </div>
+    <replies :replies="replies"></replies>
   </div>
 </template>
 
@@ -12,7 +13,7 @@
 import service from '../services/PostService';
 
 export default {
-    props: ['post'],
+    props: ['post', 'replies'],
     data () {
         return {
             upvoted: false,
