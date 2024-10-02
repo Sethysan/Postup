@@ -15,7 +15,9 @@
     <div v-for="post in posts" :key="post.id">
       <header>
         <img src="" alt="user-logo" />
-        <h1>{{ post.title }}</h1>
+        <router-link :to="{name: 'post', params: {post: post.id}}">
+          <h1>{{ post.title }}</h1>
+        </router-link>
         <p> {{ post.creator_username }} </p>
       </header>
       <section>
