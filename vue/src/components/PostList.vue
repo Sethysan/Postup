@@ -37,38 +37,6 @@ export default {
   data() {
     return {
       filter: "",
-<<<<<<< HEAD
-=======
-      loading: true,
-      error: ""
-    }
-  },
-  created() {
-    // Fetch posts for the forum when the component is created
-    this.postId = this.$route.params.postId;
-    if (this.postId) {
-      // Fetch the post using PostService
-      PostService.getPostById(this.postId)
-        .then(res => {
-          this.posts = res.data;
-        })
-        .catch(err => {
-          this.error = err.response;
-          alert("Unable to fetch post");
-          console.error(err);
-        })
-      this.loading = false;
-    }
-    else {
-      PostService.getPopularPosts().then(
-        res => {
-          this.posts = res.data;
-        })
-        .catch(err => {
-          this.error = err.response;
-        })
-      this.loading = false;
->>>>>>> cfc35eab18d02e5a9679e83f83a3172b94c378ba
     }
   },
   methods: {
