@@ -1,6 +1,6 @@
 <template>
   <div class="posts">
-    <div v-if="forumId">
+    <div v-if="postId != 0">
       <select name="filter" v-model="filter">
         <option value="" v-if="!filter">Sort</option>
         <option value="recent">Most Recent</option>
@@ -95,7 +95,12 @@ export default {
       }
     },
     filterPosts() {
-      this.fetchPosts();
+      if(this.filter == 'recent'){
+        this.filterPostsByRecent();
+      }
+      else if(this.filter == 'popularity'){
+        this.filterByPopularity();
+      }
     },
     filterPostsByRecent() {
       this.posts = [...this.posts].sort((a, b) => b.id - a.id);
