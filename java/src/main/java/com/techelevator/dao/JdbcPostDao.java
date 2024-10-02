@@ -58,8 +58,8 @@ public class JdbcPostDao implements PostDao {
 
     @Override
     public PostResponseDto createPost(CreatePostDto post) {
-        String sql = "INSERT INTO posts(description, image, author, likes, dislikes, forum_id) VALUES (?, ?, ?, ?, ?, ?) RETURNING post_id";
-        long id = jdbcTemplate.queryForObject(sql, long.class, post.getDescription(), post.getImage(), post.getCreator_username(), 0, 0, post.getForum_Id());
+        String sql = "INSERT INTO posts(title, description, image, author, likes, dislikes, forum_id) VALUES (?, ?, ?, ?, ?, ?) RETURNING post_id";
+        long id = jdbcTemplate.queryForObject(sql, long.class, post.getTitle(), post.getDescription(), post.getImage(), post.getCreator_username(), 0, 0, post.getForum_Id());
         return this.getPostById(id);
     }
 
@@ -98,6 +98,7 @@ public class JdbcPostDao implements PostDao {
 
     private PostResponseDto mapRowToPost(SqlRowSet row) {
         PostResponseDto post = new PostResponseDto();
+        post.setTitle(row.getString("title"));
         post.setDescription(row.getString("description"));
         post.setDownvotes(row.getInt("dislikes"));
         post.setUpvotes(row.getInt("likes"));

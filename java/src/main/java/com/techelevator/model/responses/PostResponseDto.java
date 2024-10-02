@@ -4,6 +4,7 @@ public class PostResponseDto {
 
     private long id;
     private long forum_id;
+    private String title;
     private String description;
     private int upvotes;
     private int downvotes;
@@ -32,6 +33,14 @@ public class PostResponseDto {
 
     public void setForum_id(long forum) {
         this.forum_id = forum;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {

@@ -41,6 +41,6 @@ public class ForumController {
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/forums/{id}/delete")
     public void deleteForum(@PathVariable long id) {
-        
+        forumsDao.deleteForum(id);
     }
 }

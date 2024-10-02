@@ -65,6 +65,14 @@ public class JdbcForumDao implements ForumsDao{
         jdbcTemplate.update(sql, topic,Description , author);
     }
 
+    public void deleteForum(long id) {
+        String sql = "DELETE FROM comment_replies WHERE parent_id IN (SELECT reply_id FROM replies " +
+                "WHERE post_id IN (SELECT post_id FROM post WHERE forum_id = ?));";
+        String sql1 = "DELETE FROM replies WHERE post_id IN (SELECT post_id FROM post WHERE forum_id = ?);";
+        String sql2 = "DELETE FROM posts WHERE forum_id = ?;";
+        String sql3 = "DELETE FROM forum WHERE forum_id = ?;";
+    }
+
     private Forum mapRowToForum(SqlRowSet rs) {
         Forum forum = new Forum();
         forum.setId(rs.getInt("forum_id"));
