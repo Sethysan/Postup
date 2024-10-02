@@ -4,8 +4,8 @@
         <p>{{ forum.description }}</p>
 
         <!-- Router link to view posts in this forum -->
-        <router-link :to="{ name: 'forums', query: { topic: forum.topic } }" class="forum-link">
-            View Forum
+        <router-link :to="{ name: 'forums', query: { topic: forum.topic } }">
+            <button class="view-forum-button">View Forum</button>
         </router-link>
         <!-- Router link to create a new post in this forum -->
         <router-link :to="{ name: 'create-post', params: { forumId: forum.Id } }">
@@ -39,8 +39,9 @@ export default {
 </script>
 
 <style scoped>
-.create-post-button, .forum_link {
-    padding: 10px 20px;
+button {
+    padding: 5px 10px;
+    margin-bottom: 15px;
     background-color: #4CAF50;
     color: white;
     border: none;
@@ -50,7 +51,10 @@ export default {
     display: inline-block;
 }
 
-.create-post-button:hover {
+button:hover {
     background-color: #45a049;
+}
+.view-forum-button{
+    margin-right: 10px;
 }
 </style>

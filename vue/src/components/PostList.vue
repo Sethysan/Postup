@@ -1,19 +1,18 @@
 <template>
   <div class="posts">
-    <div v-if="forumId">
+    <div v-if="forumId === 0">
       <select name="filter" v-model="filter">
         <option value="" v-if="!filter">Sort</option>
         <option value="recent">Most Recent</option>
         <option value="popularity">Most Popular</option>
       </select>
-      <button :onclick="filterPosts">Sort</button>
+      <button class="sort" :onclick="filterPosts">Sort</button>
     </div>
     <p v-if="error">Failed To Load Posts</p>
     <p v-if="loading">Loading</p>
-    <div v-if="!loading && posts.length === 0">
+    <div v-if="!loading && posts.length == 0">
       <p>Wow, such empty</p>
-      <img src="http://localhost:9000/images/pets/moon-moon.jpg" alt="placeholder" class="place-holder"/>
-      {{ this.id }}
+      <img src="http://localhost:9000/images/pets/moon-moon.jpg" alt="placeholder" class="place-holder" />
     </div>
     <div v-for="post in posts" :key="post.id">
       <header>
@@ -30,64 +29,75 @@
 </template>
 
 <script>
-import Post from '../components/Post.vue'
-import PostService from '../services/PostService'
-import RepliesService from '../services/RepliesService'
+import Post from '../components/Post.vue';
+import PostService from '../services/PostService';
+import RepliesService from '../services/RepliesService';
 
 export default {
-  props: ['forumId'],
-  // components: { Post },
+  components: { Post },
   data() {
     return {
-      post: {},
-      replies: [],
+      // props: ['forum'],
+      postId: null,
+      // post: {},
+      // replies: [],
       posts: [],
       forumId: 0,
       filter: "",
       loading: true,
       error: ""
-
     }
   },
   created() {
-    // Fetch posts for the forum when the component is created
-    this.fetchPosts();
+    this.postId = this.$route.params.postId;
+    if (this.postId) {
+      // Fetch the post using PostService
+      PostService.getPostById(this.postId)
+        .then(res => {
+          this.posts = res.data;
+        })
+        .catch(err => {
+          this.error = err.response;
+          alert("Unable to fetch post");
+          console.error(err);
+        })
+      this.loading = false;
+    }
+    else {
+      PostService.getPopularPosts().then(
+        res => {
+          this.posts = res.data;
+        })
+        .catch(err => {
+          this.error = err.response;
+        })
+      this.loading = false;
+    }
   },
   methods: {
-    fetchPosts() {
-      // Check if forumId exists
-      if (this.forumId) {
-        // Fetch posts for the specific forum using forumId
-        PostService.getForumPosts(this.forumId, this.filter ||'recent')
-          .then(res => {
-            this.posts = res.data;
-            this.loading = false;
-          })
-          .catch(err => {
-            this.error = "Failed to load posts for this forum.";
-            this.loading = false;
-            console.error("Error loading posts:", err);
-          });
-      } else {
-        this.loading = false;
-        this.error = "No forum ID provided.";
-      }
-    },
     filterPosts() {
-      this.fetchPosts();
+      if (this.filter == "popularity") {
+        this.filterByPopularity()
+      }
+      else {
+        this.filterPostsByRecent()
+      }
     },
     filterPostsByRecent() {
       this.posts = [...this.posts].sort((a, b) => b.id - a.id);
     },
     filterByPopularity() {
-      this.posts = [...this.posts].sort((a, b) => (b.upvotes - b.downvotes) - (a.upvotes - a.downvotes));
+      this.posts = [...this.posts].sort((a, b) => (b.upvotes - b.downvotes) - (a.upvotes - a.downvotes))
     }
   }
-}
+};
 </script>
 
 <style>
-.place-holder{
+.place-holder {
   max-width: 15%;
+}
+.sort{
+  margin-bottom: 15px;
 }
 </style>

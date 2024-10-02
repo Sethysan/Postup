@@ -33,7 +33,7 @@ public class JdbcPostDao implements PostDao {
     @Override
     public List<PostResponseDto> getPosts(long forum, String keyword, int limit, boolean sorBytPopularity, boolean today) {
         List<PostResponseDto> posts = new ArrayList<>();
-        String sql = "SELECT posts.*, COUNT(replies.description) FROM posts JOIN replies ON replies.post_id = posts.post_id WHERE (posts.description ILIKE ? OR replies.description ILIKE ?) ";
+        String sql = "SELECT posts.*, COUNT(replies.description) FROM posts LEFT JOIN replies ON replies.post_id = posts.post_id WHERE (posts.description ILIKE ? OR replies.description ILIKE ?) ";
         if(forum > 0){
             sql += " AND forum_id = " + forum;
         }
