@@ -7,6 +7,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,11 +33,11 @@ public class JdbcPostDao implements PostDao {
     @Override
     public List<PostResponseDto> getPosts(long forum, String keyword, int limit, boolean sorBytPopularity) {
         List<PostResponseDto> posts = new ArrayList<>();
-        String sql = "SELECT * FROM posts JOIN replies ON replies.post_id = posts.post_id WHERE description ILIKE ?";
+        String sql = "SELECT * FROM posts WHERE description ILIKE ?";
         if(forum > 0){
             sql += " AND forum_id = " + forum;
         }
-        sql += sorBytPopularity ? "ORDER BY likes - dislikes DESC" : " ORDER BY post_id DESC";
+        sql += sorBytPopularity ? " ORDER BY likes - dislikes DESC" : " ORDER BY post_id DESC";
         if(limit > 0){
             sql += " LIMIT " + limit;
         }
