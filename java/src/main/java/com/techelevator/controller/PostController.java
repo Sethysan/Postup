@@ -58,9 +58,9 @@ public class PostController {
     }
 
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')") //ToDo from: jasir to self change logic for this
     @DeleteMapping("posts/{id}/delete")
-    public void deletePost(@PathVariable long id){
+    public void deletePost(@PathVariable long id, Principal user){
         postDao.deletePost(id);
     }
 

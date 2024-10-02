@@ -65,22 +65,14 @@ CREATE TABLE comment_replies (
 );
 
 
-
 --CREATE TABLE moderation (
---    id int,
---    typeOfItem int,
---    user_id int,
---    username varchar(50),
---    role varchar(25) DEFAULT MODERATOR,
---    CONSTRAINT FK_moderation_type FOREIGN KEY (typeOfItem) REFERENCES types(type_id)
---    CONSTRAINT FK USER_ID
---    CONSTRAINT FK USERNAME
+--    forum_id int,
+--    username varchar(25),
+--    role varchar(25) DEFAULT ROLE_MODERATOR,
+--    CONSTRAINT FK_moderation_forum_id FOREIGN KEY (forum_id) REFERENCES forums(forum_id),
+--    CONSTRAINT FK_moderation_username FOREIGN KEY (username) REFERENCES users(username)
 --)
 --
---CREATE TABLE types (
---    type_id SERIAL,
---    type varchar(25)
---    PK_type_id
---)
+--INSERT INTO moderation (forum_id, username) VALUES (2, person)
 
 COMMIT TRANSACTION;
