@@ -11,6 +11,7 @@ import AddForumView from '../views/AddForumView.vue';
 import PostView from '../views/PostView.vue';
 import ForumView from '../views/ForumView.vue';
 import ForumPostView from '../views/ForumPostView.vue';
+import CreatePost from '../components/CreatePost.vue';
 
 /**
  * The Vue Router is used to "direct" the browser to render a specific view component
@@ -78,7 +79,7 @@ const routes = [
     }
   },
   {
-    path: "/forums/:forum/posts",
+    path: "/forums/:forumId/posts",
     name: "forum-post",
     component: PostView,
     meta: {
@@ -86,9 +87,19 @@ const routes = [
     }
   },
   {
-    path: "/posts/:post",
+    path: '/forums/:id/create-post',
+    name: 'create-post',
+    component: CreatePost,
+    props: true,
+    meta: {
+      requiresAuth: true 
+    } 
+  },
+  {
+    path: "/posts/:postId",
     name: "post",
     component: ForumPostView,
+    props: true,
     meta: {
       requiresAuth: false
     }

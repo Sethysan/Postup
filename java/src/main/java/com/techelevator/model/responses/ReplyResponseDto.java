@@ -1,6 +1,9 @@
 package com.techelevator.model.responses;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReplyResponseDto {
@@ -9,7 +12,7 @@ public class ReplyResponseDto {
     private long root;
     private String description;
     private Timestamp created;
-    private List<ReplyResponseDto> reply;
+    private List<ReplyResponseDto> replies = new ArrayList<>();
     private UserSnippetDto user;
 
     public long getId() {
@@ -52,6 +55,14 @@ public class ReplyResponseDto {
         this.created = created;
     }
 
+    public List<ReplyResponseDto> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(List<ReplyResponseDto> replies) {
+        this.replies = replies;
+    }
+
     public UserSnippetDto getUser() {
         return user;
     }
@@ -60,11 +71,20 @@ public class ReplyResponseDto {
         this.user = user;
     }
 
-    public List<ReplyResponseDto> getReply() {
-        return reply;
+    @JsonIgnore public void addReplies(ReplyResponseDto reply) {
+        this.replies.add(reply);
     }
 
-    public void setReply(List<ReplyResponseDto> reply) {
-        this.reply = reply;
+    @Override
+    public String toString() {
+        return "ReplyResponseDto{" +
+                "id=" + id +
+                ", postId=" + postId +
+                ", root=" + root +
+                ", description='" + description + '\'' +
+                ", created=" + created +
+                ", replies=" + replies +
+                ", user=" + user +
+                '}';
     }
 }

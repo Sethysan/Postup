@@ -14,9 +14,7 @@ public class ThreadResponseDto {
         this.root = root;
     }
 
-    public void addReply(ReplyResponseDto reply) {
-        this.replies.add(reply);
-    }
+
 
     public List<ReplyResponseDto> getReplies() {
         return replies;

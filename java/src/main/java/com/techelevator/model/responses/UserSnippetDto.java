@@ -11,7 +11,7 @@ public class UserSnippetDto {
         return id;
     }
 
-    @JsonIgnore public void setId(long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -19,7 +19,7 @@ public class UserSnippetDto {
         return username;
     }
 
-    @JsonIgnore public void setUsername(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 }
