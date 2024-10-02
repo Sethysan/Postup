@@ -28,7 +28,7 @@ public class PostController {
         return postDao.getPosts(-1, keyword, limit, sortByPopularity, today);
     }
 
-    @GetMapping("forum/{id}/posts")
+    @GetMapping("/forum/{id}/posts")
     public List<PostResponseDto> getPostsByForum(@PathVariable long id, @RequestParam(defaultValue="") String keyword, @RequestParam(defaultValue="-1") int limit, @RequestParam(defaultValue="") String filter){
         boolean sortByPopularity = false;
         if(filter.equals("popularity")){

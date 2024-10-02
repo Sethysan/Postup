@@ -1,6 +1,6 @@
 <template>
   <div class="post">
-    <h2>place holder for title</h2>
+    <h2>{{ post.title }}</h2>
     <p>{{ post.description }}</p>
     <div v-if="this.$store.user">
         <button :onclick="upvote">Upvote</button><p>{{ post.upvotes }}</p><button :onclick="downvote">Downvote</button><p>{{ post.downvotes }}</p>

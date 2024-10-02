@@ -9,8 +9,8 @@ export default {
   getPopularPosts() {
     return http.get(`/api/posts/?filter=popularity&limit=10&today=true`)
   },
-  getForumPosts(forum, filter) {
-    return http.get(`/api/forum/${forum}/posts?filter=${filter}`);
+  getForumPosts(forum) {
+    return http.get(`/api/forum/${forum}/posts`);
   },
   getPostById(id) {
     return http.get(`/api/posts/${id}`);

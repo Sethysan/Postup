@@ -33,9 +33,9 @@ public class JdbcPostDao implements PostDao {
     @Override
     public List<PostResponseDto> getPosts(long forum, String keyword, int limit, boolean sorBytPopularity, boolean today) {
         List<PostResponseDto> posts = new ArrayList<>();
-        String sql = "SELECT posts.*, COUNT(replies.description) FROM posts JOIN replies ON replies.post_id = posts.post_id WHERE (posts.description ILIKE ? OR replies.description ILIKE ?) ";
+        String sql = "SELECT posts.*, COUNT(replies.description) FROM posts LEFT JOIN replies ON replies.post_id = posts.post_id WHERE (posts.description ILIKE ? OR replies.description ILIKE ?) ";
         if(forum > 0){
-            sql += " AND forum_id = " + forum;
+            sql += " AND posts.forum_id = " + forum;
         }
         if(today){
             sql += " AND (CAST(posts.time_of_creation AS Date) = CURRENT_DATE OR CAST(replies.time_of_creation AS DATE) = CURRENT_DATE) ";
@@ -58,7 +58,7 @@ public class JdbcPostDao implements PostDao {
 
     @Override
     public PostResponseDto createPost(CreatePostDto post) {
-        String sql = "INSERT INTO posts(title, description, image, author, likes, dislikes, forum_id) VALUES (?, ?, ?, ?, ?, ?) RETURNING post_id";
+        String sql = "INSERT INTO posts(title, description, image, author, likes, dislikes, forum_id) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING post_id";
         long id = jdbcTemplate.queryForObject(sql, long.class, post.getTitle(), post.getDescription(), post.getImage(), post.getCreator_username(), 0, 0, post.getForum_Id());
         return this.getPostById(id);
     }
