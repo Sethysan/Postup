@@ -1,26 +1,20 @@
 package com.techelevator.dao;
-
 import com.techelevator.model.request.CreateReplyDto;
 import com.techelevator.model.responses.ReplyResponseDto;
 import com.techelevator.model.responses.UserSnippetDto;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 @Component
 public class JdbcReplyDao implements ReplyDao {
-
     JdbcTemplate jdbcTemplate;
-
     JdbcReplyDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-
     @Override
     public List<ReplyResponseDto> getReplies() {
         List<ReplyResponseDto> threads = new ArrayList<>();
@@ -31,7 +25,6 @@ public class JdbcReplyDao implements ReplyDao {
         }
         return threads;
     }
-
     @Override
     public ReplyResponseDto getReplyById(long id) {
         ReplyResponseDto reply = new ReplyResponseDto();
@@ -42,7 +35,6 @@ public class JdbcReplyDao implements ReplyDao {
         }
         return reply;
     }
-
     @Override
     public List<ReplyResponseDto> getReplyByUser(long userId) {
         List<ReplyResponseDto> replies = new ArrayList<>();
@@ -53,7 +45,6 @@ public class JdbcReplyDao implements ReplyDao {
         }
         return replies;
     }
-
     @Override
     public List<ReplyResponseDto> getPostThreads(long postId) {
         List<ReplyResponseDto> threads = new ArrayList<>();
@@ -67,32 +58,28 @@ public class JdbcReplyDao implements ReplyDao {
         }
         return threads;
     }
-
     @Override
     public ReplyResponseDto createReply(CreateReplyDto reply) {
         return null;
     }
-
     @Override
     public ReplyResponseDto updateReply(long id, CreateReplyDto reply) {
         return null;
     }
-
     private List<ReplyResponseDto> mapRowToThread(SqlRowSet results) {
         Map<Long, ReplyResponseDto> replyMap = new HashMap<>();
         List<ReplyResponseDto> rootReplies = new ArrayList<>();
-
         // We are iterating through results
         while (results.next()) {
             // Get parent_id of the current reply
             Long parent = results.getLong("parent_id");
-
+            System.out.println(parent);
             // Map the current row to a ReplyResponseDto object
             ReplyResponseDto reply = mapRowToReply(results);
-
-            // Store the reply in the map for future reference
+            System.out.println(reply);
+            // Store the reply in the map for future reference\
+            System.out.println(reply.getId());
             replyMap.put(reply.getId(), reply);
-
             // Check if the parent is null (this means it's a root reply)
             if (parent == null) {
                 rootReplies.add(reply);
@@ -100,6 +87,7 @@ public class JdbcReplyDao implements ReplyDao {
             else {
                 // If it's a child reply, find its parent and add it as a child
                 ReplyResponseDto parentReply = replyMap.get(parent);
+                System.out.println(parentReply);
                 if (parentReply != null) {
                     parentReply.addReplies(reply);
                 }
@@ -107,7 +95,6 @@ public class JdbcReplyDao implements ReplyDao {
         }
         return rootReplies; // Return the root replies (with nested children)
     }
-
     private ReplyResponseDto mapRowToReply(SqlRowSet row) {
         ReplyResponseDto reply = new ReplyResponseDto();
         reply.setId(row.getInt("reply_id"));
@@ -118,6 +105,7 @@ public class JdbcReplyDao implements ReplyDao {
         user.setId(row.getInt("user_id"));
         user.setUsername(row.getString("username"));
         reply.setUser(user);
+        System.out.println(reply);
         return reply;
     }
 }

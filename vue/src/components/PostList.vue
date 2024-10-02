@@ -1,7 +1,7 @@
 <template>
   <div class="posts">
-    <div v-if="this.forumId">
-      <select name="filter" v-model="this.filter">
+    <div v-if="forumId === 0">
+      <select name="filter" v-model="filter">
         <option value="" v-if="!filter">Sort</option>
         <option value="recent">Most Recent</option>
         <option value="popularity">Most Popular</option>
@@ -73,7 +73,7 @@ export default {
           this.posts = res.data;
         })
         .catch(err => {
-          this.error = err.reesponse;
+          this.error = err.response;
         })
       this.loading = false;
     }
