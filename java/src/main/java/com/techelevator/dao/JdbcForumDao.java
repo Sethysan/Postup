@@ -75,11 +75,13 @@ public class JdbcForumDao implements ForumsDao{
         if (forum.getAuthor().equals(name) || userDao.getUserByUsername(name).getAuthorities().contains("ROLE_ADMIN")) {
             String sql = "DELETE FROM comment_replies WHERE parent_id IN (SELECT reply_id FROM replies " +
                     "WHERE post_id IN (SELECT post_id FROM post WHERE forum_id = ?));";
+            String sql0 = "DELETE FROM moderation WHERE forum_id = ?;";
             String sql1 = "DELETE FROM replies WHERE post_id IN (SELECT post_id FROM post WHERE forum_id = ?);";
             String sql2 = "DELETE FROM posts WHERE forum_id = ?;";
             String sql3 = "DELETE FROM forum WHERE forum_id = ?;";
 
             jdbcTemplate.update(sql, id);
+            jdbcTemplate.update(sql0, id);
             jdbcTemplate.update(sql1, id);
             jdbcTemplate.update(sql2, id);
             jdbcTemplate.update(sql3, id);
