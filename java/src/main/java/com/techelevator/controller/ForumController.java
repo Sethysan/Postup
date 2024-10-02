@@ -1,8 +1,10 @@
 package com.techelevator.controller;
 
 import com.techelevator.dao.ForumsDao;
+import com.techelevator.dao.UserDao;
 import com.techelevator.model.Forum;
 import com.techelevator.model.ForumDto;
+import com.techelevator.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.parameters.P;
@@ -16,6 +18,9 @@ import java.util.List;
 public class ForumController {
     @Autowired
     private ForumsDao forumsDao;
+
+    @Autowired
+    private UserDao userDao;
 
     @GetMapping("/forums")
     public List<Forum> getListOfForums() {
@@ -40,7 +45,7 @@ public class ForumController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/forums/{id}/delete")
-    public void deleteForum(@PathVariable long id) {
-        forumsDao.deleteForum(id);
+    public void deleteForum(@PathVariable long id, Principal user) {
+        forumsDao.deleteForum(id, user.getName());
     }
 }

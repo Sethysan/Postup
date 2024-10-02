@@ -1,6 +1,6 @@
 <template>
   <div class="posts">
-    <div v-if="forumId === 0">
+    <div v-if="postId != 0">
       <select name="filter" v-model="filter">
         <option value="" v-if="!filter">Sort</option>
         <option value="recent">Most Recent</option>
@@ -17,12 +17,12 @@
     <div v-for="post in posts" :key="post.id">
       <header>
         <img src="" alt="user-logo" />
-        <h1>{{ post.description }}</h1>
+        <h1>{{ post.title }}</h1>
         <p> {{ post.creator_username }} </p>
       </header>
       <section>
         <img v-if="post.image" :src="post.image" />
-        <p> place holder for a post body </p>
+        <p> {{ post.description }} </p>
       </section>
     </div>
   </div>
@@ -34,13 +34,10 @@ import PostService from '../services/PostService';
 import RepliesService from '../services/RepliesService';
 
 export default {
+  props: ['forumId'],
   components: { Post },
   data() {
     return {
-      // props: ['forum'],
-      postId: null,
-      // post: {},
-      // replies: [],
       posts: [],
       forumId: 0,
       filter: "",
@@ -49,6 +46,7 @@ export default {
     }
   },
   created() {
+    // Fetch posts for the forum when the component is created
     this.postId = this.$route.params.postId;
     if (this.postId) {
       // Fetch the post using PostService
@@ -75,12 +73,31 @@ export default {
     }
   },
   methods: {
-    filterPosts() {
-      if (this.filter == "popularity") {
-        this.filterByPopularity()
+    fetchPosts() {
+      // Check if forumId exists
+      if (this.forumId) {
+        // Fetch posts for the specific forum using forumId
+        PostService.getForumPosts(this.forumId)
+          .then(res => {
+            this.posts = res.data;
+            this.loading = false;
+          })
+          .catch(err => {
+            this.error = "Failed to load posts for this forum.";
+            this.loading = false;
+            console.error("Error loading posts:", err);
+          });
+      } else {
+        this.loading = false;
+        this.error = "No forum ID provided.";
       }
-      else {
-        this.filterPostsByRecent()
+    },
+    filterPosts() {
+      if(this.filter == 'recent'){
+        this.filterPostsByRecent();
+      }
+      else if(this.filter == 'popularity'){
+        this.filterByPopularity();
       }
     },
     filterPostsByRecent() {

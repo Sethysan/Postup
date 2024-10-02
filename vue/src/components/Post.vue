@@ -26,7 +26,7 @@ export default {
     methods : {
         upvote(){
             alert("upvoting")
-            if(this.upvoted){
+            if(!this.upvoted){
                 service.upvotePost(this.post.id)
                 .then(res => {
                     this.post.upvotes++;
@@ -35,16 +35,18 @@ export default {
                 .catch(err => {alert("failed to upvote")})
                 return;
             }
-            service.unvotingLike(this.post.id)
-            .then(res => {
-                this.post.upvotes--; 
-                this.upvoted = !this.upvoted
-            })
-            .catch(err => alert("failed to undo upvote"))
+            else {
+                service.unvotingLike(this.post.id)
+                .then(res => {
+                    this.post.upvotes--; 
+                    this.upvoted = !this.upvoted
+                })
+                .catch(err => alert("failed to undo upvote"))
+            }
         },
         downvote(){
-            if(this.downvoted){
-                service.upvotePost(this.post.id)
+            if(!this.downvoted){
+                service.downvotePost(this.post.id)
                 .then(res => {
                     this.post.upvotes++;
                     this.upvoted = !this.upvoted
@@ -52,12 +54,14 @@ export default {
                 .catch(err => {alert("failed to upvote")})
                 return;
             }
-            service.unvotingDislike(this.post.id)
-            .then(res => {
-                this.post.upvotes--; 
-                this.upvoted = !this.upvoted
-            })
-            .catch(err => alert("failed to undo upvote"))
+            else {
+                service.unvotingDislike(this.post.id)
+                .then(res => {
+                    this.post.upvotes--; 
+                    this.upvoted = !this.upvoted
+                })
+                .catch(err => alert("failed to undo upvote"))
+            }
         },
         deletePost() {
             if (

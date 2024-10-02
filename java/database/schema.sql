@@ -51,7 +51,7 @@ CREATE TABLE replies (
     likes int DEFAULT 0,
     dislikes int DEFAULT 0,
     CONSTRAINT PK_reply PRIMARY KEY (reply_id),
-    CONSTRAINT FK_replies_post FOREIGN KEY (post_id) REFERENCES posts(post_id),
+    CONSTRAINT FK_replies_post FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
     CONSTRAINT FK_replies_user FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
@@ -61,26 +61,18 @@ CREATE TABLE comment_replies (
     reply_id INT UNIQUE,
     CONSTRAINT PK_primary_key PRIMARY KEY (reply_id, parent_id),
     CONSTRAINT FK_replies_child FOREIGN KEY (reply_id) REFERENCES replies(reply_id),
-    CONSTRAINT FK_replies_parent FOREIGN KEY (parent_id) REFERENCES replies(reply_id)
+    CONSTRAINT FK_replies_parent FOREIGN KEY (parent_id) REFERENCES replies(reply_id) ON DELETE CASCADE
 );
 
 
-
 --CREATE TABLE moderation (
---    id int,
---    typeOfItem int,
---    user_id int,
---    username varchar(50),
---    role varchar(25) DEFAULT MODERATOR,
---    CONSTRAINT FK_moderation_type FOREIGN KEY (typeOfItem) REFERENCES types(type_id)
---    CONSTRAINT FK USER_ID
---    CONSTRAINT FK USERNAME
+--    forum_id int,
+--    username varchar(25),
+--    role varchar(25) DEFAULT ROLE_MODERATOR,
+--    CONSTRAINT FK_moderation_forum_id FOREIGN KEY (forum_id) REFERENCES forums(forum_id),
+--    CONSTRAINT FK_moderation_username FOREIGN KEY (username) REFERENCES users(username)
 --)
 --
---CREATE TABLE types (
---    type_id SERIAL,
---    type varchar(25)
---    PK_type_id
---)
+--INSERT INTO moderation (forum_id, username) VALUES (2, person)
 
 COMMIT TRANSACTION;
