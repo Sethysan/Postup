@@ -1,4 +1,5 @@
 <template>
+  {{ post }}
   <post :post="post" :replies="replies"></post>
 </template>
 
@@ -19,13 +20,14 @@ export default {
   created(){
     this.postId = this.$route.params.post;
     if(this.postId){
-        this.post = service.getPostById(this.postId)
+         service.getPostById(this.postId)
         .then(res => this.post = res.data)
         .catch(err => alert("unable to fetch post"));
-    }
-    reviewService.getReplies(this.postId)
+
+        reviewService.getReplies(this.postId)
       .then(res => this.replies = res.data)
       .catch(err => alert("unable to fetch replies"))
+    }
   }
 }
 </script>
