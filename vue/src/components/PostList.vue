@@ -12,7 +12,7 @@
     <p v-if="loading">Loading</p>
     <div v-if="!loading && posts.length == 0">
       <p>Wow, such empty</p>
-      <img src="http://localhost:8080/images/pets/moon-moon.jpg" alt="cute animated picture of shiba inu, such as Reddit" class="place-holder"/>
+      <img src="http://localhost:9000/images/pets/moon-moon.jpg" alt="cute animated picture of shiba inu, such as Reddit" class="place-holder"/>
     </div>
     <div v-for="post in posts" :key="post.id">
       <header>
