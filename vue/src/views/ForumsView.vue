@@ -1,7 +1,7 @@
 <template>
     <router-link :to="{ name: 'create-forums' }">Add Forum</router-link>
     <div v-for="forum in forums" :key="forum.id" v-bind:value="forum.id" class="forum-item">
-        <router-link :to="{ name: 'forums', query: { topic: forum.topic } }" class="forum-link">
+        <router-link :to="{ name: 'forum', params: { id: forum.id } }" class="forum-link">
             <h2>{{ forum.topic }}
                 <!-- formatted time elapsed display with styling -->
                 <p class="inline-time"> * {{ getTimeElapsed(forum.timeOfCreation) }} </p>

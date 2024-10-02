@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class CreatePostDto {
     private String description;
+    private String image;
     private String creator_username;
     private long forum_id;
 
@@ -31,5 +32,15 @@ public class CreatePostDto {
     @JsonIgnore
     public void setForum_id(long forum) {
         this.forum_id = forum;
+    }
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+    public long getForum_id() {
+        return forum_id;
     }
 }

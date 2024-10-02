@@ -7,33 +7,38 @@ const http = axios.create({
 export default {
   // Get all Forums
   getPopularPosts() {
-    return http.get(`/api/posts/?filter=popularity&limit=10`)
+    return http.get(`/api/posts/?filter=popularity&limit=10`);
   },
   getForumPosts(forum, filter) {
-    return http.get(`/api/forum/${forum}/posts?filter=${filter}`)
+    return http.get(`/api/forum/${forum}/posts?filter=${filter}`);
   },
-  getPostById(id){
-    return http.get(`/api/posts/${id}`)
+  getPostById(id) {
+    return http.get(`/api/posts/${id}`);
   },
-  createPost(forum, post){
-    return http.post(`/api/forum/${forum}/posts`, post);
+  createPost(forum, post) {
+    const token = localStorage.getItem("token");
+    return http.post(`/api/forum/${forum}/posts`, post, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Add the Authorization header
+      },
+    });
   },
-  updatePost(id, post){
+  updatePost(id, post) {
     return http.post(`api/posts/${id}`, post);
   },
-  deletePost(id){
+  deletePost(id) {
     return http.delete(`api/posts/${id}`);
   },
-  upvotePost(id){
+  upvotePost(id) {
     return http.put(`api/posts/${id}/upvote`);
   },
-  downvotePost(id){
+  downvotePost(id) {
     return http.put(`api/posts/${id}/downvote`);
   },
-  unvotingLike(id){
+  unvotingLike(id) {
     return http.put(`api/posts/${id}/upvote/unlike`);
   },
-  unvotingDislike(id){
+  unvotingDislike(id) {
     return http.put(`api/posts/${id}/downvote/undislike`);
-  }
+  },
 };

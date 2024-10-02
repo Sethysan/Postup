@@ -53,8 +53,8 @@ public class JdbcPostDao implements PostDao {
 
     @Override
     public PostResponseDto createPost(CreatePostDto post) {
-        String sql = "INSERT INTO posts(description, author, likes, dislikes, forum_id) VALUES (?, ?, ?, ?, ?) RETURNING post_id";
-        long id = jdbcTemplate.queryForObject(sql, long.class, post.getDescription(), post.getCreator_username(), 0, 0, post.getForum_Id());
+        String sql = "INSERT INTO posts(description, image, author, likes, dislikes, forum_id) VALUES (?, ?, ?, ?, ?, ?) RETURNING post_id";
+        long id = jdbcTemplate.queryForObject(sql, long.class, post.getDescription(), post.getImage(), post.getCreator_username(), 0, 0, post.getForum_Id());
         return this.getPostById(id);
     }
 

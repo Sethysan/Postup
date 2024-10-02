@@ -2,7 +2,9 @@
   <div>
     <forum :forum="forum"></forum>
     <post-list :forum="forumId"></post-list>
-    <router-link v-bind:to="{ name: 'forums' }">Forums</router-link>
+    <router-link :to="{ name: 'create-post', params: { id: String(forumId) } }">
+      <button>Create Post</button>
+    </router-link>
   </div>
 </template>
 
