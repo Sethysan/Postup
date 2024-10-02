@@ -3,10 +3,19 @@ package com.techelevator.model.request;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class CreatePostDto {
+    private String title;
     private String description;
     private String image;
     private String creator_username;
     private long forum_id;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getDescription() {
         return description;
