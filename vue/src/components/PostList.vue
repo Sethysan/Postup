@@ -28,12 +28,10 @@
     </div>
   </div>
 </template>
-
 <script>
 import Post from '../components/Post.vue';
 import PostService from '../services/PostService';
 import RepliesService from '../services/RepliesService';
-
 export default {
   props: ['posts'],
   components: { Post },
@@ -87,7 +85,6 @@ export default {
   }
 };
 </script>
-
 <style>
 .place-holder {
   max-width: 15%;
