@@ -39,5 +39,6 @@ public class JdbcReplyDao implements ReplyDao{
     @Override
     public List<ReplyResponseDto> getPostThreads(long postId) {
         List<ReplyResponseDto> threads = new ArrayList<>();
+        return null;
     }
 }

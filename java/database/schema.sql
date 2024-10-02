@@ -64,4 +64,23 @@ CREATE TABLE comment_replies (
     CONSTRAINT FK_replies_parent FOREIGN KEY (parent_id) REFERENCES replies(reply_id)
 );
 
+
+
+--CREATE TABLE moderation (
+--    id int,
+--    typeOfItem int,
+--    user_id int,
+--    username varchar(50),
+--    role varchar(25) DEFAULT MODERATOR,
+--    CONSTRAINT FK_moderation_type FOREIGN KEY (typeOfItem) REFERENCES types(type_id)
+--    CONSTRAINT FK USER_ID
+--    CONSTRAINT FK USERNAME
+--)
+--
+--CREATE TABLE types (
+--    type_id SERIAL,
+--    type varchar(25)
+--    PK_type_id
+--)
+
 COMMIT TRANSACTION;
