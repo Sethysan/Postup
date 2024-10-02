@@ -18,12 +18,12 @@
     <div v-for="post in posts" :key="post.id">
       <header>
         <img src="" alt="user-logo" />
-        <h1>{{ post.description }}</h1>
+        <h1>{{ post.title }}</h1>
         <p> {{ post.creator_username }} </p>
       </header>
       <section>
         <img v-if="post.image" :src="post.image" />
-        <p> place holder for a post body </p>
+        <p> {{ post.description }} </p>
       </section>
     </div>
   </div>
