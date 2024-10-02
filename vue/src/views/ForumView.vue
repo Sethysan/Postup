@@ -2,18 +2,19 @@
   <div>
     <forum :forum="forum"></forum>
     <post-list :forum="forumId"></post-list>
-    <router-link :to="{ name: 'create-post', params: { id: String(forumId) } }">
-      <button>Create Post</button>
-    </router-link>
   </div>
 </template>
 
 <script>
 import PostList from '../components/PostList.vue';
+import Forum from '../components/Forum.vue';
 import service from '../services/ForumService'
 
 export default {
-  components: { PostList },
+  components: {
+    PostList,
+    Forum
+  },
   data() {
     return {
       forum: {},

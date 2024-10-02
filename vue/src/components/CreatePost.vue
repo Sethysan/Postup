@@ -1,8 +1,7 @@
 <template>
   <div class="create-post">
     <h2>Create a Post</h2>
-    {{ id }}
-    {{ postTitle }}
+    
     <!-- Form to create a post -->
     <form @submit.prevent="createPost">
       <div class="form-group">

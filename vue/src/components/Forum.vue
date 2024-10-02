@@ -39,7 +39,7 @@ export default {
 </script>
 
 <style scoped>
-.create-post-button {
+.create-post-button, .forum_link {
     padding: 10px 20px;
     background-color: #4CAF50;
     color: white;
