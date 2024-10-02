@@ -42,17 +42,18 @@ export default {
 button {
     padding: 5px 10px;
     margin-bottom: 15px;
-    background-color: #4CAF50;
+    background-color: #e15d20;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: .5s;
     margin-top: 20px;
     display: inline-block;
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #a33908;
 }
 .view-forum-button{
     margin-right: 10px;

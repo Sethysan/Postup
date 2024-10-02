@@ -99,5 +99,6 @@ export default {
 }
 .sort{
   margin-bottom: 15px;
+  margin-right: 10px;
 }
 </style>
