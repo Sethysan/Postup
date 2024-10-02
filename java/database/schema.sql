@@ -75,5 +75,4 @@ CREATE TABLE moderation (
 );
 
 
-
 COMMIT TRANSACTION;
