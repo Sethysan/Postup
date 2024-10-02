@@ -15,7 +15,7 @@
     <div v-for="post in posts" :key="post.id">
       <header>
         <img src="" alt="user-logo" />
-        <router-link :to="{name: 'post', params: {post: post.id}}">
+        <router-link :to="{ name: 'post', params: { post: post.id } }">
           <h1>{{ post.title }}</h1>
         </router-link>
         <p> {{ post.creator_username }} </p>
@@ -42,10 +42,10 @@ export default {
   },
   methods: {
     filterPosts() {
-      if(this.filter == 'recent'){
+      if (this.filter == 'recent') {
         this.filterPostsByRecent();
       }
-      else if(this.filter == 'popularity'){
+      else if (this.filter == 'popularity') {
         this.filterByPopularity();
       }
     },
@@ -56,32 +56,32 @@ export default {
       this.posts = [...this.posts].sort((a, b) => (b.upvotes - b.downvotes) - (a.upvotes - a.downvotes));
     },
     deletePost(postId) {
-            if (
-                confirm("Are you sure you want to delete this post? This action cannot be undone.")
-            ) {
-                PostService.deletePost(postId)
-                .then(response => {
-                    this.$store.commit('SET_NOTIFICATION', `Post ${postId} was deleted.`);
-                    this.$router.push({ name: 'forums' });
-                })
-                .catch(error => {
-                    if (error.response) {
-                    if (error.response.status === 404) {
-                        this.$store.commit('SET_NOTIFICATION',
-                        "Error: Post " + postId + " was not found. This post may have been deleted or you have entered an invalid post ID.");
-                        this.$router.push({ name: 'forum' });
-                    } else {
-                        this.$store.commit('SET_NOTIFICATION',
-                        "Error getting post " + postId + ". Response received was '" + error.response.statusText + "'.");
-                    }
-                    } else if (error.request) {
-                    this.$store.commit('SET_NOTIFICATION', "Error getting post. Server could not be reached.");
-                    } else {
-                    this.$store.commit('SET_NOTIFICATION', "Error getting post. Request could not be created.");
-                    }
-                });
+      if (
+        confirm("Are you sure you want to delete this post? This action cannot be undone.")
+      ) {
+        PostService.deletePost(postId)
+          .then(response => {
+            this.$store.commit('SET_NOTIFICATION', `Post ${postId} was deleted.`);
+            this.$router.push({ name: 'forums' });
+          })
+          .catch(error => {
+            if (error.response) {
+              if (error.response.status === 404) {
+                this.$store.commit('SET_NOTIFICATION',
+                  "Error: Post " + postId + " was not found. This post may have been deleted or you have entered an invalid post ID.");
+                this.$router.push({ name: 'forum' });
+              } else {
+                this.$store.commit('SET_NOTIFICATION',
+                  "Error getting post " + postId + ". Response received was '" + error.response.statusText + "'.");
+              }
+            } else if (error.request) {
+              this.$store.commit('SET_NOTIFICATION', "Error getting post. Server could not be reached.");
+            } else {
+              this.$store.commit('SET_NOTIFICATION', "Error getting post. Request could not be created.");
             }
-        }
+          });
+      }
+    }
   }
 };
 </script>
@@ -89,7 +89,8 @@ export default {
 .place-holder {
   max-width: 15%;
 }
-.sort{
+
+.sort {
   margin-bottom: 15px;
   margin-right: 10px;
 }
