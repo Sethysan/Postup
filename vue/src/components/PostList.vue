@@ -36,11 +36,9 @@ import RepliesService from '../services/RepliesService'
 
 export default {
   props: ['forumId'],
-  // components: { Post },
+  components: { Post },
   data() {
     return {
-      post: {},
-      replies: [],
       posts: [],
       forumId: 0,
       filter: "",
@@ -51,14 +49,37 @@ export default {
   },
   created() {
     // Fetch posts for the forum when the component is created
-    this.fetchPosts();
+    this.postId = this.$route.params.postId;
+    if (this.postId) {
+      // Fetch the post using PostService
+      PostService.getPostById(this.postId)
+        .then(res => {
+          this.posts = res.data;
+        })
+        .catch(err => {
+          this.error = err.response;
+          alert("Unable to fetch post");
+          console.error(err);
+        })
+      this.loading = false;
+    }
+    else {
+      PostService.getPopularPosts().then(
+        res => {
+          this.posts = res.data;
+        })
+        .catch(err => {
+          this.error = err.response;
+        })
+      this.loading = false;
+    }
   },
   methods: {
     fetchPosts() {
       // Check if forumId exists
       if (this.forumId) {
         // Fetch posts for the specific forum using forumId
-        PostService.getForumPosts(this.forumId, this.filter ||'recent')
+        PostService.getForumPosts(this.forumId)
           .then(res => {
             this.posts = res.data;
             this.loading = false;
