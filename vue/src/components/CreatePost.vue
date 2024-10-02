@@ -2,7 +2,7 @@
   <div class="create-post">
     <h2>Create a Post</h2>
     {{ id }}
-
+    {{ postTitle }}
     <!-- Form to create a post -->
     <form @submit.prevent="createPost">
       <div class="form-group">
@@ -27,6 +27,7 @@
     <router-link v-if="forum && forum.topic" :to="{ name: 'forums', query: { topic: forum.topic } }" class="forum-link">
       <button>Cancel</button>
     </router-link>
+    
   </div>
 </template>
 
@@ -61,7 +62,7 @@ export default {
         return;
       }
       const newPost = {
-        title: this.title,
+        title: this.postTitle,
         description: this.postDescription,
         image: this.imageUrl,
         author: this.$store.state.user.username,
