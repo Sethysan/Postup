@@ -7,6 +7,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,13 +31,17 @@ public class JdbcPostDao implements PostDao {
     }
 
     @Override
-    public List<PostResponseDto> getPosts(long forum, String keyword, int limit, boolean sorBytPopularity) {
+    public List<PostResponseDto> getPosts(long forum, String keyword, int limit, boolean sorBytPopularity, boolean today) {
         List<PostResponseDto> posts = new ArrayList<>();
-        String sql = "SELECT * FROM posts JOIN replies ON replies.post_id = posts.post_id WHERE posts.description ILIKE ? OR replies.description ILIKE ?";
+        String sql = "SELECT posts.*, COUNT(replies.description) FROM posts JOIN replies ON replies.post_id = posts.post_id WHERE (posts.description ILIKE ? OR replies.description ILIKE ?) ";
         if(forum > 0){
             sql += " AND forum_id = " + forum;
         }
-        sql += sorBytPopularity ? "ORDER BY likes - dislikes DESC" : " ORDER BY post_id DESC";
+        if(today){
+            sql += " AND (CAST(posts.time_of_creation AS Date) = CURRENT_DATE OR CAST(replies.time_of_creation AS DATE) = CURRENT_DATE) ";
+        }
+        sql += " GROUP BY posts.post_id ";
+        sql += sorBytPopularity ? " ORDER BY posts.likes - posts.dislikes DESC" : " ORDER BY post_id DESC";
         if(limit > 0){
             sql += " LIMIT " + limit;
         }
@@ -44,7 +49,7 @@ public class JdbcPostDao implements PostDao {
             keyword = "%" + keyword;
         }
         keyword += "%";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, keyword,keyword);
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, keyword, keyword);
         while(results.next()){
             posts.add(mapRowToPost(results));
         }

@@ -20,12 +20,12 @@ public class PostController {
 
     // public List<PostResponseDto> getPosts(long forum, String keyword, int limit, boolean sorBytPopularity)
     @GetMapping("/posts")
-    public List<PostResponseDto> getPosts(@RequestParam(defaultValue="") String keyword, @RequestParam(defaultValue="-1") int limit, @RequestParam(defaultValue="") String filter){
+    public List<PostResponseDto> getPosts(@RequestParam(defaultValue="") String keyword, @RequestParam(defaultValue="-1") int limit, @RequestParam(defaultValue="") String filter, @RequestParam(defaultValue="false") boolean today){
         boolean sortByPopularity = false;
         if(filter.equals("popularity")){
             sortByPopularity = true;
         }
-        return postDao.getPosts(-1, keyword, limit, sortByPopularity);
+        return postDao.getPosts(-1, keyword, limit, sortByPopularity, today);
     }
 
     @GetMapping("forum/{id}/posts")
@@ -34,7 +34,7 @@ public class PostController {
         if(filter.equals("popularity")){
             sortByPopularity = true;
         }
-        return postDao.getPosts(id, keyword, limit, sortByPopularity);
+        return postDao.getPosts(id, keyword, limit, sortByPopularity, false);
     }
 
     @GetMapping("/posts/{id}")
