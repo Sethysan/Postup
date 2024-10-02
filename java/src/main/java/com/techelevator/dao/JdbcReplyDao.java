@@ -111,7 +111,6 @@ public class JdbcReplyDao implements ReplyDao {
             user.setId(row.getInt("user_id"));
             user.setUsername(row.getString("username"));
             reply.setUser(user);
-            System.out.println(reply);
             return reply;
         }
     }
