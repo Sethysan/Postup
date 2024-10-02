@@ -47,6 +47,7 @@ public class PostController {
     public PostResponseDto createNewPost(@PathVariable long id, @RequestBody CreatePostDto post, Principal principal){
             post.setForum_id(id);
             post.setCreator_username(principal.getName());
+            System.out.println(principal.getName());
             return postDao.createPost(post);
     }
 

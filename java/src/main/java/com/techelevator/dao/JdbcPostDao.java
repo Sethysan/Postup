@@ -104,6 +104,7 @@ public class JdbcPostDao implements PostDao {
         post.setCreator_username(row.getString("author"));
         post.setId(row.getLong("post_id"));
         post.setForum_id(row.getLong("forum_id"));
+        post.setTitle(row.getString("title"));
         return post;
     }
 }

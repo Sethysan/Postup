@@ -21,11 +21,11 @@ export default {
     if(this.postId){
         this.post = service.getPostById(this.postId)
         .then(res => this.post = res.data)
-        .catch(err => alert("unable to fetch"));
+        .catch(err => alert("unable to fetch post"));
     }
     reviewService.getReplies(this.postId)
       .then(res => this.replies = res.data)
-      .catch(err => alert("unable to fetch"))
+      .catch(err => alert("unable to fetch replies"))
   }
 }
 </script>

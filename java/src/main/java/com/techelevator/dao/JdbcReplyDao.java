@@ -61,14 +61,10 @@ public class JdbcReplyDao implements ReplyDao {
                 "JOIN users ON users.user_id = replies.user_id " +
                 "LEFT JOIN comment_replies ON comment_replies.reply_id = replies.reply_id " +
                 "WHERE replies.post_id = ? ORDER BY comment_replies.parent_id DESC;";
-
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, postId);
-
-        // Use while loop to process all rows
-        while (results.next()) {
+        if (results.next()) {
             threads = mapRowToThread(results);
         }
-
         return threads;
     }
 
@@ -100,7 +96,8 @@ public class JdbcReplyDao implements ReplyDao {
             // Check if the parent is null (this means it's a root reply)
             if (parent == null) {
                 rootReplies.add(reply);
-            } else {
+            }
+            else {
                 // If it's a child reply, find its parent and add it as a child
                 ReplyResponseDto parentReply = replyMap.get(parent);
                 if (parentReply != null) {
@@ -108,7 +105,6 @@ public class JdbcReplyDao implements ReplyDao {
                 }
             }
         }
-
         return rootReplies; // Return the root replies (with nested children)
     }
 

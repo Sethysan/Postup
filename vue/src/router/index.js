@@ -96,7 +96,7 @@ const routes = [
     } 
   },
   {
-    path: "/posts/:postId",
+    path: "/posts/:post",
     name: "post",
     component: ForumPostView,
     props: true,
