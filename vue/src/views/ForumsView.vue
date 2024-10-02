@@ -4,7 +4,7 @@
         <router-link :to="{ name: 'forum', params: { id: forum.id } }" class="forum-link">
             <h2>{{ forum.topic }}
                 <!-- formatted time elapsed display with styling -->
-                <p class="inline-time"> {{ forum.author }} |</p>
+                <p class="inline-time"> {{ forum.author }} </p>
                 <p class="inline-time"> {{ getTimeElapsed(forum.timeOfCreation) }} </p>
             </h2>
             <p>{{ forum.description }}</p>
