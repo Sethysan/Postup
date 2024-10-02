@@ -4,6 +4,7 @@
     <p>You must be authenticated to see this</p>
     <h1>Todays Top 10 Popular Posts</h1>
     <post-list></post-list>
+    <h1>Top 5 Most Active Forums</h1>
   </div>
 </template>
 
