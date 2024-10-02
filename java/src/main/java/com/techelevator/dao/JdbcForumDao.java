@@ -90,6 +90,20 @@ public class JdbcForumDao implements ForumsDao{
             //give back a message and 401 or a forbidden
         }
     }
+    @Override
+    public List<Forum> getForumsBySearch(String searchTerm) {
+        List<Forum> list = new ArrayList<>();
+
+        String sql = "SELECT * FROM forums WHERE topic ILIKE '%' || ? || '%' OR description ILIKE '%' || ? || '%';";
+
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, searchTerm, searchTerm);
+
+        while (result.next()) {
+            Forum forum = mapRowToForum(result);
+            list.add(forum);
+        }
+        return list;
+    }
 
     private Forum mapRowToForum(SqlRowSet rs) {
         Forum forum = new Forum();
