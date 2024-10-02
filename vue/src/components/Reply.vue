@@ -12,15 +12,20 @@
                 } -->
     <p>{{ reply.user.username }}</p>
     <p>{{ reply.description }}</p>
-    <div class="comments">
-        <reply v-for="comment in reply.replies" :key="comment.id" :reply="comment"></reply>
+    <div class="comments" :style="{ marginLeft: `${indent + 20}px` }">
+        <reply v-for="comment in reply.replies" :key="comment.id" :reply="comment" :indent="indent+20"></reply>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-    props: ['reply']
+    props: ['reply', 'indent'],
+    data(){
+        return {
+            styles: {margin: this.indent}
+        }
+    }
 }
 </script>
 
