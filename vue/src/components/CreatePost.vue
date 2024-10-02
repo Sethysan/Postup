@@ -1,7 +1,7 @@
 <template>
   <div class="create-post">
     <h2>Create a Post</h2>
-    
+
     <!-- Form to create a post -->
     <form @submit.prevent="createPost">
       <div class="form-group">
@@ -19,14 +19,15 @@
         <input v-model="imageUrl" id="image" type="text" placeholder="http://localhost:9000/images/moon-moon.jpg"
           class="place-holder" />
       </div>
-
-      <button type="submit">Submit</button>
+      <div class="button-div">
+        <button class="submit-button" type="submit">Submit</button>
+        <router-link v-if="forum && forum.topic" :to="{ name: 'forums', query: { topic: forum.topic } }"
+          class="forum-link">
+          <button class="cancel-button">Cancel</button>
+        </router-link>
+      </div>
     </form>
 
-    <router-link v-if="forum && forum.topic" :to="{ name: 'forums', query: { topic: forum.topic } }" class="forum-link">
-      <button>Cancel</button>
-    </router-link>
-    
   </div>
 </template>
 
@@ -83,6 +84,30 @@ export default {
 </script>
 
 <style scoped>
+.button-div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cancel-button,
+.submit-button {
+  display: inline-block;
+  padding: 5px 10px;
+  margin-bottom: 15px;
+  background-color: #e15d20;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: .5s;
+  margin-top: 20px;
+  display: inline-block;
+}
+
+.cancel-button:hover, .submit-button:hover  {
+  background-color: #a33908;
+}
+
 .title-input {
   padding-top: 5px;
   width: 100%;

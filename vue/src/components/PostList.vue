@@ -6,12 +6,11 @@
         <option value="recent">Most Recent</option>
         <option value="popularity">Most Popular</option>
       </select>
-      <button :onclick="filterPosts">Sort</button>
+      <button class="sort" :onclick="filterPosts">Sort</button>
     </div>
     <div v-if="posts.length === 0">
       <p>Wow, such empty</p>
-      <img src="http://localhost:9000/images/pets/moon-moon.jpg" alt="placeholder" class="place-holder"/>
-      {{ this.id }}
+      <img src="http://localhost:9000/images/pets/moon-moon.jpg" alt="placeholder" class="place-holder" />
     </div>
     <div v-for="post in posts" :key="post.id">
       <header>
@@ -28,9 +27,9 @@
 </template>
 
 <script>
-import Post from '../components/Post.vue'
-import PostService from '../services/PostService'
-import RepliesService from '../services/RepliesService'
+import Post from '../components/Post.vue';
+import PostService from '../services/PostService';
+import RepliesService from '../services/RepliesService';
 
 export default {
   props: ['posts'],
@@ -38,6 +37,38 @@ export default {
   data() {
     return {
       filter: "",
+<<<<<<< HEAD
+=======
+      loading: true,
+      error: ""
+    }
+  },
+  created() {
+    // Fetch posts for the forum when the component is created
+    this.postId = this.$route.params.postId;
+    if (this.postId) {
+      // Fetch the post using PostService
+      PostService.getPostById(this.postId)
+        .then(res => {
+          this.posts = res.data;
+        })
+        .catch(err => {
+          this.error = err.response;
+          alert("Unable to fetch post");
+          console.error(err);
+        })
+      this.loading = false;
+    }
+    else {
+      PostService.getPopularPosts().then(
+        res => {
+          this.posts = res.data;
+        })
+        .catch(err => {
+          this.error = err.response;
+        })
+      this.loading = false;
+>>>>>>> cfc35eab18d02e5a9679e83f83a3172b94c378ba
     }
   },
   methods: {
@@ -53,14 +84,18 @@ export default {
       this.posts = [...this.posts].sort((a, b) => b.id - a.id);
     },
     filterByPopularity() {
-      this.posts = [...this.posts].sort((a, b) => (b.upvotes - b.downvotes) - (a.upvotes - a.downvotes));
+      this.posts = [...this.posts].sort((a, b) => (b.upvotes - b.downvotes) - (a.upvotes - a.downvotes))
     }
   }
-}
+};
 </script>
 
 <style>
-.place-holder{
+.place-holder {
   max-width: 15%;
+}
+.sort{
+  margin-bottom: 15px;
+  margin-right: 10px;
 }
 </style>
