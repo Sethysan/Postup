@@ -4,13 +4,11 @@
     <post-list :posts="posts"></post-list>
   </div>
 </template>
-
 <script>
 import PostList from '../components/PostList.vue';
 import Forum from '../components/Forum.vue';
 import ForumService from '../services/ForumService'
 import PostService from '../services/PostService';
-
 export default {
   components: {
     PostList,
@@ -37,7 +35,7 @@ export default {
       }).catch((error) => {
         console.error("Error fetching forums by topic: ", error);
       });
-    } 
+    }
     else {
       // Fetch forum by ID if 'topic' is not provided
       this.forumId = this.$route.params.id;
@@ -54,14 +52,12 @@ export default {
   }
 }
 </script>
-
 <style scoped>
 .return-button {
   margin-top: 20px;
   display: flex;
   justify-content: center;
 }
-
 button {
   padding: 10px 20px;
   background-color: #4CAF50;
@@ -70,8 +66,7 @@ button {
   border-radius: 5px;
   cursor: pointer;
 }
-
 button:hover {
-  background-color: #45a049;
+  background-color: #45A049;
 }
 </style>
