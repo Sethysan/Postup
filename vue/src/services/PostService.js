@@ -24,11 +24,11 @@ export default {
     });
   },
   updatePost(id, post) {
-    return http.post(`api/posts/${id}`, post);
+    return http.post(`/api/posts/${id}`, post);
   },
   deletePost(id) {
     const token = localStorage.getItem("token");
-    return http.delete(`api/posts/${id}/delete`, {
+    return http.delete(`/api/posts/${id}/delete`, {
       headers: {
         Authorization: `Bearer ${token}`, // Add the Authorization header
       },
