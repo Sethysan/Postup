@@ -190,7 +190,7 @@ export default {
     margin-bottom: 4rem;
 }
 
-::v-deep .highlight {
+:deep .highlight {
     background-color: yellow;
     font-weight: bold;
 }
