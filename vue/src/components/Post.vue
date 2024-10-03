@@ -3,15 +3,17 @@
         <h2>{{ post.title }}</h2>
         <p>{{ post.description }}</p>
         <div v-if="user">
-            <button @click="upvote">
-                <font-awesome-icon :icon="['far', 'thumbs-up']" />
-            </button>
-            <p>{{ post.upvotes }}</p><button @click="downvote">
-                <font-awesome-icon :icon="['far', 'thumbs-down']" />
-            </button>
-            <p>{{ post.downvotes }}</p>
-            <button v-if="post.creator_username === user" class="btn btn-delete deletePost"
-                :onclick="deletePost">Delete</button>
+            <div class="interactive-buttons">
+                <button @click="upvote" class="thumbsUp">
+                    <font-awesome-icon :icon="['far', 'thumbs-up']" />
+                </button>
+                <p>{{ post.upvotes }}</p><button @click="downvote" class="thumbsDown">
+                    <font-awesome-icon :icon="['far', 'thumbs-down']" />
+                </button>
+                <p>{{ post.downvotes }}</p>
+                <button v-if="post.creator_username === user" class="deletePost"
+                    :onclick="deletePost">Delete</button>
+            </div>
         </div>
         <button :onclick="() => {formVisibility = true}">Add Reply</button>
         <div v-if="formVisibility">
@@ -123,4 +125,31 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.thumbsUp, .thumbsDown{
+    display: inline-block;
+    width: 40px;
+    padding: 10px 0;
+    margin: 5px; 
+    text-align: center; 
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    background-color: #f0f0f0; 
+    cursor: pointer; 
+}
+.deletePost{
+    display: inline-block;
+    width: 80px; 
+    padding: 10px 0; 
+    margin: 5px; 
+    text-align: center; 
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    background-color: #f0f0f0; 
+    cursor: pointer;
+}
+.interactive-buttons{
+    display: flex;
+    justify-content: flex-start;
+}
+</style>
