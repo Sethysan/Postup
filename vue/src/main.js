@@ -3,6 +3,11 @@ import CapstoneApp from './App.vue'
 import { createStore } from './store'
 import router from './router'
 import axios from 'axios'
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faThumbsUp, faThumbsDown } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+library.add(faThumbsUp, faThumbsDown);
 
 /* sets the base url for server API communication with axios */
 axios.defaults.baseURL = import.meta.env.VITE_REMOTE_API;
@@ -25,6 +30,7 @@ if (currentToken) {
 const store = createStore(currentToken, currentUser);
 
 const app = createApp(CapstoneApp);
+app.component('font-awesome-icon', FontAwesomeIcon);
 app.use(store);
 app.use(router);
 app.mount('#app');
