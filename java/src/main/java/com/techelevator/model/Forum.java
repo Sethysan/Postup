@@ -3,17 +3,17 @@ package com.techelevator.model;
 import java.sql.Timestamp;
 
 public class Forum {
-    private int id;
+    private long id;
     private String topic;
     private String description;
     private String author;
     private Timestamp timeOfCreation;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

@@ -3,6 +3,7 @@ package com.techelevator.dao;
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.Forum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.relational.core.sql.From;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,8 +17,6 @@ import java.util.List;
 @Component
 public class JdbcForumDao implements ForumsDao{
 
-    @Autowired
-    UserDao userDao;
 
     private JdbcTemplate jdbcTemplate;
     public JdbcForumDao(JdbcTemplate jdbcTemplate) {
@@ -65,30 +64,32 @@ public class JdbcForumDao implements ForumsDao{
         return list;
     }
 
-    public void createForum(String topic , String description, String author) {
-        String sql = "INSERT INTO forums (topic,description , author) VALUES (?,?,?);";
-        jdbcTemplate.update(sql, topic, description , author);
+    public long createForum(String topic , String description, String author) {
+        String sql = "INSERT INTO forums (topic,description , author) VALUES (?,?,?) RETURNING forum_id;";
+        try {
+            long id = jdbcTemplate.queryForObject(sql, long.class, topic, description, author);
+            return id;
+        } catch (EmptyResultDataAccessException e) {
+            return -1;
+        }
+
     }
     @Transactional
     public void deleteForum(long id, String name) {
         Forum forum = getForumById(id);
-        if (forum.getAuthor().equals(name) || userDao.getUserByUsername(name).getAuthorities().contains("ROLE_ADMIN")) {
-            String sql = "DELETE FROM comment_replies WHERE parent_id IN (SELECT reply_id FROM replies " +
-                    "WHERE post_id IN (SELECT post_id FROM post WHERE forum_id = ?));";
-            String sql0 = "DELETE FROM moderation WHERE forum_id = ?;";
-            String sql1 = "DELETE FROM replies WHERE post_id IN (SELECT post_id FROM post WHERE forum_id = ?);";
-            String sql2 = "DELETE FROM posts WHERE forum_id = ?;";
-            String sql3 = "DELETE FROM forum WHERE forum_id = ?;";
 
-            jdbcTemplate.update(sql, id);
-            jdbcTemplate.update(sql0, id);
-            jdbcTemplate.update(sql1, id);
-            jdbcTemplate.update(sql2, id);
-            jdbcTemplate.update(sql3, id);
-        }
-        else {
-            //give back a message and 401 or a forbidden
-        }
+        String sql = "DELETE FROM comment_replies WHERE parent_id IN (SELECT reply_id FROM replies " +
+                "WHERE post_id IN (SELECT post_id FROM post WHERE forum_id = ?));";
+        String sql0 = "DELETE FROM moderation WHERE forum_id = ?;";
+        String sql1 = "DELETE FROM replies WHERE post_id IN (SELECT post_id FROM post WHERE forum_id = ?);";
+        String sql2 = "DELETE FROM posts WHERE forum_id = ?;";
+        String sql3 = "DELETE FROM forum WHERE forum_id = ?;";
+
+        jdbcTemplate.update(sql, id);
+        jdbcTemplate.update(sql0, id);
+        jdbcTemplate.update(sql1, id);
+        jdbcTemplate.update(sql2, id);
+        jdbcTemplate.update(sql3, id);
     }
 
     private Forum mapRowToForum(SqlRowSet rs) {

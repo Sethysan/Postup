@@ -12,6 +12,6 @@ public interface ForumsDao {
 
     List<Forum> getForumsByTopic(String topic);
 
-    void createForum(String topic, String Description,String author);
+    long createForum(String topic, String Description, String author);
     void deleteForum(long id, String name);
 }

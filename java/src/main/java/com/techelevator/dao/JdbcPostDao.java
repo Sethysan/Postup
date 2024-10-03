@@ -1,6 +1,10 @@
 package com.techelevator.dao;
+import com.techelevator.model.Moderation;
+import com.techelevator.model.Post;
+import com.techelevator.model.User;
 import com.techelevator.model.request.CreatePostDto;
 import com.techelevator.model.responses.PostResponseDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.core.parameters.P;
@@ -74,8 +78,10 @@ public class JdbcPostDao implements PostDao {
     @Transactional
     @Override
     public void deletePost(long id) {
+        String sql = "DELETE FROM comment_replies WHERE parent_id IN (SELECT reply_id FROM replies WHERE post_id = ?);";
         String sql1 = "DELETE FROM replies WHERE post_id = ?";
         String sql2 = "DELETE FROM posts WHERE post_id = ?";
+        jdbcTemplate.update(sql, id);
         jdbcTemplate.update(sql1, id);
         jdbcTemplate.update(sql2, id);
     }
@@ -95,6 +101,7 @@ public class JdbcPostDao implements PostDao {
         }
         jdbcTemplate.update(sql, id);
     }
+
 
     private PostResponseDto mapRowToPost(SqlRowSet row) {
         PostResponseDto post = new PostResponseDto();

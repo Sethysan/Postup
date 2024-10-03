@@ -12,5 +12,6 @@ public interface ReplyDao {
     public List<ReplyResponseDto> getReplyByUser(long userId);
     public ReplyResponseDto createReply(CreateReplyDto reply);
     public ReplyResponseDto updateReply(long id, CreateReplyDto reply);
+    public void deleteReply(long replyId);
     public List<ReplyResponseDto> getPostThreads(long postId);
 }

@@ -5,6 +5,8 @@ import com.techelevator.model.responses.UserSnippetDto;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,6 +71,14 @@ public class JdbcReplyDao implements ReplyDao {
     @Override
     public ReplyResponseDto updateReply(long id, CreateReplyDto reply) {
         return null;
+    }
+    @Transactional
+    public void deleteReply(long replyId) {
+       String sql1 =  "DELETE FROM comment_replies WHERE parent_id IN (SELECT reply_id FROM replies " +
+               "WHERE reply_id = ?);";
+       String sql2 = "DELETE FROM replies WHERE reply_id = ?;";
+       jdbcTemplate.update(sql1, replyId);
+       jdbcTemplate.update(sql2, replyId);
     }
 
     private List<ReplyResponseDto> mapRowToThread(SqlRowSet results) {

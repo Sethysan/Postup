@@ -1,13 +1,19 @@
 package com.techelevator.controller;
 
-import com.techelevator.dao.ReplyDao;
+import com.techelevator.dao.*;
+import com.techelevator.model.Moderation;
+import com.techelevator.model.ReplyDto;
+import com.techelevator.model.User;
 import com.techelevator.model.request.CreateReplyDto;
+import com.techelevator.model.responses.PostResponseDto;
 import com.techelevator.model.responses.ReplyResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -17,6 +23,14 @@ public class ReplyController {
 
     @Autowired
     private ReplyDao replyDao;
+    @Autowired
+    private PostDao postDao;
+    @Autowired
+    private ForumsDao forumsDao;
+    @Autowired
+    private UserDao userDao;
+    @Autowired
+    private ModerationDao moderationDao;
 
     @GetMapping("/posts/{id}/replies")
     public List<ReplyResponseDto> getRepliesByPost(@PathVariable long id){
@@ -50,6 +64,48 @@ public class ReplyController {
 
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("replies/{Id}")
-    public void deleteReply(@PathVariable long id){
+    public void deleteReply(@PathVariable long id, Principal user){
+        if (checkUserRoleForReply(id, user.getName())) {
+            replyDao.deleteReply(id);
+        }
+        else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+    }
+
+    public boolean checkUserRoleForReply(long replyId, String username) {
+        boolean hasPermission = false;
+        boolean isAMod = false;
+        boolean isAAdmin = false;
+
+        ReplyResponseDto reply = getReplyById(replyId);
+        PostResponseDto post = postDao.getPostById(reply.getPostId());
+        List<Moderation> moderator = moderationDao.getListOfModeratorsOfForum(post.getForum_id());
+        User user = userDao.getUserByUsername(username);
+
+        if (user.getAuthorities().contains("ROLE_ADMIN")) {
+            isAAdmin = true;
+        }
+
+        for (Moderation mod : moderator) {
+            if (mod.getUsername().equals(username)) {
+                isAMod = true;
+                break;
+            }
+        }
+        if (user.getId() == reply.getUser().getId()) {
+            hasPermission = true;
+
+        } else if (post.getCreator_username().equals(username)){
+            hasPermission = true;
+
+        } else if (isAMod) {
+            hasPermission = true;
+
+        } else if (isAAdmin) {
+            hasPermission = true;
+
+        }
+        return hasPermission;
     }
 }
