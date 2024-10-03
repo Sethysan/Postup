@@ -8,7 +8,6 @@
       <button class="search-button" @click="searchForForums">Search</button>
       <button class="clear-button" v-if="searchDisplayed" @click="clearSearch">Clear Search</button>
     </div>
-
     <!-- Display Search Results -->
     <div v-if="searchDisplayed && searchForums.length > 0" class="forum-results">
       <h2>Search Results</h2>
@@ -17,7 +16,7 @@
       </ul>
     </div>
     <div v-else-if="searchDisplayed && searchTerm.length > 0" class="no-results">
-      <p>No forums found.</p>
+      <p>No forums found</p>
     </div>
     <div v-if="!searchDisplayed">
       <h1>Todays Top 10 Popular Posts</h1>
@@ -44,8 +43,8 @@ export default {
       searchForums: [],
       forums: [],
       searchTerm: '',
-      searchDisplayed: false
-
+      searchDisplayed: false,
+      user: {}
     };
   },
   created() {
@@ -60,6 +59,7 @@ export default {
       .catch(error => {
         console.error("Error fetching popular posts:", error);
       });
+      this.user = this.$store.getters.username;
   },
   methods: {
     searchForForums() {

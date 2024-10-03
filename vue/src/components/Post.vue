@@ -2,9 +2,9 @@
   <div class="post">
     <h2>{{ post.title }}</h2>
     <p>{{ post.description }}</p>
-    <div v-if="this.$store.user">
+    <div v-if="user">
         <button :onclick="upvote">Upvote</button><p>{{ post.upvotes }}</p><button :onclick="downvote">Downvote</button><p>{{ post.downvotes }}</p>
-        <button class="btn btn-delete deletePost" :onclick="deletePost">Delete</button>
+        <button v-if="post.creator_username === user" class="btn btn-delete deletePost" :onclick="deletePost">Delete</button>
     </div>
     <replies :replies="replies"></replies>
   </div>
@@ -20,9 +20,13 @@ export default {
     data () {
         return {
             upvoted: false,
-            downvoted: false
+            downvoted: false,
+            user: undefined
         }
     },
+    created(){
+        this.user = this.$store.getters.username
+    },  
     methods : {
         upvote(){
             alert("upvoting")
@@ -32,7 +36,7 @@ export default {
                     this.post.upvotes++;
                     this.upvoted = !this.upvoted
                 })
-                .catch(err => {alert("failed to upvote")})
+                .catch(err => {alert("failed to upvote: status code " + err.response.status)})
                 return;
             }
             else {
@@ -41,26 +45,26 @@ export default {
                     this.post.upvotes--; 
                     this.upvoted = !this.upvoted
                 })
-                .catch(err => alert("failed to undo upvote"))
+                .catch(err => alert("failed to undo upvote: status code " + err.response.status))
             }
         },
         downvote(){
             if(!this.downvoted){
                 service.downvotePost(this.post.id)
                 .then(res => {
-                    this.post.upvotes++;
-                    this.upvoted = !this.upvoted
+                    this.post.downvotes++;
+                    this.downvoted= !this.downvoted
                 })
-                .catch(err => {alert("failed to upvote")})
+                .catch(err => {alert("failed to downvote: status code " + err.response.status)})
                 return;
             }
             else {
                 service.unvotingDislike(this.post.id)
                 .then(res => {
-                    this.post.upvotes--; 
-                    this.upvoted = !this.upvoted
+                    this.post.downvotes--;
+                    this.downvoted= !this.downvoted
                 })
-                .catch(err => alert("failed to undo upvote"))
+                .catch(err => alert("failed to downvote: status code "+  err.response.status))
             }
         },
         deletePost() {

@@ -81,17 +81,17 @@ public class JdbcPostDao implements PostDao {
     }
 
     public void addVote(long id, int route) {
-        String sql = "UPDATE posts ON likes = likes + 1 WHERE post_id = ?;";
+        String sql = "UPDATE posts SET likes = likes + 1 WHERE post_id = ?;";
         if (route == 1) {
-            sql = "UPDATE posts ON dislikes = dislike + 1 WHERE post_id = ?;";
+            sql = "UPDATE posts SET dislikes = dislikes + 1 WHERE post_id = ?;";
         }
         jdbcTemplate.update(sql, id);
     }
 
     public void unvote(long id, int route) {
-        String sql = "UPDATE posts ON likes = likes - 1 WHERE post_id = ?;";
+        String sql = "UPDATE posts SET likes = likes - 1 WHERE post_id = ?;";
         if (route == 1) {
-            sql = "UPDATE posts ON dislikes = dislike - 1 WHERE post_id = ?;";
+            sql = "UPDATE posts SET dislikes = dislikes - 1 WHERE post_id = ?;";
         }
         jdbcTemplate.update(sql, id);
     }

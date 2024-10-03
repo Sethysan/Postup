@@ -24,7 +24,7 @@
         <img v-if="post.image" :src="post.image" />
         <p> {{ post.description }} </p>
       </section>
-      <button class="btn btn-delete deletePost" @click="deletePost(post.id)">Delete</button>
+      <button v-if="post.creator_username === user" class="btn btn-delete deletePost" @click="deletePost(post.id)">Delete</button>
     </div>
   </div>
 </template>
@@ -38,6 +38,7 @@ export default {
   data() {
     return {
       filter: "",
+      user: this.$store.getters.username
     }
   },
   methods: {
