@@ -4,9 +4,7 @@ import com.techelevator.exception.DaoException;
 import com.techelevator.model.Forum;
 import com.techelevator.model.PostSnippet;
 import com.techelevator.model.responses.SearchResultsDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.relational.core.sql.From;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -17,18 +15,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.MatchResult;
 
 @Component
-public class JdbcForumDao implements ForumsDao{
+public class JdbcForumDao implements ForumsDao {
 
 
     private JdbcTemplate jdbcTemplate;
+
     public JdbcForumDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Forum> getForums(){
+    public List<Forum> getForums() {
         List<Forum> list = new ArrayList<>();
         String sql = "SELECT * FROM forums;";
 
@@ -44,11 +42,11 @@ public class JdbcForumDao implements ForumsDao{
         return list;
     }
 
-    public List<Forum> getActiveForum(){
+    public List<Forum> getActiveForum() {
         List<Forum> list = new ArrayList<>();
         String sql = "SELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post FROM forums JOIN posts ON posts.forum_id = forums.forum_id GROUP BY forums.forum_id ORDER BY most_recent_post DESC LIMIT 5";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
-        while(results.next()){
+        while (results.next()) {
             list.add(mapRowToForum(results));
         }
         return list;
@@ -79,7 +77,7 @@ public class JdbcForumDao implements ForumsDao{
         return list;
     }
 
-    public long createForum(String topic , String description, String author) {
+    public long createForum(String topic, String description, String author) {
         String sql = "INSERT INTO forums (topic,description , author) VALUES (?,?,?) RETURNING forum_id;";
         try {
             long id = jdbcTemplate.queryForObject(sql, long.class, topic, description, author);
@@ -89,6 +87,7 @@ public class JdbcForumDao implements ForumsDao{
         }
 
     }
+
     @Transactional
     public void deleteForum(long id, String name) {
         Forum forum = getForumById(id);
@@ -106,6 +105,7 @@ public class JdbcForumDao implements ForumsDao{
         jdbcTemplate.update(sql2, id);
         jdbcTemplate.update(sql3, id);
     }
+
     @Override
     public List<SearchResultsDto> getForumsBySearch(String searchTerm) {
         List<SearchResultsDto> list = new ArrayList<>();
@@ -113,11 +113,13 @@ public class JdbcForumDao implements ForumsDao{
         String sql = "SELECT forums.*, posts.description AS post_description, posts.post_id, posts.title \n" +
                 "FROM forums \n" +
                 "LEFT JOIN posts ON posts.forum_id = forums.forum_id \n" +
-                "AND (posts.description ILIKE ? OR posts.title ILIKE ?)\n" +
-                "WHERE (forums.description ILIKE ? OR forums.topic ILIKE ?)\n" +
+                "AND (posts.description ILIKE ? OR posts.title ILIKE ?) \n" +
+                "WHERE (forums.description ILIKE ? OR forums.topic ILIKE ?) \n" +
+                "OR (posts.description ILIKE ? OR posts.title ILIKE ?) \n" +
                 "ORDER BY posts.description DESC, forums.forum_id;";
+
         searchTerm = "%" + searchTerm + "%";
-        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, searchTerm, searchTerm, searchTerm, searchTerm);
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm);
         list = mapRowToSearchResults(result);
         return list;
     }
@@ -132,31 +134,30 @@ public class JdbcForumDao implements ForumsDao{
         return forum;
     }
 
-    private List<SearchResultsDto> mapRowToSearchResults(SqlRowSet row){
+    private List<SearchResultsDto> mapRowToSearchResults(SqlRowSet row) {
         Map<Long, SearchResultsDto> map = new HashMap<>();
         List<SearchResultsDto> results = new ArrayList<>();
         SearchResultsDto match = new SearchResultsDto();
         PostSnippet snippet = new PostSnippet();
         Long forumId;
 
-        while(row.next()){
+        while (row.next()) {
             // get forum_id
             forumId = row.getLong("forum_id");
-            if(map.get(forumId) == null) {
+            if (map.get(forumId) == null) {
                 match.setForum(mapRowToForum(row));
                 map.put(forumId, match);
                 results.add(match);
                 match = new SearchResultsDto();
             }
-            else {
-                if (row.getString("post_description") != null) {
-                    snippet.setDescription(row.getString("post_description"));
-                    snippet.setTitle(row.getString("title"));
-                    snippet.setId((row.getLong("post_id")));
-                    map.get(forumId).addPost(snippet);
-                    snippet = new PostSnippet();
-                }
+            if (row.getString("post_description") != null) {
+                snippet.setDescription(row.getString("post_description"));
+                snippet.setTitle(row.getString("title"));
+                snippet.setId((row.getLong("post_id")));
+                map.get(forumId).addPost(snippet);
+                snippet = new PostSnippet();
             }
+
         }
         return results;
     }
