@@ -10,10 +10,10 @@
     </div>
 
     <!-- Display Search Results -->
-    <div v-if="searchDisplayed && forums.length > 0" class="forum-results">
+    <div v-if="searchDisplayed && searchForums.length > 0" class="forum-results">
       <h2>Search Results</h2>
       <ul>
-        <li v-for="forum in forums" :key="forum.forumId">{{ forum.topic }} - {{ forum.description }}</li>
+        <li v-for="forum in searchForums" :key="forum.forumId">{{ forum.topic }} - {{ forum.description }}</li>
       </ul>
     </div>
     <div v-else-if="searchDisplayed && searchTerm.length > 0" class="no-results">
@@ -65,8 +65,7 @@ export default {
     searchForForums() {
       // If no search term entered, return early
       if (this.searchTerm.trim() === '') {
-        this.searchForums = [];
-        this.searchDisplayed = false;
+        this.clearSearch();
         return;
       }
 
