@@ -24,6 +24,7 @@ export default {
     });
   },
   updatePost(id, post) {
+    // TODO: is this a put or a post?
     return http.post(`/api/posts/${id}`, post);
   },
   deletePost(id) {
