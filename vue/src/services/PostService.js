@@ -35,15 +35,33 @@ export default {
     });
   },
   upvotePost(id) {
-    return http.put(`api/posts/${id}/upvote`);
+    return http.put(`/api/posts/${id}/upvote`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}` // Add token to the Authorization header
+  }});
   },
   downvotePost(id) {
-    return http.put(`api/posts/${id}/downvote`);
+    return http.put(`/api/posts/${id}/downvote`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}` // Add token to the Authorization header
+    }}
+    );
   },
   unvotingLike(id) {
-    return http.put(`api/posts/${id}/upvote/unlike`);
+    return http.put(`/api/posts/${id}/upvote/unlike`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}` // Add token to the Authorization header
+    }}
+    );
   },
   unvotingDislike(id) {
-    return http.put(`api/posts/${id}/downvote/undislike`);
+    return http.put(`/api/posts/${id}/downvote/undislike`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}` // Add token to the Authorization header
+    }}
+    );
   },
 };
