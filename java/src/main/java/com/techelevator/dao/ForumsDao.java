@@ -8,6 +8,8 @@ public interface ForumsDao {
 
     List<Forum> getForums();
 
+    public List<Forum> getActiveForum();
+
     Forum getForumById(long forumId);
 
     List<Forum> getForumsByTopic(String topic);

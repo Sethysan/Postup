@@ -40,6 +40,16 @@ public class JdbcForumDao implements ForumsDao{
         return list;
     }
 
+    public List<Forum> getActiveForum(){
+        List<Forum> list = new ArrayList<>();
+        String sql = "SELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post FROM forums JOIN posts ON posts.forum_id = forums.forum_id GROUP BY forums.forum_id ORDER BY most_recent_post DESC LIMIT 5";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+        while(results.next()){
+            list.add(mapRowToForum(results));
+        }
+        return list;
+    }
+
     public Forum getForumById(long forumId) {
         Forum forum = null;
         String sql = "SELECT * FROM forums WHERE forum_id = ?;";

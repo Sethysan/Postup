@@ -5,6 +5,9 @@
     <h1>Todays Top 10 Popular Posts</h1>
     <post-list :posts="posts"></post-list>
     <h1>Top 5 Most Active Forums</h1>
+    <div v-for="forum in forums" :key="forum.id">
+      <forum-snippet :forum="forum"></forum-snippet>
+    </div>
   </div>
 </template>
 
@@ -12,9 +15,10 @@
 import PostList from '../components/PostList.vue';
 import PostService from '../services/PostService';
 import ForumService from '../services/ForumService';
+import ForumSnippet from '../components/ForumSnippet.vue';
 
 export default {
-  components: { PostList },
+  components: { PostList, ForumSnippet },
   data () {
     return {
       posts: [],
@@ -25,6 +29,10 @@ export default {
     PostService.getPopularPosts()
       .then(res => {
         this.posts = res.data;
+        ForumService.getActiveForums()
+          .then(res => {
+            this.forums = res.data;
+          })
       })
   }
 };

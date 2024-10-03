@@ -23,7 +23,10 @@ public class ForumController {
     private UserDao userDao;
 
     @GetMapping("/forums")
-    public List<Forum> getListOfForums() {
+    public List<Forum> getListOfForums(@RequestParam(defaultValue="false") boolean isMostActive) {
+        if(isMostActive){
+            return forumsDao.getActiveForum();
+        }
         return forumsDao.getForums();
     }
 

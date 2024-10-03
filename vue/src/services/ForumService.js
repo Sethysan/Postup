@@ -22,4 +22,7 @@ export default {
   getForumTopic(topic) {
     return http.get(`/forums/topic`, { params: { topic } });
   },
+  getActiveForums(){
+    return http.get("/forums?isMostActive=true");
+  }
 };
