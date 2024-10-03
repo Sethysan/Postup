@@ -13,12 +13,20 @@
             <button v-if="post.creator_username === user" class="btn btn-delete deletePost"
                 :onclick="deletePost">Delete</button>
         </div>
+        <button :onclick="() => {formVisibility = true}">Add Reply</button>
+        <div v-if="formVisibility">
+            <form  v-on:submit.prevent="addReply">
+                <textarea v-model="newReply.description"></textarea>
+                <button type="submit">Sumbit</button><button :onclick="() => {formVisibility = false; newReply = {}}">Cancel</button>
+            </form>
+        </div>
         <replies :replies="replies"></replies>
     </div>
 </template>
 
 <script>
 import service from '../services/PostService';
+import replySerive from '../services/RepliesService'
 import Replies from './Replies.vue';
 
 export default {
@@ -28,13 +36,23 @@ export default {
         return {
             upvoted: false,
             downvoted: false,
-            user: undefined
+            user: undefined,
+            formVisibility: false,
+            newReply: {}
         }
     },
     created() {
         this.user = this.$store.getters.username
     },
     methods: {
+        addReply(){
+            alert(this.newReply)
+            replySerive.createReply(this.post.id, this.newReply)
+                .then(res => {
+                    this.replies.unshift(res.data)
+                })
+                .catch(err => alert("error " + err.message))
+        },
         upvote() {
             alert("upvoting")
             if (!this.upvoted) {
@@ -43,7 +61,7 @@ export default {
                         this.post.upvotes++;
                         this.upvoted = !this.upvoted
                     })
-                    .catch(err => { alert("failed to upvote: status code " + err.response.status) })
+                    .catch(err => { alert("failed to upvote: status code " + err) })
                 return;
             }
             else {

@@ -48,11 +48,13 @@ public class ReplyController {
         return replyDao.getReplyByUser(id);
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
+//    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/post/{id}/replies")
-    public ReplyResponseDto createReply(@PathVariable long id, @RequestBody CreateReplyDto reply){
-        return new ReplyResponseDto();
+    public ReplyResponseDto createReply(@PathVariable long id, @RequestBody CreateReplyDto reply, Principal principal){
+        reply.setPost(id);
+        reply.setUser(userDao.getUserByUsername(principal.getName()).getId());
+        return replyDao.createReply(reply);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)

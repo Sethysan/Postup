@@ -38,6 +38,7 @@ public class JdbcReplyDao implements ReplyDao {
         if (results.next()) {
             reply = mapRowToReply(results);
         }
+        System.out.println(reply);
         return reply;
     }
 
@@ -57,15 +58,20 @@ public class JdbcReplyDao implements ReplyDao {
         List<ReplyResponseDto> threads = new ArrayList<>();
         String sql = "SELECT * FROM replies JOIN users ON users.user_id = replies.user_id LEFT JOIN comment_replies ON comment_replies.reply_id = replies.reply_id WHERE replies.post_id = ? ORDER BY replies.reply_id";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, postId);
-        if (results.next()) {
-            threads = mapRowToThread(results);
-        }
+        threads = mapRowToThread(results);
         return threads;
     }
 
+    @Transactional
     @Override
     public ReplyResponseDto createReply(CreateReplyDto reply) {
-        return null;
+        String sql = "INSERT INTO replies (description, post_id, user_id) VALUES (?, ?, ?) RETURNING reply_id";
+        long replyId = jdbcTemplate.queryForObject(sql, long.class, reply.getDescription(), reply.getPost(), reply.getUser());
+        if(reply.getRespondsTo() > 0){
+            sql = "INSERT INTO comment_replies (parent_id, reply_id) VALUES (?, ?)";
+            jdbcTemplate.update(sql, reply.getRespondsTo(), replyId);
+        }
+        return getReplyById(replyId);
     }
 
     @Override
@@ -85,32 +91,39 @@ public class JdbcReplyDao implements ReplyDao {
         Map<Long, ReplyResponseDto> replyMap = new HashMap<>();
         List<ReplyResponseDto> rootReplies = new ArrayList<>();
         // store first result
-        ReplyResponseDto reply = this.mapRowToReply(results);
-        // store it map for future reference
-        replyMap.put(reply.getId(), reply);
-        // store the root replies that are direct replies to the post
-        rootReplies.add(reply);
+        ReplyResponseDto reply = new ReplyResponseDto();
+//        // store it map for future reference
+//        replyMap.put(reply.getId(), reply);
+//        // store the root replies that are direct replies to the post
+//        rootReplies.add(reply);
 
         // we are iterating through results
         while (results.next()) {
             // Get parent_id of the current reply
             Long parent = results.getLong("parent_id");
+            // initialize the reply
             reply = mapRowToReply(results);
+            // place the reply in the map
             replyMap.put(reply.getId(), reply);
                 // Check if the parent is null (this means it's a root reply)
-                if (parent == null) {
-                    rootReplies.add(reply);
-                    continue;
-                }
-            // if parent is not null
+            if (parent <= 0) {
+                    // if so, this is a root reply. add to root
+                rootReplies.add(reply);
+                continue;
+            }
+                    // fetch reply from map if there is a parent
                 ReplyResponseDto parentReply = replyMap.get(parent);
-                if(parentReply != null) {
+                if (parentReply != null) {
                     parentReply.addReplies(reply);
+                    if(results.isLast()){
+                        rootReplies.add(parentReply);
+                    }
                 }
-                // Return the root replies (with nested children)
-        }
+            System.out.println(reply);
+            }
         return rootReplies;
         }
+
         private ReplyResponseDto mapRowToReply (SqlRowSet row){
             ReplyResponseDto reply = new ReplyResponseDto();
             reply.setId(row.getInt("reply_id"));

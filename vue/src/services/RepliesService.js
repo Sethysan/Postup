@@ -6,8 +6,12 @@ const http = axios.create({
 
 export default {
   // Create Forum
-  createReply(postId, reply, config) {
-    return http.post(`/api/posts/${postId}/replies`, reply, config);
+  createReply(postId, reply) {
+    return http.post(`/api/post/${postId}/replies`, reply, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`, // Add the Authorization header
+      },
+    });
   },
   // Get all Forums
   getReplies(postId) {
