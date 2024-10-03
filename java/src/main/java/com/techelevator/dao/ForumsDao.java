@@ -1,6 +1,7 @@
 package com.techelevator.dao;
 
 import com.techelevator.model.Forum;
+import com.techelevator.model.responses.SearchResultsDto;
 
 import java.util.List;
 
@@ -16,5 +17,5 @@ public interface ForumsDao {
 
     void createForum(String topic, String Description,String author);
     void deleteForum(long id, String name);
-    List<Forum> getForumsBySearch(String searchTerm);
+    List<SearchResultsDto> getForumsBySearch(String searchTerm);
 }

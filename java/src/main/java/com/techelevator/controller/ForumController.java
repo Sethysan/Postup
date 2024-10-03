@@ -4,6 +4,7 @@ import com.techelevator.dao.ForumsDao;
 import com.techelevator.dao.UserDao;
 import com.techelevator.model.Forum;
 import com.techelevator.model.ForumDto;
+import com.techelevator.model.responses.SearchResultsDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -54,7 +55,7 @@ public class ForumController {
     }
 
     @GetMapping("/forums/search")
-    public List<Forum> searchForums(@RequestParam String searchTerm) {
+    public List<SearchResultsDto> searchForums(@RequestParam String searchTerm) {
         return forumsDao.getForumsBySearch(searchTerm);
     }
 }

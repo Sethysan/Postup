@@ -2,6 +2,8 @@ package com.techelevator.dao;
 
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.Forum;
+import com.techelevator.model.PostSnippet;
+import com.techelevator.model.responses.SearchResultsDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.relational.core.sql.From;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
@@ -11,7 +13,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.MatchResult;
 
 @Component
 public class JdbcForumDao implements ForumsDao{
@@ -101,17 +106,18 @@ public class JdbcForumDao implements ForumsDao{
         }
     }
     @Override
-    public List<Forum> getForumsBySearch(String searchTerm) {
-        List<Forum> list = new ArrayList<>();
+    public List<SearchResultsDto> getForumsBySearch(String searchTerm) {
+        List<SearchResultsDto> list = new ArrayList<>();
 
-        String sql = "SELECT * FROM forums WHERE topic ILIKE '%' || ? || '%' OR description ILIKE '%' || ? || '%';";
-
-        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, searchTerm, searchTerm);
-
-        while (result.next()) {
-            Forum forum = mapRowToForum(result);
-            list.add(forum);
-        }
+        String sql = "SELECT forums.*, posts.description AS post_description, posts.post_id, posts.title \n" +
+                "FROM forums \n" +
+                "LEFT JOIN posts ON posts.forum_id = forums.forum_id \n" +
+                "AND (posts.description ILIKE ? OR posts.title ILIKE ?)\n" +
+                "WHERE (forums.description ILIKE ? OR forums.topic ILIKE ?)\n" +
+                "ORDER BY posts.description DESC, forums.forum_id;";
+        searchTerm = "%" + searchTerm + "%";
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, searchTerm, searchTerm, searchTerm, searchTerm);
+        list = mapRowToSearchResults(result);
         return list;
     }
 
@@ -123,5 +129,34 @@ public class JdbcForumDao implements ForumsDao{
         forum.setAuthor(rs.getString("author"));
         forum.setTimeOfCreation(rs.getTimestamp("time_of_creation"));
         return forum;
+    }
+
+    private List<SearchResultsDto> mapRowToSearchResults(SqlRowSet row){
+        Map<Long, SearchResultsDto> map = new HashMap<>();
+        List<SearchResultsDto> results = new ArrayList<>();
+        SearchResultsDto match = new SearchResultsDto();
+        PostSnippet snippet = new PostSnippet();
+        Long forumId;
+
+        while(row.next()){
+            // get forum_id
+            forumId = row.getLong("forum_id");
+            if(map.get(forumId) == null) {
+                match.setForum(mapRowToForum(row));
+                map.put(forumId, match);
+                results.add(match);
+                match = new SearchResultsDto();
+            }
+            else {
+                if (row.getString("post_description") != null) {
+                    snippet.setDescription(row.getString("post_description"));
+                    snippet.setTitle(row.getString("title"));
+                    snippet.setId((row.getLong("post_id")));
+                    map.get(forumId).addPost(snippet);
+                    snippet = new PostSnippet();
+                }
+            }
+        }
+        return results;
     }
 }
