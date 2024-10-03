@@ -68,10 +68,9 @@ export default {
             }
         },
         deletePost() {
-            if (
-                confirm("Are you sure you want to delete this post? This action cannot be undone.")
-            ) {
+            if(confirm("Are you sure you want to delete this post? This action cannot be undone.")){
                 let postId = this.post.id;
+                alert(postId)
                 service.deletePost(postId)
                 .then(response => {
                     this.$store.commit('SET_NOTIFICATION', `Post ${postId} was deleted.`);

@@ -74,5 +74,4 @@ CREATE TABLE moderation (
     CONSTRAINT FK_moderation_username FOREIGN KEY (username) REFERENCES users(username)
 );
 
-
 COMMIT TRANSACTION;

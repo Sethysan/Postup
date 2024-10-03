@@ -65,4 +65,17 @@ public class PostResponseDto {
     public void setCreator_username(String creator_username) {
         this.creator_username = creator_username;
     }
+
+    @Override
+    public String toString() {
+        return "PostResponseDto{" +
+                "id=" + id +
+                ", forum_id=" + forum_id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", upvotes=" + upvotes +
+                ", downvotes=" + downvotes +
+                ", creator_username='" + creator_username + '\'' +
+                '}';
+    }
 }

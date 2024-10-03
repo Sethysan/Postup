@@ -68,6 +68,7 @@ public class PostController {
     }
 
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("posts/{id}/delete")
     public void deletePost(@PathVariable long id, Principal user) {
@@ -83,23 +84,26 @@ public class PostController {
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/posts/{id}/upvote")
     public void upvotePost(@PathVariable long id) {
-        System.out.println("upvoting"); postDao.addVote(id, 0);
+        postDao.addVote(id, 0);
     }
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/posts/{id}/upvote/unlike")
     public void unvotingLike(@PathVariable long id) {
         postDao.unvote(id, 0);
     }
+
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/posts/{id}/downvote")
     public void downvotePost(@PathVariable long id) {
         postDao.addVote(id, 1);
     }
+
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/posts/{id}/downvote/undislike")
     public void unvotingDislike(@PathVariable long id) {
         postDao.unvote(id, 1);
     }
+
 
 
     public boolean checkUserRole(long postId, String username) {
