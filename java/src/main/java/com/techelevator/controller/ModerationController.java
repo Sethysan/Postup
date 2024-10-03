@@ -71,4 +71,32 @@ public class ModerationController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User doesn't have permission for request.");
         }
     }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/moderation/user/{id}/promote/admin")
+    public void promoteUserToAdmin(@PathVariable int id, Principal user) {
+        if (userDao.getUserByUsername(user.getName()).getAuthorities().contains("ROLE_ADMIN")) {
+            if (!userDao.getUserById(id).getAuthorities().contains("ROLE_BANNED")) {
+                if (!userDao.getUserById(id).getAuthorities().contains("ROLE_ADMIN")) {
+                    //promote to admin
+                    userDao.promoteUserToAdmin(id);
+                }
+                else {
+                    throw new ResponseStatusException(HttpStatus.CONFLICT, "User is already an Admin.");
+                }
+            }
+            else {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "User is currently Banned their role cannot be changed");
+            }
+        }
+        else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only Admins can promote Others to Admin.");
+        }
+
+
+        //Both of these need to be discussed first
+        //TODO make an banning user path and method
+        //TODO make an promoting an user back to a user path and method
+    }
 }

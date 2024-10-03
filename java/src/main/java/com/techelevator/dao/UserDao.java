@@ -14,4 +14,6 @@ public interface UserDao {
     User getUserByUsername(String username);
 
     User createUser(RegisterUserDto user);
+
+    void promoteUserToAdmin(int userId);
 }
