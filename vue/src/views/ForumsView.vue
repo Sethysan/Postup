@@ -1,14 +1,38 @@
 <template>
-    <router-link :to="{ name: 'create-forums' }">Add Forum</router-link>
-    <div v-for="forum in forums" :key="forum.id" v-bind:value="forum.id" class="forum-item">
-        <router-link :to="{ name: 'forum', params: { id: forum.id } }" class="forum-link">
-            <h2>{{ forum.topic }}
-                <!-- formatted time elapsed display with styling -->
-                <p class="inline-time"> {{ forum.author }} </p>
-                <p class="inline-time"> {{ getTimeElapsed(forum.timeOfCreation) }} </p>
-            </h2>
-            <p>{{ forum.description }}</p>
-        </router-link>
+    <div class="forum-buttons-top">
+        <button class="btn-create" type="button" v-on:click="createNewForm"> Create Forum </button>
+        <input type="search" id="forum-search" v-model="searchTerm" placeholder="Enter search term..." />
+        <button class="search-button" @click="searchForForums">Search</button>
+        <button class="clear-button" v-if="searchDisplayed" @click="clearSearch">Clear Search</button>
+    </div>
+    <div v-if="searchDisplayed && searchForums.length > 0" class="forum-results">
+        <h2>Search Results</h2>
+
+        <div v-for="forum in searchForums" :key="forum.forumId" v-bind:value="forum.id" class="forum-item">
+            <router-link :to="{ name: 'forum', params: { id: forum.id } }" class="forum-link">
+                <h2>{{ forum.topic }}
+                    <!-- formatted time elapsed display with styling -->
+                    <p class="inline-time"> {{ forum.author }} </p>
+                    <p class="inline-time"> {{ getTimeElapsed(forum.timeOfCreation) }} </p>
+                </h2>
+                <p>{{ forum.description }}</p>
+            </router-link>
+        </div>
+    </div>
+    <div v-else-if="searchDisplayed && searchTerm.length > 0" class="no-results">
+        <p>No forums found.</p>
+    </div>
+    <div v-if="!searchDisplayed">
+        <div v-for="forum in forums" :key="forum.id" v-bind:value="forum.id" class="forum-item">
+            <router-link :to="{ name: 'forum', params: { id: forum.id } }" class="forum-link">
+                <h2>{{ forum.topic }}
+                    <!-- formatted time elapsed display with styling -->
+                    <p class="inline-time"> {{ forum.author }} </p>
+                    <p class="inline-time"> {{ getTimeElapsed(forum.timeOfCreation) }} </p>
+                </h2>
+                <p>{{ forum.description }}</p>
+            </router-link>
+        </div>
     </div>
     <div v-if="this.$route.query.topic" class="return-button">
         <router-link :to="{ name: 'forums' }">
@@ -32,7 +56,10 @@ export default {
     data() {
         return {
             forums: [],
-            posts:[]
+            posts: [],
+            searchForums: [],
+            searchTerm: '',
+            searchDisplayed: false
         }
     },
     created() {
@@ -63,10 +90,37 @@ export default {
                 ).catch(err => alert(err));
             }
         },
+        createNewForm() {
+            this.$router.push({ name: "create-forums" });
+        },
         getTimeElapsed(creationTime) {
             // dayjs converts time into a readable format and calculates the elapsed time
             return dayjs(creationTime).fromNow();
+        },
+        searchForForums() {
+            // If no search term entered, return early
+            if (this.searchTerm.trim() === '') {
+                this.clearSearch();
+                return;
+            }
+
+            ForumService.searchForumsByTopicAndDescription(this.searchTerm)
+                .then(res => {
+                    this.searchForums = res.data;
+                    this.searchDisplayed = true;
+                })
+                .catch(error => {
+                    console.error("Error searching forums:", error);
+                    this.searchForums = [];
+                    this.searchDisplayed = true;
+                });
+        },
+        clearSearch() {
+            this.searchTerm = '';
+            this.searchForums = [];
+            this.searchDisplayed = false;
         }
+
     }
 }
 </script>
