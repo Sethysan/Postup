@@ -4,13 +4,14 @@ import com.techelevator.dao.ForumsDao;
 import com.techelevator.dao.UserDao;
 import com.techelevator.model.Forum;
 import com.techelevator.model.ForumDto;
-import com.techelevator.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -43,12 +44,17 @@ public class ForumController {
     @PostMapping("/forums/create")
     @PreAuthorize("isAuthenticated()")
     public void createForum(@RequestBody ForumDto forum, Principal user) {
-        forumsDao.createForum(forum.getTopic(),forum.getDescription(),  user.getName());
+        forumsDao.createForum(forum.getTopic(), forum.getDescription(), user.getName());
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/forums/{id}/delete")
     public void deleteForum(@PathVariable long id, Principal user) {
         forumsDao.deleteForum(id, user.getName());
+    }
+
+    @GetMapping("/forums/search")
+    public List<Forum> searchForums(@RequestParam String searchTerm) {
+        return forumsDao.getForumsBySearch(searchTerm);
     }
 }

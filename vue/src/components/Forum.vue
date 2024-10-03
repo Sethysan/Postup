@@ -5,7 +5,7 @@
 
         <!-- Router link to view posts in this forum -->
         <router-link :to="{ name: 'forums', query: { topic: forum.topic } }">
-            <button class="view-forum-button">View Forum</button>
+            <button class="view-forum-button">View Forums</button>
         </router-link>
         <!-- Router link to create a new post in this forum -->
         <router-link :to="{ name: 'create-post', params: { forumId: forum.Id } }">

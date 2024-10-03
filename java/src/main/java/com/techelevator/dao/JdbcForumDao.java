@@ -85,11 +85,13 @@ public class JdbcForumDao implements ForumsDao{
         if (forum.getAuthor().equals(name) || userDao.getUserByUsername(name).getAuthorities().contains("ROLE_ADMIN")) {
             String sql = "DELETE FROM comment_replies WHERE parent_id IN (SELECT reply_id FROM replies " +
                     "WHERE post_id IN (SELECT post_id FROM post WHERE forum_id = ?));";
+            String sql0 = "DELETE FROM moderation WHERE forum_id = ?;";
             String sql1 = "DELETE FROM replies WHERE post_id IN (SELECT post_id FROM post WHERE forum_id = ?);";
             String sql2 = "DELETE FROM posts WHERE forum_id = ?;";
             String sql3 = "DELETE FROM forum WHERE forum_id = ?;";
 
             jdbcTemplate.update(sql, id);
+            jdbcTemplate.update(sql0, id);
             jdbcTemplate.update(sql1, id);
             jdbcTemplate.update(sql2, id);
             jdbcTemplate.update(sql3, id);
@@ -97,6 +99,20 @@ public class JdbcForumDao implements ForumsDao{
         else {
             //give back a message and 401 or a forbidden
         }
+    }
+    @Override
+    public List<Forum> getForumsBySearch(String searchTerm) {
+        List<Forum> list = new ArrayList<>();
+
+        String sql = "SELECT * FROM forums WHERE topic ILIKE '%' || ? || '%' OR description ILIKE '%' || ? || '%';";
+
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, searchTerm, searchTerm);
+
+        while (result.next()) {
+            Forum forum = mapRowToForum(result);
+            list.add(forum);
+        }
+        return list;
     }
 
     private Forum mapRowToForum(SqlRowSet rs) {

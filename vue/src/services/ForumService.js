@@ -24,5 +24,9 @@ export default {
   },
   getActiveForums(){
     return http.get("/forums?isMostActive=true");
-  }
+  },
+  //Get forum with included search params
+  searchForumsByTopicAndDescription(searchTerm) {
+    return http.get(`/forums/search?searchTerm=${encodeURIComponent(searchTerm)}`);
+  },
 };

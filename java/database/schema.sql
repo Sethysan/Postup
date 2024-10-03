@@ -3,12 +3,13 @@ BEGIN TRANSACTION;
 DROP TABLE IF EXISTS comment_replies;
 DROP TABLE IF EXISTS replies;
 DROP TABLE IF EXISTS posts;
+DROP TABLE IF EXISTS moderation;
 DROP TABLE IF EXISTS forums;
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
 	user_id SERIAL,
-	username varchar(50) NOT NULL UNIQUE,
+	username varchar(25) NOT NULL UNIQUE,
 	password_hash varchar(200) NOT NULL,
 	role varchar(50) NOT NULL,
 	CONSTRAINT PK_user PRIMARY KEY (user_id)
@@ -65,14 +66,14 @@ CREATE TABLE comment_replies (
 );
 
 
---CREATE TABLE moderation (
---    forum_id int,
---    username varchar(25),
---    role varchar(25) DEFAULT ROLE_MODERATOR,
---    CONSTRAINT FK_moderation_forum_id FOREIGN KEY (forum_id) REFERENCES forums(forum_id),
---    CONSTRAINT FK_moderation_username FOREIGN KEY (username) REFERENCES users(username)
---)
---
---INSERT INTO moderation (forum_id, username) VALUES (2, person)
+CREATE TABLE moderation (
+    forum_id int,
+    username varchar(25),
+    role varchar(25) DEFAULT 'ROLE_MODERATOR',
+    CONSTRAINT FK_moderation_forum_id FOREIGN KEY (forum_id) REFERENCES forums(forum_id),
+    CONSTRAINT FK_moderation_username FOREIGN KEY (username) REFERENCES users(username)
+);
+
+
 
 COMMIT TRANSACTION;

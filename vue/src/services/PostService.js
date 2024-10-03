@@ -27,7 +27,12 @@ export default {
     return http.post(`api/posts/${id}`, post);
   },
   deletePost(id) {
-    return http.delete(`api/posts/${id}`);
+    const token = localStorage.getItem("token");
+    return http.delete(`api/posts/${id}/delete`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Add the Authorization header
+      },
+    });
   },
   upvotePost(id) {
     return http.put(`api/posts/${id}/upvote`);
