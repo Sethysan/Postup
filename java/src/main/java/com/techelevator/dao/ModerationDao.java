@@ -13,4 +13,5 @@ public interface ModerationDao {
     void makeUserModeratorOfForum(long forumId, String name);
 
     void removeOrDeleteModerator(long forumId, String name);
+
 }

@@ -74,4 +74,6 @@ public class ForumController {
     public List<SearchResultsDto> searchForums(@RequestParam String searchTerm) {
         return forumsDao.getForumsBySearch(searchTerm);
     }
+
+
 }

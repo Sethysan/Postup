@@ -88,6 +88,11 @@ public class JdbcUserDao implements UserDao {
         return newUser;
     }
 
+    public void promoteUserToAdmin(int userId) {
+        String sql = "UPDATE users SET role = 'ROLE_ADMIN' WHERE user_id = ?";
+        jdbcTemplate.update(sql, userId);
+    }
+
     private User mapRowToUser(SqlRowSet rs) {
         User user = new User();
         user.setId(rs.getInt("user_id"));
