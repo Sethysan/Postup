@@ -11,15 +11,28 @@
     <div v-if="searchDisplayed && searchForums.length > 0" class="forum-results">
         <h2>Search Results</h2>
 
-        <div v-for="forum in searchForums" :key="forum.forumId" v-bind:value="forum.id" class="forum-item">
-            <router-link :to="{ name: 'forum', params: { id: forum.id } }" class="forum-link">
+        <div v-for="forum in searchForums" :key="forum.forum.id" v-bind:value="forum.forum.id" class="forum-item">
+            <router-link :to="{ name: 'forum', params: { id: forum.forum.id } }" class="forum-link">
                 <h2>
-                    <span v-html="highlightSearchTerm(forum.topic)"></span>
-                    <p class="inline-time">{{ forum.author }}</p>
-                    <p class="inline-time">{{ getTimeElapsed(forum.timeOfCreation) }}</p>
+                    <span v-html="highlightSearchTerm(forum.forum.topic)"></span>
+                    <p class="inline-time">{{ forum.forum.author }}</p>
+                    <p class="inline-time">{{ getTimeElapsed(forum.forum.timeOfCreation) }}</p>
                 </h2>
-                <p v-html="highlightSearchTerm(forum.description)"></p>
+                <p v-html="highlightSearchTerm(forum.forum.description)"></p>
+
             </router-link>
+            <div v-if="forum.posts.length > 0">
+                <h3>Related Posts</h3>
+                <ul>
+                    <li v-for="post in forum.posts" :key="post.id" v-bind:value="post.id" class="post-item">
+                        <router-link :to="{ name: 'post', params: { post: post.id } }" class="post-link">
+                            <span v-html="highlightSearchTerm(post.title)"></span>
+                            <p v-html="highlightSearchTerm(post.description)"></p>
+                        </router-link>
+                    </li>
+                </ul>
+
+            </div>
         </div>
     </div>
     <div v-if="!searchDisplayed">
