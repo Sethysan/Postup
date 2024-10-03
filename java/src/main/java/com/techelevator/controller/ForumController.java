@@ -5,15 +5,16 @@ import com.techelevator.dao.ModerationDao;
 import com.techelevator.dao.UserDao;
 import com.techelevator.model.Forum;
 import com.techelevator.model.ForumDto;
-import com.techelevator.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -27,7 +28,10 @@ public class ForumController {
     private UserDao userDao;
 
     @GetMapping("/forums")
-    public List<Forum> getListOfForums() {
+    public List<Forum> getListOfForums(@RequestParam(defaultValue="false") boolean isMostActive) {
+        if(isMostActive){
+            return forumsDao.getActiveForum();
+        }
         return forumsDao.getForums();
     }
 
@@ -51,7 +55,6 @@ public class ForumController {
         else {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
-
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -64,5 +67,10 @@ public class ForumController {
             //throw an 401 or forbidden
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
+    }
+
+    @GetMapping("/forums/search")
+    public List<Forum> searchForums(@RequestParam String searchTerm) {
+        return forumsDao.getForumsBySearch(searchTerm);
     }
 }

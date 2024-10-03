@@ -60,6 +60,13 @@ export function createStore(currentToken, currentUser) {
         state.notification = null;
       }
     },
+    getters: {
+      username(state, getters) {
+        if(state.token != ''){
+          return JSON.parse(localStorage.getItem('user')).username;
+        }
+      }
+    }
   });
   return store;
 }

@@ -22,7 +22,7 @@ public class JdbcReplyDao implements ReplyDao {
     @Override
     public List<ReplyResponseDto> getReplies() {
         List<ReplyResponseDto> threads = new ArrayList<>();
-        String sql = "SELECT * FROM replies JOIN users ON users.user_id = replies.user_id LEFT JOIN comment_replies ON comment_replies.reply_id = replies.reply_id ORDER BY comment_replies.parent_id DESC;";
+        String sql = "SELECT * FROM replies JOIN users ON users.user_id = replies.user_id LEFT JOIN comment_replies ON comment_replies.reply_id = replies.reply_id ORDER BY replies.reply_id";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
         if (results.next()) {
             threads = mapRowToThread(results);
@@ -55,7 +55,7 @@ public class JdbcReplyDao implements ReplyDao {
     @Override
     public List<ReplyResponseDto> getPostThreads(long postId) {
         List<ReplyResponseDto> threads = new ArrayList<>();
-        String sql = "SELECT * FROM replies JOIN users ON users.user_id = replies.user_id LEFT JOIN comment_replies ON comment_replies.reply_id = replies.reply_id WHERE replies.post_id = ? ORDER BY comment_replies.parent_id DESC";
+        String sql = "SELECT * FROM replies JOIN users ON users.user_id = replies.user_id LEFT JOIN comment_replies ON comment_replies.reply_id = replies.reply_id WHERE replies.post_id = ? ORDER BY replies.reply_id";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, postId);
         if (results.next()) {
             threads = mapRowToThread(results);
