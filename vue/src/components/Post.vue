@@ -29,7 +29,6 @@ export default {
     },  
     methods : {
         upvote(){
-            alert("upvoting")
             if(!this.upvoted){
                 service.upvotePost(this.post.id)
                 .then(res => {
