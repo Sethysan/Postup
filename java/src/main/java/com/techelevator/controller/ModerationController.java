@@ -3,6 +3,7 @@ package com.techelevator.controller;
 import com.techelevator.dao.ModerationDao;
 import com.techelevator.dao.UserDao;
 import com.techelevator.model.Moderation;
+import com.techelevator.model.responses.UserSnippetDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,14 +37,14 @@ public class ModerationController {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/moderation/forum/{id}/promote")
-    public void promoteOrAddUserToMod(@PathVariable long id, @RequestBody String username, Principal user) {
+    public void promoteOrAddUserToMod(@PathVariable long id, @RequestBody UserSnippetDto username, Principal user) {
         boolean isMod = false;
         List<Moderation> list = moderationDao.getListOfModeratorsOfForum(id);
 
         // storing the check if the current user has admin permission to make person moderator
         boolean isAdmin = userDao.getUserByUsername(user.getName()).getAuthorities().contains("ROLE_ADMIN");
         for (Moderation mod : list) {
-            if (mod.getUsername() == user.getName()) {
+            if (mod.getUsername().equals(user.getName())) {
                 isMod = true;
                 break;
             }
@@ -60,7 +61,7 @@ public class ModerationController {
             }
             // confirming previous comment
             if (mod.isEmpty()) {
-                moderationDao.makeUserModeratorOfForum(id, username);
+                moderationDao.makeUserModeratorOfForum(id, username.getUsername());
             }
             else {
                 //throw an exception with message or throw back message or just exception
