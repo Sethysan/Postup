@@ -40,6 +40,7 @@ export default {
       .catch(error => {
         console.error("Error fetching popular posts:", error);
       });
+      this.user = this.$store.getters.username;
   }
 };
 

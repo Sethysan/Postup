@@ -26,9 +26,10 @@ export default {
     },
     created(){
         this.user = this.$store.getters.username
-    },  
+    },
     methods : {
         upvote(){
+            alert("upvoting")
             if(!this.upvoted){
                 service.upvotePost(this.post.id)
                 .then(res => {
@@ -51,7 +52,7 @@ export default {
             if(!this.downvoted){
                 service.downvotePost(this.post.id)
                 .then(res => {
-                    this.post.downvotes++;
+                    this.post.downvotes++;;
                     this.downvoted= !this.downvoted
                 })
                 .catch(err => {alert("failed to downvote: status code " + err.response.status)})
@@ -60,7 +61,7 @@ export default {
             else {
                 service.unvotingDislike(this.post.id)
                 .then(res => {
-                    this.post.downvotes--;
+                    this.post.downvotes--; 
                     this.downvoted= !this.downvoted
                 })
                 .catch(err => alert("failed to downvote: status code "+  err.response.status))
