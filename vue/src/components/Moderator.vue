@@ -13,6 +13,12 @@
 <script>
 import ModeratorService from '@/services/ModeratorService';
 export default {
+    props: {
+        users: {
+            type: Array,
+            required: true
+        }
+    }
 }
 </script>
 
