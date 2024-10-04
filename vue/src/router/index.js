@@ -12,6 +12,7 @@ import PostView from '../views/PostView.vue';
 import ForumView from '../views/ForumView.vue';
 import ForumPostView from '../views/ForumPostView.vue';
 import CreatePost from '../components/CreatePost.vue';
+import Moderator from '../components/Moderator.vue';
 
 /**
  * The Vue Router is used to "direct" the browser to render a specific view component
@@ -103,7 +104,16 @@ const routes = [
     meta: {
       requiresAuth: false
     }
+  },
+  {
+    path: "/moderation/forum/:id/promote",
+    name: "promote",
+    component: Moderator,
+    meta: {
+      requiresAuth: true
+    }
   }
+  
 ];
 
 // Create the router
