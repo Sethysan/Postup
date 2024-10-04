@@ -20,6 +20,14 @@ CREATE TABLE forums (
     CONSTRAINT FK_forum_author FOREIGN KEY (author) REFERENCES users(username)
 );
 
+CREATE TABLE favorite_forums(
+    user_id int,
+    forum_id int,
+    CONSTRAINT PK_favorite_forms PRIMARY KEY (forum_id, user_id),
+    CONSTRAINT FK_forum_id FOREIGN KEY (forum_id) REFERENCES forums(forum_id),
+    CONSTRAINT FK_user_id FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
 -- added a cascade effect, this should make it where all posts are deleted automatically when we delete a forum
 CREATE TABLE posts (
     post_id SERIAL,

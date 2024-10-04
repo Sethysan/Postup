@@ -76,7 +76,7 @@ export default {
         })
         .catch((error) => {
           console.error("Error creating post: ", error);
-          alert("Failed to create post.");
+          alert("Failed to create post." + error.response.status);
         });
     }
   }
