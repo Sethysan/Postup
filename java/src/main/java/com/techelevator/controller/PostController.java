@@ -81,30 +81,34 @@ public class PostController {
         }
     }
 
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/posts/{id}/upvote")
-    public void upvotePost(@PathVariable long id) {
-        postDao.addVote(id, 0);
+    public void upvotePost(@PathVariable long id, Principal principal) {
+        if(!postDao.addVote(id, userDao.getUserByUsername(principal.getName()).getId(), 0)){
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT);
+        }
     }
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/posts/{id}/upvote/unlike")
-    public void unvotingLike(@PathVariable long id) {
-        postDao.unvote(id, 0);
+    public void unvotingLike(@PathVariable long id, Principal principal) {
+        postDao.unvote(id, userDao.getUserByUsername(principal.getName()).getId(), 0);
     }
 
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/posts/{id}/downvote")
-    public void downvotePost(@PathVariable long id) {
-        postDao.addVote(id, 1);
+    public void downvotePost(@PathVariable long id, Principal principal) {
+        if(!postDao.addVote(id, userDao.getUserByUsername(principal.getName()).getId(), 1)){
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT);
+        }
     }
 
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/posts/{id}/downvote/undislike")
-    public void unvotingDislike(@PathVariable long id) {
-        postDao.unvote(id, 1);
+    public void unvotingDislike(@PathVariable long id, Principal principal) {
+        postDao.unvote(id, userDao.getUserByUsername(principal.getName()).getId(),1);
     }
-
-
 
     public boolean checkUserRole(long postId, String username) {
         boolean hasPermission = false;

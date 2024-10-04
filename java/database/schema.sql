@@ -1,11 +1,6 @@
 BEGIN TRANSACTION;
 
-DROP TABLE IF EXISTS comment_replies;
-DROP TABLE IF EXISTS replies;
-DROP TABLE IF EXISTS posts;
-DROP TABLE IF EXISTS moderation;
-DROP TABLE IF EXISTS forums;
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS comment_replies, reply_upvote, reply_downvote, replies, post_upvote, post_downvote, posts, moderation, forums, users;
 
 CREATE TABLE users (
 	user_id SERIAL,
@@ -31,14 +26,28 @@ CREATE TABLE posts (
     title varchar(300),
     description varchar(20000),
     image varchar(255),
-    likes int DEFAULT 0,
-    dislikes int DEFAULT 0,
     author varchar(25) NOT NULL,
     forum_id int,
     time_of_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT PK_post PRIMARY KEY (post_id),
     CONSTRAINT FK_posts_author FOREIGN KEY (author) REFERENCES users(username),
     CONSTRAINT FK_post_forum FOREIGN KEY (forum_id) REFERENCES forums(forum_id) ON DELETE CASCADE
+);
+
+CREATE TABLE post_upvote (
+    post_id int,
+    user_id int,
+    CONSTRAINT PK_post_upvote PRIMARY KEY (post_id, user_id),
+    CONSTRAINT FK_post_id FOREIGN KEY (post_id) REFERENCES posts(post_id),
+    CONSTRAINT FK_user_id FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE post_downvote (
+    post_id int,
+    user_id int,
+    CONSTRAINT PK_post_downvote PRIMARY KEY (post_id, user_id),
+    CONSTRAINT FK_post_id FOREIGN KEY (post_id) REFERENCES posts(post_id),
+    CONSTRAINT FK_user_id FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 -- changed replies to lowercase for constistency
@@ -49,11 +58,25 @@ CREATE TABLE replies (
     time_of_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     post_id int,
     user_id int,
-    likes int DEFAULT 0,
-    dislikes int DEFAULT 0,
     CONSTRAINT PK_reply PRIMARY KEY (reply_id),
     CONSTRAINT FK_replies_post FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
     CONSTRAINT FK_replies_user FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE reply_upvote (
+    reply_id int,
+    user_id int,
+    CONSTRAINT PK_reply_upvote PRIMARY KEY (reply_id, user_id),
+    CONSTRAINT FK_reply_id FOREIGN KEY (reply_id) REFERENCES replies(reply_id),
+    CONSTRAINT FK_user_id FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE reply_downvote (
+    reply_id int,
+    user_id int,
+    CONSTRAINT PK_reply_downvote PRIMARY KEY (reply_id, user_id),
+    CONSTRAINT FK_reply_id FOREIGN KEY (reply_id) REFERENCES replies(reply_id),
+    CONSTRAINT FK_user_id FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 -- replies to replies for threaded replies
