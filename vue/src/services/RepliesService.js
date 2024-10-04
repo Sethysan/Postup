@@ -12,5 +12,8 @@ export default {
   // Get Specific Forum
   getReply(id) {
     return http.get(`/api/replies/${id}`);
+  },
+  deleteReply(id) {
+    return http.delete(`/api/replies/${id}`);
   }
 };

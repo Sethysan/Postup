@@ -136,7 +136,6 @@ export default {
                     .catch(err => { alert("failed to downvote: status code " + err.response.status) });
             }
         },
-
         deletePost() {
             if (confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
                 let postId = this.post.id;

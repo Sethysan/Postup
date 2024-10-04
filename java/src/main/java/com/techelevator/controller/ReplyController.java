@@ -64,8 +64,9 @@ public class ReplyController {
         return new ReplyResponseDto();
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("isAuthenticated()")
-    @DeleteMapping("replies/{Id}")
+    @DeleteMapping("replies/{id}")
     public void deleteReply(@PathVariable long id, Principal user){
         if (checkUserRoleForReply(id, user.getName())) {
             replyDao.deleteReply(id);

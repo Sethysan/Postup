@@ -28,7 +28,8 @@ export default {
             newReply: {
               respondsTo: this.reply.id,
               description : ""
-            }
+            },
+            user: this.$store.getters.username
         }
     },
     methods: {
@@ -40,9 +41,21 @@ export default {
                     this.newReply = {}
                     this.formVisibility = false;
                 })
-                .catch(err => alert("error "))
+                .catch(err => alert("error " + err.response.status));
               }
-          }
+          },
+          deletePost() {
+            if (confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
+                replySerive.deleteReply(this.reply.id)
+                    .then(response => {
+                        this.$store.commit('SET_NOTIFICATION', `Post ${this.reply.id} was deleted.`);
+                        this.$router.push({ name: 'post', params: {post: this.reply.postId}});
+                    })
+                    .catch(error => {
+                        alert("error")
+                    });
+            }
+        }
     }
 }
 </script>

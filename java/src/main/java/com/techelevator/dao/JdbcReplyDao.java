@@ -78,13 +78,11 @@ public class JdbcReplyDao implements ReplyDao {
     public ReplyResponseDto updateReply(long id, CreateReplyDto reply) {
         return null;
     }
+
     @Transactional
     public void deleteReply(long replyId) {
-       String sql1 =  "DELETE FROM comment_replies WHERE parent_id IN (SELECT reply_id FROM replies " +
-               "WHERE reply_id = ?);";
-       String sql2 = "DELETE FROM replies WHERE reply_id = ?;";
-       jdbcTemplate.update(sql1, replyId);
-       jdbcTemplate.update(sql2, replyId);
+       String sql = "UPDATE replies SET user_id = 1, description = 'removed' WHERE reply_id = ?";
+       jdbcTemplate.update(sql, replyId);
     }
 
     private List<ReplyResponseDto> mapRowToThread(SqlRowSet results) {
