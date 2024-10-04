@@ -64,7 +64,7 @@ export function createStore(currentToken, currentUser) {
         if (user) {
           user.role = 'ROLE_MODERATOR';
         } else {
-          this.$store.commit('SET_NOTIFICATION', userName + " not found.");
+          console.error('User not found for promotion:', userName);
         }
       },
     },

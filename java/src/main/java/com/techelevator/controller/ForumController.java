@@ -89,5 +89,10 @@ public class ForumController {
         return forumsDao.getForumsBySearch(searchTerm);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("/forums/favorites")
+    public List<Forum> getFavorvitedForums(Principal principal){
+        return forumsDao.getFavoriteForums(userDao.getUserByUsername(principal.getName()).getId());
+    }
 
 }

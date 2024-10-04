@@ -59,7 +59,7 @@ export default {
                     this.$store.commit('PROMOTE_USER', userName); //TODO:Make PROMOTE_USER in STORE
                 })
                 .catch(error => {
-                    console.error('Error promoting user:', error);
+                    this.$store.commit('SET_NOTIFICATION', userName + " not found.");
                 });
         }
     },

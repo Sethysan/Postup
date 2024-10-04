@@ -73,16 +73,16 @@ public class JdbcPostDao implements PostDao {
 
     @Override
     public PostResponseDto createPost(CreatePostDto post) {
-        String sql = "INSERT INTO posts(title, description, image, author, forum_id) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING post_id";
+        String sql = "INSERT INTO posts(title, description, image, author, forum_id) VALUES (?, ?, ?, ?, ?) RETURNING post_id";
         long id = jdbcTemplate.queryForObject(sql, long.class, post.getTitle(), post.getDescription(), post.getImage(), post.getCreator_username(), post.getForum_Id());
         return this.getPostById(id, -1);
     }
 
     @Override
     public PostResponseDto updatePost(long id, CreatePostDto post) {
-        String sql = "UPDATE posts SET description = ? WHERE post_id = ?";
-        jdbcTemplate.update(sql, post.getDescription(), id);
-        sql = "SELECT * FROM users WHERE user_name = ?";
+        String sql = "UPDATE posts SET title = ?,  description = ?, image = ? WHERE post_id = ?;";
+        jdbcTemplate.update(sql, post.getTitle(), post.getDescription(), post.getImage(), id);
+        sql = "SELECT * FROM users WHERE user_name = ?;";
         long user = -1;
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, post.getCreator_username());
         if(results.next()){

@@ -15,6 +15,8 @@ public interface ForumsDao {
 
     List<Forum> getForumsByTopic(String topic);
 
+    List<Forum> getFavoriteForums(long user);
+
     long createForum(String topic, String Description, String author);
     void deleteForum(long id, String name);
     List<SearchResultsDto> getForumsBySearch(String searchTerm);
