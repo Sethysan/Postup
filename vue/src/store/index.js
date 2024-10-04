@@ -62,7 +62,7 @@ export function createStore(currentToken, currentUser) {
       PROMOTE_USER(state, userName) {
         const user = state.user.find(u => u.username === userName);
         if (user) {
-          user.role = 'moderator';
+          user.role = 'ROLE_MODERATOR';
         } else {
           console.error('User not found for promotion:', userName);
         }
