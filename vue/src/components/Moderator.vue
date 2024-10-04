@@ -3,7 +3,7 @@
     <h1>Moderator</h1>
     <p>Welcome, Moderator!</p>
     <!-- for loop to list all usernames where role is equal to user -->
-    <!-- make the users a table <tr>-->
+    <!-- make the usernames a table <tr>-->
     <!-- also inside loop button for promote to moderator -->
     <!-- will also be a table component <td> -->
     <!-- only show on forums page and if role is mod or admin -->
@@ -19,6 +19,8 @@ export default {
             required: true
         }
     }
+    // method to see if in forums path and if role is mod or admin canPromote
+    // method to promote user to moderator
 }
 </script>
 
