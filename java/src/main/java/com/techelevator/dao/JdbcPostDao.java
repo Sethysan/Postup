@@ -138,6 +138,7 @@ public class JdbcPostDao implements PostDao {
         post.setTitle(row.getString("title"));
         post.setHasUpvoted(row.getInt("upvotes_from_user") == 1);
         post.setHasDownvoted(row.getInt("downvotes_from_user") == 1);
+        post.setImage(row.getString("image"));
         return post;
     }
 }

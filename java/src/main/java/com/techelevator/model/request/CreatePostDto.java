@@ -42,6 +42,7 @@ public class CreatePostDto {
     public void setForum_id(long forum) {
         this.forum_id = forum;
     }
+
     public String getImage() {
         return image;
     }

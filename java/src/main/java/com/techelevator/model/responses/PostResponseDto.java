@@ -6,6 +6,7 @@ public class PostResponseDto {
     private long forum_id;
     private String title;
     private String description;
+    private String image;
     private int upvotes;
     private int downvotes;
     private String creator_username;
@@ -82,6 +83,14 @@ public class PostResponseDto {
 
     public void setHasDownvoted(boolean hasDownvoted) {
         this.hasDownvoted = hasDownvoted;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     @Override
