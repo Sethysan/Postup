@@ -58,13 +58,27 @@ export function createStore(currentToken, currentUser) {
           window.clearTimeout(state.notification.timer);
         }
         state.notification = null;
-      }
+      },
+      PROMOTE_USER(state, userName) {
+        const user = state.user.find(u => u.username === userName);
+        if (user) {
+          user.role = 'moderator';
+        } else {
+          console.error('User not found for promotion:', userName);
+        }
+      },
     },
     getters: {
       username(state, getters) {
         if(state.token != ''){
           return JSON.parse(localStorage.getItem('user')).username;
         }
+      },
+      role(state) {
+        return state.user.role || null;
+      },
+      users(state) {
+        return state.user;
       }
     }
   });
