@@ -5,6 +5,7 @@ import com.techelevator.model.User;
 import com.techelevator.model.request.CreatePostDto;
 import com.techelevator.model.responses.PostResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.core.parameters.P;
@@ -26,7 +27,10 @@ public class JdbcPostDao implements PostDao {
     @Override
     public PostResponseDto getPostById(long id) {
         PostResponseDto post = null;
-        String sql = "SELECT * FROM posts WHERE post_id = ?";
+        String sql = "SELECT posts.*, COUNT(post_upvote.post_id) AS likes, COUNT(post_downvote.post_id) AS dislikes FROM posts \n" +
+                "LEFT JOIN post_upvote ON posts.post_id = post_upvote.post_id \n" +
+                "LEFT JOIN post_downvote ON posts.post_id = post_downvote.post_id \n" +
+                "WHERE posts.post_id = ? GROUP BY posts.post_id;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
         if(results.next()){
             post = mapRowToPost(results);
@@ -37,7 +41,9 @@ public class JdbcPostDao implements PostDao {
     @Override
     public List<PostResponseDto> getPosts(long forum, String keyword, int limit, boolean sorBytPopularity, boolean today) {
         List<PostResponseDto> posts = new ArrayList<>();
-        String sql = "SELECT posts.*, COUNT(replies.description) FROM posts LEFT JOIN replies ON replies.post_id = posts.post_id WHERE (posts.description ILIKE ? OR replies.description ILIKE ?) ";
+        String sql = "SELECT posts.*, COUNT(replies.description), COUNT(post_upvote.post_id) AS likes, COUNT(post_downvote.post_id) AS dislikes FROM posts LEFT JOIN replies ON replies.post_id = posts.post_id LEFT JOIN post_upvote ON posts.post_id = post_upvote.post_id " +
+                "LEFT JOIN post_downvote ON posts.post_id = post_downvote.post_id " +
+                "WHERE (posts.description ILIKE ? OR replies.description ILIKE ?) ";
         if(forum > 0){
             sql += " AND posts.forum_id = " + forum;
         }
@@ -62,8 +68,8 @@ public class JdbcPostDao implements PostDao {
 
     @Override
     public PostResponseDto createPost(CreatePostDto post) {
-        String sql = "INSERT INTO posts(title, description, image, author, likes, dislikes, forum_id) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING post_id";
-        long id = jdbcTemplate.queryForObject(sql, long.class, post.getTitle(), post.getDescription(), post.getImage(), post.getCreator_username(), 0, 0, post.getForum_Id());
+        String sql = "INSERT INTO posts(title, description, image, author, forum_id) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING post_id";
+        long id = jdbcTemplate.queryForObject(sql, long.class, post.getTitle(), post.getDescription(), post.getImage(), post.getCreator_username(), post.getForum_Id());
         return this.getPostById(id);
     }
 
@@ -86,20 +92,26 @@ public class JdbcPostDao implements PostDao {
         jdbcTemplate.update(sql2, id);
     }
 
-    public void addVote(long id, int route) {
-        String sql = "UPDATE posts SET likes = likes + 1 WHERE post_id = ?;";
+    public boolean addVote(long postId, long replyId, int route) {
+        String sql = "INSERT INTO post_upvote(post_id, user_id) VALUES (?, ?)";
         if (route == 1) {
-            sql = "UPDATE posts SET dislikes = dislikes + 1 WHERE post_id = ?;";
+            sql = "INSERT INTO post_downvote(post_id, user_id) VALUES (?, ?)";
         }
-        jdbcTemplate.update(sql, id);
+        try {
+            jdbcTemplate.update(sql, postId, replyId);
+        }
+        catch (DuplicateKeyException e){
+            return false;
+        }
+        return true;
     }
 
-    public void unvote(long id, int route) {
-        String sql = "UPDATE posts SET likes = likes - 1 WHERE post_id = ?;";
+    public void unvote(long postId, long replyId, int route) {
+        String sql = "DELETE FROM post_upvote WHERE post_id = ? AND reply_id = ?";
         if (route == 1) {
-            sql = "UPDATE posts SET dislikes = dislikes - 1 WHERE post_id = ?;";
+            sql = "DELETE FROM post_downvote WHERE post_id = ? AND reply_id = ?";
         }
-        jdbcTemplate.update(sql, id);
+        jdbcTemplate.update(sql, postId, replyId);
     }
 
 

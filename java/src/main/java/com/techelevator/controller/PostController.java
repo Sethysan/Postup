@@ -3,6 +3,7 @@ package com.techelevator.controller;
 import com.techelevator.dao.ModerationDao;
 import com.techelevator.dao.PostDao;
 import com.techelevator.dao.UserDao;
+import com.techelevator.model.Authority;
 import com.techelevator.model.Moderation;
 import com.techelevator.model.User;
 import com.techelevator.model.request.CreatePostDto;
@@ -15,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @CrossOrigin
@@ -81,30 +83,34 @@ public class PostController {
         }
     }
 
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/posts/{id}/upvote")
-    public void upvotePost(@PathVariable long id) {
-        postDao.addVote(id, 0);
+    public void upvotePost(@PathVariable long id, Principal principal) {
+        if(!postDao.addVote(id, userDao.getUserByUsername(principal.getName()).getId(), 0)){
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT);
+        }
     }
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/posts/{id}/upvote/unlike")
-    public void unvotingLike(@PathVariable long id) {
-        postDao.unvote(id, 0);
+    public void unvotingLike(@PathVariable long id, Principal principal) {
+        postDao.unvote(id, userDao.getUserByUsername(principal.getName()).getId(), 0);
     }
 
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/posts/{id}/downvote")
-    public void downvotePost(@PathVariable long id) {
-        postDao.addVote(id, 1);
+    public void downvotePost(@PathVariable long id, Principal principal) {
+        if(!postDao.addVote(id, userDao.getUserByUsername(principal.getName()).getId(), 1)){
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT);
+        }
     }
 
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/posts/{id}/downvote/undislike")
-    public void unvotingDislike(@PathVariable long id) {
-        postDao.unvote(id, 1);
+    public void unvotingDislike(@PathVariable long id, Principal principal) {
+        postDao.unvote(id, userDao.getUserByUsername(principal.getName()).getId(),1);
     }
-
-
 
     public boolean checkUserRole(long postId, String username) {
         boolean hasPermission = false;
@@ -115,8 +121,12 @@ public class PostController {
         List<Moderation> moderator = moderationDao.getListOfModeratorsOfForum(post.getForum_id());
         User user = userDao.getUserByUsername(username);
 
-        if (user.getAuthorities().contains("ROLE_ADMIN")) {
-            isAAdmin = true;
+        Set<Authority> roles = userDao.getUserByUsername(username).getAuthorities();
+
+        for (Authority role : roles) {
+            if (role.getName().equals("ROLE_ADMIN")) {
+                isAAdmin = true;
+            }
         }
 
         for (Moderation mod : moderator) {
