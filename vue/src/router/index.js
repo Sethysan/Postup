@@ -106,7 +106,7 @@ const routes = [
     }
   },
   {
-    path: "moderation/forum/:id/promote",
+    path: "/moderation/forum/:id/promote",
     name: "promote",
     component: Moderator,
     meta: {
