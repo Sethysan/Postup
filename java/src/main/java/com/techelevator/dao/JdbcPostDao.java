@@ -80,9 +80,9 @@ public class JdbcPostDao implements PostDao {
 
     @Override
     public PostResponseDto updatePost(long id, CreatePostDto post) {
-        String sql = "UPDATE posts SET description = ? WHERE post_id = ?";
-        jdbcTemplate.update(sql, post.getDescription(), id);
-        sql = "SELECT * FROM users WHERE user_name = ?";
+        String sql = "UPDATE posts SET title = ?,  description = ?, image = ? WHERE post_id = ?;";
+        jdbcTemplate.update(sql, post.getTitle(), post.getDescription(), post.getImage(), id);
+        sql = "SELECT * FROM users WHERE user_name = ?;";
         long user = -1;
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, post.getCreator_username());
         if(results.next()){
