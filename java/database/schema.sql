@@ -25,7 +25,7 @@ CREATE TABLE posts (
     post_id SERIAL,
     title varchar(300),
     description varchar(20000),
-    image varchar(255),
+    image varchar(500),
     author varchar(25) NOT NULL,
     forum_id int,
     time_of_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
