@@ -171,7 +171,7 @@ public class JdbcReplyDao implements ReplyDao {
                 ReplyResponseDto parentReply = replyMap.get(parent);
                 if (parentReply != null) {
                     parentReply.addReplies(reply);
-                    if(results.isLast()){
+                    if(results.isLast() && !rootReplies.contains(parentReply)){
                         rootReplies.add(parentReply);
                     }
                 }
