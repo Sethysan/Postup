@@ -3,6 +3,7 @@ package com.techelevator.controller;
 import com.techelevator.dao.ForumsDao;
 import com.techelevator.dao.ModerationDao;
 import com.techelevator.dao.UserDao;
+import com.techelevator.model.Authority;
 import com.techelevator.model.Forum;
 import com.techelevator.model.ForumDto;
 import com.techelevator.model.responses.SearchResultsDto;
@@ -17,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @CrossOrigin
@@ -61,7 +63,19 @@ public class ForumController {
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/forums/{id}/delete")
     public void deleteForum(@PathVariable long id, Principal user) {
-        if (getForumById(id).getAuthor().equals(user.getName()) || userDao.getUserByUsername(user.getName()).getAuthorities().contains("ROLE_ADMIN")) {
+
+        Set<Authority> roles = userDao.getUserByUsername(user.getName()).getAuthorities();
+
+        // storing the check if the current user has admin permission to make person moderator
+        boolean isAdmin = false;
+
+        for (Authority role : roles) {
+            if (role.getName().equals("ROLE_ADMIN")) {
+                isAdmin = true;
+            }
+        }
+
+        if (getForumById(id).getAuthor().equals(user.getName()) || isAdmin) {
             forumsDao.deleteForum(id, user.getName());
         }
         else {

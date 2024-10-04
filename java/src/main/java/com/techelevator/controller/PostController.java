@@ -3,6 +3,7 @@ package com.techelevator.controller;
 import com.techelevator.dao.ModerationDao;
 import com.techelevator.dao.PostDao;
 import com.techelevator.dao.UserDao;
+import com.techelevator.model.Authority;
 import com.techelevator.model.Moderation;
 import com.techelevator.model.User;
 import com.techelevator.model.request.CreatePostDto;
@@ -15,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @CrossOrigin
@@ -119,8 +121,12 @@ public class PostController {
         List<Moderation> moderator = moderationDao.getListOfModeratorsOfForum(post.getForum_id());
         User user = userDao.getUserByUsername(username);
 
-        if (user.getAuthorities().contains("ROLE_ADMIN")) {
-            isAAdmin = true;
+        Set<Authority> roles = userDao.getUserByUsername(username).getAuthorities();
+
+        for (Authority role : roles) {
+            if (role.getName().equals("ROLE_ADMIN")) {
+                isAAdmin = true;
+            }
         }
 
         for (Moderation mod : moderator) {
