@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ReplyResponseDto {
     private long id;
@@ -122,5 +123,18 @@ public class ReplyResponseDto {
                 ", replies=" + replies +
                 ", user=" + user +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ReplyResponseDto that = (ReplyResponseDto) o;
+        return id == that.id && postId == that.postId && root == that.root && upvotes == that.upvotes && downvotes == that.downvotes && hasUpvoted == that.hasUpvoted && hasDownvoted == that.hasDownvoted && Objects.equals(description, that.description) && Objects.equals(created, that.created) && Objects.equals(replies, that.replies) && Objects.equals(user, that.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, postId, root, description, created, replies, user, upvotes, downvotes, hasUpvoted, hasDownvoted);
     }
 }

@@ -56,7 +56,7 @@ export default {
             ModeratorService.promoteUser(userName, this.forumId)
                 .then(() => {
                     // Update the user's role in the Vuex store
-                    this.$store.commit('PROMOTE_USER', userName);
+                    this.$store.commit('PROMOTE_USER', userName); //TODO:Make PROMOTE_USER in STORE
                 })
                 .catch(error => {
                     console.error('Error promoting user:', error);

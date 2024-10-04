@@ -2,7 +2,7 @@
   <div class="thread">
     <p>{{ reply.user.username }}</p>
     <p>{{ reply.description }}</p>
-    <button v-if="reply.user.username === user" class="deletePost" @click="deletePost">Delete</button>
+    <button v-if="reply.user.username === user" class="deletePost" @click="deleteReply">Delete</button>
     <button @click="() => { formVisibility = true }">Reply</button>
       <div v-if="formVisibility">
         <form v-on:submit.prevent="addReply">
@@ -44,15 +44,15 @@ export default {
                 .catch(err => alert("error " + err.response.status));
               }
           },
-          deletePost() {
+          deleteReply() {
             if (confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
                 replySerive.deleteReply(this.reply.id)
                     .then(response => {
                         this.$store.commit('SET_NOTIFICATION', `Post ${this.reply.id} was deleted.`);
-                        this.$router.push({ name: 'post', params: {post: this.reply.postId}});
+                        this.$forceUpdate(); 
                     })
                     .catch(error => {
-                        alert("error")
+                        alert("error " + error.response.status)
                     });
             }
         }
