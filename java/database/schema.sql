@@ -30,7 +30,7 @@ CREATE TABLE posts (
     post_id SERIAL,
     title varchar(300),
     description varchar(20000),
-    image varchar(255),
+    image varchar(500),
     likes int DEFAULT 0,
     dislikes int DEFAULT 0,
     author varchar(25) NOT NULL,
