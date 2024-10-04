@@ -80,10 +80,11 @@ export default {
     },
     methods: {
         addReply() {
-            alert(this.newReply)
             replySerive.createReply(this.post.id, this.newReply)
                 .then(res => {
                     this.replies.unshift(res.data)
+                    this.newReply = {}
+                    this.formVisibility = false;
                 })
                 .catch(err => alert("error " + err.message))
         },

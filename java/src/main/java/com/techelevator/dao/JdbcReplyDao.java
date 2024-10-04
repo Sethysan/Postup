@@ -119,7 +119,7 @@ public class JdbcReplyDao implements ReplyDao {
                         rootReplies.add(parentReply);
                     }
                 }
-            System.out.println(reply);
+//            System.out.println(reply);
             }
         return rootReplies;
         }
