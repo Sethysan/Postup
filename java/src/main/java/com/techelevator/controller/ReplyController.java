@@ -1,6 +1,7 @@
 package com.techelevator.controller;
 
 import com.techelevator.dao.*;
+import com.techelevator.model.Authority;
 import com.techelevator.model.Moderation;
 import com.techelevator.model.ReplyDto;
 import com.techelevator.model.User;
@@ -15,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @CrossOrigin
@@ -86,9 +88,15 @@ public class ReplyController {
         List<Moderation> moderator = moderationDao.getListOfModeratorsOfForum(post.getForum_id());
         User user = userDao.getUserByUsername(username);
 
-        if (user.getAuthorities().contains("ROLE_ADMIN")) {
-            isAAdmin = true;
+        Set<Authority> roles = userDao.getUserByUsername(username).getAuthorities();
+
+
+        for (Authority role : roles) {
+            if (role.getName().equals("ROLE_ADMIN")) {
+                isAAdmin = true;
+            }
         }
+
 
         for (Moderation mod : moderator) {
             if (mod.getUsername().equals(username)) {
