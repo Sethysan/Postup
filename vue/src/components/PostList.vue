@@ -10,7 +10,7 @@
     </div>
     <div v-if="posts.length === 0">
       <p>Wow, such empty</p>
-      <img src="http://localhost:9000/images/pets/moon-moon.jpg" alt="placeholder" class="place-holder" />
+      <img src="http://localhost:9000/images/Cheems.jpg" alt="placeholder" class="place-holder" />
     </div>
     <div v-for="post in posts" :key="post.id">
       <header>

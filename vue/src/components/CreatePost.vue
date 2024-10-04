@@ -16,8 +16,7 @@
 
       <div class="form-group">
         <label for="image">Image URL (optional):</label>
-        <input v-model="imageUrl" id="image" type="text" placeholder="http://localhost:9000/images/moon-moon.jpg"
-          class="place-holder" />
+        <input v-model="imageUrl" id="image" type="text" placeholder="http://localhost:9000/images/moon-moon.jpg" class="place-holder" />
       </div>
       <div class="button-div">
         <button class="submit-button" type="submit">Submit</button>
@@ -76,7 +75,7 @@ export default {
         })
         .catch((error) => {
           console.error("Error creating post: ", error);
-          alert("Failed to create post.");
+          alert("Failed to create post." + error.response.status);
         });
     }
   }
