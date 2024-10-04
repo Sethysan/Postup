@@ -1,7 +1,7 @@
 <template>
   <div id="login">
     <form v-on:submit.prevent="login">
-      <h1 >Please Sign In</h1>
+      <h1>Please Sign In</h1>
       <div role="alert" v-if="invalidCredentials">
         Invalid username and password!
       </div>
@@ -17,8 +17,11 @@
         <input type="password" id="password" v-model="user.password" required />
       </div>
       <button type="submit">Sign in</button>
+      <div v-if="showWelcomeMessage" class="custom-alert">
+        Welcome, {{ user.username }}!
+      </div>
       <p>
-      <router-link v-bind:to="{ name: 'register' }">Need an account? Sign up.</router-link>
+        <router-link v-bind:to="{ name: 'register' }">Need an account? Sign up.</router-link>
       </p>
     </form>
   </div>
@@ -35,7 +38,8 @@ export default {
         username: "",
         password: ""
       },
-      invalidCredentials: false
+      invalidCredentials: false,
+      showWelcomeMessage: false 
     };
   },
   methods: {
@@ -46,12 +50,12 @@ export default {
           if (response.status == 200) {
             this.$store.commit("SET_AUTH_TOKEN", response.data.token);
             this.$store.commit("SET_USER", response.data.user);
-            alert("Login successful!");
+            alert(`Welcome, ${this.user.username}`);
             this.$router.push("/");
           }
         })
         .catch(error => {
-          
+
           const response = error.response;
 
           if (response.status === 401) {
@@ -67,6 +71,7 @@ export default {
 .form-input-group {
   margin-bottom: 1rem;
 }
+
 label {
   margin-right: 0.5rem;
 }

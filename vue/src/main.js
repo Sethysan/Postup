@@ -5,9 +5,10 @@ import router from './router'
 import axios from 'axios'
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faThumbsUp, faThumbsDown } from '@fortawesome/free-regular-svg-icons';
+import { faCircleArrowUp, faCircleArrowDown} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-library.add(faThumbsUp, faThumbsDown);
+library.add(faThumbsUp, faThumbsDown,faCircleArrowUp,faCircleArrowDown);
 
 /* sets the base url for server API communication with axios */
 axios.defaults.baseURL = import.meta.env.VITE_REMOTE_API;
