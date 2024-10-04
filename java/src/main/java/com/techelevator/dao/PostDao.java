@@ -5,8 +5,8 @@ import java.util.List;
 
 public interface PostDao {
 
-    public PostResponseDto getPostById(long id);
-    public List<PostResponseDto> getPosts(long forum, String keyword, int limit, boolean sorBytPopularity, boolean today);
+    public PostResponseDto getPostById(long id, long user);
+    public List<PostResponseDto> getPosts(long forum, long user, String keyword, int limit, boolean sorBytPopularity, boolean today);
     public PostResponseDto createPost(CreatePostDto post);
     public PostResponseDto updatePost(long id, CreatePostDto post);
     public void deletePost(long id);
