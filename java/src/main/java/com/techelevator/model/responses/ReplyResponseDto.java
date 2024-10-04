@@ -14,6 +14,10 @@ public class ReplyResponseDto {
     private Timestamp created;
     private List<ReplyResponseDto> replies = new ArrayList<>();
     private UserSnippetDto user;
+    private int upvotes;
+    private int downvotes;
+    private boolean hasUpvoted;
+    private boolean hasDownvoted;
 
     public long getId() {
         return id;
@@ -69,6 +73,38 @@ public class ReplyResponseDto {
 
     public void setUser(UserSnippetDto user) {
         this.user = user;
+    }
+
+    public int getUpvotes() {
+        return upvotes;
+    }
+
+    public void setUpvotes(int upvotes) {
+        this.upvotes = upvotes;
+    }
+
+    public int getDownvotes() {
+        return downvotes;
+    }
+
+    public void setDownvotes(int downvotes) {
+        this.downvotes = downvotes;
+    }
+
+    public boolean isHasUpvoted() {
+        return hasUpvoted;
+    }
+
+    public void setHasUpvoted(boolean hasUpvoted) {
+        this.hasUpvoted = hasUpvoted;
+    }
+
+    public boolean isHasDownvoted() {
+        return hasDownvoted;
+    }
+
+    public void setHasDownvoted(boolean hasDownvoted) {
+        this.hasDownvoted = hasDownvoted;
     }
 
     @JsonIgnore public void addReplies(ReplyResponseDto reply) {
