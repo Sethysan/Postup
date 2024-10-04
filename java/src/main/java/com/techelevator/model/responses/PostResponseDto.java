@@ -9,6 +9,8 @@ public class PostResponseDto {
     private int upvotes;
     private int downvotes;
     private String creator_username;
+    private boolean hasUpvoted;
+    private boolean hasDownvoted;
 
     public long getId() {
         return id;
@@ -64,6 +66,22 @@ public class PostResponseDto {
 
     public void setCreator_username(String creator_username) {
         this.creator_username = creator_username;
+    }
+
+    public boolean isHasUpvoted() {
+        return hasUpvoted;
+    }
+
+    public void setHasUpvoted(boolean hasUpvoted) {
+        this.hasUpvoted = hasUpvoted;
+    }
+
+    public boolean isHasDownvoted() {
+        return hasDownvoted;
+    }
+
+    public void setHasDownvoted(boolean hasDownvoted) {
+        this.hasDownvoted = hasDownvoted;
     }
 
     @Override

@@ -78,13 +78,42 @@ public class ReplyController {
         }
     }
 
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/replies/{id}/upvote")
+    public void upvotePost(@PathVariable long id, Principal principal) {
+        if(!postDao.addVote(id, userDao.getUserByUsername(principal.getName()).getId(), 0)){
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT);
+        }
+    }
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/replies/{id}/upvote/unlike")
+    public void unvotingLike(@PathVariable long id, Principal principal) {
+        postDao.unvote(id, userDao.getUserByUsername(principal.getName()).getId(), 0);
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/replies/{id}/downvote")
+    public void downvotePost(@PathVariable long id, Principal principal) {
+        if(!postDao.addVote(id, userDao.getUserByUsername(principal.getName()).getId(), 1)){
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT);
+        }
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/replies/{id}/downvote/undislike")
+    public void unvotingDislike(@PathVariable long id, Principal principal) {
+        postDao.unvote(id, userDao.getUserByUsername(principal.getName()).getId(),1);
+    }
+
     public boolean checkUserRoleForReply(long replyId, String username) {
         boolean hasPermission = false;
         boolean isAMod = false;
         boolean isAAdmin = false;
 
         ReplyResponseDto reply = getReplyById(replyId);
-        PostResponseDto post = postDao.getPostById(reply.getPostId());
+        PostResponseDto post = postDao.getPostById(reply.getPostId(), -1);
         List<Moderation> moderator = moderationDao.getListOfModeratorsOfForum(post.getForum_id());
         User user = userDao.getUserByUsername(username);
 

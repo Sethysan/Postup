@@ -32,26 +32,38 @@ public class PostController {
 
     // public List<PostResponseDto> getPosts(long forum, String keyword, int limit, boolean sorBytPopularity)
     @GetMapping("/posts")
-    public List<PostResponseDto> getPosts(@RequestParam(defaultValue="") String keyword, @RequestParam(defaultValue="-1") int limit, @RequestParam(defaultValue="") String filter, @RequestParam(defaultValue="false") boolean today){
+    public List<PostResponseDto> getPosts(@RequestParam(defaultValue="") String keyword, @RequestParam(defaultValue="-1") int limit, @RequestParam(defaultValue="") String filter, @RequestParam(defaultValue="false") boolean today, Principal principal){
+        long user = -1;
+        if(principal != null){
+            user = userDao.getUserByUsername(principal.getName()).getId();
+        }
         boolean sortByPopularity = false;
         if(filter.equals("popularity")){
             sortByPopularity = true;
         }
-        return postDao.getPosts(-1, keyword, limit, sortByPopularity, today);
+        return postDao.getPosts(-1, user, keyword, limit, sortByPopularity, today);
     }
 
     @GetMapping("/forum/{id}/posts")
-    public List<PostResponseDto> getPostsByForum(@PathVariable long id, @RequestParam(defaultValue="") String keyword, @RequestParam(defaultValue="-1") int limit, @RequestParam(defaultValue="") String filter){
+    public List<PostResponseDto> getPostsByForum(@PathVariable long id, @RequestParam(defaultValue="") String keyword, @RequestParam(defaultValue="-1") int limit, @RequestParam(defaultValue="") String filter, Principal principal){
+        long user = -1;
+        if(principal != null){
+            user = userDao.getUserByUsername(principal.getName()).getId();
+        }
         boolean sortByPopularity = false;
         if(filter.equals("popularity")){
             sortByPopularity = true;
         }
-        return postDao.getPosts(id, keyword, limit, sortByPopularity, false);
+        return postDao.getPosts(id, user, keyword, limit, sortByPopularity, false);
     }
 
     @GetMapping("/posts/{id}")
-    public PostResponseDto getPostById(@PathVariable long id){
-        return postDao.getPostById(id);
+    public PostResponseDto getPostById(@PathVariable long id, Principal principal){
+        long user = -1;
+        if(principal != null){
+            user = userDao.getUserByUsername(principal.getName()).getId();
+        }
+        return postDao.getPostById(id, user);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -117,7 +129,7 @@ public class PostController {
         boolean isAMod = false;
         boolean isAAdmin = false;
 
-        PostResponseDto post = getPostById(postId);
+        PostResponseDto post = getPostById(postId, null);
         List<Moderation> moderator = moderationDao.getListOfModeratorsOfForum(post.getForum_id());
         User user = userDao.getUserByUsername(username);
 

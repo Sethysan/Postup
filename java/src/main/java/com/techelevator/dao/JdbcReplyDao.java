@@ -2,6 +2,7 @@ package com.techelevator.dao;
 import com.techelevator.model.request.CreateReplyDto;
 import com.techelevator.model.responses.ReplyResponseDto;
 import com.techelevator.model.responses.UserSnippetDto;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -83,6 +84,28 @@ public class JdbcReplyDao implements ReplyDao {
     public void deleteReply(long replyId) {
        String sql = "UPDATE replies SET user_id = 1, description = 'removed' WHERE reply_id = ?";
        jdbcTemplate.update(sql, replyId);
+    }
+
+    public boolean addVote(long postId, long replyId, int route) {
+        String sql = "INSERT INTO post_upvote(post_id, user_id) VALUES (?, ?)";
+        if (route == 1) {
+            sql = "INSERT INTO post_downvote(post_id, user_id) VALUES (?, ?)";
+        }
+        try {
+            jdbcTemplate.update(sql, postId, replyId);
+        }
+        catch (DuplicateKeyException e){
+            return false;
+        }
+        return true;
+    }
+
+    public void unvote(long postId, long replyId, int route) {
+        String sql = "DELETE FROM post_upvote WHERE post_id = ? AND user_id = ?";
+        if (route == 1) {
+            sql = "DELETE FROM post_downvote WHERE post_id = ? AND user_id = ?";
+        }
+        jdbcTemplate.update(sql, postId, replyId);
     }
 
     private List<ReplyResponseDto> mapRowToThread(SqlRowSet results) {

@@ -94,7 +94,8 @@ export default {
                 service.unvotingLike(this.post.id)
                     .then(res => {
                         this.post.upvotes--;
-                        this.upvoted = false;  // Remove upvoted state
+                        this.upvoted = false; 
+                         // Remove upvoted state
                     })
                     .catch(err => alert("failed to undo upvote: status code " + err.response.status));
             } else {
@@ -106,7 +107,9 @@ export default {
                             this.post.downvotes--;
                             this.downvoted = false;
                         }
-                        this.post.upvotes++;
+                        if(res.status == 202){
+                            this.post.upvotes++;
+                        }
                         this.upvoted = true;  // Set upvoted state
                     })
                     .catch(err => { alert("failed to upvote: status code " + err) });
