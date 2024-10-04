@@ -1,8 +1,8 @@
 import http from './httpService'; // Import the shared Axios instance
 
 export default {
-    promoteToModerator(userId, forumId) {
-        return http.post(`/moderation/forum/${forumId}/promote`, userId);
+    promoteToModerator(userName, forumId) {
+        return http.post(`/moderation/forum/${forumId}/promote`, userName);
     },
     getUsers() {
         return http.get(`/users`);

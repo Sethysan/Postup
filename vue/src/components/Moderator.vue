@@ -18,7 +18,7 @@
                 <!-- also inside loop button for promote to moderator -->
                 <!-- will also be a table component <td> -->
                 <td>
-                    <button @click="promoteUser(user.id)">Promote to Moderator</button>
+                    <button @click="promoteUser(filteredUsers.username)">Promote to Moderator</button>
                 </td>
             </tr>
         </tbody>
@@ -51,11 +51,12 @@ export default {
         }
     },
     methods: {
-        promoteUser(userId) {
-            ModeratorService.promoteUser(userId, this.forumId)
+        promoteUser(userName) {
+            userName = this.filteredUsers.username;
+            ModeratorService.promoteUser(userName, this.forumId)
                 .then(() => {
                     // Update the user's role in the Vuex store
-                    this.$store.commit('PROMOTE_USER', userId);
+                    this.$store.commit('PROMOTE_USER', userName);
                 })
                 .catch(error => {
                     console.error('Error promoting user:', error);
