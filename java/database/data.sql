@@ -29,7 +29,9 @@ INSERT INTO posts (title, description, image, author, forum_id, time_of_creation
 ('Top 10 games of 2023', 'Here’s a list of my favorite games from 2023.', 'https://newzoo.com/wp-content/uploads/2023/11/Top-10-bestselling-PC-and-console-game-releases-in-2023-from-January-through-October.png', 'user2', 2, '2024-01-06 15:00:00'),
 ('How to debug Java code?', 'I’m stuck on a bug and need help with debugging Java code.', NULL, 'moderator1', 3, '2024-01-07 16:00:00'),
 ('Latest SpaceX launch discussion', 'Let’s talk about the recent SpaceX mission and its impact.', 'https://nss.org/wp-content/uploads/2018/02/falcon-heavy-liftoff.jpg', 'admin1', 4, '2024-01-08 17:00:00'),
-('What is the future of AI?', 'Discuss how AI is shaping the future of technology.', NULL, 'user3', 1, '2024-01-09 18:00:00');
+('What is the future of AI?', 'Discuss how AI is shaping the future of technology.', NULL, 'user3', 1, '2024-01-09 18:00:00'),
+('NEVER obsolete','I wonder how many people are still getting upgrades every 2 years for $99!', 'https://i.redd.it/p33nor0btfi91.jpg', 'moderator1', 1, '2024-10-04 21:36:34.918846'),
+('Help', 'I need help with my computer. I feel like I''m aimlessly running in cirlces like a baby chick. I need some direction', 'https://as1.ftcdn.net/v2/jpg/05/63/32/30/1000_F_563323083_iD6EXOVpPblV1w3BcRzsMx4goaFGvW7U.jpg', 'user1', 1, '2024-10-04 21:36:34.918846');
 
 -- Insert mock post upvotes
 INSERT INTO post_upvote (post_id, user_id) VALUES
