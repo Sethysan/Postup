@@ -15,5 +15,17 @@ export default {
   },
   deleteReply(id) {
     return http.delete(`/api/replies/${id}`);
+  },
+  upvoteReplies(id) {
+    return http.put(`/api/replies/${id}/upvote`);
+  },
+  downvoteReplies(id) {
+    return http.put(`/api/replies/${id}/downvote`);
+  },
+  unvotingLikes(id) {
+    return http.put(`/api/replies/${id}/upvote/unlike`);
+  },
+  unvotingDislikes(id) {
+    return http.put(`/api/replies/${id}/downvote/undislike`);
   }
-};
+}

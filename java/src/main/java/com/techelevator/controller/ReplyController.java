@@ -94,21 +94,21 @@ public class ReplyController {
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/replies/{id}/upvote")
     public void upvotePost(@PathVariable long id, Principal principal) {
-        if(!postDao.addVote(id, userDao.getUserByUsername(principal.getName()).getId(), 0)){
+        if(!replyDao.addVote(id, userDao.getUserByUsername(principal.getName()).getId(), 0)){
             throw new ResponseStatusException(HttpStatus.NO_CONTENT);
         }
     }
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/replies/{id}/upvote/unlike")
     public void unvotingLike(@PathVariable long id, Principal principal) {
-        postDao.unvote(id, userDao.getUserByUsername(principal.getName()).getId(), 0);
+        replyDao.undoVote(id, userDao.getUserByUsername(principal.getName()).getId(), 0);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/replies/{id}/downvote")
     public void downvotePost(@PathVariable long id, Principal principal) {
-        if(!postDao.addVote(id, userDao.getUserByUsername(principal.getName()).getId(), 1)){
+        if(!replyDao.addVote(id, userDao.getUserByUsername(principal.getName()).getId(), 1)){
             throw new ResponseStatusException(HttpStatus.NO_CONTENT);
         }
     }
@@ -116,7 +116,7 @@ public class ReplyController {
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/replies/{id}/downvote/undislike")
     public void unvotingDislike(@PathVariable long id, Principal principal) {
-        postDao.unvote(id, userDao.getUserByUsername(principal.getName()).getId(),1);
+        replyDao.undoVote(id, userDao.getUserByUsername(principal.getName()).getId(),1);
     }
 
     public boolean checkUserRoleForReply(long replyId, String username) {

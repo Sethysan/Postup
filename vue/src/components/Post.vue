@@ -1,6 +1,6 @@
 <template>
     <div class="post">
-        <h2>{{ post.title }}</h2>
+        <p>{{ post.creator_username }}</p><h2>{{ post.title }}</h2><button v-if="post.creator_username === user" class="deletePost" @click="deletePost">Delete</button>
         <p>{{ post.description }}</p>
         <div v-if="user">
             <div class="post-footer flex items-center justify-start mt-md px-md xs:px-0">
@@ -37,9 +37,7 @@
                     </svg>
                     <span> {{ post.comments }} </span>
                     {{ replies.length }}</button>
-
-                <button v-if="post.creator_username === user" class="deletePost" @click="deletePost">Delete</button>
-                <button @click="() => { formVisibility = true }">Add Reply </button>
+                <button @click="() => { formVisibility = true }">+ Add Comment</button>
                 <div v-if="formVisibility">
                     <form v-on:submit.prevent="addReply">
                         <textarea v-model="newReply.description"></textarea>
@@ -68,8 +66,8 @@ export default {
     props: ['post', 'replies'],
     data() {
         return {
-            upvoted: false,
-            downvoted: false,
+            upvoted: this.post.hasUpvoted,
+            downvoted: this.post.hasDownvoted,
             user: undefined,
             formVisibility: false,
             newReply: {}

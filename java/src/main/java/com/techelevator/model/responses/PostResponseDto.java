@@ -100,9 +100,12 @@ public class PostResponseDto {
                 ", forum_id=" + forum_id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
+                ", image='" + image + '\'' +
                 ", upvotes=" + upvotes +
                 ", downvotes=" + downvotes +
                 ", creator_username='" + creator_username + '\'' +
+                ", hasUpvoted=" + hasUpvoted +
+                ", hasDownvoted=" + hasDownvoted +
                 '}';
     }
 }

@@ -29,7 +29,7 @@ public class JdbcReplyDao implements ReplyDao {
                 "LEFT JOIN reply_upvote ON reply_upvote.reply_id = replies.reply_id \n" +
                 "LEFT JOIN reply_downvote ON replies.reply_id = reply_downvote.reply_id \n" +
                 "LEFT JOIN users AS upvote ON reply_upvote.user_id = upvote.user_id AND upvote.user_id = ?\n" +
-                "LEFT JOIN users AS downvote ON reply_upvote.user_id = downvote.user_id AND upvote.user_id = ?\n" +
+                "LEFT JOIN users AS downvote ON reply_downvote.user_id = downvote.user_id AND downvote.user_id = ?\n" +
                 "GROUP BY replies.reply_id, comment_replies.parent_id, comment_replies.reply_id, users.username\n" +
                 "ORDER BY replies.reply_id;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId, userId);
@@ -48,7 +48,7 @@ public class JdbcReplyDao implements ReplyDao {
                 "LEFT JOIN reply_upvote ON reply_upvote.reply_id = replies.reply_id \n" +
                 "LEFT JOIN reply_downvote ON replies.reply_id = reply_downvote.reply_id \n" +
                 "LEFT JOIN users AS upvote ON reply_upvote.user_id = upvote.user_id AND upvote.user_id = ?\n" +
-                "LEFT JOIN users AS downvote ON reply_upvote.user_id = downvote.user_id AND upvote.user_id = ?\n" +
+                "LEFT JOIN users AS downvote ON reply_downvote.user_id = downvote.user_id AND downvote.user_id = ?\n" +
                 "WHERE replies.reply_id = ? " +
                 "GROUP BY replies.reply_id, comment_replies.parent_id, comment_replies.reply_id, users.username\n" +
                 "ORDER BY replies.reply_id";
@@ -69,7 +69,7 @@ public class JdbcReplyDao implements ReplyDao {
                 "LEFT JOIN reply_upvote ON reply_upvote.reply_id = replies.reply_id \n" +
                 "LEFT JOIN reply_downvote ON replies.reply_id = reply_downvote.reply_id \n" +
                 "LEFT JOIN users AS upvote ON reply_upvote.user_id = upvote.user_id AND upvote.user_id = ?\n" +
-                "LEFT JOIN users AS downvote ON reply_upvote.user_id = downvote.user_id AND upvote.user_id = ?\n" +
+                "LEFT JOIN users AS downvote ON reply_downvote.user_id = downvote.user_id AND downvote.user_id = ?\n" +
                 "WHERE replies.user_id = ? " +
                 "GROUP BY replies.reply_id, comment_replies.parent_id, comment_replies.reply_id, users.username\n" +
                 "ORDER BY replies.reply_id";
@@ -89,7 +89,7 @@ public class JdbcReplyDao implements ReplyDao {
                 "LEFT JOIN reply_upvote ON reply_upvote.reply_id = replies.reply_id \n" +
                 "LEFT JOIN reply_downvote ON replies.reply_id = reply_downvote.reply_id \n" +
                 "LEFT JOIN users AS upvote ON reply_upvote.user_id = upvote.user_id AND upvote.user_id = ?\n" +
-                "LEFT JOIN users AS downvote ON reply_upvote.user_id = downvote.user_id AND upvote.user_id = ?\n" +
+                "LEFT JOIN users AS downvote ON reply_downvote.user_id = downvote.user_id AND downvote.user_id = ?\n" +
                 "WHERE replies.post_id = ?\n" +
                 "GROUP BY replies.reply_id, comment_replies.parent_id, comment_replies.reply_id, users.username \n" +
                 "ORDER BY replies.reply_id;";
@@ -121,10 +121,11 @@ public class JdbcReplyDao implements ReplyDao {
        jdbcTemplate.update(sql, replyId);
     }
 
+    @Override
     public boolean addVote(long postId, long replyId, int route) {
-        String sql = "INSERT INTO post_upvote(post_id, user_id) VALUES (?, ?)";
+        String sql = "INSERT INTO reply_upvote(reply_id, user_id) VALUES (?, ?)";
         if (route == 1) {
-            sql = "INSERT INTO post_downvote(post_id, user_id) VALUES (?, ?)";
+            sql = "INSERT INTO reply_downvote(reply_id, user_id) VALUES (?, ?)";
         }
         try {
             jdbcTemplate.update(sql, postId, replyId);
@@ -135,10 +136,11 @@ public class JdbcReplyDao implements ReplyDao {
         return true;
     }
 
-    public void unvote(long postId, long replyId, int route) {
-        String sql = "DELETE FROM post_upvote WHERE post_id = ? AND user_id = ?";
+    @Override
+    public void undoVote(long postId, long replyId, int route) {
+        String sql = "DELETE FROM reply_upvote WHERE reply_id = ? AND user_id = ?";
         if (route == 1) {
-            sql = "DELETE FROM post_downvote WHERE post_id = ? AND user_id = ?";
+            sql = "DELETE FROM reply_downvote WHERE reply_id = ? AND user_id = ?";
         }
         jdbcTemplate.update(sql, postId, replyId);
     }

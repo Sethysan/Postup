@@ -31,7 +31,7 @@ public class JdbcPostDao implements PostDao {
                 "LEFT JOIN post_upvote ON posts.post_id = post_upvote.post_id \n" +
                 "LEFT JOIN post_downvote ON posts.post_id = post_downvote.post_id\n" +
                 "LEFT JOIN users AS upvote ON post_upvote.user_id = upvote.user_id AND upvote.user_id = ?\n" +
-                "LEFT JOIN users AS downvote ON post_upvote.user_id = downvote.user_id AND upvote.user_id = ?\n" +
+                "LEFT JOIN users AS downvote ON post_downvote.user_id = downvote.user_id AND downvote.user_id = ?\n" +
                 "WHERE posts.post_id = ?\n" +
                 "GROUP BY posts.post_id;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user, user, id);
@@ -47,7 +47,7 @@ public class JdbcPostDao implements PostDao {
         String sql = "SELECT posts.*, COUNT(replies.description), COUNT(post_upvote.post_id) AS likes, COUNT(post_downvote.post_id) AS dislikes, COUNT(upvote.user_id) AS upvotes_from_user, COUNT(downvote.user_id) AS downvotes_from_user FROM posts LEFT JOIN replies ON replies.post_id = posts.post_id LEFT JOIN post_upvote ON posts.post_id = post_upvote.post_id " +
                 "LEFT JOIN post_downvote ON posts.post_id = post_downvote.post_id " +
                 "LEFT JOIN users AS upvote ON post_upvote.user_id = upvote.user_id AND upvote.user_id = ? \n" +
-                "LEFT JOIN users AS downvote ON post_upvote.user_id = downvote.user_id AND upvote.user_id = ? " +
+                "LEFT JOIN users AS downvote ON post_downvote.user_id = downvote.user_id AND downvote.user_id = ? " +
                 "WHERE (posts.description ILIKE ? OR replies.description ILIKE ?) ";
         if(forum > 0){
             sql += " AND posts.forum_id = " + forum;
