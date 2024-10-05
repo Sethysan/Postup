@@ -36,7 +36,12 @@ public class PostController {
     public List<PostResponseDto> getPosts(@RequestParam(defaultValue="") String keyword, @RequestParam(defaultValue="-1") int limit, @RequestParam(defaultValue="") String filter, @RequestParam(defaultValue="false") boolean today, Principal principal){
         long user = -1;
         if(principal != null){
-            user = userDao.getUserByUsername(principal.getName()).getId();
+            String username = principal.getName();
+            User userObj = userDao.getUserByUsername(username);
+            if (userObj == null) {
+                throw new IllegalArgumentException("User not found with username: " + username);
+        }
+            user = userObj.getId();
         }
         boolean sortByPopularity = false;
         if(filter.equals("popularity")){
