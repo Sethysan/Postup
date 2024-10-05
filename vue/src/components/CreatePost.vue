@@ -16,7 +16,7 @@
 
       <div class="form-group">
         <label for="image">Image URL (optional):</label>
-        <input v-model="imageUrl" id="image" type="text" placeholder="http://localhost:9000/images/moon-moon.jpg" class="place-holder" />
+        <input v-model="imageUrl" id="image" type="text" class="image" />
       </div>
       <div class="button-div">
         <button class="submit-button" type="submit">Submit</button>
@@ -139,7 +139,4 @@ button:hover {
   background-color: #45a049;
 }
 
-.place-holder {
-  max-width: 30%;
-}
 </style>

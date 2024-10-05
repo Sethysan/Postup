@@ -1,33 +1,35 @@
 <template>
     <div class="post">
-        <p>{{ post.creator_username }}</p><h2>{{ post.title }}</h2><button v-if="post.creator_username === user" class="deletePost" @click="deletePost">Delete</button>
-        <p>{{ post.description }}</p>
+        <div class="post-header">
+            <h1 class="post-title">{{ post.title }}</h1>
+            <span class="post-metadata">{{ post.author }} • {{ post.time_ago }}</span>
+        </div>
+        <p class="post-description">{{ post.description }}</p>
+        <div class="post-image-container">
+            <img v-if="post.image" :src="post.image" class="post-image" />
+        </div>
         <div v-if="user">
-            <div class="post-footer flex items-center justify-start mt-md px-md xs:px-0">
+            <!-- Post Footer: Votes, Comments, Delete Button -->
+            <div class="post-footer">
                 <!-- Voting Buttons -->
                 <div :class="['vote-container', { 'active-upvote': upvoted, 'active-downvote': downvoted }]">
-                    <button @click="upvote" :class="{ 'active-upvote': upvoted, 'downvote-active': downvoted }"
-                        class="vote-button">
+                    <button @click="upvote" :class="{ 'active-upvote': upvoted }" class="vote-button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20"
                             class="vote-icon">
                             <path
                                 d="M12.877 19H7.123A1.125 1.125 0 0 1 6 17.877V11H2.126a1.114 1.114 0 0 1-1.007-.7 1.249 1.249 0 0 1 .171-1.343L9.166.368a1.128 1.128 0 0 1 1.668.004l7.872 8.581a1.25 1.25 0 0 1 .176 1.348 1.113 1.113 0 0 1-1.005.7H14v6.877A1.125 1.125 0 0 1 12.877 19ZM7.25 17.75h5.5v-8h4.934L10 1.31 2.258 9.75H7.25v8Z" />
                         </svg>
                     </button>
-                    <div>{{ post.upvotes - post.downvotes }}</div>
-
-                    <button @click="downvote" :class="{ 'active-downvote': downvoted, 'upvote-active': upvoted }"
-                        class="vote-button">
+                    <span class="vote-count">{{ post.upvotes - post.downvotes }}</span>
+                    <button @click="downvote" :class="{ 'active-downvote': downvoted }" class="vote-button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20"
                             class="vote-icon">
                             <path
                                 d="M10 20a1.122 1.122 0 0 1-.834-.372l-7.872-8.581A1.251 1.251 0 0 1 1.118 9.7 1.114 1.114 0 0 1 2.123 9H6V2.123A1.125 1.125 0 0 1 7.123 1h5.754A1.125 1.125 0 0 1 14 2.123V9h3.874a1.114 1.114 0 0 1 1.007.7 1.25 1.25 0 0 1-.171 1.345l-7.876 8.589A1.128 1.128 0 0 1 10 20Zm-7.684-9.75L10 18.69l7.741-8.44H12.75v-8h-5.5v8H2.316Zm15.469-.05c-.01 0-.014.007-.012.013l.012-.013Z" />
                         </svg>
                     </button>
-
                 </div>
-
-                <!-- Comments Button -->
+                <!-- Comments Count -->
                 <button aria-label="View comments. {{ replies.length }} replies available" class="comment-button">
                     <svg aria-hidden="true" class="icon-comment" fill="currentColor" height="20" viewBox="0 0 20 20"
                         width="20" xmlns="http://www.w3.org/2000/svg">
@@ -35,20 +37,47 @@
                             d="M7.725 19.872a.718.718 0 0 1-.607-.328.725.725 0 0 1-.118-.397V16H3.625A2.63 2.63 0 0 1 1 13.375v-9.75A2.629 2.629 0 0 1 3.625 1h12.75A2.63 2.63 0 0 1 19 3.625v9.75A2.63 2.63 0 0 1 16.375 16h-4.161l-4 3.681a.725.725 0 0 1-.489.191ZM3.625 2.25A1.377 1.377 0 0 0 2.25 3.625v9.75a1.377 1.377 0 0 0 1.375 1.375h4a.625.625 0 0 1 .625.625v2.575l3.3-3.035a.628.628 0 0 1 .424-.165h4.4a1.377 1.377 0 0 0 1.375-1.375v-9.75a1.377 1.377 0 0 0-1.374-1.375H3.625Z">
                         </path>
                     </svg>
-                    <span> {{ post.comments }} </span>
-                    {{ replies.length }}</button>
-                <button @click="() => { formVisibility = true }">+ Add Comment</button>
-                <div v-if="formVisibility">
-                    <form v-on:submit.prevent="addReply">
-                        <textarea v-model="newReply.description"></textarea>
-                        <button type="submit">Sumbit</button>
-                        <button :onclick="() => { formVisibility = false; newReply = {} }">Cancel</button>
-                    </form>
+                    <span>{{ replies.length }} Comments</span>
+                </button>
+                <!-- Delete Button -->
+                <button v-if="post.creator_username === user" class="delete-button" @click="deletePost">Delete</button>
+                <!-- Add Reply Button -->
+            </div>
+            <!-- Reply Form -->
+            <div v-if="formVisibility" class="reply-form">
+                <form @submit.prevent="addReply">
+                    <textarea v-model="newReply.description" placeholder="Add a comment"></textarea>
+                    <button type="submit">Submit</button>
+                    <button @click="() => { formVisibility = false; newReply = {} }">Cancel</button>
+                </form>
+            </div>
+        </div>
+        <div class="comment-section">
+            <div class="comment-controls">
+                <button class="comment-count">
+                    <svg aria-hidden="true" class="icon-comment" fill="currentColor" height="20" viewBox="0 0 20 20"
+                        width="20" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M7.725 19.872a.718.718 0 0 1-.607-.328.725.725 0 0 1-.118-.397V16H3.625A2.63 2.63 0 0 1 1 13.375v-9.75A2.629 2.629 0 0 1 3.625 1h12.75A2.63 2.63 0 0 1 19 3.625v9.75A2.63 2.63 0 0 1 16.375 16h-4.161l-4 3.681a.725.725 0 0 1-.489.191ZM3.625 2.25A1.377 1.377 0 0 0 2.25 3.625v9.75a1.377 1.377 0 0 0 1.375 1.375h4a.625.625 0 0 1 .625.625v2.575l3.3-3.035a.628.628 0 0 1 .424-.165h4.4a1.377 1.377 0 0 0 1.375-1.375v-9.75a1.377 1.377 0 0 0-1.374-1.375H3.625Z">
+                        </path>
+                    </svg>
+                    <span>{{ replies.length }} Comments</span>
+                </button>
+            </div>
+
+            <!-- Add Comment Section -->
+            <div class="add-comment">
+                <textarea v-model="newReply.description" placeholder="Add a comment"></textarea>
+                <div class="comment-buttons">
+                    <button @click="addReply" class="submit-button">Comment</button>
+                    <button @click="cancelReply" class="cancel-button">Cancel</button>
                 </div>
             </div>
-            <replies :replies="replies"></replies>
         </div>
+        <!-- Replies Component -->
+        <replies :replies="replies"></replies>
     </div>
+
 </template>
 
 <script>
@@ -57,13 +86,7 @@ import replySerive from '../services/RepliesService'
 import Replies from './Replies.vue';
 
 export default {
-    data() {
-        return {
-            isBouncing: false, // State to control the bounce animation
-        };
-    },
     components: { Replies },
-    props: ['post', 'replies'],
     data() {
         return {
             upvoted: this.post.hasUpvoted,
@@ -76,6 +99,7 @@ export default {
     created() {
         this.user = this.$store.getters.username
     },
+    props: ['post', 'replies'],
     methods: {
         addReply() {
             replySerive.createReply(this.post.id, this.newReply)
@@ -92,8 +116,8 @@ export default {
                 service.unvotingLike(this.post.id)
                     .then(res => {
                         this.post.upvotes--;
-                        this.upvoted = false; 
-                         // Remove upvoted state
+                        this.upvoted = false;
+                        // Remove upvoted state
                     })
                     .catch(err => alert("failed to undo upvote: status code " + err.response.status));
             } else {
@@ -105,7 +129,7 @@ export default {
                             this.post.downvotes--;
                             this.downvoted = false;
                         }
-                        if(res.status == 202){
+                        if (res.status == 202) {
                             this.post.upvotes++;
                         }
                         this.upvoted = true;  // Set upvoted state
@@ -163,13 +187,6 @@ export default {
                         }
                     });
             }
-        },
-        triggerBounce() {
-            this.isBouncing = true;
-            // Reset bounce state after animation duration (about 2 seconds)
-            setTimeout(() => {
-                this.isBouncing = false;
-            }, 2000);
         }
     }
 }
@@ -247,13 +264,22 @@ export default {
 }
 
 /* Comment button */
-.comment-button {
-    background-color: transparent;
-    border: none;
+.comment-button,
+.delete-button {
     display: flex;
     align-items: center;
-    font-size: 14px;
-    cursor: pointer;
+    background-color: rgb(228, 228, 228);
+    border-radius: 30px;
+    transition: background-color 0.3s ease;
+
+}
+
+.comment-count {
+    align-items: center;
+    background-color: rgb(228, 228, 228);
+    border-radius: 30px;
+    transition: background-color 0.3s ease;
+
 }
 
 .comment-button svg {
@@ -263,5 +289,79 @@ export default {
 
 .comment-button:hover svg {
     fill: gray;
+}
+
+button[type="submit"] {
+    background-color: #0366d6;
+    color: #fff;
+}
+
+button {
+    margin-right: 8px;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+textarea {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #e1e4e8;
+}
+
+.reply-form {
+    margin-top: 12px;
+}
+
+.vote-count {
+    font-size: 1rem;
+}
+
+.vote-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+}
+
+.post-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.post-image-container {
+    margin-bottom: 12px;
+}
+
+.post-description {
+    font-size: 1rem;
+    margin-bottom: 12px;
+}
+
+.post-metadata {
+    font-size: 0.875rem;
+    color: #6a737d;
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.post-title {
+    font-size: 1.5rem;
+    font-weight: 600;
 }
 </style>

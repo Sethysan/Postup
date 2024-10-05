@@ -1,6 +1,6 @@
 <template>
-  <p v-if="isLoading"></p>
-  <post v-if="!isLoading" :post="post" :replies="replies"></post>
+  <p v-if="isLoading">Loading...</p>
+  <post v-if="!isLoading" :post="postData" :replies="replies"></post>
 </template>
 
 <script>
@@ -13,7 +13,7 @@ export default {
   data (){
     return {
         postId: 0,
-        post: {},
+        postData: {},
         replies: [],
         isLoading: true,
     }
@@ -23,7 +23,7 @@ export default {
     if(this.postId){
          service.getPostById(this.postId)
           .then(res => {
-            this.post = res.data
+            this.postData = res.data
             reviewService.getReplies(this.postId)
               .then(res => {
                   this.replies = res.data
