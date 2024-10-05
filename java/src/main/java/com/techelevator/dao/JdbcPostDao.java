@@ -4,6 +4,7 @@ import com.techelevator.model.Post;
 import com.techelevator.model.User;
 import com.techelevator.model.request.CreatePostDto;
 import com.techelevator.model.responses.PostResponseDto;
+import com.techelevator.service.ImageDownloader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,9 +20,12 @@ import java.util.List;
 @Component
 public class JdbcPostDao implements PostDao {
     private JdbcTemplate jdbcTemplate;
+    private ImageDownloader imageDownloader;
 
-    public JdbcPostDao(JdbcTemplate jdbcTemplate){
+    @Autowired
+    public JdbcPostDao(JdbcTemplate jdbcTemplate, ImageDownloader imageDownloader) {
         this.jdbcTemplate = jdbcTemplate;
+        this.imageDownloader = imageDownloader;
     }
 
     @Override
@@ -32,6 +36,7 @@ public class JdbcPostDao implements PostDao {
                 "LEFT JOIN post_downvote ON posts.post_id = post_downvote.post_id\n" +
                 "LEFT JOIN users AS upvote ON post_upvote.user_id = upvote.user_id AND upvote.user_id = ?\n" +
                 "LEFT JOIN users AS downvote ON post_upvote.user_id = downvote.user_id AND upvote.user_id = ?\n" +
+                "LEFT JOIN replies ON posts.post_id = replies.post_id\n" + // Fetch comments related to the post"
                 "WHERE posts.post_id = ?\n" +
                 "GROUP BY posts.post_id;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user, user, id);
@@ -75,13 +80,28 @@ public class JdbcPostDao implements PostDao {
     public PostResponseDto createPost(CreatePostDto post) {
         String sql = "INSERT INTO posts(title, description, image, author, forum_id) VALUES (?, ?, ?, ?, ?) RETURNING post_id";
         long id = jdbcTemplate.queryForObject(sql, long.class, post.getTitle(), post.getDescription(), post.getImage(), post.getCreator_username(), post.getForum_Id());
+
+        // Save the image to the file system
+        if (post.getImage() != null && !post.getImage().isEmpty()) {
+            String destinationFolder = "src/main/resources/images";
+            String fileName = "post_" + id + ".jpg";
+            imageDownloader.saveImageFromUrl(post.getImage(), destinationFolder, fileName);
+        }
         return this.getPostById(id, -1);
     }
 
     @Override
     public PostResponseDto updatePost(long id, CreatePostDto post) {
         String sql = "UPDATE posts SET title = ?,  description = ?, image = ? WHERE post_id = ?;";
+
         jdbcTemplate.update(sql, post.getTitle(), post.getDescription(), post.getImage(), id);
+
+        // Save the image to the file system
+        if (post.getImage() != null && !post.getImage().isEmpty()) {
+            String destinationFolder = "src/main/resources/images";
+            String fileName = "post_" + id + ".jpg";
+            imageDownloader.saveImageFromUrl(post.getImage(), destinationFolder, fileName);
+        }
         sql = "SELECT * FROM users WHERE user_name = ?;";
         long user = -1;
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, post.getCreator_username());

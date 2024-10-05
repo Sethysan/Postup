@@ -27,7 +27,7 @@ INSERT INTO posts (title, description, image, author, forum_id, time_of_creation
 ('What is your favorite programming language?', 'I personally enjoy Python for its simplicity.', NULL, 'user1', 1, '2024-01-05 14:00:00'),
 ('Top 10 games of 2023', 'Here’s a list of my favorite games from 2023.', 'https://newzoo.com/wp-content/uploads/2023/11/Top-10-bestselling-PC-and-console-game-releases-in-2023-from-January-through-October.png', 'user2', 2, '2024-01-06 15:00:00'),
 ('How to debug Java code?', 'I’m stuck on a bug and need help with debugging Java code.', NULL, 'moderator1', 3, '2024-01-07 16:00:00'),
-('Latest SpaceX launch discussion', 'Let’s talk about the recent SpaceX mission and its impact.', 'https://scontent.fpit1-1.fna.fbcdn.net/v/t39.30808-6/449230165_796195005827318_7823260124310910238_n.jpg', 'admin1', 4, '2024-01-08 17:00:00'),
+('Latest SpaceX launch discussion', 'Let’s talk about the recent SpaceX mission and its impact.', 'https://nss.org/wp-content/uploads/2018/02/falcon-heavy-liftoff.jpg', 'admin1', 4, '2024-01-08 17:00:00'),
 ('What is the future of AI?', 'Discuss how AI is shaping the future of technology.', NULL, 'user3', 1, '2024-01-09 18:00:00');
 
 -- Insert mock post upvotes
