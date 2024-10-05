@@ -2,7 +2,7 @@
     <div class="forum">
         <h1>{{ forum.topic }}</h1>
         <p>{{ forum.description }}</p>
-
+        <button :style="{ marginLeft: color }" :onclick="favorite">Favorite</button> <!-- eventually a heart will likely go inside the favorite button or the button will be a heart  -->
         <!-- Router link to view posts in this forum -->
         <router-link :to="{ name: 'forums', query: { topic: forum.topic } }">
             <button class="view-forum-button">View Forums</button>
@@ -21,7 +21,8 @@ export default {
     props: ['forum'],
     data() {
         return {
-            currentForum: {}
+            currentForum: {},
+            color: 'white'
         }
     },
     created() {
@@ -33,6 +34,26 @@ export default {
             service.getForum(this.$route.params.forumId).then(res => {
                 this.currentForum = res.data;
             });
+        }
+    },
+    methods: {
+        favorite(){
+            if(this.forum.favorited){
+                service.removeFavorite(this.forum.id)
+                    .then(res => {
+                        this.color = "white"
+                        this.forum.favorited = false;
+                    })
+                    .catch(err => alert(err))
+            }
+            else {
+                service.addFavorite(this.forum.id)
+                    .then(res => {
+                        this.color = "red"
+                        this.forum.favorited = true;
+                    })
+                    .catch(err => alert(err))
+            }
         }
     }
 }

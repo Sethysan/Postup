@@ -25,4 +25,13 @@ export default {
   searchForumsByTopicAndDescription(searchTerm) {
     return http.get(`/forums/search?searchTerm=${encodeURIComponent(searchTerm)}`);
   },
+  getFavoriteForums(){
+    return http.get(`/forums/favorites`)
+  },
+  addFavorite(id){
+    return http.post(`/forum/${id}/favorites`);
+  },
+  removeFavorite(id){
+    return http.delete(`/forum/${id}/favorites`);
+  }
 };

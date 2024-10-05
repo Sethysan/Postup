@@ -31,16 +31,24 @@ public class ForumController {
     private UserDao userDao;
 
     @GetMapping("/forums")
-    public List<Forum> getListOfForums(@RequestParam(defaultValue="false") boolean isMostActive) {
-        if(isMostActive){
-            return forumsDao.getActiveForum();
+    public List<Forum> getListOfForums(@RequestParam(defaultValue="false") boolean isMostActive, Principal principal) {
+        long user = -1;
+        if(principal != null){
+            user = userDao.getUserByUsername(principal.getName()).getId();
         }
-        return forumsDao.getForums();
+        if(isMostActive){
+            return forumsDao.getActiveForum(user);
+        }
+        return forumsDao.getForums(user);
     }
 
     @GetMapping("/forums/{forumId}")
-    public Forum getForumById(@PathVariable long forumId) {
-        return forumsDao.getForumById(forumId);
+    public Forum getForumById(@PathVariable long forumId, Principal principal) {
+        long user = -1;
+        if(principal != null){
+            user = userDao.getUserByUsername(principal.getName()).getId();
+        }
+        return forumsDao.getForumById(forumId, user);
     }
 
     @GetMapping("/forums/topic")
@@ -75,7 +83,7 @@ public class ForumController {
             }
         }
 
-        if (getForumById(id).getAuthor().equals(user.getName()) || isAdmin) {
+        if (getForumById(id, null).getAuthor().equals(user.getName()) || isAdmin) {
             forumsDao.deleteForum(id, user.getName());
         }
         else {
@@ -95,4 +103,18 @@ public class ForumController {
         return forumsDao.getFavoriteForums(userDao.getUserByUsername(principal.getName()).getId());
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PostMapping("/forum/{id}/favorites")
+    public void addFavorite(@PathVariable long id,  Principal principal){
+        System.out.println("attempting to favorite");
+        forumsDao.addFavorite(id, userDao.getUserByUsername(principal.getName()).getId());
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @DeleteMapping("/forum/{id}/favorites")
+    public void removeFavorite(@PathVariable long id,  Principal principal){
+        forumsDao.removeFavorite(id, userDao.getUserByUsername(principal.getName()).getId());
+    }
 }

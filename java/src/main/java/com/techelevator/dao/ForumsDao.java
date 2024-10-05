@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface ForumsDao {
 
-    List<Forum> getForums();
+    List<Forum> getForums(long user);
 
-    public List<Forum> getActiveForum();
+    public List<Forum> getActiveForum(long user);
 
-    Forum getForumById(long forumId);
+    Forum getForumById(long forumId, long user);
 
     List<Forum> getForumsByTopic(String topic);
 
@@ -20,4 +20,6 @@ public interface ForumsDao {
     long createForum(String topic, String Description, String author);
     void deleteForum(long id, String name);
     List<SearchResultsDto> getForumsBySearch(String searchTerm);
+    public void addFavorite(long forum, long user);
+    public void removeFavorite(long forum, long user);
 }

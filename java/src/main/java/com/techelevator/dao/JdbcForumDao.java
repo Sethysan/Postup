@@ -26,12 +26,12 @@ public class JdbcForumDao implements ForumsDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Forum> getForums() {
+    public List<Forum> getForums(long user) {
         List<Forum> list = new ArrayList<>();
-        String sql = "SELECT * FROM forums;";
+        String sql = "SELECT forums.*, COUNT(favorite_forums.forum_id) AS favorited FROM forums LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? GROUP BY forums.forum_id ORDER BY forum_id DESC";
 
         try {
-            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user);
             while (results.next()) {
                 Forum forum = mapRowToForum(results);
                 list.add(forum);
@@ -42,21 +42,21 @@ public class JdbcForumDao implements ForumsDao {
         return list;
     }
 
-    public List<Forum> getActiveForum() {
+    public List<Forum> getActiveForum(long user) {
         List<Forum> list = new ArrayList<>();
-        String sql = "SELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post FROM forums JOIN posts ON posts.forum_id = forums.forum_id GROUP BY forums.forum_id ORDER BY most_recent_post DESC LIMIT 5";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+        String sql = "SELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post, COUNT(favorite_forums.forum_id) AS favorited FROM forums LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? JOIN posts ON posts.forum_id = forums.forum_id GROUP BY forums.forum_id ORDER BY most_recent_post DESC LIMIT 5";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user);
         while (results.next()) {
             list.add(mapRowToForum(results));
         }
         return list;
     }
 
-    public Forum getForumById(long forumId) {
+    public Forum getForumById(long forumId, long user) {
         Forum forum = null;
-        String sql = "SELECT * FROM forums WHERE forum_id = ?;";
+        String sql = "SELECT forums.*, COUNT(favorite_forums.forum_id) AS favorited FROM forums LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? WHERE forums.forum_id = ? GROUP BY forums.forum_id ;";
 
-        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, forumId);
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, user, forumId);
 
         if (result.next()) {
             forum = mapRowToForum(result);
@@ -66,7 +66,7 @@ public class JdbcForumDao implements ForumsDao {
 
     public List<Forum> getForumsByTopic(String topic) {
         List<Forum> list = new ArrayList<>();
-        String sql = "SELECT * FROM forums WHERE topic = ?;";
+        String sql = "SELECT * FROM forums, COUNT(favorite_forums.forum_id) AS favorited FROM forums LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? WHERE topic = ? GROUP BY forums.forum_id";
 
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, topic);
 
@@ -80,14 +80,13 @@ public class JdbcForumDao implements ForumsDao {
     @Override
     public List<Forum> getFavoriteForums(long user) {
         List<Forum> favorites = new ArrayList<>();
-        String sql = "SELECT forums.*, favorite_forums.user_id, MAX(posts.time_of_creation) AS most_recent_post\n" +
-                "FROM forums\n" +
-                "JOIN favorite_forums ON forums.forum_id = favorite_forums.forum_id\n" +
+        String sql = "SELECT forums.*, favorite_forums.user_id, MAX(posts.time_of_creation) AS most_recent_post, \n" +
+                "COUNT(favorite_forums.forum_id) AS favorited FROM forums LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? " +
                 "JOIN posts ON posts.forum_id = forums.forum_id \n" +
-                "WHERE favorite_forums.user_id = ?\n" +
-                "GROUP BY forums.forum_id, favorite_forums.user_id\n" +
+                "WHERE favorite_forums.user_id = ? \n" +
+                "GROUP BY forums.forum_id, favorite_forums.user_id \n" +
                 "ORDER BY most_recent_post;";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user);
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user, user);
         while(results.next()){
             favorites.add(mapRowToForum(results));
         }
@@ -107,7 +106,7 @@ public class JdbcForumDao implements ForumsDao {
 
     @Transactional
     public void deleteForum(long id, String name) {
-        Forum forum = getForumById(id);
+        Forum forum = getForumById(id, -1);
 
         String sql = "DELETE FROM comment_replies WHERE parent_id IN (SELECT reply_id FROM replies " +
                 "WHERE post_id IN (SELECT post_id FROM post WHERE forum_id = ?));";
@@ -127,8 +126,8 @@ public class JdbcForumDao implements ForumsDao {
     public List<SearchResultsDto> getForumsBySearch(String searchTerm) {
         List<SearchResultsDto> list = new ArrayList<>();
 
-        String sql = "SELECT forums.*, posts.description AS post_description, posts.post_id, posts.title \n" +
-                "FROM forums \n" +
+        String sql = "SELECT forums.*, posts.description AS post_description, posts.post_id, posts.title, \n" +
+                "COUNT(favorite_forums.forum_id) AS favorited FROM forums LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? \n" +
                 "LEFT JOIN posts ON posts.forum_id = forums.forum_id \n" +
                 "AND (posts.description ILIKE ? OR posts.title ILIKE ?) \n" +
                 "WHERE (forums.description ILIKE ? OR forums.topic ILIKE ?) \n" +
@@ -141,6 +140,18 @@ public class JdbcForumDao implements ForumsDao {
         return list;
     }
 
+    @Override
+    public void addFavorite(long forum, long user) {
+        String sql = "INSERT INTO favorite_forums(forum_id, user_id) VALUES (?, ?)";
+        jdbcTemplate.update(sql, forum, user);
+    }
+
+    @Override
+    public void removeFavorite(long forum, long user) {
+        String sql = "DELETE FROM favorite_forums WHERE forum_id = ? AND user_id = ?";
+        jdbcTemplate.update(sql, forum, user);
+    }
+
     private Forum mapRowToForum(SqlRowSet rs) {
         Forum forum = new Forum();
         forum.setId(rs.getInt("forum_id"));
@@ -148,6 +159,7 @@ public class JdbcForumDao implements ForumsDao {
         forum.setDescription(rs.getString("description"));
         forum.setAuthor(rs.getString("author"));
         forum.setTimeOfCreation(rs.getTimestamp("time_of_creation"));
+        forum.setFavorited(rs.getInt("favorited") > 0);
         return forum;
     }
 

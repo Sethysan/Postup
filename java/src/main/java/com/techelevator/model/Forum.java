@@ -8,6 +8,7 @@ public class Forum {
     private String description;
     private String author;
     private Timestamp timeOfCreation;
+    boolean isFavorited;
 
     public long getId() {
         return id;
@@ -47,5 +48,13 @@ public class Forum {
 
     public void setTimeOfCreation(Timestamp timeOfCreation) {
         this.timeOfCreation = timeOfCreation;
+    }
+
+    public boolean isFavorited() {
+        return isFavorited;
+    }
+
+    public void setFavorited(boolean favorited) {
+        isFavorited = favorited;
     }
 }

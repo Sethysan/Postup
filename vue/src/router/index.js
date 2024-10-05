@@ -13,6 +13,7 @@ import ForumView from '../views/ForumView.vue';
 import ForumPostView from '../views/ForumPostView.vue';
 import CreatePost from '../components/CreatePost.vue';
 import Moderator from '../components/Moderator.vue';
+import FavoritesView from '../views/FavoritesView.vue';
 
 /**
  * The Vue Router is used to "direct" the browser to render a specific view component
@@ -61,6 +62,14 @@ const routes = [
     component: ForumsView,
     meta: {
       requiresAuth: false
+    }
+  },
+  {
+    path: "/forums/favorites",
+    name: "favorites",
+    component: FavoritesView,
+    meta: {
+      requiresAuth: true
     }
   },
   {
