@@ -20,7 +20,12 @@ public class ImageDownloader {
 
     public void saveImageFromUrl(String imageUrl, String destinationFile, String fileName) {
         try{
+            Path imageDirectory = Paths.get(destinationFile);
+            if (!Files.exists(imageDirectory)) {
+                Files.createDirectories(imageDirectory);
+            }
             // Convert the image URL into a URL object
+            System.out.println("Image URL: " + imageUrl);
             URL url = new URL(imageUrl);
 
             /* Open a stream from the URL. This method establishes a connection to the specified
@@ -28,7 +33,7 @@ public class ImageDownloader {
             InputStream inputStream = url.openStream();
 
             // Create the destination path where the image will be saved
-            Path destinationPath = Paths.get(destinationFile + "/" + fileName);
+            Path destinationPath = Paths.get(destinationFile + fileName);
 
             // Use Files.copy() to copy the input stream data to the destination path
             Files.copy(inputStream, destinationPath, StandardCopyOption.REPLACE_EXISTING);
@@ -41,7 +46,7 @@ public class ImageDownloader {
             e.printStackTrace();
             throw new DaoException("Unable to connect to server or database", e);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to save the image", e);
         }
     }
 }

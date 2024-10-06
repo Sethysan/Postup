@@ -107,7 +107,6 @@ public class ForumController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/forum/{id}/favorites")
     public void addFavorite(@PathVariable long id,  Principal principal){
-        System.out.println("attempting to favorite");
         forumsDao.addFavorite(id, userDao.getUserByUsername(principal.getName()).getId());
     }
 

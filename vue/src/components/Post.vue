@@ -6,9 +6,11 @@
         </div>
         <p class="post-description">{{ post.description }}</p>
         <div class="post-image-container">
-            <img v-if="post.image" :src="post.image" class="post-image" />
-        </div>
-        <div v-if="user">
+            <img v-if="post.image" :src="post.image" class="post-image" :class="{ fullscreen: isImageFullscreen }"
+                @click="toggleImageFullscreen" />
+
+
+
             <!-- Post Footer: Votes, Comments, Delete Button -->
             <div class="post-footer">
                 <!-- Voting Buttons -->
@@ -44,40 +46,27 @@
                 <!-- Add Reply Button -->
             </div>
             <!-- Reply Form -->
-            <div v-if="formVisibility" class="reply-form">
-                <form @submit.prevent="addReply">
-                    <textarea v-model="newReply.description" placeholder="Add a comment"></textarea>
-                    <button type="submit">Submit</button>
-                    <button @click="() => { formVisibility = false; newReply = {} }">Cancel</button>
-                </form>
-            </div>
-        </div>
-        <div class="comment-section">
-            <div class="comment-controls">
-                <button class="comment-count">
-                    <svg aria-hidden="true" class="icon-comment" fill="currentColor" height="20" viewBox="0 0 20 20"
-                        width="20" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M7.725 19.872a.718.718 0 0 1-.607-.328.725.725 0 0 1-.118-.397V16H3.625A2.63 2.63 0 0 1 1 13.375v-9.75A2.629 2.629 0 0 1 3.625 1h12.75A2.63 2.63 0 0 1 19 3.625v9.75A2.63 2.63 0 0 1 16.375 16h-4.161l-4 3.681a.725.725 0 0 1-.489.191ZM3.625 2.25A1.377 1.377 0 0 0 2.25 3.625v9.75a1.377 1.377 0 0 0 1.375 1.375h4a.625.625 0 0 1 .625.625v2.575l3.3-3.035a.628.628 0 0 1 .424-.165h4.4a1.377 1.377 0 0 0 1.375-1.375v-9.75a1.377 1.377 0 0 0-1.374-1.375H3.625Z">
-                        </path>
-                    </svg>
-                    <span>{{ replies.length }} Comments</span>
-                </button>
-            </div>
 
-            <!-- Add Comment Section -->
-            <div class="add-comment">
-                <textarea v-model="newReply.description" placeholder="Add a comment"></textarea>
-                <div class="comment-buttons">
-                    <button @click="addReply" class="submit-button">Comment</button>
-                    <button @click="cancelReply" class="cancel-button">Cancel</button>
+
+            <div v-if="user">
+                <!-- Textarea for adding a comment, expanding when clicked -->
+                <div class="reply-container">
+                    <textarea v-model="newReply.description" placeholder="Add a comment" @focus="expandTextarea"
+                        :class="{ expanded: formVisibility }" @blur="formVisibility || cancelReply()"></textarea>
+                    <!-- Buttons appear only when the textarea is expanded -->
+                    <div v-if="formVisibility" class="comment-buttons">
+                        <button @click="addReply" class="submit-button">Submit</button>
+                        <button @click="cancelReply" class="cancel-button">Cancel</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- Replies Component -->
-        <replies :replies="replies"></replies>
-    </div>
 
+            <!-- Replies Component -->
+            <div v-if="!isImageFullscreen">
+                <replies :replies="replies"></replies>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -89,6 +78,7 @@ export default {
     components: { Replies },
     data() {
         return {
+            isImageFullscreen: false,
             upvoted: this.post.hasUpvoted,
             downvoted: this.post.hasDownvoted,
             user: undefined,
@@ -98,10 +88,27 @@ export default {
     },
     created() {
         this.user = this.$store.getters.username
+
+        // service.checkVoteStatus(this.post.id)
+        //     .then(res => {
+        //         this.upvoted = res.data.upvoted;
+        //         this.downvoted = res.data.downvoted;
+        //     })
+        //     .catch(err => console.error("Error fetching vote status:", err));
     },
     props: ['post', 'replies'],
     methods: {
+        toggleImageFullscreen() {
+            this.isImageFullscreen = !this.isImageFullscreen;
+        },
+        expandTextarea() {
+            this.formVisibility = true;  // Make the form visible
+        },
         addReply() {
+            if (!this.newReply.description.trim()) {
+                alert('Comment cannot be empty.');
+                return;
+            }
             replySerive.createReply(this.post.id, this.newReply)
                 .then(res => {
                     this.replies.unshift(res.data)
@@ -109,6 +116,10 @@ export default {
                     this.formVisibility = false;
                 })
                 .catch(err => alert("error " + err.message))
+        },
+        cancelReply() {
+            this.newReply = {};
+            this.formVisibility = false;
         },
         upvote() {
             if (this.upvoted) {
@@ -185,6 +196,9 @@ export default {
                         } else {
                             this.$store.commit('SET_NOTIFICATION', "Error getting post. Request could not be created.");
                         }
+                    })
+                    .finally(() => {
+                        this.fetchReplies();
                     });
             }
         }
@@ -266,8 +280,9 @@ export default {
 /* Comment button */
 .comment-button,
 .delete-button {
-    display: flex;
-    align-items: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-justify: center;
     background-color: rgb(228, 228, 228);
     border-radius: 30px;
     transition: background-color 0.3s ease;
@@ -282,13 +297,13 @@ export default {
 
 }
 
-.comment-button svg {
-    margin-right: 5px;
-    fill: lightgray;
-}
-
-.comment-button:hover svg {
-    fill: gray;
+.comment-buttons {
+    background-color: transparent;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    gap: 10px;
 }
 
 button[type="submit"] {
@@ -296,23 +311,46 @@ button[type="submit"] {
     color: #fff;
 }
 
-button {
-    margin-right: 8px;
-    padding: 8px 12px;
+.submit-button {
+    background-color: #0366d6;
+    color: white;
+    padding: 6px 12px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
 }
 
-textarea {
-    width: 100%;
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid #e1e4e8;
+.submit-button:hover {
+    background-color: #025bb5;
 }
 
-.reply-form {
-    margin-top: 12px;
+.cancel-button {
+    background-color: #e1e1e1;
+}
+
+.cancel-button:hover {
+    background-color: #c7c7c7;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    transition: height 0.3s ease, padding 0.3s ease;
+    height: 40px;
+    resize: none;
+}
+
+textarea.expanded {
+    height: 75px;
+    padding-bottom: 40px;
+    /* Space for buttons */
+}
+
+.reply-container {
+    position: relative;
+    margin-top: 20px;
 }
 
 .vote-count {
@@ -334,9 +372,26 @@ textarea {
 
 .post-image {
     width: 100%;
+    height: auto;
     max-height: 400px;
     object-fit: cover;
     border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.post-image.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: contain;
+    background-color: black;
+    z-index: 1000;
+    cursor: zoom-out;
+    padding: 0;
+    margin: 0;
 }
 
 .post-image-container {

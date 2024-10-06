@@ -2,6 +2,9 @@ package com.techelevator.dao;
 import com.techelevator.model.Moderation;
 import com.techelevator.model.Post;
 import com.techelevator.model.User;
+import org.springframework.security.core.parameters.P;
+import java.time.LocalDate;
+import java.util.List;
 import com.techelevator.model.request.CreatePostDto;
 import com.techelevator.model.responses.PostResponseDto;
 import com.techelevator.service.ImageDownloader;
@@ -9,13 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class JdbcPostDao implements PostDao {
@@ -40,7 +42,7 @@ public class JdbcPostDao implements PostDao {
                 "WHERE posts.post_id = ?\n" +
                 "GROUP BY posts.post_id;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user, user, id);
-        if(results.next()){
+        if (results.next()) {
             post = mapRowToPost(results);
         }
         return post;
@@ -54,23 +56,23 @@ public class JdbcPostDao implements PostDao {
                 "LEFT JOIN users AS upvote ON post_upvote.user_id = upvote.user_id AND upvote.user_id = ? \n" +
                 "LEFT JOIN users AS downvote ON post_downvote.user_id = downvote.user_id AND downvote.user_id = ? " +
                 "WHERE (posts.description ILIKE ? OR replies.description ILIKE ?) ";
-        if(forum > 0){
+        if (forum > 0) {
             sql += " AND posts.forum_id = " + forum;
         }
-        if(today){
+        if (today) {
             sql += " AND (CAST(posts.time_of_creation AS Date) = CURRENT_DATE OR CAST(replies.time_of_creation AS DATE) = CURRENT_DATE) ";
         }
         sql += " GROUP BY posts.post_id ";
         sql += sorBytPopularity ? " ORDER BY COUNT(post_upvote.post_id) - COUNT(post_downvote.post_id) DESC" : " ORDER BY post_id DESC";
-        if(limit > 0){
+        if (limit > 0) {
             sql += " LIMIT " + limit;
         }
-        if(!keyword.isBlank()){
+        if (!keyword.isBlank()) {
             keyword = "%" + keyword;
         }
         keyword += "%";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user, user, keyword, keyword);
-        while(results.next()){
+        while (results.next()) {
             posts.add(mapRowToPost(results));
         }
         return posts;
@@ -105,7 +107,7 @@ public class JdbcPostDao implements PostDao {
         sql = "SELECT * FROM users WHERE user_name = ?;";
         long user = -1;
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, post.getCreator_username());
-        if(results.next()){
+        if (results.next()) {
             user = results.getLong("user_id");
         }
         return this.getPostById(id, user);
@@ -130,8 +132,7 @@ public class JdbcPostDao implements PostDao {
         }
         try {
             jdbcTemplate.update(sql, postId, replyId);
-        }
-        catch (DuplicateKeyException e){
+        } catch (DuplicateKeyException e) {
             return false;
         }
         return true;
@@ -144,6 +145,32 @@ public class JdbcPostDao implements PostDao {
         }
         jdbcTemplate.update(sql, postId, replyId);
     }
+
+//    public Map<String, Boolean> checkVoteStatus(long postId, long userId) {
+//        // Check if the user has upvoted or downvoted the post
+//        // If the user has upvoted the post, the upvoted key will be true
+//        // exists returns a boolean value based on whether the subquery returns any (1) rows
+//        String sql = "SELECT \n" +
+//                "EXISTS( SELECT 1 FROM post_upvote WHERE post_id = ? AND user_id = ?)\n " +
+//                "AS upvoted,\n " +
+//                "EXISTS(SELECT 1 FROM post_downvote WHERE post_id = ? AND user_id = ?)\n " +
+//                "AS downvoted;";
+//
+//        // voteStatus is a map that contains the keys upvoted and downvoted
+//        // and there values are either true or false
+//        Map<String, Object> voteStatus = jdbcTemplate.queryForMap(sql, postId, userId, postId, userId);
+//
+//        // As QueryForMap returns an object that can be interpreted as
+//        // as either a boolean or an integer, depending on the database
+//        // we need to cast the values to boolean to avoid ClassCastExceptions
+//        Map<String, Boolean> result = new HashMap<>();
+//        //ternary to check if the value is null, if it is, set it to false
+//        result.put("upvoted", voteStatus.get("upvoted") != null ? (Boolean) voteStatus.get("upvoted") : false);
+//        //ternary to check if the value is null, if it is, set it to false
+//        result.put("downvoted", voteStatus.get("downvoted") != null ? (Boolean) voteStatus.get("downvoted") : false);
+//
+//        return result;
+//    }
 
 
     private PostResponseDto mapRowToPost(SqlRowSet row) {
@@ -159,6 +186,7 @@ public class JdbcPostDao implements PostDao {
         post.setHasUpvoted(row.getInt("upvotes_from_user") == 1);
         post.setHasDownvoted(row.getInt("downvotes_from_user") == 1);
         post.setImage(row.getString("image"));
+        post.setTimeOfCreation(row.getTimestamp("time_of_creation"));
         return post;
     }
 }

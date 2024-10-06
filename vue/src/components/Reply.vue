@@ -1,49 +1,55 @@
 <template>
-  <div class="thread">
-    <p>{{ reply.user.username }}</p>
-    <p>{{ reply.description }}</p>
-    <div class="post-footer flex items-center justify-start mt-md px-md xs:px-0">
-                <!-- Voting Buttons -->
-      <div :class="['vote-container', { 'active-upvote': upvoted, 'active-downvote': downvoted }]">
-        <button @click="upvote" :class="{ 'active-upvote': upvoted, 'downvote-active': downvoted }" class="vote-button">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" class="vote-icon">
-                <path d="M12.877 19H7.123A1.125 1.125 0 0 1 6 17.877V11H2.126a1.114 1.114 0 0 1-1.007-.7 1.249 1.249 0 0 1 .171-1.343L9.166.368a1.128 1.128 0 0 1 1.668.004l7.872 8.581a1.25 1.25 0 0 1 .176 1.348 1.113 1.113 0 0 1-1.005.7H14v6.877A1.125 1.125 0 0 1 12.877 19ZM7.25 17.75h5.5v-8h4.934L10 1.31 2.258 9.75H7.25v8Z" />
-            </svg>
-        </button>
-        <div>{{ reply.upvotes - reply.downvotes }}</div>
-        <button @click="downvote" :class="{ 'active-downvote': downvoted, 'upvote-active': upvoted }" class="vote-button">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" class="vote-icon">
-              <path d="M10 20a1.122 1.122 0 0 1-.834-.372l-7.872-8.581A1.251 1.251 0 0 1 1.118 9.7 1.114 1.114 0 0 1 2.123 9H6V2.123A1.125 1.125 0 0 1 7.123 1h5.754A1.125 1.125 0 0 1 14 2.123V9h3.874a1.114 1.114 0 0 1 1.007.7 1.25 1.25 0 0 1-.171 1.345l-7.876 8.589A1.128 1.128 0 0 1 10 20Zm-7.684-9.75L10 18.69l7.741-8.44H12.75v-8h-5.5v8H2.316Zm15.469-.05c-.01 0-.014.007-.012.013l.012-.013Z" />
-            </svg>
-          </button>
-          </div>
-     </div>
-    <button v-if="reply.user.username === user" class="deletePost" @click="deleteReply">Delete</button>
-    <button @click="() => { formVisibility = true }">Reply</button>
-      <div v-if="formVisibility">
-        <form v-on:submit.prevent="addReply">
-            <textarea v-model="newReply.description"></textarea>
+    <div class="thread">
+        <p>{{ reply.user.username }}</p>
+        <p>{{ reply.description }}</p>
+        <div class="post-footer flex items-center justify-start mt-md px-md xs:px-0">
+            <!-- Voting Buttons -->
+            <div :class="['vote-container', { 'active-upvote': upvoted, 'active-downvote': downvoted }]">
+                <button @click="upvote" :class="{ 'active-upvote': upvoted, 'downvote-active': downvoted }"
+                    class="vote-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20"
+                        class="vote-icon">
+                        <path
+                            d="M12.877 19H7.123A1.125 1.125 0 0 1 6 17.877V11H2.126a1.114 1.114 0 0 1-1.007-.7 1.249 1.249 0 0 1 .171-1.343L9.166.368a1.128 1.128 0 0 1 1.668.004l7.872 8.581a1.25 1.25 0 0 1 .176 1.348 1.113 1.113 0 0 1-1.005.7H14v6.877A1.125 1.125 0 0 1 12.877 19ZM7.25 17.75h5.5v-8h4.934L10 1.31 2.258 9.75H7.25v8Z" />
+                    </svg>
+                </button>
+                <div>{{ reply.upvotes - reply.downvotes }}</div>
+                <button @click="downvote" :class="{ 'active-downvote': downvoted, 'upvote-active': upvoted }"
+                    class="vote-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20"
+                        class="vote-icon">
+                        <path
+                            d="M10 20a1.122 1.122 0 0 1-.834-.372l-7.872-8.581A1.251 1.251 0 0 1 1.118 9.7 1.114 1.114 0 0 1 2.123 9H6V2.123A1.125 1.125 0 0 1 7.123 1h5.754A1.125 1.125 0 0 1 14 2.123V9h3.874a1.114 1.114 0 0 1 1.007.7 1.25 1.25 0 0 1-.171 1.345l-7.876 8.589A1.128 1.128 0 0 1 10 20Zm-7.684-9.75L10 18.69l7.741-8.44H12.75v-8h-5.5v8H2.316Zm15.469-.05c-.01 0-.014.007-.012.013l.012-.013Z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <button v-if="reply.user.username === user" class="deletePost" @click="deleteReply">Delete</button>
+        <button @click="() => { formVisibility = true }">Reply</button>
+        <div v-if="formVisibility">
+            <form v-on:submit.prevent="addReply">
+                <textarea v-model="newReply.description"></textarea>
                 <button type="submit">Sumbit</button>
                 <button :onclick="() => { formVisibility = false; newReply = {} }">Cancel</button>
-          </form>
-       </div>
-    <div class="comments" :style="{ marginLeft: `${indent + 20}px` }">
-        <reply v-for="comment in reply.replies" :key="comment.id" :reply="comment" :indent="indent+20"></reply>
+            </form>
+        </div>
+        <div class="comments" :style="{ marginLeft: `${indent + 20}px` }">
+            <reply v-for="comment in reply.replies" :key="comment.id" :reply="comment" :indent="indent + 20"></reply>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
 import replySerive from '../services/RepliesService';
 export default {
     props: ['reply', 'indent'],
-    data(){
+    data() {
         return {
-            styles: {margin: this.indent},
+            styles: { margin: this.indent },
             formVisibility: false,
             newReply: {
-              respondsTo: this.reply.id,
-              description : ""
+                respondsTo: this.reply.id,
+                description: ""
             },
             user: this.$store.getters.username,
             upvoted: this.reply.hasUpvoted,
@@ -51,25 +57,25 @@ export default {
         }
     },
     methods: {
-      addReply() {
-        if(this.newReply.description != ""){
-            replySerive.createReply(this.reply.postId, this.newReply)
-                .then(res => {
-                    this.reply.replies.push(res.data);
-                    this.newReply = {}
-                    this.formVisibility = false;
-                })
-                .catch(err => alert("error " + err.response.status));
-              }
-          },
-          upvote() {
+        addReply() {
+            if (this.newReply.description != "") {
+                replySerive.createReply(this.reply.postId, this.newReply)
+                    .then(res => {
+                        this.reply.replies.push(res.data);
+                        this.newReply = {}
+                        this.formVisibility = false;
+                    })
+                    .catch(err => alert("error " + err.response.status));
+            }
+        },
+        upvote() {
             if (this.upvoted) {
                 // Remove the upvote
                 replySerive.unvotingLikes(this.reply.id)
                     .then(res => {
                         this.reply.upvotes--;
-                        this.upvoted = false; 
-                         // Remove upvoted state
+                        this.upvoted = false;
+                        // Remove upvoted state
                     })
                     .catch(err => alert("failed to undo upvote: status code " + err.response.status));
             } else {
@@ -78,16 +84,16 @@ export default {
                     .then(res => {
                         // If already downvoted, remove downvote
                         if (this.downvoted) {
-                        if(res.status == 202){
-                            this.reply.downvotes--;
-                        }
+                            if (res.status == 202) {
+                                this.reply.downvotes--;
+                            }
                             this.downvoted = false;
                         }
-                        if(res.status == 202){
+                        if (res.status == 202) {
                             this.reply.upvotes++;
-                            this.upvoted = true; 
+                            this.upvoted = true;
                         }
-                         // Set upvoted state
+                        // Set upvoted state
                     })
                     .catch(err => { alert("failed to upvote: status code " + err) });
             }
@@ -110,32 +116,25 @@ export default {
                             this.reply.upvotes--;
                             this.upvoted = false;
                         }
-                        if(res.status == 202){
-                        this.reply.downvotes++;
-                        this.downvoted = true;
-                      }  // Set downvoted state
+                        if (res.status == 202) {
+                            this.reply.downvotes++;
+                            this.downvoted = true;
+                        }  // Set downvoted state
                     })
                     .catch(err => { alert("failed to downvote: status code " + err.response.status) });
             }
         },
-          deleteReply() {
+        deleteReply() {
             if (confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
                 replySerive.deleteReply(this.reply.id)
                     .then(response => {
                         this.$store.commit('SET_NOTIFICATION', `Post ${this.reply.id} was deleted.`);
-                        this.$forceUpdate(); 
+                        this.$forceUpdate();
                     })
                     .catch(error => {
                         alert("error " + error.response.status)
                     });
             }
-        },
-        triggerBounce() {
-            this.isBouncing = true;
-            // Reset bounce state after animation duration (about 2 seconds)
-            setTimeout(() => {
-                this.isBouncing = false;
-            }, 2000);
         }
     }
 }

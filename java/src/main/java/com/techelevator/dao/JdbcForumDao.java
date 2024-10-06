@@ -80,13 +80,18 @@ public class JdbcForumDao implements ForumsDao {
     @Override
     public List<Forum> getFavoriteForums(long user) {
         List<Forum> favorites = new ArrayList<>();
-        String sql = "SELECT forums.*, favorite_forums.user_id, MAX(posts.time_of_creation) AS most_recent_post, \n" +
-                "COUNT(favorite_forums.forum_id) AS favorited FROM forums LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? " +
-                "JOIN posts ON posts.forum_id = forums.forum_id \n" +
-                "WHERE favorite_forums.user_id = ? \n" +
+        String sql = "SELECT forums.*, \n" +
+                "       favorite_forums.user_id, \n" +
+                "       MAX(posts.time_of_creation) AS most_recent_post, \n" +
+                "       COUNT(favorite_forums.forum_id) AS favorited \n" +
+                "FROM forums \n" +
+                "LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ?\n" +
+                "LEFT JOIN posts ON posts.forum_id = forums.forum_id \n" +
+                "WHERE favorite_forums.user_id = ?\n" +
                 "GROUP BY forums.forum_id, favorite_forums.user_id \n" +
                 "ORDER BY most_recent_post;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user, user);
+
         while(results.next()){
             favorites.add(mapRowToForum(results));
         }

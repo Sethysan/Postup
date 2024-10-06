@@ -28,6 +28,7 @@ export default {
   created() {
     PostService.getPopularPosts()
       .then(res => {
+        console.log(res.data);
         this.posts = res.data;
         ForumService.getActiveForums()
           .then(res => {

@@ -18,13 +18,16 @@
         <router-link :to="{ name: 'post', params: { post: post.id } }">
           <h1>{{ post.title }}</h1>
         </router-link>
+        <p class="inline-time">{{ post.creator_username }}</p>
+        <p class="inline-time">{{ getTimeElapsed(post.timeOfCreation) }}</p>
         <p> {{ post.creator_username }} </p>
       </header>
       <section>
         <img v-if="post.image" :src="post.image" />
         <p> {{ post.description }} </p>
       </section>
-      <button v-if="post.creator_username === user" class="btn btn-delete deletePost" @click="deletePost(post.id)">Delete</button>
+      <button v-if="post.creator_username === user" class="btn btn-delete deletePost"
+        @click="deletePost(post.id)">Delete</button>
     </div>
   </div>
 </template>
@@ -32,6 +35,7 @@
 import Post from '../components/Post.vue';
 import PostService from '../services/PostService';
 import RepliesService from '../services/RepliesService';
+import dayjs from 'dayjs';
 export default {
   props: ['posts'],
   components: { Post },
@@ -82,6 +86,10 @@ export default {
             }
           });
       }
+    },
+    getTimeElapsed(timeOfCreation) {
+      // dayjs converts time into a readable format and calculates the elapsed time
+      return dayjs(timeOfCreation).fromNow();
     }
   }
 };

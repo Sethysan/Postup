@@ -1,5 +1,7 @@
 package com.techelevator.model;
 
+import java.sql.Timestamp;
+
 public class Post {
 
     private int id;
@@ -10,6 +12,7 @@ public class Post {
     private int dislikes;
     private String author;
     private int forumId;
+    private Timestamp timeOfCreation;
 
     public int getId() {
         return id;
@@ -73,5 +76,13 @@ public class Post {
 
     public void setForumId(int forumId) {
         this.forumId = forumId;
+    }
+
+    public Timestamp getTimeOfCreation() {
+        return timeOfCreation;
+    }
+
+    public void setTimeOfCreation(Timestamp timeOfCreation) {
+        this.timeOfCreation = timeOfCreation;
     }
 }

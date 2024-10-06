@@ -65,21 +65,29 @@ export default {
         description: this.postDescription,
         image: this.imageUrl,
         author: this.$store.state.user.username,
-        forumId: this.forumId
+        forumId: this.id
       };
 
       PostService.createPost(this.id, newPost)
-        .then(() => {
-          console.log("Redirecting to forum with id:", this.id);
-          this.$router.push({ name: 'forum', params: { id: String(this.id) } });
+        .then((response) => {
+          if (response.data) {
+            console.log("Redirecting to forum with id:", this.id);
+            this.$router.push({ name: 'forum', params: { id: String(this.id) } });
+          } else {
+            throw new Error("Unexpected response format");
+          }
         })
         .catch((error) => {
           console.error("Error creating post: ", error);
-          alert("Failed to create post." + error.response.status);
+          if (error.response && error.response.status) {
+            alert("Failed to create post. Status: " + error.response.status);
+          } else {
+            alert("Failed to create post. Please check your network connection.");
+          }
         });
     }
   }
-};
+}
 </script>
 
 <style scoped>
@@ -103,7 +111,8 @@ export default {
   display: inline-block;
 }
 
-.cancel-button:hover, .submit-button:hover  {
+.cancel-button:hover,
+.submit-button:hover {
   background-color: #a33908;
 }
 
@@ -138,5 +147,4 @@ button {
 button:hover {
   background-color: #45a049;
 }
-
 </style>

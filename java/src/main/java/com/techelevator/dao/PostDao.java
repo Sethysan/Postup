@@ -2,6 +2,7 @@ package com.techelevator.dao;
 import com.techelevator.model.request.CreatePostDto;
 import com.techelevator.model.responses.PostResponseDto;
 import java.util.List;
+import java.util.Map;
 
 public interface PostDao {
 
@@ -14,4 +15,6 @@ public interface PostDao {
 //route means the path to take in the method in the jdbc for example 1 is add for dislike and 0 is for dislike.
     boolean addVote(long postId, long userId, int route);
     void unvote(long postId, long userId, int route);
+
+//     Map<String,Boolean > checkVoteStatus(long postId, long userId);
 }

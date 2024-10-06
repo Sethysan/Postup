@@ -1,5 +1,7 @@
 package com.techelevator.model.responses;
 
+import java.sql.Timestamp;
+
 public class PostResponseDto {
 
     private long id;
@@ -12,6 +14,7 @@ public class PostResponseDto {
     private String creator_username;
     private boolean hasUpvoted;
     private boolean hasDownvoted;
+    private Timestamp timeOfCreation;
 
     public long getId() {
         return id;
@@ -93,6 +96,14 @@ public class PostResponseDto {
         this.image = image;
     }
 
+    public Timestamp getTimeOfCreation() {
+        return timeOfCreation;
+    }
+
+    public void setTimeOfCreation(Timestamp timeOfCreation) {
+        this.timeOfCreation = timeOfCreation;
+    }
+
     @Override
     public String toString() {
         return "PostResponseDto{" +
@@ -108,4 +119,6 @@ public class PostResponseDto {
                 ", hasDownvoted=" + hasDownvoted +
                 '}';
     }
+
+
 }
