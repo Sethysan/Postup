@@ -93,8 +93,12 @@ public class ForumController {
     }
 
     @GetMapping("/forums/search")
-    public List<SearchResultsDto> searchForums(@RequestParam String searchTerm) {
-        return forumsDao.getForumsBySearch(searchTerm);
+    public List<SearchResultsDto> searchForums(@RequestParam String searchTerm, Principal principal) {
+        long user = -1;
+        if(principal != null ) {
+            user = userDao.getUserByUsername(principal.getName()).getId();
+        }
+        return forumsDao.getForumsBySearch(searchTerm, user);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")

@@ -128,7 +128,7 @@ public class JdbcForumDao implements ForumsDao {
     }
 
     @Override
-    public List<SearchResultsDto> getForumsBySearch(String searchTerm) {
+    public List<SearchResultsDto> getForumsBySearch(String searchTerm, long user) {
         List<SearchResultsDto> list = new ArrayList<>();
 
         String sql = "SELECT forums.*, posts.description AS post_description, posts.post_id, posts.title, \n" +
@@ -137,10 +137,11 @@ public class JdbcForumDao implements ForumsDao {
                 "AND (posts.description ILIKE ? OR posts.title ILIKE ?) \n" +
                 "WHERE (forums.description ILIKE ? OR forums.topic ILIKE ?) \n" +
                 "OR (posts.description ILIKE ? OR posts.title ILIKE ?) \n" +
+                "GROUP BY forums.forum_id, posts.post_id " +
                 "ORDER BY posts.description DESC, forums.forum_id;";
 
         searchTerm = "%" + searchTerm + "%";
-        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm);
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, user, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm);
         list = mapRowToSearchResults(result);
         return list;
     }

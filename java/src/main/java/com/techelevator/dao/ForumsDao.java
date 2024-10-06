@@ -19,7 +19,7 @@ public interface ForumsDao {
 
     long createForum(String topic, String Description, String author);
     void deleteForum(long id, String name);
-    List<SearchResultsDto> getForumsBySearch(String searchTerm);
+    List<SearchResultsDto> getForumsBySearch(String searchTerm, long user);
     public void addFavorite(long forum, long user);
     public void removeFavorite(long forum, long user);
 }
