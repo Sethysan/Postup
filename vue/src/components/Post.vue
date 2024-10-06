@@ -1,15 +1,15 @@
 <template>
-    <div class="post">
+    <div v-if="isImageFullscreen" class="fullscreen-container" @click="toggleImageFullscreen">
+        <img :src="post.image" class="post-image-fullscreen" />
+    </div>
+    <div v-else class="post">
         <div class="post-header">
             <h1 class="post-title">{{ post.title }}</h1>
             <span class="post-metadata">{{ post.author }} • {{ post.time_ago }}</span>
         </div>
         <p class="post-description">{{ post.description }}</p>
         <div class="post-image-container">
-            <img v-if="post.image" :src="post.image" class="post-image" :class="{ fullscreen: isImageFullscreen }"
-                @click="toggleImageFullscreen" />
-
-
+            <img v-if="post.image" :src="post.image" class="post-image" @click="toggleImageFullscreen" />
 
             <!-- Post Footer: Votes, Comments, Delete Button -->
             <div class="post-footer">
@@ -43,11 +43,8 @@
                 </button>
                 <!-- Delete Button -->
                 <button v-if="post.creator_username === user" class="delete-button" @click="deletePost">Delete</button>
-                <!-- Add Reply Button -->
             </div>
             <!-- Reply Form -->
-
-
             <div v-if="user">
                 <!-- Textarea for adding a comment, expanding when clicked -->
                 <div class="reply-container">
@@ -60,13 +57,13 @@
                     </div>
                 </div>
             </div>
-
             <!-- Replies Component -->
             <div v-if="!isImageFullscreen">
                 <replies :replies="replies"></replies>
             </div>
         </div>
     </div>
+
 </template>
 
 <script>
@@ -372,30 +369,44 @@ textarea.expanded {
 
 .post-image {
     width: 100%;
-    height: auto;
+    background-color: black;
     max-height: 400px;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 8px;
     cursor: pointer;
     transition: transform 0.3s ease;
 }
 
-.post-image.fullscreen {
+.fullscreen-container {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    object-fit: contain;
     background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     z-index: 1000;
     cursor: zoom-out;
-    padding: 0;
-    margin: 0;
 }
 
-.post-image-container {
-    margin-bottom: 12px;
+.post-image-fullscreen {
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    max-height: none;
+    object-fit: contain;
+    cursor: zoom-out;
+
+}
+
+.post-image-container img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+    border-radius: 8px;
+    cursor: zoom-in;
 }
 
 .post-description {

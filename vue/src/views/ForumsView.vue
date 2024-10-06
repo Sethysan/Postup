@@ -218,14 +218,13 @@ export default {
 }
 
 .btn-create,
-.search-button,
 .clear-button {
-    display: inline-block;
-    padding: 3px;
+    padding: 5px 10px;
     margin-bottom: 15px;
     background-color: #e15d20;
     color: white;
     border: none;
+    border-radius: 5px;
     cursor: pointer;
     transition: .5s;
     margin-top: 20px;
@@ -235,11 +234,23 @@ export default {
 .clear-button {
     margin-left: 10px;
 }
+.search-button{
+    margin-bottom: 15px;
+    background-color:rgb(222, 221, 221) ;
+    cursor: pointer;
+    transition: .5s;
+    margin-top: 20px;
+    display: inline-block;
+    transition: .2s;
+}
 
 .btn-create:hover,
-.search-button:hover,
 .clear-button:hover {
     background-color: #a33908;
+}
+.search-button:hover{
+    color: white;
+    background-color: rgb(4, 0, 255);
 }
 
 .error-message {

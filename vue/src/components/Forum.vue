@@ -2,11 +2,9 @@
     <div class="forum">
         <h1>{{ forum.topic }}</h1>
         <p>{{ forum.description }}</p>
-        <button :style="{ marginLeft: color }" :onclick="favorite">Favorite</button> <!-- eventually a heart will likely go inside the favorite button or the button will be a heart  -->
-        <!-- Router link to view posts in this forum -->
-        <router-link :to="{ name: 'forums', query: { topic: forum.topic } }">
-            <button class="view-forum-button">View Forums</button>
-        </router-link>
+        <button :class="forum.favorited ? 'favorited' : 'not-favorited'" @click="favorite">
+            {{ forum.favorited ? 'Favorited' : 'Favorite?' }}
+        </button> <!-- eventually a heart will likely go inside the favorite button or the button will be a heart  -->
         <!-- Router link to create a new post in this forum -->
         <router-link :to="{ name: 'create-post', params: { forumId: forum.Id } }">
             <button class="create-post-button">Create Post</button>
@@ -37,8 +35,8 @@ export default {
         }
     },
     methods: {
-        favorite(){
-            if(this.forum.favorited){
+        favorite() {
+            if (this.forum.favorited) {
                 service.removeFavorite(this.forum.id)
                     .then(res => {
                         this.color = "white"
@@ -76,7 +74,19 @@ button {
 button:hover {
     background-color: #a33908;
 }
-.view-forum-button{
-    margin-right: 10px;
+
+.create-post-button {
+    margin-left: 10px;
+}
+
+.favorited {
+    background-color: rgb(255, 0, 0);
+}
+
+.not-favorited {
+    background-color: #e15d20;
+}
+.favorited:hover {
+    background-color: rgb(174, 1, 1);
 }
 </style>

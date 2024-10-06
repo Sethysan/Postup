@@ -23,7 +23,7 @@
         <p> {{ post.creator_username }} </p>
       </header>
       <section>
-        <img v-if="post.image" :src="post.image" />
+        <img v-if="post.image" :src="post.image"  class="post-image"/>
         <p> {{ post.description }} </p>
       </section>
       <button v-if="post.creator_username === user" class="btn btn-delete deletePost"
@@ -102,5 +102,14 @@ export default {
 .sort {
   margin-bottom: 15px;
   margin-right: 10px;
+}
+.post-image {
+    width: 100%;
+    background-color: black;
+    max-height: 400px;
+    object-fit:contain;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
 }
 </style>
