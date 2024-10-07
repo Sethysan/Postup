@@ -33,7 +33,7 @@ public class ForumController {
     @GetMapping("/forums")
     public List<Forum> getListOfForums(@RequestParam(defaultValue="false") boolean isMostActive, Principal principal) {
         long user = -1;
-        if(principal != null){
+        if(principal != null && principal.getName().isBlank()){
             user = userDao.getUserByUsername(principal.getName()).getId();
         }
         if(isMostActive){
@@ -45,7 +45,7 @@ public class ForumController {
     @GetMapping("/forums/{forumId}")
     public Forum getForumById(@PathVariable long forumId, Principal principal) {
         long user = -1;
-        if(principal != null){
+        if(principal != null && principal.getName().isBlank()){
             user = userDao.getUserByUsername(principal.getName()).getId();
         }
         return forumsDao.getForumById(forumId, user);

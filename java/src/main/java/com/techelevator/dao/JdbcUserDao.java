@@ -1,5 +1,6 @@
 package com.techelevator.dao;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -91,6 +92,26 @@ public class JdbcUserDao implements UserDao {
     public void promoteUserToAdmin(int userId) {
         String sql = "UPDATE users SET role = 'ROLE_ADMIN' WHERE user_id = ?";
         jdbcTemplate.update(sql, userId);
+    }
+
+    public void banUser(long id) {
+        String sql = "UPDATE users SET role = 'ROLE_BANNED' WHERE user_id = ?;";
+        jdbcTemplate.update(sql, id);
+    }
+
+    public List<User> getUsersFiltered() {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT user_id, username, password_hash, role FROM users WHERE role = 'ROLE_USER';";
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+            while (results.next()) {
+                User user = mapRowToUser(results);
+                users.add(user);
+            }
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        }
+        return users;
     }
 
     private User mapRowToUser(SqlRowSet rs) {

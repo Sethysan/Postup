@@ -13,12 +13,12 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="user in filterUsers" :key="user.id">
+            <tr v-for="user in filteredUsers" :key="user.id">
                 <td>{{ user.username }}</td>
                 <!-- also inside loop button for promote to moderator -->
                 <!-- will also be a table component <td> -->
                 <td>
-                    <button @click="promoteUser(filteredUsers.username)">Promote to Moderator</button>
+                    <button @click="promoteUser(user.username)">Promote to Moderator</button>
                 </td>
             </tr>
         </tbody>
@@ -31,10 +31,6 @@
 import ModeratorService from '@/services/ModeratorService';
 export default {
     props: {
-        users: {
-            type: Array,
-            required: true
-        },
         forumId: {
             type: String,
             required: true
@@ -42,12 +38,11 @@ export default {
     },
     computed: {
         canPromote() {
-            const isForumPath = this.$route.path.includes('/forums');
             const isModOrAdmin = this.userRole === 'ROLE_MODERATOR' || this.userRole === 'ROLE_ADMIN';
-            return isForumPath && isModOrAdmin;
+            return isModOrAdmin;
         },
         filteredUsers() {
-            return this.users.filter(user => user.role === 'ROLE_USER');
+            return this.users.filter(user => user.authorities.name === 'ROLE_USER');
         }
     },
     methods: {
@@ -61,12 +56,25 @@ export default {
                 .catch(error => {
                     this.$store.commit('SET_NOTIFICATION', userName + " not found.");
                 });
+        },
+        getUsers() {
+            ModeratorService.getUsers()
+                .then(response => {
+                    this.users = response.data;
+                })
+                .catch(error => {
+                    this.$store.commit('SET_NOTIFICATION', "Error fetching users.");
+                });
         }
     },
     data() {
         return {
+            users: [],
             userRole: this.$store.getters.role
         }
+    },
+    mounted() {
+        this.getUsers();
     }
     // method to see if in forums path and if role is mod or admin canPromote
     // method to promote user to moderator

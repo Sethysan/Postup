@@ -16,4 +16,7 @@ public interface UserDao {
     User createUser(RegisterUserDto user);
 
     void promoteUserToAdmin(int userId);
+    void banUser(long id);
+
+    List<User> getUsersFiltered();
 }

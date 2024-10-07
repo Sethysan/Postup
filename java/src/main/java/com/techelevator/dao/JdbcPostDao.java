@@ -60,7 +60,7 @@ public class JdbcPostDao implements PostDao {
             sql += " AND posts.forum_id = " + forum;
         }
         if (today) {
-            sql += " AND (CAST(posts.time_of_creation AS Date) = CURRENT_DATE OR CAST(replies.time_of_creation AS DATE) = CURRENT_DATE) ";
+            sql += " AND (CAST(posts.time_of_creation AS Date) = CURRENT_DATE OR CAST(replies.time_of_creation AS DATE) = CURRENT_DATE)  OR CAST(post_upvote.time_of_creation AS DATE) = CURRENT_DATE OR CAST(post_downvote.time_of_creation AS DATE) = CURRENT_DATE";
         }
         sql += " GROUP BY posts.post_id ";
         sql += sortByPopularity ? " ORDER BY COUNT(post_upvote.post_id) - COUNT(post_downvote.post_id) DESC" : " ORDER BY post_id DESC";
@@ -75,7 +75,6 @@ public class JdbcPostDao implements PostDao {
         while (results.next()) {
             posts.add(mapRowToPost(results));
         }
-
         return posts;
     }
 
@@ -95,7 +94,7 @@ public class JdbcPostDao implements PostDao {
 
     @Override
     public PostResponseDto updatePost(long id, CreatePostDto post) {
-        String sql = "UPDATE posts SET title = ?,  description = ?, image = ? WHERE post_id = ?;";
+        String sql = "UPDATE posts SET title = ?, description = ?, image = ? WHERE post_id = ?;";
 
         jdbcTemplate.update(sql, post.getTitle(), post.getDescription(), post.getImage(), id);
 
