@@ -37,7 +37,7 @@ public class JdbcPostDao implements PostDao {
                 "LEFT JOIN post_upvote ON posts.post_id = post_upvote.post_id \n" +
                 "LEFT JOIN post_downvote ON posts.post_id = post_downvote.post_id\n" +
                 "LEFT JOIN users AS upvote ON post_upvote.user_id = upvote.user_id AND upvote.user_id = ?\n" +
-                "LEFT JOIN users AS downvote ON post_upvote.user_id = downvote.user_id AND upvote.user_id = ?\n" +
+                "LEFT JOIN users AS downvote ON post_downvote.user_id = downvote.user_id AND downvote.user_id = ?\n" +
                 "LEFT JOIN replies ON posts.post_id = replies.post_id\n" + // Fetch comments related to the post"
                 "WHERE posts.post_id = ?\n" +
                 "GROUP BY posts.post_id;";
