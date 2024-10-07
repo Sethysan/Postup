@@ -77,7 +77,14 @@ export default {
                         this.upvoted = false;
                         // Remove upvoted state
                     })
-                    .catch(err => alert("failed to undo upvote: status code " + err.response.status));
+                    .catch(err => {
+                        if (err.response.status === 401) {
+                            alert("You must be logged in to remove your upvote.");
+                        }
+                        else {
+                            alert("Failed to undo upvote: status code " + err.response.status);
+                        }
+                    });
             } else {
                 // Add the upvote
                 replySerive.upvoteReplies(this.reply.id)
@@ -95,7 +102,13 @@ export default {
                         }
                         // Set upvoted state
                     })
-                    .catch(err => { alert("failed to upvote: status code " + err) });
+                    .catch(err => {
+                        if (err.response.status === 401) {
+                            alert("You must be logged in to upvote.");
+                        } else {
+                            alert("Failed to upvote: status code " + err.response.status);
+                        }
+                    });
             }
         },
         downvote() {
@@ -106,7 +119,13 @@ export default {
                         this.reply.downvotes--;
                         this.downvoted = false;  // Remove downvoted state
                     })
-                    .catch(err => alert("failed to undo downvote: status code " + err.response.status));
+                    .catch(err => {
+                        if (err.response.status === 401) {
+                            alert("You must be logged in to remove your downvote.");
+                        } else {
+                            alert("Failed to undo downvote: status code " + err.response.status);
+                        }
+                    });
             } else {
                 // Add the downvote
                 replySerive.downvoteReplies(this.reply.id)
@@ -121,7 +140,13 @@ export default {
                             this.downvoted = true;
                         }  // Set downvoted state
                     })
-                    .catch(err => { alert("failed to downvote: status code " + err.response.status) });
+                    .catch(err => {
+                        if (err.response.status === 401) {
+                            alert("You must be logged in to downvote.");
+                        } else {
+                            alert("Failed to downvote: status code " + err.response.status);
+                        }
+                    });
             }
         },
         deleteReply() {
@@ -141,7 +166,7 @@ export default {
 </script>
 
 <style>
-vote-container {
+.vote-container {
     display: flex;
     align-items: center;
     background-color: rgb(228, 228, 228);

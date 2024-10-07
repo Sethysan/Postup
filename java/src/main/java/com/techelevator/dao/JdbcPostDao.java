@@ -45,6 +45,7 @@ public class JdbcPostDao implements PostDao {
         if (results.next()) {
             post = mapRowToPost(results);
         }
+        System.out.println(post);
         return post;
     }
 
@@ -75,6 +76,7 @@ public class JdbcPostDao implements PostDao {
         while (results.next()) {
             posts.add(mapRowToPost(results));
         }
+        System.out.println(posts);
         return posts;
     }
 
@@ -145,33 +147,6 @@ public class JdbcPostDao implements PostDao {
         }
         jdbcTemplate.update(sql, postId, replyId);
     }
-
-//    public Map<String, Boolean> checkVoteStatus(long postId, long userId) {
-//        // Check if the user has upvoted or downvoted the post
-//        // If the user has upvoted the post, the upvoted key will be true
-//        // exists returns a boolean value based on whether the subquery returns any (1) rows
-//        String sql = "SELECT \n" +
-//                "EXISTS( SELECT 1 FROM post_upvote WHERE post_id = ? AND user_id = ?)\n " +
-//                "AS upvoted,\n " +
-//                "EXISTS(SELECT 1 FROM post_downvote WHERE post_id = ? AND user_id = ?)\n " +
-//                "AS downvoted;";
-//
-//        // voteStatus is a map that contains the keys upvoted and downvoted
-//        // and there values are either true or false
-//        Map<String, Object> voteStatus = jdbcTemplate.queryForMap(sql, postId, userId, postId, userId);
-//
-//        // As QueryForMap returns an object that can be interpreted as
-//        // as either a boolean or an integer, depending on the database
-//        // we need to cast the values to boolean to avoid ClassCastExceptions
-//        Map<String, Boolean> result = new HashMap<>();
-//        //ternary to check if the value is null, if it is, set it to false
-//        result.put("upvoted", voteStatus.get("upvoted") != null ? (Boolean) voteStatus.get("upvoted") : false);
-//        //ternary to check if the value is null, if it is, set it to false
-//        result.put("downvoted", voteStatus.get("downvoted") != null ? (Boolean) voteStatus.get("downvoted") : false);
-//
-//        return result;
-//    }
-
 
     private PostResponseDto mapRowToPost(SqlRowSet row) {
         PostResponseDto post = new PostResponseDto();

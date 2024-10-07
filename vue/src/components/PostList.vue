@@ -6,13 +6,12 @@
         <option value="recent">Most Recent</option>
         <option value="popularity">Most Popular</option>
       </select>
-      <button class="sort" :onclick="filterPosts">Sort</button>
     </div>
     <div v-if="posts.length === 0">
       <p>Wow, such empty</p>
       <img src="http://localhost:9000/images/Cheems.jpg" alt="placeholder" class="place-holder" />
     </div>
-    <div v-for="post in posts" :key="post.id">
+    <div v-for="post in filteredPosts" :key="post.id">
       <header>
         <img src="" alt="user-logo" />
         <router-link :to="{ name: 'post', params: { post: post.id } }">
@@ -23,7 +22,7 @@
         <p> {{ post.creator_username }} </p>
       </header>
       <section>
-        <img v-if="post.image" :src="post.image"  class="post-image"/>
+        <img v-if="post.image" :src="post.image" class="post-image" />
         <p> {{ post.description }} </p>
       </section>
       <button v-if="post.creator_username === user" class="btn btn-delete deletePost"
@@ -34,33 +33,33 @@
 <script>
 import Post from '../components/Post.vue';
 import PostService from '../services/PostService';
-import RepliesService from '../services/RepliesService';
 import dayjs from 'dayjs';
+
 export default {
   props: ['posts'],
   components: { Post },
   data() {
     return {
       filter: "",
-      user: this.$store.getters.username
+      user: this.$store.getters.username,
     }
   },
+  computed: {
+    filteredPosts() {
+      let sortedPosts = [...this.posts];
+      if (this.filter === 'recent') {
+        sortedPosts.sort((a, b) => b.id - a.id);
+      } else if (this.filter === 'popularity') {
+        sortedPosts.sort((a, b) => (b.upvotes - b.downvotes) - (a.upvotes - a.downvotes));
+      }
+      return sortedPosts;
+    },
+  },
   methods: {
-    filterPosts() {
-      if (this.filter == 'recent') {
-        this.filterPostsByRecent();
-      }
-      else if (this.filter == 'popularity') {
-        this.filterByPopularity();
-      }
-    },
-    filterPostsByRecent() {
-      this.posts = [...this.posts].sort((a, b) => b.id - a.id);
-      console.log(`${this.posts}`)
-    },
-    filterByPopularity() {
-      this.posts = [...this.posts].sort((a, b) => (b.upvotes - b.downvotes) - (a.upvotes - a.downvotes));
-    },
+    // filterPosts() {
+    //   // This triggers a re-evaluation of `filteredPosts` computed property.
+    //   console.log(this.filteredPosts);
+    // },
     deletePost(postId) {
       if (
         confirm("Are you sure you want to delete this post? This action cannot be undone.")
@@ -104,13 +103,14 @@ export default {
   margin-bottom: 15px;
   margin-right: 10px;
 }
+
 .post-image {
-    width: 100%;
-    background-color: black;
-    max-height: 400px;
-    object-fit:contain;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
+  width: 100%;
+  background-color: black;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
 }
 </style>

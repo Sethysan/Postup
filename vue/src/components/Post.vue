@@ -27,7 +27,8 @@
             <div class="post-footer">
                 <!-- Voting Buttons -->
                 <div :class="['vote-container', { 'active-upvote': upvoted, 'active-downvote': downvoted }]">
-                    <button @click="upvote" :class="{ 'active-upvote': upvoted }" class="vote-button">
+                    <button @click="upvote" :class="{ 'active-upvote': upvoted, 'downvote-active': downvoted }"
+                        class="vote-button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20"
                             class="vote-icon">
                             <path
@@ -35,7 +36,7 @@
                         </svg>
                     </button>
                     <span class="vote-count">{{ post.upvotes - post.downvotes }}</span>
-                    <button @click="downvote" :class="{ 'active-downvote': downvoted }" class="vote-button">
+                    <button @click="downvote" :class="{ 'active-downvote': downvoted, 'active-upvote': upvoted }" class="vote-button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20"
                             class="vote-icon">
                             <path
@@ -84,15 +85,26 @@ import dayjs from 'dayjs';
 import service from '../services/PostService';
 import replySerive from '../services/RepliesService'
 import Replies from './Replies.vue';
+import { toDisplayString } from 'vue';
 
 export default {
+    props: {
+        post: {
+            type: Object,
+            required: true
+        },
+        replies: {
+            type: Array,
+            required: true
+        }
+    },
     components: { Replies },
     data() {
         return {
             isImageFullscreen: false,
-            upvoted: this.post.hasUpvoted,
-            downvoted: this.post.hasDownvoted,
-            user: undefined,
+            upvoted: false,
+            downvoted: false,
+            user: this.$store.getters.username,
             formVisibility: false,
             newReply: {}
         }
@@ -100,12 +112,6 @@ export default {
     created() {
         this.user = this.$store.getters.username
 
-        // service.checkVoteStatus(this.post.id)
-        //     .then(res => {
-        //         this.upvoted = res.data.upvoted;
-        //         this.downvoted = res.data.downvoted;
-        //     })
-        //     .catch(err => console.error("Error fetching vote status:", err));
     },
     props: ['post', 'replies'],
     methods: {
@@ -146,84 +152,54 @@ export default {
                     .then(res => {
                         this.post.upvotes--;
                         this.upvoted = false;
-                        if (res.status == 202) {
-                            this.post.downvotes--;
-                        }
                     })
-                    .catch(err => {
-                        if (err.response.status === 401) {
-                            alert("You must be logged in to remove your upvote.");
-                        }
-                        else {
-                            alert("Failed to undo upvote: status code " + err.response.status);
-                        }
-                    });
-            }
-            else {
+                    .catch(err => this.handleError(err, "Failed to undo upvote."));
+            } else {
                 // Add the upvote
                 service.upvotePost(this.post.id)
-                    .then(res => {
+                    .then(() => {
                         // If already downvoted, remove downvote
-                        if (this.downvoted) {
-                            this.post.downvotes--;
-                            this.downvoted = false;
-                        }
-                        if (res.status == 202) {
-                            this.post.upvotes++;
-                            this.upvoted = true;  // Set upvoted state
-                        }
+                        if (this.downvoted) { 
+                                this.post.downvotes--;
+                                this.downvoted = false;
+                            }
+                        this.post.upvotes++;
+                        this.upvoted = true;;
 
                     })
-                    .catch(err => {
-                        if (err.response.status === 401) {
-                            alert("You must be logged in to upvote.");
-                        } else {
-                            alert("Failed to upvote: status code " + err.response.status);
-                        }
-                    });
+                    .catch(err => this.handleError(err, "Failed to upvote."));
             }
         },
         downvote() {
             if (this.downvoted) {
                 // Remove the downvote
                 service.unvotingDislike(this.post.id)
-                    .then(res => {
+                    .then(() => {
                         this.post.downvotes--;
                         this.downvoted = false; // Remove downvoted state
-                        if (res.status == 202) {
-                            this.post.upvotes--;
-                        }
                     })
-                    .catch(err => {
-                        if (err.response.status === 401) {
-                            alert("You must be logged in to remove your downvote.");
-                        } else {
-                            alert("Failed to undo downvote: status code " + err.response.status);
-                        }
-                    });
+                    .catch(err => this.handleError(err, "Failed to undo downvote."));
             } else {
                 // Add the downvote
                 service.downvotePost(this.post.id)
-                    .then(res => {
-                        // If already upvoted, remove upvote
-                        if (this.upvoted) {
-                            this.post.upvotes--;
-                            this.upvoted = false;
-                        }
-                        if (res.status == 202) {
-                            this.post.downvotes++;
-                            this.downvoted = true; // Set downvoted state
-                        }
-                    })
-                    .catch(err => {
-                        if (err.response.status === 401) {
-                            alert("You must be logged in to downvote.");
-                        } else {
-                            alert("Failed to downvote: status code " + err.response.status);
-                        }
-                    });
+                .then(() => {
+                    if (this.upvoted) {
+                        this.post.upvotes--;
+                        this.upvoted = false;
+                    }
+                    this.post.downvotes++;
+                    this.downvoted = true;
+                })
+                .catch(err => this.handleError(err, "Failed to downvote."));
             }
-        },
+        }
+    },
+    handleError(err, message) {
+        if(err.response?.status === 401) {
+            toDisplayString("You must be logged in to perform this action.")
+        } else {
+            alert(`${message} Status code: ${err.response?.status || 'Unknown'}`);
+        }
     },
     deletePost() {
         if (confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
