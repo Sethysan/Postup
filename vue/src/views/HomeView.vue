@@ -1,7 +1,6 @@
 <template>
   <div class="home">
-    <h1>Home</h1>
-      <h1>Todays Top 10 Popular Posts</h1>
+      <h1 class="title">Todays Top 10 Popular Posts</h1>
       <post-list :posts="posts"></post-list>
       <h1>Top 5 Most Active Forums</h1>
       <div v-for="forum in forums" :key="forum.id">
@@ -45,4 +44,9 @@ export default {
 
 </script>
 
-<style></style>
+<style>
+.title {
+  text-align: center; /* Center the text horizontally */
+  margin-top: 20px; /* Optional: Adjust margin for better spacing */
+}
+</style>

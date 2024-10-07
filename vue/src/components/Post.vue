@@ -125,10 +125,20 @@ export default {
                     .then(res => {
                         this.post.upvotes--;
                         this.upvoted = false;
-                        // Remove upvoted state
+                        if (res.status == 202) {
+                            this.post.downvotes--;
+                        }
                     })
-                    .catch(err => alert("failed to undo upvote: status code " + err.response.status));
-            } else {
+                    .catch(err => {
+                        if (err.response.status === 401) {
+                            alert("You must be logged in to remove your upvote.");
+                        }
+                        else {
+                            alert("Failed to undo upvote: status code " + err.response.status);
+                        }
+                    });
+            }
+            else {
                 // Add the upvote
                 service.upvotePost(this.post.id)
                     .then(res => {
@@ -139,10 +149,17 @@ export default {
                         }
                         if (res.status == 202) {
                             this.post.upvotes++;
+                            this.upvoted = true;  // Set upvoted state
                         }
-                        this.upvoted = true;  // Set upvoted state
+
                     })
-                    .catch(err => { alert("failed to upvote: status code " + err) });
+                    .catch(err => {
+                        if (err.response.status === 401) {
+                            alert("You must be logged in to upvote.");
+                        } else {
+                            alert("Failed to upvote: status code " + err.response.status);
+                        }
+                    });
             }
         },
         downvote() {
@@ -151,9 +168,18 @@ export default {
                 service.unvotingDislike(this.post.id)
                     .then(res => {
                         this.post.downvotes--;
-                        this.downvoted = false;  // Remove downvoted state
+                        this.downvoted = false; // Remove downvoted state
+                        if (res.status == 202) {
+                            this.post.upvotes--;
+                        }
                     })
-                    .catch(err => alert("failed to undo downvote: status code " + err.response.status));
+                    .catch(err => {
+                        if (err.response.status === 401) {
+                            alert("You must be logged in to remove your downvote.");
+                        } else {
+                            alert("Failed to undo downvote: status code " + err.response.status);
+                        }
+                    });
             } else {
                 // Add the downvote
                 service.downvotePost(this.post.id)
@@ -163,45 +189,54 @@ export default {
                             this.post.upvotes--;
                             this.upvoted = false;
                         }
-                        this.post.downvotes++;
-                        this.downvoted = true;  // Set downvoted state
-                    })
-                    .catch(err => { alert("failed to downvote: status code " + err.response.status) });
-            }
-        },
-        deletePost() {
-            if (confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
-                let postId = this.post.id;
-                alert(postId)
-                service.deletePost(postId)
-                    .then(response => {
-                        this.$store.commit('SET_NOTIFICATION', `Post ${postId} was deleted.`);
-                        this.$router.push({ name: 'forum' });
-                    })
-                    .catch(error => {
-                        if (error.response) {
-                            if (error.response.status === 404) {
-                                this.$store.commit('SET_NOTIFICATION',
-                                    "Error: Post " + postId + " was not found. This post may have been deleted or you have entered an invalid post ID.");
-                                this.$router.push({ name: 'forum' });
-                            } else {
-                                this.$store.commit('SET_NOTIFICATION',
-                                    "Error getting post " + postId + ". Response received was '" + error.response.statusText + "'.");
-                            }
-                        } else if (error.request) {
-                            this.$store.commit('SET_NOTIFICATION', "Error getting post. Server could not be reached.");
-                        } else {
-                            this.$store.commit('SET_NOTIFICATION', "Error getting post. Request could not be created.");
+                        if (res.status == 202) {
+                            this.post.downvotes++;
+                            this.downvoted = true; // Set downvoted state
                         }
                     })
-                    .finally(() => {
-                        this.fetchReplies();
+                    .catch(err => {
+                        if (err.response.status === 401) {
+                            alert("You must be logged in to downvote.");
+                        } else {
+                            alert("Failed to downvote: status code " + err.response.status);
+                        }
                     });
             }
+        },
+    },
+    deletePost() {
+        if (confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
+            let postId = this.post.id;
+            alert(postId)
+            service.deletePost(postId)
+                .then(response => {
+                    this.$store.commit('SET_NOTIFICATION', `Post ${postId} was deleted.`);
+                    this.$router.push({ name: 'forum' });
+                })
+                .catch(error => {
+                    if (error.response) {
+                        if (error.response.status === 404) {
+                            this.$store.commit('SET_NOTIFICATION',
+                                "Error: Post " + postId + " was not found. This post may have been deleted or you have entered an invalid post ID.");
+                            this.$router.push({ name: 'forum' });
+                        } else {
+                            this.$store.commit('SET_NOTIFICATION',
+                                "Error getting post " + postId + ". Response received was '" + error.response.statusText + "'.");
+                        }
+                    } else if (error.request) {
+                        this.$store.commit('SET_NOTIFICATION', "Error getting post. Server could not be reached.");
+                    } else {
+                        this.$store.commit('SET_NOTIFICATION', "Error getting post. Request could not be created.");
+                    }
+                })
+                .finally(() => {
+                    this.fetchReplies();
+                });
         }
     }
 }
 </script>
+
 <style>
 .post-footer {
     display: flex;
@@ -420,8 +455,9 @@ textarea.expanded {
 }
 
 .post-header {
+    margin-top: 20px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     margin-bottom: 12px;
 }
