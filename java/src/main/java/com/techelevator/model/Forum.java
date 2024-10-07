@@ -8,6 +8,7 @@ public class Forum {
     private String description;
     private String author;
     private Timestamp timeOfCreation;
+    private Timestamp mostRecentPost;
     boolean isFavorited;
 
     public long getId() {
@@ -56,5 +57,13 @@ public class Forum {
 
     public void setFavorited(boolean favorited) {
         isFavorited = favorited;
+    }
+
+    public Timestamp getMostRecentPost() {
+        return mostRecentPost;
+    }
+
+    public void setMostRecentPost(Timestamp mostRecentMost) {
+        this.mostRecentPost = mostRecentMost;
     }
 }

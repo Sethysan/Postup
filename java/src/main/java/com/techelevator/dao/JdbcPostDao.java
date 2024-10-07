@@ -37,7 +37,7 @@ public class JdbcPostDao implements PostDao {
                 "LEFT JOIN post_upvote ON posts.post_id = post_upvote.post_id \n" +
                 "LEFT JOIN post_downvote ON posts.post_id = post_downvote.post_id\n" +
                 "LEFT JOIN users AS upvote ON post_upvote.user_id = upvote.user_id AND upvote.user_id = ?\n" +
-                "LEFT JOIN users AS downvote ON post_upvote.user_id = downvote.user_id AND upvote.user_id = ?\n" +
+                "LEFT JOIN users AS downvote ON post_downvote.user_id = downvote.user_id AND downvote.user_id = ?\n" +
                 "LEFT JOIN replies ON posts.post_id = replies.post_id\n" + // Fetch comments related to the post"
                 "WHERE posts.post_id = ?\n" +
                 "GROUP BY posts.post_id;";
@@ -61,7 +61,7 @@ public class JdbcPostDao implements PostDao {
             sql += " AND posts.forum_id = " + forum;
         }
         if (today) {
-            sql += " AND (CAST(posts.time_of_creation AS Date) = CURRENT_DATE OR CAST(replies.time_of_creation AS DATE) = CURRENT_DATE)  OR CAST(post_upvote.time_of_creation AS DATE) = CURRENT_DATE OR CAST(post_downvote.time_of_creation AS DATE) = CURRENT_DATE";
+            sql += " AND (CAST(posts.time_of_creation AS Date) = CURRENT_DATE OR CAST(replies.time_of_creation AS DATE) = CURRENT_DATE  OR CAST(post_upvote.time_of_creation AS DATE) = CURRENT_DATE OR CAST(post_downvote.time_of_creation AS DATE) = CURRENT_DATE)";
         }
         sql += " GROUP BY posts.post_id ";
         sql += sortByPopularity ? " ORDER BY COUNT(post_upvote.post_id) - COUNT(post_downvote.post_id) DESC" : " ORDER BY post_id DESC";

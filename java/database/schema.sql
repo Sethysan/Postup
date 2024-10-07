@@ -1,6 +1,6 @@
 BEGIN TRANSACTION;
 
-DROP TABLE IF EXISTS comment_replies, reply_upvote, reply_downvote, replies, post_upvote, post_downvote, posts, moderation, forums, users;
+DROP TABLE IF EXISTS comment_replies, reply_upvote, reply_downvote, replies, post_upvote, post_downvote, posts, moderation, forums, direct_message, users;
 
 CREATE TABLE users (
 	user_id SERIAL,
@@ -8,6 +8,18 @@ CREATE TABLE users (
 	password_hash varchar(200) NOT NULL,
 	role varchar(50) NOT NULL,
 	CONSTRAINT PK_user PRIMARY KEY (user_id)
+);
+
+CREATE TABLE direct_message (
+    message_id serial,
+    sent_to int,
+    sent_from int,
+    message varchar(500) NOT NULL,
+    time_sent TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    has_read BOOL DEFAULT FALSE,
+    CONSTRAINT PK_dm PRIMARY KEY (message_id),
+    CONSTRAINT FK_sent_to_id FOREIGN KEY (sent_to) REFERENCES users(user_id),
+    CONSTRAINT FK_received_from FOREIGN KEY (sent_from) REFERENCES users(user_id)
 );
 
 CREATE TABLE forums (

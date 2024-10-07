@@ -28,7 +28,7 @@ public class JdbcForumDao implements ForumsDao {
 
     public List<Forum> getForums(long user) {
         List<Forum> list = new ArrayList<>();
-        String sql = "SELECT forums.*, COUNT(favorite_forums.forum_id) AS favorited FROM forums LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? GROUP BY forums.forum_id ORDER BY forum_id DESC";
+        String sql = "SELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post, COUNT(favorite_forums.forum_id) AS favorited FROM forums LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? JOIN posts ON posts.forum_id = forums.forum_id GROUP BY forums.forum_id ORDER BY most_recent_post;";
 
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user);
@@ -44,7 +44,7 @@ public class JdbcForumDao implements ForumsDao {
 
     public List<Forum> getActiveForum(long user) {
         List<Forum> list = new ArrayList<>();
-        String sql = "SELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post, COUNT(favorite_forums.forum_id) AS favorited FROM forums LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? JOIN posts ON posts.forum_id = forums.forum_id GROUP BY forums.forum_id ORDER BY most_recent_post DESC LIMIT 5";
+        String sql = "SELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post, COUNT(favorite_forums.forum_id) AS favorited FROM forums LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? JOIN posts ON posts.forum_id = forums.forum_id GROUP BY forums.forum_id ORDER BY most_recent_post;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user);
         while (results.next()) {
             list.add(mapRowToForum(results));
@@ -54,7 +54,7 @@ public class JdbcForumDao implements ForumsDao {
 
     public Forum getForumById(long forumId, long user) {
         Forum forum = null;
-        String sql = "SELECT forums.*, COUNT(favorite_forums.forum_id) AS favorited FROM forums LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? WHERE forums.forum_id = ? GROUP BY forums.forum_id ;";
+        String sql = "SELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post, COUNT(favorite_forums.forum_id) AS favorited FROM forums LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? JOIN posts ON posts.forum_id = forums.forum_id WHERE forums.forum_id = ? GROUP BY forums.forum_id;";
 
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, user, forumId);
 
@@ -166,6 +166,7 @@ public class JdbcForumDao implements ForumsDao {
         forum.setAuthor(rs.getString("author"));
         forum.setTimeOfCreation(rs.getTimestamp("time_of_creation"));
         forum.setFavorited(rs.getInt("favorited") > 0);
+        forum.setMostRecentPost(rs.getTimestamp("most_recent_post"));
         return forum;
     }
 

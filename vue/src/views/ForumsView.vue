@@ -16,7 +16,7 @@
                 <h2>
                     <span v-html="highlightSearchTerm(forum.forum.topic)"></span>
                     <p class="inline-time">{{ forum.forum.author }}</p>
-                    <p class="inline-time">{{ getTimeElapsed(forum.forum.timeOfCreation) }}</p>
+                    <p class="inline-time">created {{ getTimeElapsed(forum.forum.timeOfCreation) }}</p>
                 </h2>
                 <p v-html="highlightSearchTerm(forum.forum.description)"></p>
 
