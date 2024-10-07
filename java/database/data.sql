@@ -45,7 +45,7 @@ INSERT INTO posts (title, description, image, author, forum_id) VALUES
 ('NEVER obsolete','I wonder how many people are still getting upgrades every 2 years for $99!', 'https://i.redd.it/p33nor0btfi91.jpg', 'moderator1', 1),
 ('Help', 'I need help with my computer. I feel like I''m aimlessly running in cirlces like a baby chick. I need some direction', 'https://as1.ftcdn.net/v2/jpg/05/63/32/30/1000_F_563323083_iD6EXOVpPblV1w3BcRzsMx4goaFGvW7U.jpg', 'user1', 1),
 ('NASA’s James Webb Telescope Captures the Fiery Remains of a Dying Star in Unprecedented Detail', 'More than a year after NASA’s James Webb Space Telescope brought us images of the Southern Ring Nebula, the world’s most powerful observer captured the remains of another celestial body with stunning clarity.', 'https://www.thisiscolossal.com/wp-content/uploads/2023/08/webb-1.jpg', 'user3', 4),
-('The Top 10 Best-Selling Games of 2023', 'Here’s a breakdown of the best-selling games in 2023, featuring franchises like Elden Ring, The Legend of Zelda: Tears of the Kingdom, and Call of Duty: Modern Warfare II.', 'https://image.api.playstation.com/vulcan/ap/rnd/202204/1114/swnHdwcnKhL8mDLmuMhHDfbc.png', 'user2', 2);
+('The Top 10 Best-Selling Games of 2023', 'Here’s a breakdown of the best-selling games in 2023, featuring franchises like Elden Ring, The Legend of Zelda: Tears of the Kingdom, and Call of Duty: Modern Warfare II.', 'https://imageio.forbes.com/specials-images/imageserve/6579be889c4f517b9631ef97/chart1/960x0.jpg?format=jpg&width=1440', 'user2', 2);
 
 -- Insert mock post upvotes
 INSERT INTO post_upvote (post_id, user_id)
