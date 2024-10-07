@@ -81,6 +81,9 @@ button:hover {
 .create-post-button {
     margin-left: 10px;
 }
+.promote-button{
+    margin-left: 10px;
+}
 
 .favorited {
     background-color: rgb(255, 0, 0);
