@@ -56,6 +56,7 @@ export default {
     },
     filterPostsByRecent() {
       this.posts = [...this.posts].sort((a, b) => b.id - a.id);
+      console.log(`${this.posts}`)
     },
     filterByPopularity() {
       this.posts = [...this.posts].sort((a, b) => (b.upvotes - b.downvotes) - (a.upvotes - a.downvotes));

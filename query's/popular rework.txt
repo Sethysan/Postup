@@ -1,0 +1,2 @@
+const sortedPosts = [...this.posts].sort((a, b) => (b.upvotes - b.downvotes) - (a.upvotes - a.downvotes));
+      this.posts = sortedPosts;

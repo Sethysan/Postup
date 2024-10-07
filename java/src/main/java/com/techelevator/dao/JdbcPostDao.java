@@ -49,7 +49,7 @@ public class JdbcPostDao implements PostDao {
     }
 
     @Override
-    public List<PostResponseDto> getPosts(long forum, long user, String keyword, int limit, boolean sorBytPopularity, boolean today) {
+    public List<PostResponseDto> getPosts(long forum, long user, String keyword, int limit, boolean sortByPopularity, boolean today) {
         List<PostResponseDto> posts = new ArrayList<>();
         String sql = "SELECT posts.*, COUNT(replies.description), COUNT(post_upvote.post_id) AS likes, COUNT(post_downvote.post_id) AS dislikes, COUNT(upvote.user_id) AS upvotes_from_user, COUNT(downvote.user_id) AS downvotes_from_user FROM posts LEFT JOIN replies ON replies.post_id = posts.post_id LEFT JOIN post_upvote ON posts.post_id = post_upvote.post_id " +
                 "LEFT JOIN post_downvote ON posts.post_id = post_downvote.post_id " +
@@ -63,8 +63,9 @@ public class JdbcPostDao implements PostDao {
             sql += " AND (CAST(posts.time_of_creation AS Date) = CURRENT_DATE OR CAST(replies.time_of_creation AS DATE) = CURRENT_DATE) ";
         }
         sql += " GROUP BY posts.post_id ";
-        sql += sorBytPopularity ? " ORDER BY COUNT(post_upvote.post_id) - COUNT(post_downvote.post_id) DESC" : " ORDER BY post_id DESC";
+        sql += sortByPopularity ? " ORDER BY COUNT(post_upvote.post_id) - COUNT(post_downvote.post_id) DESC" : " ORDER BY post_id DESC";
         if (limit > 0) {
+            System.out.println("limit: " + limit);
             sql += " LIMIT " + limit;
         }
         if (!keyword.isBlank()) {
@@ -75,6 +76,10 @@ public class JdbcPostDao implements PostDao {
         while (results.next()) {
             posts.add(mapRowToPost(results));
         }
+        System.out.println("post size: "+posts.size());
+        System.out.println("keyword: "+keyword);
+        System.out.println("userID: "+user);
+        System.out.println("query: "+sql);
         return posts;
     }
 
