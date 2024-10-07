@@ -1,6 +1,7 @@
 <template>
   <div>
     <forum :forum="forum"></forum>
+    <post-search-button :forumId="forum.id"></post-search-button>
     <post-list :posts="posts"></post-list>
   </div>
 </template>
@@ -9,16 +10,18 @@ import PostList from '../components/PostList.vue';
 import Forum from '../components/Forum.vue';
 import ForumService from '../services/ForumService'
 import PostService from '../services/PostService';
+import PostSearchButton from '../components/PostSearchButton.vue';
 export default {
   components: {
     PostList,
-    Forum
+    Forum,
+    PostSearchButton
   },
   data() {
     return {
       forum: {},
       forumId: 0,
-      posts: []
+      posts: [],
     }
   },
   created() {
@@ -49,7 +52,7 @@ export default {
         console.error("Error fetching forum by ID: ", error);
       });
     }
-  }
+  },
 }
 </script>
 <style scoped>

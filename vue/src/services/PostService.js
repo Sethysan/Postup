@@ -5,8 +5,24 @@ export default {
   getPopularPosts() {
     return http.get(`/api/posts/?filter=popularity&limit=10&today=true`);
   },
+  getPostByKeyword(keyword){
+    return http.get(`/api/posts`, {
+      params: {
+        keyword: keyword,
+        filter: 'popularity'
+      }
+    });
+  },
   getForumPosts(forum) {
     return http.get(`/api/forum/${forum}/posts`);
+  },
+  getForumPostByKeyword(forum, keyword){
+    return http.get(`/api/forum/${forum}/posts`, {
+      params: {
+        keyword: keyword,
+        filter: 'popularity'
+      }
+    });
   },
   getPostById(id) {
     return http.get(`/api/posts/${id}`);

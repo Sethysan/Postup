@@ -10,6 +10,17 @@ CREATE TABLE users (
 	CONSTRAINT PK_user PRIMARY KEY (user_id)
 );
 
+CREATE TABLE direct_message (
+    message_id serial,
+    sent_to int,
+    received_from int,
+    message varchar(500) NOT NULL,
+    time_sent TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT PK_dm PRIMARY KEY (message_id),
+    CONSTRAINT FK sent_to_id FOREIGN KEY (sent_to) REFERENCES users(user_id),
+    CONSTRAINT FK_received_from FOREIGN KEY (received_from) REFERENCES users(user_id)
+);
+
 CREATE TABLE forums (
     forum_id SERIAL,
     topic varchar(200) NOT NULL,

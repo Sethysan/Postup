@@ -14,6 +14,7 @@ import ForumPostView from '../views/ForumPostView.vue';
 import CreatePost from '../components/CreatePost.vue';
 import Moderator from '../components/Moderator.vue';
 import FavoritesView from '../views/FavoritesView.vue';
+import ForumPostSerachView from '../views/ForumPostSerachView.vue';
 
 /**
  * The Vue Router is used to "direct" the browser to render a specific view component
@@ -92,6 +93,14 @@ const routes = [
     path: "/forums/:forumId/posts",
     name: "forum-post",
     component: PostView,
+    meta: {
+      requiresAuth: false
+    }
+  },
+  {
+    path: "/forums/:forumId/posts/search",
+    name: "forum-post-search",
+    component: ForumPostSerachView,
     meta: {
       requiresAuth: false
     }

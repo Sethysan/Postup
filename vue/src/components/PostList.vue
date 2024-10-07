@@ -34,7 +34,6 @@
 <script>
 import Post from '../components/Post.vue';
 import PostService from '../services/PostService';
-import RepliesService from '../services/RepliesService';
 import dayjs from 'dayjs';
 export default {
   props: ['posts'],
