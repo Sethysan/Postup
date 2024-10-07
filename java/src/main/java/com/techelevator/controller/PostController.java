@@ -34,7 +34,6 @@ public class PostController {
     // public List<PostResponseDto> getPosts(long forum, String keyword, int limit, boolean sorBytPopularity)
     @GetMapping("/posts")
     public List<PostResponseDto> getPosts(@RequestParam(defaultValue="") String keyword, @RequestParam(defaultValue="-1") int limit, @RequestParam(defaultValue=" ") String filter, @RequestParam(defaultValue="false") boolean today, Principal principal){
-        System.out.println(limit);
         long user = -1;
         if(principal != null){
             String username = principal.getName();
@@ -48,10 +47,6 @@ public class PostController {
         if(filter.equals("popularity")){
             sortByPopularity = true;
         }
-        System.out.println("controller keyword: " + keyword);
-        System.out.println("controller filter: " + filter);
-        System.out.println("controller limit: " + limit);
-        System.out.println("controller principal: " + principal);
         return postDao.getPosts(-1, user, keyword, limit, sortByPopularity, today);
     }
 

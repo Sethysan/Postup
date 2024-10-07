@@ -4,10 +4,22 @@
     </div>
     <div v-else class="post">
         <div class="post-header">
-            <h1 class="post-title">{{ post.title }}</h1>
-            <span class="post-metadata">{{ post.author }} • {{ post.time_ago }}</span>
+            <!-- Back Button -->
+            <div class="back-button" @click="goBack">
+                <svg fill="currentColor" height="16" icon-name="back-outline" viewBox="0 0 20 20" width="16"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M19 9.375H2.51l7.932-7.933-.884-.884-9 9a.625.625 0 0 0 0 .884l9 9 .884-.884-7.933-7.933H19v-1.25Z">
+                    </path>
+                </svg>
+            </div>
+            <!-- Author and Metadata -->
+            <div class="post-meta">
+                <span class="post-author">{{ post.creator_username }}</span>
+                <span class="post-time">• {{ getTimeElapsed(post.timeOfCreation) }}</span>
+            </div>
         </div>
-        <p class="post-description">{{ post.description }}</p>
+        <h1 class="post-title">{{ post.title }}</h1>
         <div class="post-image-container">
             <img v-if="post.image" :src="post.image" class="post-image" @click="toggleImageFullscreen" />
 
@@ -44,6 +56,7 @@
                 <!-- Delete Button -->
                 <button v-if="post.creator_username === user" class="delete-button" @click="deletePost">Delete</button>
             </div>
+            <p class="post-description">{{ post.description }}</p>
             <!-- Reply Form -->
             <div v-if="user">
                 <!-- Textarea for adding a comment, expanding when clicked -->
@@ -67,6 +80,7 @@
 </template>
 
 <script>
+import dayjs from 'dayjs';
 import service from '../services/PostService';
 import replySerive from '../services/RepliesService'
 import Replies from './Replies.vue';
@@ -95,6 +109,13 @@ export default {
     },
     props: ['post', 'replies'],
     methods: {
+        goBack() {
+            this.$router.go(-1); // This navigates back in the history stack
+        },
+        getTimeElapsed(timeOfCreation) {
+            // dayjs converts time into a readable format and calculates the elapsed time
+            return dayjs(timeOfCreation).fromNow();
+        },
         toggleImageFullscreen() {
             this.isImageFullscreen = !this.isImageFullscreen;
         },
@@ -449,21 +470,60 @@ textarea.expanded {
     margin-bottom: 12px;
 }
 
-.post-metadata {
+.post-meta {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    /* Adjust spacing between author and time */
     font-size: 0.875rem;
+    /* Adjust as needed */
     color: #6a737d;
+    /* Optional: gives a muted color to the metadata */
 }
 
 .post-header {
-    margin-top: 20px;
     display: flex;
-    justify-content: center;
     align-items: center;
+    margin-top: 20px;
     margin-bottom: 12px;
+    gap: 10px;
+    /* Adjust spacing between the back button and metadata */
 }
 
 .post-title {
+    margin-top: 10px;
+    /* Add space between metadata and title */
     font-size: 1.5rem;
     font-weight: 600;
+}
+
+.back-button {
+    background-color: #E4E4E4;
+    /* Change to your desired background color */
+    border-radius: 50%;
+    /* Makes the background circular */
+    padding: 8px;
+    /* Adjusts the size of the circle */
+    display: inline-flex;
+    /* Centers the SVG within the container */
+    align-items: center;
+    justify-content: center;
+    transition: .3;
+    cursor: pointer;
+}
+
+.back-button:hover {
+    background-color: rgb(218, 217, 217);
+}
+
+.post-metadata {
+    position: absolute;
+    /* Allows the metadata to be positioned independently */
+    right: 0;
+    /* Pushes the metadata to the far right */
+    font-size: 0.875rem;
+    /* Adjust size as needed */
+    color: #6a737d;
+    /* Optional: gives a muted color to the metadata */
 }
 </style>

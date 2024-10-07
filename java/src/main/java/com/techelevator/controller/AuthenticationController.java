@@ -20,6 +20,8 @@ import com.techelevator.dao.UserDao;
 import com.techelevator.security.jwt.JWTFilter;
 import com.techelevator.security.jwt.TokenProvider;
 
+import java.util.Set;
+
 @RestController
 @CrossOrigin
 public class AuthenticationController {
@@ -52,6 +54,10 @@ public class AuthenticationController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Username or password is incorrect.");
         }
 
+        if (checkIfUserIsBanned(loginDto.getUsername())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "This user is banned and may not login!");
+        }
+
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
         return new ResponseEntity<>(new LoginResponseDto(jwt, user), httpHeaders, HttpStatus.OK);
@@ -72,5 +78,17 @@ public class AuthenticationController {
         }
     }
 
+    public boolean checkIfUserIsBanned(String name) {
+        Set<Authority> roles = userDao.getUserByUsername(name).getAuthorities();
+        boolean isBanned = false;
+
+        for (Authority role : roles) {
+            if (role.getName().equals("ROLE_BANNED")) {
+                isBanned = true;
+            }
+        }
+
+        return isBanned;
+    }
 }
 
