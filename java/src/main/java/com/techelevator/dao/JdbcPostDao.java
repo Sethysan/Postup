@@ -94,7 +94,7 @@ public class JdbcPostDao implements PostDao {
 
     @Override
     public PostResponseDto updatePost(long id, CreatePostDto post) {
-        String sql = "UPDATE posts SET title = ?,  description = ?, image = ? WHERE post_id = ?;";
+        String sql = "UPDATE posts SET title = ?, description = ?, image = ? WHERE post_id = ?;";
 
         jdbcTemplate.update(sql, post.getTitle(), post.getDescription(), post.getImage(), id);
 
