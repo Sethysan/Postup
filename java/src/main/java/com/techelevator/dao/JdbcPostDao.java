@@ -65,7 +65,6 @@ public class JdbcPostDao implements PostDao {
         sql += " GROUP BY posts.post_id ";
         sql += sortByPopularity ? " ORDER BY COUNT(post_upvote.post_id) - COUNT(post_downvote.post_id) DESC" : " ORDER BY post_id DESC";
         if (limit > 0) {
-            System.out.println("limit: " + limit);
             sql += " LIMIT " + limit;
         }
         if (!keyword.isBlank()) {
@@ -76,10 +75,7 @@ public class JdbcPostDao implements PostDao {
         while (results.next()) {
             posts.add(mapRowToPost(results));
         }
-        System.out.println("post size: "+posts.size());
-        System.out.println("keyword: "+keyword);
-        System.out.println("userID: "+user);
-        System.out.println("query: "+sql);
+
         return posts;
     }
 
