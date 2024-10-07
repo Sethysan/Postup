@@ -5,6 +5,6 @@ export default {
         return http.post(`/moderation/forum/${forumId}/promote`, userName);
     },
     getUsers() {
-        return http.get(`/users`);
+        return http.get(`/users/filtered`);
     }
 }

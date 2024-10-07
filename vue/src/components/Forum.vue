@@ -9,6 +9,9 @@
         <router-link :to="{ name: 'create-post', params: { forumId: forum.Id } }">
             <button class="create-post-button">Create Post</button>
         </router-link>
+        <router-link :to="{ name: 'promote', params: { forumId: forum.Id } }">
+            <button class="promote-button">Promote to Moderator</button>
+        </router-link>
     </div>
 </template>
 

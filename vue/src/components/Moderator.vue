@@ -4,7 +4,7 @@
     <p>Welcome, Moderator!</p>
     <!-- for loop to list all usernames where role is equal to user -->
     <!-- only show on forums page and if role is mod or admin -->
-    <table v-if="canPromote && filteredUsers.length > 0">
+    <table v-if="users.length > 0">
         <thead>
             <!-- make the usernames a table <tr>-->
             <tr>
@@ -13,7 +13,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="user in filteredUsers" :key="user.id">
+            <tr v-for="user in users" :key="user.id">
                 <td>{{ user.username }}</td>
                 <!-- also inside loop button for promote to moderator -->
                 <!-- will also be a table component <td> -->
@@ -37,17 +37,11 @@ export default {
         }
     },
     computed: {
-        canPromote() {
-            const isModOrAdmin = this.userRole === 'ROLE_MODERATOR' || this.userRole === 'ROLE_ADMIN';
-            return isModOrAdmin;
-        },
-        filteredUsers() {
-            return this.users.filter(user => user.authorities.name === 'ROLE_USER');
-        }
+        
     },
     methods: {
         promoteUser(userName) {
-            userName = this.filteredUsers.username;
+            userName = this.user.username;
             ModeratorService.promoteUser(userName, this.forumId)
                 .then(() => {
                     // Update the user's role in the Vuex store
@@ -69,8 +63,7 @@ export default {
     },
     data() {
         return {
-            users: [],
-            userRole: this.$store.getters.role
+            users: []
         }
     },
     mounted() {
