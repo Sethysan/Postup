@@ -1,5 +1,5 @@
 <template>
-  <messages :messages="messages"></messages>
+  <messages :messages="messages" :contact="this.$route.params.user"></messages>
 </template>
 
 <script>

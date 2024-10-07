@@ -14,7 +14,6 @@
         </router-link>
     </div>
 </template>
-
 <script>
 import service from '../services/ForumService'
 import dayjs from 'dayjs';
