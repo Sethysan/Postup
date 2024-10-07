@@ -1,5 +1,7 @@
 <template>
+<div class="message-container">
   <messages :messages="messages" :contact="this.$route.params.user"></messages>
+</div>
 </template>
 
 <script>
@@ -21,5 +23,8 @@ export default {
 </script>
 
 <style>
-
+.message-container {
+    margin: 0 auto;
+    width: 75%;
+}
 </style>
