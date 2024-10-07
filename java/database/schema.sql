@@ -45,6 +45,7 @@ CREATE TABLE posts (
 CREATE TABLE post_upvote (
     post_id int,
     user_id int,
+    time_of_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT PK_post_upvote PRIMARY KEY (post_id, user_id),
     CONSTRAINT FK_post_id FOREIGN KEY (post_id) REFERENCES posts(post_id),
     CONSTRAINT FK_user_id FOREIGN KEY (user_id) REFERENCES users(user_id)
@@ -53,6 +54,7 @@ CREATE TABLE post_upvote (
 CREATE TABLE post_downvote (
     post_id int,
     user_id int,
+    time_of_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT PK_post_downvote PRIMARY KEY (post_id, user_id),
     CONSTRAINT FK_post_id FOREIGN KEY (post_id) REFERENCES posts(post_id),
     CONSTRAINT FK_user_id FOREIGN KEY (user_id) REFERENCES users(user_id)
@@ -91,6 +93,7 @@ CREATE TABLE reply_downvote (
 CREATE TABLE comment_replies (
     parent_id INT,
     reply_id INT UNIQUE,
+    time_of_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT PK_primary_key PRIMARY KEY (reply_id, parent_id),
     CONSTRAINT FK_replies_child FOREIGN KEY (reply_id) REFERENCES replies(reply_id) ON DELETE CASCADE,
     CONSTRAINT FK_replies_parent FOREIGN KEY (parent_id) REFERENCES replies(reply_id)
@@ -100,6 +103,7 @@ CREATE TABLE comment_replies (
 CREATE TABLE moderation (
     forum_id int,
     username varchar(25),
+    time_of_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     role varchar(25) DEFAULT 'ROLE_MODERATOR',
     CONSTRAINT FK_moderation_forum_id FOREIGN KEY (forum_id) REFERENCES forums(forum_id),
     CONSTRAINT FK_moderation_username FOREIGN KEY (username) REFERENCES users(username)
