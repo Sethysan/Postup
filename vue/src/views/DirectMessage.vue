@@ -18,7 +18,7 @@ export default {
   created(){
     service.getMessages(this.$route.params.user)
         .then(res => this.messages = res.data)
-  }
+  },
 }
 </script>
 

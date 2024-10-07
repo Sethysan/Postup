@@ -27,7 +27,7 @@ public class MessageController {
     @GetMapping("/{id}/messages")
     public List<DirectMessageResponseDto> getMessagesByUser(@PathVariable long id, Principal principal){
         List<DirectMessageResponseDto> messages = directMessageDao.getMessagesByContact(userDao.getUserByUsername(principal.getName()).getId(), id);
-        if(!messages.get(messages.size()-1).isRead()){
+        if(!messages.isEmpty() && !messages.get(messages.size()-1).isRead()){
             directMessageDao.markRead(id);
         }
         return messages;

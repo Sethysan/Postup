@@ -9,5 +9,11 @@ export default {
     },
     createMessage(contact, message){
         return http.post(`/api/contacts/${contact}`, message);
+    },
+    updateMessage(contact, id, message){
+        return http.put(`/api/contacts/${contact}/messages/${id}`, message)
+    },
+    deleteMessage(contact, id){
+        return http.delete(`/api/contacts/${contact}/messages/${id}`)
     }
 }

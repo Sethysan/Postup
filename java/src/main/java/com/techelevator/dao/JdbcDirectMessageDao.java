@@ -71,8 +71,8 @@ public class JdbcDirectMessageDao implements DirectMessageDao{
 
     @Override
     public DirectMessageResponseDto updateMessage(long messageId, CreateDirectMessageDto message) {
-        String sql = "UPDATE direct_message SET message = ?";
-        jdbcTemplate.update(sql, message.getMessage());
+        String sql = "UPDATE direct_message SET message = ? WHERE message_id = ?";
+        jdbcTemplate.update(sql, message.getMessage(), messageId);
         return this.getMessage(messageId);
     }
 
