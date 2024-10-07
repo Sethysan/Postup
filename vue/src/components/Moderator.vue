@@ -42,9 +42,8 @@ export default {
     },
     computed: {
         canPromote() {
-            const isForumPath = this.$route.path.includes('/forums');
             const isModOrAdmin = this.userRole === 'ROLE_MODERATOR' || this.userRole === 'ROLE_ADMIN';
-            return isForumPath && isModOrAdmin;
+            return isModOrAdmin;
         },
         filteredUsers() {
             return this.users.filter(user => user.role === 'ROLE_USER');
