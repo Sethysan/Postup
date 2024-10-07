@@ -16,6 +16,7 @@ CREATE TABLE direct_message (
     sent_from int,
     message varchar(500) NOT NULL,
     time_sent TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    has_read BOOL DEFAULT FALSE,
     CONSTRAINT PK_dm PRIMARY KEY (message_id),
     CONSTRAINT FK_sent_to_id FOREIGN KEY (sent_to) REFERENCES users(user_id),
     CONSTRAINT FK_received_from FOREIGN KEY (sent_from) REFERENCES users(user_id)

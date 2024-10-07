@@ -17,6 +17,8 @@
 
 <script>
 import service from '../services/ForumService'
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 
 export default {
     props: ['forum'],
@@ -55,7 +57,11 @@ export default {
                     })
                     .catch(err => alert(err))
             }
-        }
+        },
+        getTimeElapsed(creationTime) {
+            // dayjs converts time into a readable format and calculates the elapsed time
+            return dayjs(creationTime).fromNow();
+        },
     }
 }
 </script>

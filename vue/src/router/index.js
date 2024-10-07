@@ -15,6 +15,8 @@ import CreatePost from '../components/CreatePost.vue';
 import Moderator from '../components/Moderator.vue';
 import FavoritesView from '../views/FavoritesView.vue';
 import ForumPostSerachView from '../views/ForumPostSerachView.vue';
+import MessagesView from '../views/MessagesView.vue';
+import DirectMessage from '../views/DirectMessage.vue';
 
 /**
  * The Vue Router is used to "direct" the browser to render a specific view component
@@ -130,8 +132,23 @@ const routes = [
     meta: {
       requiresAuth: true
     }
-  }
-  
+  },
+    {
+      path: "/messages",
+      name: "messages",
+      component: MessagesView,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/messages/:user",
+      name: "direct-messages",
+      component: DirectMessage,
+      meta: {
+        requiresAuth: true
+      }
+    }
 ];
 
 // Create the router
