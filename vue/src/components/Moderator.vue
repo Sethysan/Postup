@@ -18,7 +18,7 @@
                 <!-- also inside loop button for promote to moderator -->
                 <!-- will also be a table component <td> -->
                 <td>
-                    <button @click="promoteUser(user.username)">Promote to Moderator</button>
+                    <button @click="promoteUser(user)">Promote to Moderator</button>
                 </td>
             </tr>
         </tbody>
@@ -31,15 +31,17 @@
 import ModeratorService from '@/services/ModeratorService';
 export default {
     methods: {
-        promoteUser(username) {
+        promoteUser(user) {
+            confirm(`Promote ${user.username} to moderator?`);
             const forumId = this.$route.params.id;
-            ModeratorService.promoteToModerator(username, forumId)
+            ModeratorService.promoteToModerator(user.username, forumId)
                 .then(() => {
                     // Update the user's role in the Vuex store
-                    this.$store.commit('PROMOTE_USER', username); //TODO:Make PROMOTE_USER in STORE
+                    this.users = this.users.filter(u => u.id !== user.id);
+                    this.$store.commit('PROMOTE_USER', user.username); //TODO:Make PROMOTE_USER in STORE
                 })
                 .catch(error => {
-                    this.$store.commit('SET_NOTIFICATION', username + " not found.");
+                    this.$store.commit('SET_NOTIFICATION', user.username + " not found.");
                 });
         },
         getUsers() {

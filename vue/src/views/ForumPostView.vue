@@ -1,4 +1,5 @@
 <template>
+  
   <p v-if="isLoading">Loading...</p>
   <post v-if="!isLoading" :post="postData" :replies="replies"></post>
 </template>
@@ -24,6 +25,7 @@ export default {
          service.getPostById(this.postId)
           .then(res => {
             this.postData = res.data
+            console.log(this.postData)
             reviewService.getReplies(this.postId)
               .then(res => {
                   this.replies = res.data
