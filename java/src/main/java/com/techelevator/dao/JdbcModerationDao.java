@@ -50,6 +50,18 @@ public class JdbcModerationDao implements ModerationDao{
         jdbcTemplate.update(sql, forumId, name);
     }
 
+    public Moderation findModOfForum(long id, String username) {
+        Moderation mod = null;
+        String sql = "SELECT * FROM moderation WHERE forum_id = ? and username = ?;";
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, id, username);
+
+        if (result.next()) {
+            mod = mapRowToModeration(result);
+        }
+
+        return mod;
+    }
+
     private Moderation mapRowToModeration(SqlRowSet rs) {
         Moderation mod = new Moderation();
         mod.setForumId(rs.getInt("forum_id"));

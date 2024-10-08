@@ -1,7 +1,9 @@
 package com.techelevator.controller;
 
+import com.techelevator.dao.ModerationDao;
 import com.techelevator.dao.UserDao;
 import com.techelevator.model.Authority;
+import com.techelevator.model.Moderation;
 import com.techelevator.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -19,6 +22,9 @@ public class UserController {
 
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private ModerationDao moderationDao;
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/users")
     public List<User> getAllUsers() {
@@ -27,8 +33,17 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/users/filtered")
-    public List<User> getUsersFiltered() {
-        return userDao.getUsersFiltered();
+    public List<User> getUsersFiltered(@RequestBody long forumId) {
+        List<User> list = userDao.getUsersFiltered();
+        List<Moderation> modsList = moderationDao.getListOfModeratorsOfForum(forumId);
+        List<User> filteredList = new ArrayList<>();
+
+        for (User user : list) {
+            if (moderationDao.findModOfForum(forumId, user.getUsername()) == null) {
+                filteredList.add(user);
+            }
+        }
+        return filteredList;
     }
 
     @PreAuthorize("isAuthenticated()")
