@@ -3,11 +3,12 @@ import axios from 'axios';
 
 const NOTIFICATION_TIMEOUT = 5000;
 
-export function createStore(currentToken, currentUser) {
+export function createStore(currentToken, currentUser, userList = []) {
   let store = _createStore({
     state: {
       token: currentToken || '',
-      user: currentUser || {}
+      user: currentUser || {},
+      users: userList
     },
     mutations: {
       SET_AUTH_TOKEN(state, token) {
