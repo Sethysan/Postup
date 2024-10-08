@@ -211,18 +211,6 @@ export default {
                     })
                     .catch(err => this.handleError(err, "Failed to downvote."));
             }
-        // },
-        // showToast(message) {
-        //     this.$toast(message);
-        // },
-        // handleError(err, message) {
-        //     if (err.response?.status === 401) {
-        //         this.$toast("You must be logged in for Voting ", {
-                    
-        //         });
-        //     } else {
-        //         this.$toast.error(`${message} Status code: ${err.response?.status || 'Unknown'}`);
-        //     }
         },
         deletePost() {
             if (confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
@@ -476,9 +464,12 @@ textarea.expanded {
     gap: 5px;
     /* Adjust spacing between author and time */
     font-size: 0.875rem;
-    /* Adjust as needed */
-    color: #6a737d;
-    /* Optional: gives a muted color to the metadata */
+}
+.post-author{
+    font-size: 1.25rem;
+}
+.post-time{
+    color:rgb(107, 105, 105) ;
 }
 
 .post-header {
@@ -516,14 +507,5 @@ textarea.expanded {
     background-color: rgb(218, 217, 217);
 }
 
-.post-metadata {
-    position: absolute;
-    /* Allows the metadata to be positioned independently */
-    right: 0;
-    /* Pushes the metadata to the far right */
-    font-size: 0.875rem;
-    /* Adjust size as needed */
-    color: #6a737d;
-    /* Optional: gives a muted color to the metadata */
-}
+
 </style>

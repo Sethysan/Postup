@@ -17,9 +17,10 @@
         <router-link :to="{ name: 'post', params: { post: post.id } }">
           <h1>{{ post.title }}</h1>
         </router-link>
-        <p class="inline-time">{{ post.creator_username }}</p>
-        <p class="inline-time">{{ getTimeElapsed(post.timeOfCreation) }}</p>
-        <p> {{ post.creator_username }} </p>
+        <div class="post-meta">
+          <p class="post-author">{{ post.creator_username }}</p>
+          <p class="post-time">{{ getTimeElapsed(post.timeOfCreation) }}</p>
+        </div>
       </header>
       <section>
         <img v-if="post.image" :src="post.image" class="post-image" />
@@ -112,5 +113,18 @@ export default {
   border-radius: 8px;
   cursor: pointer;
   transition: transform 0.3s ease;
+}
+.post-meta {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    /* Adjust spacing between author and time */
+    font-size: 0.875rem;
+}
+.post-author{
+    font-size: 1.25rem;
+}
+.post-time{
+    color:rgb(107, 105, 105) ;
 }
 </style>
