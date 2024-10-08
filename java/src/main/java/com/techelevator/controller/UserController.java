@@ -33,13 +33,12 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/users/filtered")
-    public List<User> getUsersFiltered(@RequestBody long forumId) {
+    public List<User> getUsersFiltered(@RequestBody Moderation mod) {
         List<User> list = userDao.getUsersFiltered();
-        List<Moderation> modsList = moderationDao.getListOfModeratorsOfForum(forumId);
         List<User> filteredList = new ArrayList<>();
 
         for (User user : list) {
-            if (moderationDao.findModOfForum(forumId, user.getUsername()) == null) {
+            if (moderationDao.findModOfForum(mod.getForumId(), user.getUsername()) == null) {
                 filteredList.add(user);
             }
         }
