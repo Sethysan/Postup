@@ -17,23 +17,6 @@ function isTokenExpired(token) {
 function getTokenExpirationInfo(token) {
   const decodedToken = jwt_decode(token);
 
-  if (decodedToken.exp) {
-    const expirationTime = decodedToken.exp;
-    const currentTime = Date.now() / 1000;
-    const timeRemaining = expirationTime - currentTime;
-
-    const hoursRemaining = Math.floor(timeRemaining / 3600);
-    const minutesRemaining = Math.floor((timeRemaining % 3600) / 60);
-    const secondsRemaining = Math.floor(timeRemaining % 60);
-
-    console.log(`Token expires at: ${new Date(expirationTime * 1000).toLocaleString()}`);
-    console.log(`Time remaining: ${hoursRemaining} hours, ${minutesRemaining} minutes, and ${secondsRemaining} seconds`);
-
-    return { expirationTime, timeRemaining, hoursRemaining, minutesRemaining, secondsRemaining };
-  } else {
-    console.log('Token does not have an expiration time.');
-    return null;
-  }
 }
 
 // Axios interceptor for checking token expiration

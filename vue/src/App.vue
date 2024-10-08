@@ -62,6 +62,9 @@ export default {
   background-color: rgb(240, 108, 19);
   color: white;
   border-radius: 8px;
+}
+#capstone-app{
+  font-family: Arial, Helvetica, sans-serif;
 
 }
 
@@ -71,7 +74,6 @@ export default {
   border: none;
   font-size: 16px;
   padding: 5px;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 .nav-btn .router-link-active,

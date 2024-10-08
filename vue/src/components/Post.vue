@@ -15,11 +15,13 @@
             </div>
             <!-- Author and Metadata -->
             <div class="post-meta">
+                <img v-if="post.creator_image" :src="post.creator_image" class="user-image" />
                 <span class="post-author">{{ post.creator_username }}</span>
                 <span class="post-time">• {{ getTimeElapsed(post.timeOfCreation) }}</span>
             </div>
         </div>
         <h1 class="post-title">{{ post.title }}</h1>
+        <p class="post-description">{{ post.description }}</p>
         <div class="post-image-container">
             <img v-if="post.image" :src="post.image" class="post-image" @click="toggleImageFullscreen" />
 
@@ -58,7 +60,6 @@
                 <!-- Delete Button -->
                 <button v-if="post.creator_username === user" class="delete-button" @click="deletePost">Delete</button>
             </div>
-            <p class="post-description">{{ post.description }}</p>
             <!-- Reply Form -->
             <div v-if="user">
                 <!-- Textarea for adding a comment, expanding when clicked -->
@@ -465,6 +466,13 @@ textarea.expanded {
     /* Adjust spacing between author and time */
     font-size: 0.875rem;
 }
+.user-image {
+    width: 40px; 
+    height: 40px; 
+    border-radius: 50%; 
+    object-fit: cover; 
+    /* border: 2px solid #ddd;  */
+}
 .post-author{
     font-size: 1.25rem;
 }
@@ -506,6 +514,5 @@ textarea.expanded {
 .back-button:hover {
     background-color: rgb(218, 217, 217);
 }
-
 
 </style>

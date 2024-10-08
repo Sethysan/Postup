@@ -12,20 +12,20 @@
       <img src="http://localhost:9000/images/Cheems.jpg" alt="placeholder" class="place-holder" />
     </div>
     <div v-for="post in filteredPosts" :key="post.id">
-      <header>
-        <img src="" alt="user-logo" />
-        <router-link :to="{ name: 'post', params: { post: post.id } }">
-          <h1>{{ post.title }}</h1>
-        </router-link>
+      <router-link :to="{ name: 'post', params: { post: post.id } }">
+      <header>       
+          <h1>{{ post.title }}</h1>       
         <div class="post-meta">
+          <img v-if="post.creator_image" :src="post.creator_image" class="user-image" />
           <p class="post-author">{{ post.creator_username }}</p>
           <p class="post-time">{{ getTimeElapsed(post.timeOfCreation) }}</p>
-        </div>
+        </div>      
       </header>
       <section>
         <img v-if="post.image" :src="post.image" class="post-image" />
-        <p> {{ post.description }} </p>
+        <!-- <p> {{ post.description }} </p> -->
       </section>
+    </router-link>
       <button v-if="post.creator_username === user" class="btn btn-delete deletePost"
         @click="deletePost(post.id)">Delete</button>
     </div>
