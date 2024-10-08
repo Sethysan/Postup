@@ -134,6 +134,7 @@ public class JdbcPostDao implements PostDao {
         }
         try {
             jdbcTemplate.update(sql, postId, replyId);
+//            todo: add new exception
         } catch (DuplicateKeyException e) {
             return false;
         }
