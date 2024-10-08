@@ -44,8 +44,8 @@ export default {
                     this.$store.commit('SET_NOTIFICATION', user.username + " not found.");
                 });
         },
-        getUsers(forumId) {
-            forumId = this.$route.params.id;
+        getUsers() {
+            const forumId = this.$route.params.id;
             ModeratorService.getUsers(forumId)
                 .then(response => {
                     this.users = response.data;
@@ -57,7 +57,7 @@ export default {
     },
     data() {
         return {
-            users: []
+            users: [],
         }
     },
     mounted() {
