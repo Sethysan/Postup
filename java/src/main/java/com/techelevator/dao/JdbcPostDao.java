@@ -127,14 +127,16 @@ public class JdbcPostDao implements PostDao {
 
     public boolean addVote(long postId, long replyId, int route) {
         String sql = "INSERT INTO post_upvote(post_id, user_id) VALUES (?, ?)";
+        String check = "SELECT * FROM post_upvote WHERE post_id = ? AND user_id = ?";
         if (route == 1) {
             sql = "INSERT INTO post_downvote(post_id, user_id) VALUES (?, ?)";
+            check = "SELECT * FROM post_downvote WHERE post_id = ? AND user_id = ?";
         }
-        try {
-            jdbcTemplate.update(sql, postId, replyId);
-        } catch (DuplicateKeyException e) {
+        SqlRowSet results = jdbcTemplate.queryForRowSet(check, postId, replyId);
+        if(results.next()){
             return false;
         }
+        jdbcTemplate.update(sql, postId, replyId);
         return true;
     }
 

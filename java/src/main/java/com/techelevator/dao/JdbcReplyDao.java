@@ -124,15 +124,16 @@ public class JdbcReplyDao implements ReplyDao {
     @Override
     public boolean addVote(long postId, long replyId, int route) {
         String sql = "INSERT INTO reply_upvote(reply_id, user_id) VALUES (?, ?)";
+        String check = "SELECT * FROM reply_upvote WHERE reply_id = ? AND user_id = ?";
         if (route == 1) {
             sql = "INSERT INTO reply_downvote(reply_id, user_id) VALUES (?, ?)";
+            check = "SELECT * FROM reply_downvote WHERE reply_id = ? AND user_id = ?";
         }
-        try {
-            jdbcTemplate.update(sql, postId, replyId);
-        }
-        catch (DuplicateKeyException e){
+        SqlRowSet results = jdbcTemplate.queryForRowSet(check, postId, replyId);
+        if(results.next()){
             return false;
         }
+        jdbcTemplate.update(sql, postId, replyId);
         return true;
     }
 
