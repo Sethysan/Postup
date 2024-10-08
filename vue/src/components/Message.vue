@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!deleted">
     <button :onclick="() => {showOptions = true}">
         <p v-if="!updateMode">{{ message.message }}</p>
         <textarea v-if="updateMode" v-model="message.message"></textarea>
@@ -18,20 +18,24 @@
 
 <script>
 import service from '../services/MessageService'
+import socket from '../services/SocketService'
+
 export default {
     props: ['message'],
     data(){
         return {
+            
             showOptions: false,
             updateMode: false,
+            deleted: false
         }
     },
     methods: {
     deleteMessage(){
         service.deleteMessage(this.message.sender.id, this.message.id)
             .then(res => {
-                // force a rerender
-                this.message.message = "this message has been removed"
+                // force a rerender preferably
+                this.deleted = true;
             })
             .catch(err => alert(err.message));
     },

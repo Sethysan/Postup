@@ -1,9 +1,11 @@
 package com.techelevator.security;
 
+import com.techelevator.security.jwt.JWTAuthFilter;
 import com.techelevator.security.jwt.JWTConfigurer;
 import com.techelevator.security.jwt.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -12,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
@@ -68,11 +71,35 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 .and()
-                .apply(securityConfigurerAdapter());
+                .apply(securityConfigurerAdapter())
+
+                .and()
+                .csrf().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler)
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilterBefore(new JWTAuthFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class) // Add the filter here
+                .authorizeRequests()
+                .antMatchers("/api/**", "/forums/**", "/forum/**", "/users/**", "/secured/app/**", "/moderation/**", "/secured/**", "/login", "register").permitAll() // Allow public access
+                .anyRequest().authenticated();
     }
 
     private JWTConfigurer securityConfigurerAdapter() {
         return new JWTConfigurer(tokenProvider);
+    }
+
+    protected boolean sameOriginDisabled() {
+        return true; // Allow cross-origin requests if necessary
+    }
+
+    // Configure the message broker
+    public void configureMessageBroker(MessageBrokerRegistry config) {
+        config.enableSimpleBroker("/topic", "/queue"); // Set up the message broker destinations
+        config.setUserDestinationPrefix("/user"); // User destinations for private messages
     }
 }
 

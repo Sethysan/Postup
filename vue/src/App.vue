@@ -17,6 +17,10 @@
         <router-link v-bind:to="{ name: 'favorites' }" v-if="userName"
           :class="getLinkClass('favorites')">Favorites</router-link>&nbsp;
       </button>
+      <button v-if="isLoggedIn" class="nav-btn">
+        <router-link v-bind:to="{ name: 'messages' }" v-if="userName"
+          :class="getLinkClass('favorites')">Messages</router-link>&nbsp;
+      </button>
       <div v-if="this.isLoggedIn" class="separator">|</div>
       <button v-if="isLoggedIn" class="nav-btn">
         <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''"
@@ -95,12 +99,15 @@ export default {
   },
   mounted() {
     if (this.isLoggedIn) {
-      this.startTokenCountdown(); // Start the countdown when the component is mounted
+      this.startTokenCountdown(); 
+      this.$store.dispatch('CONNECT');
+      // Start the countdown when the component is mounted
     }
   },
   beforeUnmount() {
     // Clear the interval when the component is destroyed
     clearInterval(this.interval);
+    this.$store.dispatch('DISCONNECT');
   }
 };
 </script>
