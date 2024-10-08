@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
@@ -47,6 +48,39 @@ public class UserController {
         }
         else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You do not have permission to ban this User");
+        }
+    }
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/user/{id}/upload-image")
+    public void uploadUserImage(@PathVariable long id, @RequestParam("image") MultipartFile image, Principal user) {
+        User currentUser = userDao.getUserByUsername(user.getName());
+        if (currentUser.getId() == id || currentUser.getAuthorities().stream().anyMatch(a -> a.getName().equals("ROLE_ADMIN"))) {
+            try {
+                // Save the file locally or upload to cloud storage
+                String fileName = saveImage(image);
+                // Update the user's image URL in the database
+                userDao.updateUserImage(id, fileName);
+            } catch (Exception e) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error uploading image");
+            }
+        } else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You do not have permission to upload an image for this user.");
+        }
+    }
+    private String saveImage(MultipartFile image) {
+        // Logic to save the image file and return its URL or file path
+        String fileName = "path/to/save/" + image.getOriginalFilename();
+        // Save the file using image.transferTo(new File(fileName));
+        return fileName;
+    }
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/user/{id}/image")
+    public void updateUserImage(@PathVariable long id, @RequestBody String userImage, Principal user) {
+        User currentUser = userDao.getUserByUsername(user.getName());
+        if (currentUser.getId() == id || currentUser.getAuthorities().stream().anyMatch(a -> a.getName().equals("ROLE_ADMIN"))) {
+            userDao.updateUserImage(id, userImage);
+        } else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You do not have permission to update this user's image.");
         }
     }
 }
