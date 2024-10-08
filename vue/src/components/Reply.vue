@@ -52,9 +52,14 @@ export default {
                 description: ""
             },
             user: this.$store.getters.username,
-            upvoted: this.reply.hasUpvoted,
-            downvoted: this.reply.hasDownvoted
+            upvoted: false,
+            downvoted: false
         }
+    },
+    created() {
+        this.user = this.$store.getters.username,
+            this.upvoted = this.reply.hasUpvoted,
+            this.downvoted = this.reply.hasDownvoted;
     },
     methods: {
         addReply() {
@@ -77,55 +82,32 @@ export default {
                         this.upvoted = false;
                         // Remove upvoted state
                     })
-                    .catch(err => {
-                        if (err.response.status === 401) {
-                            alert("You must be logged in to remove your upvote.");
-                        }
-                        else {
-                            alert("Failed to undo upvote: status code " + err.response.status);
-                        }
-                    });
+                    .catch(err => this.handleError(err, "Failed to undo upvote."));
             } else {
                 // Add the upvote
                 replySerive.upvoteReplies(this.reply.id)
-                    .then(res => {
+                    .then(() => {
                         // If already downvoted, remove downvote
                         if (this.downvoted) {
-                            if (res.status == 202) {
-                                this.reply.downvotes--;
-                            }
+                            this.reply.downvotes--;
                             this.downvoted = false;
                         }
-                        if (res.status == 202) {
-                            this.reply.upvotes++;
-                            this.upvoted = true;
-                        }
+                        this.reply.upvotes++;
+                        this.upvoted = true;
                         // Set upvoted state
                     })
-                    .catch(err => {
-                        if (err.response.status === 401) {
-                            alert("You must be logged in to upvote.");
-                        } else {
-                            alert("Failed to upvote: status code " + err.response.status);
-                        }
-                    });
+                    .catch(err => this.handleError(err, "Failed to upvote."));
             }
         },
         downvote() {
             if (this.downvoted) {
                 // Remove the downvote
                 replySerive.unvotingDislikes(this.reply.id)
-                    .then(res => {
+                    .then(() => {
                         this.reply.downvotes--;
                         this.downvoted = false;  // Remove downvoted state
                     })
-                    .catch(err => {
-                        if (err.response.status === 401) {
-                            alert("You must be logged in to remove your downvote.");
-                        } else {
-                            alert("Failed to undo downvote: status code " + err.response.status);
-                        }
-                    });
+                    .catch(err => this.handleError(err, "Failed to undo downvote."));
             } else {
                 // Add the downvote
                 replySerive.downvoteReplies(this.reply.id)
@@ -135,18 +117,18 @@ export default {
                             this.reply.upvotes--;
                             this.upvoted = false;
                         }
-                        if (res.status == 202) {
-                            this.reply.downvotes++;
-                            this.downvoted = true;
-                        }  // Set downvoted state
+                        this.reply.downvotes++;
+                        this.downvoted = true;
+                        // Set downvoted state
                     })
-                    .catch(err => {
-                        if (err.response.status === 401) {
-                            alert("You must be logged in to downvote.");
-                        } else {
-                            alert("Failed to downvote: status code " + err.response.status);
-                        }
-                    });
+                    .catch(err => this.handleError(err, "Failed to downvote."));
+            }
+        },
+        handleError(err, message) {
+            if (err.response?.status === 401) {
+                toDisplayString("You must be logged in to perform this action.")
+            } else {
+                alert(`${message} Status code: ${err.response?.status || 'Unknown'}`);
             }
         },
         deleteReply() {

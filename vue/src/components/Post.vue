@@ -36,7 +36,8 @@
                         </svg>
                     </button>
                     <span class="vote-count">{{ post.upvotes - post.downvotes }}</span>
-                    <button @click="downvote" :class="{ 'active-downvote': downvoted, 'active-upvote': upvoted }" class="vote-button">
+                    <button @click="downvote" :class="{ 'active-downvote': downvoted, 'active-upvote': upvoted }"
+                        class="vote-button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20"
                             class="vote-icon">
                             <path
@@ -110,7 +111,9 @@ export default {
         }
     },
     created() {
-        this.user = this.$store.getters.username
+        this.user = this.$store.getters.username,
+            this.upvoted = this.post.hasUpvoted,
+            this.downvoted = this.post.hasDownvoted;
 
     },
     props: ['post', 'replies'],
@@ -159,12 +162,12 @@ export default {
                 service.upvotePost(this.post.id)
                     .then(() => {
                         // If already downvoted, remove downvote
-                        if (this.downvoted) { 
-                                this.post.downvotes--;
-                                this.downvoted = false;
-                            }
+                        if (this.downvoted) {
+                            this.post.downvotes--;
+                            this.downvoted = false;
+                        }
                         this.post.upvotes++;
-                        this.upvoted = true;;
+                        this.upvoted = true;
 
                     })
                     .catch(err => this.handleError(err, "Failed to upvote."));
@@ -182,20 +185,20 @@ export default {
             } else {
                 // Add the downvote
                 service.downvotePost(this.post.id)
-                .then(() => {
-                    if (this.upvoted) {
-                        this.post.upvotes--;
-                        this.upvoted = false;
-                    }
-                    this.post.downvotes++;
-                    this.downvoted = true;
-                })
-                .catch(err => this.handleError(err, "Failed to downvote."));
+                    .then(() => {
+                        if (this.upvoted) {
+                            this.post.upvotes--;
+                            this.upvoted = false;
+                        }
+                        this.post.downvotes++;
+                        this.downvoted = true;
+                    })
+                    .catch(err => this.handleError(err, "Failed to downvote."));
             }
         }
     },
     handleError(err, message) {
-        if(err.response?.status === 401) {
+        if (err.response?.status === 401) {
             toDisplayString("You must be logged in to perform this action.")
         } else {
             alert(`${message} Status code: ${err.response?.status || 'Unknown'}`);

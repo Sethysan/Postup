@@ -1,5 +1,4 @@
 <template>
-  {{ postData }}
   <p v-if="isLoading">Loading...</p>
   <post v-if="!isLoading" :post="postData" :replies="replies"></post>
 </template>
