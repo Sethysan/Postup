@@ -14,4 +14,6 @@ public interface ModerationDao {
 
     void removeOrDeleteModerator(long forumId, String name);
 
+    Moderation findModOfForum(long id, String username);
+
 }

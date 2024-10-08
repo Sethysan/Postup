@@ -6,7 +6,9 @@ export default {
             username: username
         });
     },
-    getUsers() {
-        return http.get(`/users/filtered`);
+    getUsers(forumId) {
+        return http.get(`/users/filtered`, {
+            forumId: forumId
+        });
     }
 }
