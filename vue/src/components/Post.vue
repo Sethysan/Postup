@@ -86,9 +86,25 @@ import dayjs from 'dayjs';
 import service from '../services/PostService';
 import replySerive from '../services/RepliesService'
 import Replies from './Replies.vue';
-import { toDisplayString } from 'vue';
+import { useToast } from 'vue-toastification';
 
 export default {
+    setup() {
+        const toast = useToast();
+        function handleError(err, message) {
+            if (err.response?.status === 401) {
+                toast("You must be logged in to vote", {
+                    position: "bottom-center",
+                });
+            } else {
+                toast.error(`${message} Status code: ${err.response?.status || 'Unknown'}`);
+            }
+        }
+        return {
+            handleError,
+            toast
+        };
+    },
     props: {
         post: {
             type: Object,
@@ -195,45 +211,50 @@ export default {
                     })
                     .catch(err => this.handleError(err, "Failed to downvote."));
             }
-        }
-    },
-    handleError(err, message) {
-        if (err.response?.status === 401) {
-            toDisplayString("You must be logged in to perform this action.")
-        } else {
-            alert(`${message} Status code: ${err.response?.status || 'Unknown'}`);
-        }
-    },
-    deletePost() {
-        if (confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
-            let postId = this.post.id;
-            alert(postId)
-            service.deletePost(postId)
-                .then(response => {
-                    this.$store.commit('SET_NOTIFICATION', `Post ${postId} was deleted.`);
-                    this.$router.push({ name: 'forum' });
-                })
-                .catch(error => {
-                    if (error.response) {
-                        if (error.response.status === 404) {
-                            this.$store.commit('SET_NOTIFICATION',
-                                "Error: Post " + postId + " was not found. This post may have been deleted or you have entered an invalid post ID.");
-                            this.$router.push({ name: 'forum' });
+        // },
+        // showToast(message) {
+        //     this.$toast(message);
+        // },
+        // handleError(err, message) {
+        //     if (err.response?.status === 401) {
+        //         this.$toast("You must be logged in for Voting ", {
+                    
+        //         });
+        //     } else {
+        //         this.$toast.error(`${message} Status code: ${err.response?.status || 'Unknown'}`);
+        //     }
+        },
+        deletePost() {
+            if (confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
+                let postId = this.post.id;
+                alert(postId)
+                service.deletePost(postId)
+                    .then(response => {
+                        this.$store.commit('SET_NOTIFICATION', `Post ${postId} was deleted.`);
+                        this.$router.push({ name: 'forum' });
+                    })
+                    .catch(error => {
+                        if (error.response) {
+                            if (error.response.status === 404) {
+                                this.$store.commit('SET_NOTIFICATION',
+                                    "Error: Post " + postId + " was not found. This post may have been deleted or you have entered an invalid post ID.");
+                                this.$router.push({ name: 'forum' });
+                            } else {
+                                this.$store.commit('SET_NOTIFICATION',
+                                    "Error getting post " + postId + ". Response received was '" + error.response.statusText + "'.");
+                            }
+                        } else if (error.request) {
+                            this.$store.commit('SET_NOTIFICATION', "Error getting post. Server could not be reached.");
                         } else {
-                            this.$store.commit('SET_NOTIFICATION',
-                                "Error getting post " + postId + ". Response received was '" + error.response.statusText + "'.");
+                            this.$store.commit('SET_NOTIFICATION', "Error getting post. Request could not be created.");
                         }
-                    } else if (error.request) {
-                        this.$store.commit('SET_NOTIFICATION', "Error getting post. Server could not be reached.");
-                    } else {
-                        this.$store.commit('SET_NOTIFICATION', "Error getting post. Request could not be created.");
-                    }
-                })
-                .finally(() => {
-                    this.fetchReplies();
-                });
+                    })
+                    .finally(() => {
+                        this.fetchReplies();
+                    });
+            }
         }
-    }
+    },
 }
 </script>
 
