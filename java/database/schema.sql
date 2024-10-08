@@ -7,6 +7,7 @@ CREATE TABLE users (
 	username varchar(25) NOT NULL UNIQUE,
 	password_hash varchar(200) NOT NULL,
 	role varchar(50) NOT NULL,
+	user_image varchar(500),
 	CONSTRAINT PK_user PRIMARY KEY (user_id)
 );
 
