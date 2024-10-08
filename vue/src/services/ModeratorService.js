@@ -8,7 +8,7 @@ export default {
     },
     getUsers(forumId) {
         return http.get(`/users/filtered`, {
-            id: forumId
+            params: { forumId }
         });
     }
 }

@@ -32,17 +32,18 @@ import ModeratorService from '@/services/ModeratorService';
 export default {
     methods: {
         promoteUser(user) {
-            confirm(`Promote ${user.username} to moderator?`);
-            const forumId = this.$route.params.id;
-            ModeratorService.promoteToModerator(user.username, forumId)
-                .then(() => {
-                    // Update the user's role in the Vuex store
-                    this.users = this.users.filter(u => u.id !== user.id);
-                    this.$store.commit('PROMOTE_USER', user.username); //TODO:Make PROMOTE_USER in STORE
-                })
-                .catch(error => {
-                    this.$store.commit('SET_NOTIFICATION', user.username + " not found.");
-                });
+            if(confirm(`Promote ${user.username} to moderator?`)) {
+                const forumId = this.$route.params.id;
+                ModeratorService.promoteToModerator(user.username, forumId)
+                    .then(() => {
+                        // Update the user's role in the Vuex store
+                        this.users = this.users.filter(u => u.id !== user.id);
+                        this.$store.commit('PROMOTE_USER', user.username); //TODO:Make PROMOTE_USER in STORE
+                    })
+                    .catch(error => {
+                        this.$store.commit('SET_NOTIFICATION', user.username + " not found.");
+                    });
+            }
         },
         getUsers() {
             const forumId = this.$route.params.id;
