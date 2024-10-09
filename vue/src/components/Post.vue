@@ -58,7 +58,7 @@
                     <span>{{ replies.length }} Comments</span>
                 </button>
                 <!-- Delete Button -->
-                <button v-if="post.creator_username === user" class="delete-button" @click="deletePost">Delete</button>
+                <button v-if="post.creator_username === user || role==='ROLE_MODERATOR' || role ==='ROLE_ADMIN'" class="delete-button" @click="deletePost">Delete</button>
             </div>
             <!-- Reply Form -->
             <div v-if="user">
@@ -124,7 +124,8 @@ export default {
             downvoted: false,
             user: this.$store.getters.username,
             formVisibility: false,
-            newReply: {}
+            newReply: {},
+            role: this.$store.getters.role
         }
     },
     created() {
@@ -133,7 +134,6 @@ export default {
             this.downvoted = this.post.hasDownvoted;
 
     },
-    props: ['post', 'replies'],
     methods: {
         goBack() {
             this.$router.go(-1); // This navigates back in the history stack

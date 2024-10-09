@@ -93,7 +93,7 @@ export function createStore(currentToken, currentUser, userList = []) {
         }
       },
       role(state) {
-        return state.user.role || null;
+        return state.user.authorities.length > 0 ? state.user.authorities[0].name : 'ROLE_USER'
       },
       users(state) {
         return state.user;
