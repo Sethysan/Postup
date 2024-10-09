@@ -207,7 +207,7 @@ public class JdbcReplyDao implements ReplyDao {
             UserSnippetDto user = new UserSnippetDto();
             user.setId(row.getInt("user_id"));
             user.setUsername(row.getString("username"));
-//            user.setUser_image(row.getString("user_image"));
+            user.setUser_image(row.getString("user_image"));
             reply.setUser(user);
             return reply;
         }

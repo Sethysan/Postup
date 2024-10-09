@@ -94,7 +94,7 @@ public class JdbcPostDao implements PostDao {
         while (results.next()) {
             posts.add(mapRowToPost(results));
         }
-        System.out.println(posts);
+        System.out.println("allPosts: " + posts);
         return posts;
     }
 

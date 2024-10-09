@@ -1,13 +1,13 @@
 <template>
     <div class="thread">
+        {{reply.user.user_image }}
         <div class="reply-header">
             <div class="reply-meta">
-                <img v-if="reply.user_image" :src="reply.user_image" class="reply-user-image" />
+                <img v-if="reply.user.user_image" :src="reply.image" class="reply-user-image" />
                 <span class="reply-user">{{ reply.user.username }}</span>
                 <span class="reply-time">• {{ getTimeElapsed(reply.timeOfCreation) }}</span>
             </div>
         </div>
-
         <p>{{ reply.description }}</p>
         <div class="post-footer flex items-center justify-start mt-md px-md xs:px-0">
             <!-- Voting Buttons -->
@@ -60,6 +60,7 @@ export default {
                 description: ""
             },
             user: this.$store.getters.username,
+            image: 'afsdf',
             upvoted: false,
             downvoted: false,
             role: this.$store.getters.role

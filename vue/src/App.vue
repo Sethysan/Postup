@@ -121,4 +121,9 @@ html {
 .separator {
   align-content: center;
 }
+.post-author{
+  color: black;
+  text-decoration: none;
+}
+
 </style>

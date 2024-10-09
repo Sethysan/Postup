@@ -137,8 +137,7 @@ export default {
   margin-left: 0px;
   margin-right: 0px;
   margin-top: 0px;
+  color: black;
 }
-select{
-  /* background-color:rgb(253, 197, 129); */
-}
+
 </style>
