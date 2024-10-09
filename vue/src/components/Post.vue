@@ -59,7 +59,7 @@
                     <span>{{ post.replyCount }} Comments</span>
                 </button>
                 <!-- Delete Button -->
-                <button v-if="post.creator_username === user || role==='ROLE_MODERATOR' || role ==='ROLE_ADMIN'" class="delete-button" @click="deletePost">Delete</button>
+                <button v-if="post.creator_username === user || isMod || role ==='ROLE_ADMIN'" class="delete-button" @click="deletePost">Delete</button>
             </div>
             <!-- Reply Form -->
             <div v-if="user">
@@ -88,6 +88,7 @@ import dayjs from 'dayjs';
 import service from '../services/PostService';
 import replySerive from '../services/RepliesService'
 import Replies from './Replies.vue';
+import ModeratorService from '../services/ModeratorService';
 // import { useToast } from 'vue-toastification';
 
 export default {
@@ -126,13 +127,16 @@ export default {
             user: this.$store.getters.username,
             formVisibility: false,
             newReply: {},
-            role: this.$store.getters.role
+            role: this.$store.getters.role,
+            listOfModsOfForum: [],
+            isMod: false
         }
     },
     created() {
         this.user = this.$store.getters.username,
             this.upvoted = this.post.hasUpvoted,
             this.downvoted = this.post.hasDownvoted;
+        this.checkIfMod
 
     },
     methods: {
@@ -243,6 +247,19 @@ export default {
                         this.fetchReplies();
                     });
             }
+        },
+        checkIfMod() {
+            this.isMod = false;
+            ModeratorService.getListOfMods(this.post.forum.id)
+                .then(res => {
+                    this.listOfModsOfForum = res.data;
+                    for (let mod of this.listOfModsOfForum) {
+                        if (mod.username === this.$store.getters.username) {
+                            this.isMod = true;
+                        }
+                    }
+                })
+                .catch(err => alert(err));
         }
     },
 }

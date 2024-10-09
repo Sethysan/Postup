@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <router-link v-bind:to="{ name: 'admin' }">Admin</router-link> 
+    <button v-if="role === 'ROLE_ADMIN'"><router-link v-bind:to="{ name: 'admin' }">Admin</router-link></button>
     <h1 class="title">Todays Top 10 Popular Posts</h1>
     <div v-if="posts.length < 1 && !isloadingPost">
       <p>Wow, such empty!</p>
@@ -44,6 +44,7 @@ export default {
     return {
       posts: [],
       forums: [],
+      role: this.$store.getters.role,
       isloadingPost: true,
       isloadingForum: true,
       postLoadingError:false,

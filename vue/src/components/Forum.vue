@@ -1,5 +1,7 @@
-<template>{{ forum }}
+<template>
     <div class="forum">
+        {{ isMod }}
+        {{ this.forum.id}}
         <h1>{{ forum.topic }}</h1>
         <p>{{ forum.description }}</p>
         <button :class="forum.favorited ? 'favorited' : 'not-favorited'" @click="favorite">
@@ -10,7 +12,7 @@
             <button class="create-post-button">Create Post</button>
         </router-link>
         <router-link :to="{ name: 'promote', params: { forumId: forum.Id } }">
-            <button class="promote-button">Promote to Moderator</button>
+            <button v-if=" isMod || role === 'ROLE_ADMIN'" class="promote-button">Promote to Moderator</button>
         </router-link>
     </div>
 </template>
@@ -18,25 +20,32 @@
 import service from '../services/ForumService'
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import ModeratorService from '../services/ModeratorService';
 
 export default {
     props: ['forum'],
     data() {
         return {
             currentForum: {},
-            color: 'white'
+            color: 'white',
+            role: this.$store.getters.role,
+            listOfModsOfForum: [],
+            isMod: false
         }
     },
     created() {
         if (this.forum) {
             // If forum data is already passed as a prop, use it
             this.currentForum = this.forum;
+            // this.checkIfMod();
         } else {
             // Otherwise, fetch the forum from the service
             service.getForum(this.$route.params.forumId).then(res => {
                 this.currentForum = res.data;
             });
+            // this.checkIfMod();
         }
+     
     },
     methods: {
         favorite() {
@@ -61,6 +70,28 @@ export default {
             // dayjs converts time into a readable format and calculates the elapsed time
             return dayjs(creationTime).fromNow();
         },
+        checkIfMod() {
+            this.isMod = false;
+            let num = 0;
+            if (this.forumId) {
+                num = this.forumId;
+            }
+            else {
+                let num = this.forumId;
+            }
+            ModeratorService.getListOfMods(num)
+                .then(res => {
+                    console.log(res.data);
+                    this.listOfModsOfForum = res.data;
+
+                    for (let mod of this.listOfModsOfForum) {
+                        if (mod.username === this.$store.getters.username) {
+                            this.isMod = true;
+                        }
+                    }
+                })
+                .catch(err => alert(err));
+        }
     }
 }
 </script>

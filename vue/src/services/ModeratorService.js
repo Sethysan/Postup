@@ -11,5 +11,8 @@ export default {
     },
     getAllUsers(){
         return http.get(`/users`);
-    }
+    },
+    getListOfMods(forumId) {
+        return http.get(`/moderation/forum/${forumId}`);
+    } 
 }
