@@ -10,6 +10,7 @@ public class Forum {
     private Timestamp timeOfCreation;
     private Timestamp mostRecentPost;
     boolean isFavorited;
+    String moderator;
 
     public long getId() {
         return id;
@@ -65,5 +66,13 @@ public class Forum {
 
     public void setMostRecentPost(Timestamp mostRecentMost) {
         this.mostRecentPost = mostRecentMost;
+    }
+
+    public String getModerator() {
+        return moderator;
+    }
+
+    public void setModerator(String moderator) {
+        this.moderator = moderator;
     }
 }

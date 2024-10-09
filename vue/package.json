@@ -15,13 +15,17 @@
     "@fortawesome/free-regular-svg-icons": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/vue-fontawesome": "^3.0.8",
+    "@stomp/stompjs": "^7.0.0",
     "axios": "^1.6",
     "dayjs": "^1.11.13",
     "jwt-decode": "^3.1.2",
+    "sockjs-client": "^1.6.1",
+    "stompjs": "^2.3.3",
+    "toastification": "^0.1.4",
     "vue": "^3.3.4",
     "vue-router": "^4.2.1",
-    "vue-toastification": "^2.0.0-rc.5",
-    "vuex": "^4.1.0"
+    "vuex": "^4.1.0",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.2.0",

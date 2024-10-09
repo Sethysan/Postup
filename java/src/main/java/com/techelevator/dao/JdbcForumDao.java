@@ -28,7 +28,8 @@ public class JdbcForumDao implements ForumsDao {
 
     public List<Forum> getForums(long user) {
         List<Forum> list = new ArrayList<>();
-        String sql = "SELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post, COUNT(favorite_forums.forum_id) AS favorited FROM forums LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? JOIN posts ON posts.forum_id = forums.forum_id GROUP BY forums.forum_id ORDER BY most_recent_post;";
+        String sql = "SELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post, COUNT(favorite_forums.forum_id) AS favorited, moderation.username AS moderator  FROM forums \n" +
+                "LEFT JOIN moderation ON moderation.username = forums.author LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? JOIN posts ON posts.forum_id = forums.forum_id GROUP BY forums.forum_id, moderator ORDER BY most_recent_post;";
 
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user);
@@ -44,7 +45,8 @@ public class JdbcForumDao implements ForumsDao {
 
     public List<Forum> getActiveForum(long user) {
         List<Forum> list = new ArrayList<>();
-        String sql = "SELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post, COUNT(favorite_forums.forum_id) AS favorited FROM forums LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? JOIN posts ON posts.forum_id = forums.forum_id GROUP BY forums.forum_id ORDER BY most_recent_post;";
+        String sql = "SELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post, COUNT(favorite_forums.forum_id) AS favorited, moderation.username AS moderator  FROM forums \n" +
+                "LEFT JOIN moderation ON moderation.username = forums.author LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? JOIN posts ON posts.forum_id = forums.forum_id GROUP BY forums.forum_id, moderator ORDER BY most_recent_post;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user);
         while (results.next()) {
             list.add(mapRowToForum(results));
@@ -54,7 +56,8 @@ public class JdbcForumDao implements ForumsDao {
 
     public Forum getForumById(long forumId, long user) {
         Forum forum = null;
-        String sql = "SELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post, COUNT(favorite_forums.forum_id) AS favorited FROM forums LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? JOIN posts ON posts.forum_id = forums.forum_id WHERE forums.forum_id = ? GROUP BY forums.forum_id;";
+        String sql = "SELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post, COUNT(favorite_forums.forum_id) AS favorited, moderation.username AS moderator  FROM forums \n" +
+                "LEFT JOIN moderation ON moderation.username = forums.author LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? JOIN posts ON posts.forum_id = forums.forum_id WHERE forums.forum_id = ? GROUP BY forums.forum_id, moderator";
 
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, user, forumId);
 
@@ -66,7 +69,8 @@ public class JdbcForumDao implements ForumsDao {
 
     public List<Forum> getForumsByTopic(String topic) {
         List<Forum> list = new ArrayList<>();
-        String sql = "SELECT * FROM forums, COUNT(favorite_forums.forum_id) AS favorited FROM forums LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? WHERE topic = ? GROUP BY forums.forum_id";
+        String sql = "SELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post, COUNT(favorite_forums.forum_id) AS favorited, moderation.username AS moderator  FROM forums \n" +
+                "LEFT JOIN moderation ON moderation.username = forums.author LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? WHERE topic = ? GROUP BY forums.forum_id, moderator";
 
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, topic);
 
@@ -80,15 +84,12 @@ public class JdbcForumDao implements ForumsDao {
     @Override
     public List<Forum> getFavoriteForums(long user) {
         List<Forum> favorites = new ArrayList<>();
-        String sql = "SELECT forums.*, \n" +
-                "       favorite_forums.user_id, \n" +
-                "       MAX(posts.time_of_creation) AS most_recent_post, \n" +
-                "       COUNT(favorite_forums.forum_id) AS favorited \n" +
-                "FROM forums \n" +
+        String sql = "SELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post, COUNT(favorite_forums.forum_id) AS favorited, moderation.username AS moderator  FROM forums \n" +
+                "LEFT JOIN moderation ON moderation.username = forums.author \n" +
                 "LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ?\n" +
                 "LEFT JOIN posts ON posts.forum_id = forums.forum_id \n" +
                 "WHERE favorite_forums.user_id = ?\n" +
-                "GROUP BY forums.forum_id, favorite_forums.user_id \n" +
+                "GROUP BY forums.forum_id, favorite_forums.user_id, moderator \n" +
                 "ORDER BY most_recent_post;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user, user);
 
@@ -131,13 +132,13 @@ public class JdbcForumDao implements ForumsDao {
     public List<SearchResultsDto> getForumsBySearch(String searchTerm, long user) {
         List<SearchResultsDto> list = new ArrayList<>();
 
-        String sql = "SELECT forums.*, posts.description AS post_description, posts.post_id, posts.title, \n" +
-                "COUNT(favorite_forums.forum_id) AS favorited FROM forums LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? \n" +
+        String sql = "SSELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post, COUNT(favorite_forums.forum_id) AS favorited, moderation.username AS moderator  FROM forums \\n\" +\n" +
+                "                \"LEFT JOIN moderation ON moderation.username = forums.author LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? \n" +
                 "LEFT JOIN posts ON posts.forum_id = forums.forum_id \n" +
                 "AND (posts.description ILIKE ? OR posts.title ILIKE ?) \n" +
                 "WHERE (forums.description ILIKE ? OR forums.topic ILIKE ?) \n" +
                 "OR (posts.description ILIKE ? OR posts.title ILIKE ?) \n" +
-                "GROUP BY forums.forum_id, posts.post_id " +
+                "GROUP BY forums.forum_id, posts.post_id, moderation " +
                 "ORDER BY posts.description DESC, forums.forum_id;";
 
         searchTerm = "%" + searchTerm + "%";
@@ -167,6 +168,7 @@ public class JdbcForumDao implements ForumsDao {
         forum.setTimeOfCreation(rs.getTimestamp("time_of_creation"));
         forum.setFavorited(rs.getInt("favorited") > 0);
         forum.setMostRecentPost(rs.getTimestamp("most_recent_post"));
+        forum.setModerator(rs.getString("moderator"));
         return forum;
     }
 

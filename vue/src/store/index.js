@@ -1,5 +1,6 @@
 import { createStore as _createStore } from 'vuex';
 import axios from 'axios';
+// import service from '../services/SocketService'
 
 const NOTIFICATION_TIMEOUT = 5000;
 
@@ -10,7 +11,7 @@ export function createStore(currentToken, currentUser, userList = []) {
       user: currentUser || {},
       users: userList
     },
-    mutations: {
+    mutations:{
       SET_AUTH_TOKEN(state, token) {
         state.token = token;
         localStorage.setItem('token', token);
@@ -29,28 +30,20 @@ export function createStore(currentToken, currentUser, userList = []) {
         axios.defaults.headers.common = {};
       },
       SET_NOTIFICATION(state, notification) {
-        
         if (state.notification) {
           this.commit('CLEAR_NOTIFICATION');
         }
-
         if (typeof notification === 'string') {
-          
           notification = {
             message: notification,
             type: 'error',
             timeout: NOTIFICATION_TIMEOUT
           }
         } else {
-          
           notification.type = notification.type || 'error';
           notification.timeout = notification.timeout || NOTIFICATION_TIMEOUT;
         }
-
-        
         state.notification = notification;
-
-        
         notification.timer = window.setTimeout(() => {
           this.commit('CLEAR_NOTIFICATION');
         }, notification.timeout);
@@ -93,10 +86,13 @@ export function createStore(currentToken, currentUser, userList = []) {
         }
       },
       role(state) {
-        return state.user.role || null;
+        return state.user.authorities.length > 0 ? state.user.authorities[0].name : 'ROLE_USER'
       },
       users(state) {
         return state.user;
+      },
+      userId(state){
+        return state.user.id
       }
     }
   });
