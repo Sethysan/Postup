@@ -7,6 +7,9 @@
     <div v-if="isloadingPost">
       <p>loading . . .</p>
     </div>
+    <div v-if="error">
+      <p>Oops, it looks like this search couldn't load</p>
+    </div>
     <post-list :posts="posts"></post-list>
 </template>
 
@@ -24,7 +27,8 @@ export default {
             posts: [],
             forumId: 0,
             keyword: "",
-            isloading: true
+            isloading: true,
+            error: false,
         }
     },
     created(){
@@ -38,9 +42,9 @@ export default {
                         this.posts = res.data
                         this.isloading = false
             })
-                    .catch(err => err.status)
+                    .catch(err => this.error = true)
             })
-            .catch(err => alert(err.status))
+            .catch(err => this.error = true)
     },
 }
 </script>

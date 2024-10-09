@@ -9,6 +9,9 @@
     <div v-if="isloading">
       <p>loading . . .</p>
     </div>
+    <div v-if="error">
+      <p>Oops, it looks like this forum couldn't load</p>
+    </div>
     <post-list :posts="posts"></post-list>
   </div>
 </template>
@@ -29,7 +32,8 @@ export default {
       forum: {},
       forumId: 0,
       posts: [],
-      isloading: true
+      isloading: true,
+      error: false
     }
   },
   created() {
@@ -46,7 +50,8 @@ export default {
           })
       }).catch((error) => {
         console.error("Error fetching forums by topic: ", error);
-      }).catch(err => alert("error"))
+        this.error = true
+      }).catch(err => this.error=true)
     }
     else {
       // Fetch forum by ID if 'topic' is not provided

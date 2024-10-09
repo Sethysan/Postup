@@ -1,5 +1,4 @@
 <template>
-  
   <p v-if="isLoading">Loading...</p>
   <div v-if="error">
       <p>Oops, it looks like this post couldn't load</p>
