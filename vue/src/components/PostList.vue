@@ -6,26 +6,26 @@
         <option value="recent">Most Recent</option>
         <option value="popularity">Most Popular</option>
       </select>
-      <button class="sort" :onclick="filterPosts">Sort</button>
     </div>
     <div v-if="posts.length === 0">
       <p>Wow, such empty</p>
       <img src="http://localhost:9000/images/Cheems.jpg" alt="placeholder" class="place-holder" />
     </div>
-    <div v-for="post in posts" :key="post.id">
-      <header>
-        <img src="" alt="user-logo" />
-        <router-link :to="{ name: 'post', params: { post: post.id } }">
-          <h1>{{ post.title }}</h1>
-        </router-link>
-        <p class="inline-time">{{ post.creator_username }}</p>
-        <p class="inline-time">{{ getTimeElapsed(post.timeOfCreation) }}</p>
-        <p> {{ post.creator_username }} </p>
+    <div v-for="post in filteredPosts" :key="post.id">
+      <router-link :to="{ name: 'post', params: { post: post.id } }">
+      <header>       
+          <h1>{{ post.title }}</h1>       
+        <div class="post-meta">
+          <img v-if="post.creator_image" :src="post.creator_image" class="user-image" />
+          <p class="post-author">{{ post.creator_username }}</p>
+          <p class="post-time">{{ getTimeElapsed(post.timeOfCreation) }}</p>
+        </div>      
       </header>
       <section>
-        <img v-if="post.image" :src="post.image"  class="post-image"/>
-        <p> {{ post.description }} </p>
+        <img v-if="post.image" :src="post.image" class="post-image" />
+        <!-- <p> {{ post.description }} </p> -->
       </section>
+    </router-link>
       <button v-if="post.creator_username === user" class="btn btn-delete deletePost"
         @click="deletePost(post.id)">Delete</button>
     </div>
@@ -35,31 +35,32 @@
 import Post from '../components/Post.vue';
 import PostService from '../services/PostService';
 import dayjs from 'dayjs';
+
 export default {
   props: ['posts'],
   components: { Post },
   data() {
     return {
       filter: "",
-      user: this.$store.getters.username
+      user: this.$store.getters.username,
     }
   },
+  computed: {
+    filteredPosts() {
+      let sortedPosts = [...this.posts];
+      if (this.filter === 'recent') {
+        sortedPosts.sort((a, b) => b.id - a.id);
+      } else if (this.filter === 'popularity') {
+        sortedPosts.sort((a, b) => (b.upvotes - b.downvotes) - (a.upvotes - a.downvotes));
+      }
+      return sortedPosts;
+    },
+  },
   methods: {
-    filterPosts() {
-      if (this.filter == 'recent') {
-        this.filterPostsByRecent();
-      }
-      else if (this.filter == 'popularity') {
-        this.filterByPopularity();
-      }
-    },
-    filterPostsByRecent() {
-      this.posts = [...this.posts].sort((a, b) => b.id - a.id);
-      console.log(`${this.posts}`)
-    },
-    filterByPopularity() {
-      this.posts = [...this.posts].sort((a, b) => (b.upvotes - b.downvotes) - (a.upvotes - a.downvotes));
-    },
+    // filterPosts() {
+    //   // This triggers a re-evaluation of `filteredPosts` computed property.
+    //   console.log(this.filteredPosts);
+    // },
     deletePost(postId) {
       if (
         confirm("Are you sure you want to delete this post? This action cannot be undone.")
@@ -103,13 +104,27 @@ export default {
   margin-bottom: 15px;
   margin-right: 10px;
 }
+
 .post-image {
-    width: 100%;
-    background-color: black;
-    max-height: 400px;
-    object-fit:contain;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
+  width: 100%;
+  background-color: black;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.post-meta {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    /* Adjust spacing between author and time */
+    font-size: 0.875rem;
+}
+.post-author{
+    font-size: 1.25rem;
+}
+.post-time{
+    color:rgb(107, 105, 105) ;
 }
 </style>

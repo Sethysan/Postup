@@ -18,7 +18,7 @@
                 <!-- also inside loop button for promote to moderator -->
                 <!-- will also be a table component <td> -->
                 <td>
-                    <button @click="promoteUser(user.username)">Promote to Moderator</button>
+                    <button @click="promoteUser(user)">Promote to Moderator</button>
                 </td>
             </tr>
         </tbody>
@@ -30,29 +30,24 @@
 <script>
 import ModeratorService from '@/services/ModeratorService';
 export default {
-    props: {
-        forumId: {
-            type: String,
-            required: true
-        }
-    },
-    computed: {
-        
-    },
     methods: {
-        promoteUser(userName) {
-            userName = this.user.username;
-            ModeratorService.promoteUser(userName, this.forumId)
-                .then(() => {
-                    // Update the user's role in the Vuex store
-                    this.$store.commit('PROMOTE_USER', userName); //TODO:Make PROMOTE_USER in STORE
-                })
-                .catch(error => {
-                    this.$store.commit('SET_NOTIFICATION', userName + " not found.");
-                });
+        promoteUser(user) {
+            if(confirm(`Promote ${user.username} to moderator?`)) {
+                const forumId = this.$route.params.id;
+                ModeratorService.promoteToModerator(user.username, forumId)
+                    .then(() => {
+                        // Update the user's role in the Vuex store
+                        this.users = this.users.filter(u => u.id !== user.id);
+                        this.$store.commit('PROMOTE_USER', user.username); //TODO:Make PROMOTE_USER in STORE
+                    })
+                    .catch(error => {
+                        this.$store.commit('SET_NOTIFICATION', user.username + " not found.");
+                    });
+            }
         },
         getUsers() {
-            ModeratorService.getUsers()
+            const forumId = this.$route.params.id;
+            ModeratorService.getUsers(forumId)
                 .then(response => {
                     this.users = response.data;
                 })
@@ -63,10 +58,12 @@ export default {
     },
     data() {
         return {
-            users: []
+            users: [],
         }
     },
     mounted() {
+        const forumId = this.$route.params.id;
+        console.log('Forum ID:', forumId);
         this.getUsers();
     }
     // method to see if in forums path and if role is mod or admin canPromote

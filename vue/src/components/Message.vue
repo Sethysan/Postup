@@ -24,7 +24,6 @@ export default {
     props: ['message'],
     data(){
         return {
-            
             showOptions: false,
             updateMode: false,
             deleted: false

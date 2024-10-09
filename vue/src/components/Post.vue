@@ -15,11 +15,13 @@
             </div>
             <!-- Author and Metadata -->
             <div class="post-meta">
+                <img v-if="post.creator_image" :src="post.creator_image" class="user-image" />
                 <span class="post-author">{{ post.creator_username }}</span>
                 <span class="post-time">• {{ getTimeElapsed(post.timeOfCreation) }}</span>
             </div>
         </div>
         <h1 class="post-title">{{ post.title }}</h1>
+        <p class="post-description">{{ post.description }}</p>
         <div class="post-image-container">
             <img v-if="post.image" :src="post.image" class="post-image" @click="toggleImageFullscreen" />
 
@@ -27,7 +29,8 @@
             <div class="post-footer">
                 <!-- Voting Buttons -->
                 <div :class="['vote-container', { 'active-upvote': upvoted, 'active-downvote': downvoted }]">
-                    <button @click="upvote" :class="{ 'active-upvote': upvoted }" class="vote-button">
+                    <button @click="upvote" :class="{ 'active-upvote': upvoted, 'downvote-active': downvoted }"
+                        class="vote-button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20"
                             class="vote-icon">
                             <path
@@ -35,7 +38,8 @@
                         </svg>
                     </button>
                     <span class="vote-count">{{ post.upvotes - post.downvotes }}</span>
-                    <button @click="downvote" :class="{ 'active-downvote': downvoted }" class="vote-button">
+                    <button @click="downvote" :class="{ 'active-downvote': downvoted, 'active-upvote': upvoted }"
+                        class="vote-button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20"
                             class="vote-icon">
                             <path
@@ -56,7 +60,6 @@
                 <!-- Delete Button -->
                 <button v-if="post.creator_username === user" class="delete-button" @click="deletePost">Delete</button>
             </div>
-            <p class="post-description">{{ post.description }}</p>
             <!-- Reply Form -->
             <div v-if="user">
                 <!-- Textarea for adding a comment, expanding when clicked -->
@@ -84,28 +87,51 @@ import dayjs from 'dayjs';
 import service from '../services/PostService';
 import replySerive from '../services/RepliesService'
 import Replies from './Replies.vue';
+// import { useToast } from 'vue-toastification';
 
 export default {
+    // setup() {
+    //     // const toast = useToast();
+    //     // function handleError(err, message) {
+    //     //     if (err.response?.status === 401) {
+    //     //         // toast("You must be logged in to vote", {
+    //     //             // position: "bottom-center",
+                
+    //     //     } else {
+    //     //         // toast.error(`${message} Status code: ${err.response?.status || 'Unknown'}`);
+    //     //     }
+    //     },
+    //     // return {
+    //     //     handleError,
+    //     //     // toast
+    //     // };
+    // // },
+    props: {
+        post: {
+            type: Object,
+            required: true
+        },
+        replies: {
+            type: Array,
+            required: true
+        }
+    },
     components: { Replies },
     data() {
         return {
             isImageFullscreen: false,
-            upvoted: this.post.hasUpvoted,
-            downvoted: this.post.hasDownvoted,
-            user: undefined,
+            upvoted: false,
+            downvoted: false,
+            user: this.$store.getters.username,
             formVisibility: false,
             newReply: {}
         }
     },
     created() {
-        this.user = this.$store.getters.username
+        this.user = this.$store.getters.username,
+            this.upvoted = this.post.hasUpvoted,
+            this.downvoted = this.post.hasDownvoted;
 
-        // service.checkVoteStatus(this.post.id)
-        //     .then(res => {
-        //         this.upvoted = res.data.upvoted;
-        //         this.downvoted = res.data.downvoted;
-        //     })
-        //     .catch(err => console.error("Error fetching vote status:", err));
     },
     props: ['post', 'replies'],
     methods: {
@@ -146,115 +172,78 @@ export default {
                     .then(res => {
                         this.post.upvotes--;
                         this.upvoted = false;
-                        if (res.status == 202) {
-                            this.post.downvotes--;
-                        }
                     })
-                    .catch(err => {
-                        if (err.response.status === 401) {
-                            alert("You must be logged in to remove your upvote.");
-                        }
-                        else {
-                            alert("Failed to undo upvote: status code " + err.response.status);
-                        }
-                    });
-            }
-            else {
+                    .catch(err => this.handleError(err, "Failed to undo upvote."));
+            } else {
                 // Add the upvote
                 service.upvotePost(this.post.id)
-                    .then(res => {
+                    .then(() => {
                         // If already downvoted, remove downvote
                         if (this.downvoted) {
                             this.post.downvotes--;
                             this.downvoted = false;
                         }
-                        if (res.status == 202) {
-                            this.post.upvotes++;
-                            this.upvoted = true;  // Set upvoted state
-                        }
+                        this.post.upvotes++;
+                        this.upvoted = true;
 
                     })
-                    .catch(err => {
-                        if (err.response.status === 401) {
-                            alert("You must be logged in to upvote.");
-                        } else {
-                            alert("Failed to upvote: status code " + err.response.status);
-                        }
-                    });
+                    .catch(err => this.handleError(err, "Failed to upvote."));
             }
         },
         downvote() {
             if (this.downvoted) {
                 // Remove the downvote
                 service.unvotingDislike(this.post.id)
-                    .then(res => {
+                    .then(() => {
                         this.post.downvotes--;
                         this.downvoted = false; // Remove downvoted state
-                        if (res.status == 202) {
-                            this.post.upvotes--;
-                        }
                     })
-                    .catch(err => {
-                        if (err.response.status === 401) {
-                            alert("You must be logged in to remove your downvote.");
-                        } else {
-                            alert("Failed to undo downvote: status code " + err.response.status);
-                        }
-                    });
+                    .catch(err => this.handleError(err, "Failed to undo downvote."));
             } else {
                 // Add the downvote
                 service.downvotePost(this.post.id)
-                    .then(res => {
-                        // If already upvoted, remove upvote
+                    .then(() => {
                         if (this.upvoted) {
                             this.post.upvotes--;
                             this.upvoted = false;
                         }
-                        if (res.status == 202) {
-                            this.post.downvotes++;
-                            this.downvoted = true; // Set downvoted state
-                        }
+                        this.post.downvotes++;
+                        this.downvoted = true;
                     })
-                    .catch(err => {
-                        if (err.response.status === 401) {
-                            alert("You must be logged in to downvote.");
-                        } else {
-                            alert("Failed to downvote: status code " + err.response.status);
-                        }
-                    });
+                    .catch(err => this.handleError(err, "Failed to downvote."));
             }
         },
-    },
-    deletePost() {
-        if (confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
-            let postId = this.post.id;
-            alert(postId)
-            service.deletePost(postId)
-                .then(response => {
-                    this.$store.commit('SET_NOTIFICATION', `Post ${postId} was deleted.`);
-                    this.$router.push({ name: 'forum' });
-                })
-                .catch(error => {
-                    if (error.response) {
-                        if (error.response.status === 404) {
-                            this.$store.commit('SET_NOTIFICATION',
-                                "Error: Post " + postId + " was not found. This post may have been deleted or you have entered an invalid post ID.");
-                            this.$router.push({ name: 'forum' });
+        deletePost() {
+            if (confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
+                let postId = this.post.id;
+                alert(postId)
+                service.deletePost(postId)
+                    .then(response => {
+                        this.$store.commit('SET_NOTIFICATION', `Post ${postId} was deleted.`);
+                        this.$router.push({ name: 'forum' });
+                    })
+                    .catch(error => {
+                        if (error.response) {
+                            if (error.response.status === 404) {
+                                this.$store.commit('SET_NOTIFICATION',
+                                    "Error: Post " + postId + " was not found. This post may have been deleted or you have entered an invalid post ID.");
+                                this.$router.push({ name: 'forum' });
+                            } else {
+                                this.$store.commit('SET_NOTIFICATION',
+                                    "Error getting post " + postId + ". Response received was '" + error.response.statusText + "'.");
+                            }
+                        } else if (error.request) {
+                            this.$store.commit('SET_NOTIFICATION', "Error getting post. Server could not be reached.");
                         } else {
-                            this.$store.commit('SET_NOTIFICATION',
-                                "Error getting post " + postId + ". Response received was '" + error.response.statusText + "'.");
+                            this.$store.commit('SET_NOTIFICATION', "Error getting post. Request could not be created.");
                         }
-                    } else if (error.request) {
-                        this.$store.commit('SET_NOTIFICATION', "Error getting post. Server could not be reached.");
-                    } else {
-                        this.$store.commit('SET_NOTIFICATION', "Error getting post. Request could not be created.");
-                    }
-                })
-                .finally(() => {
-                    this.fetchReplies();
-                });
+                    })
+                    .finally(() => {
+                        this.fetchReplies();
+                    });
+            }
         }
-    }
+    },
 }
 </script>
 
@@ -476,9 +465,19 @@ textarea.expanded {
     gap: 5px;
     /* Adjust spacing between author and time */
     font-size: 0.875rem;
-    /* Adjust as needed */
-    color: #6a737d;
-    /* Optional: gives a muted color to the metadata */
+}
+.user-image {
+    width: 40px; 
+    height: 40px; 
+    border-radius: 50%; 
+    object-fit: cover; 
+    /* border: 2px solid #ddd;  */
+}
+.post-author{
+    font-size: 1.25rem;
+}
+.post-time{
+    color:rgb(107, 105, 105) ;
 }
 
 .post-header {
@@ -516,14 +515,4 @@ textarea.expanded {
     background-color: rgb(218, 217, 217);
 }
 
-.post-metadata {
-    position: absolute;
-    /* Allows the metadata to be positioned independently */
-    right: 0;
-    /* Pushes the metadata to the far right */
-    font-size: 0.875rem;
-    /* Adjust size as needed */
-    color: #6a737d;
-    /* Optional: gives a muted color to the metadata */
-}
 </style>

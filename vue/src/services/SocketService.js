@@ -1,46 +1,58 @@
 import Stomp from 'stompjs';
 
 let stompClient = null;
-const socketUrl = 'http://localhost:9000/secured/app'; // Your WebSocket endpoint
+const socketUrl = 'ws://localhost:9000/secured/app'; // Ensure it's ws:// for WebSocket
+let sessionId = "";
 
 export default {
     connect(token, onConnect, onError) {
-        const webSocket = new WebSocket(socketUrl); // Create a WebSocket connection
+        const socket = new WebSocket(socketUrl); // Create a WebSocket connection
 
-        stompClient = Stomp.over(webSocket); // Wrap the WebSocket connection with Stomp
+        stompClient = Stomp.over(socket);
 
-        // Connect with the authorization header
-        stompClient.connect(
-            { Authorization: `Bearer ${token}` }, // Set the auth header
-            (frame) => {
-                console.log('Connected: ' + frame);
-                if (onConnect) onConnect(frame);
-            },
-            (error) => {
-                console.error('Error connecting: ' + error);
-                if (onError) onError(error);
+        stompClient.connect({ Authorization: `Bearer ${token}` }, frame => {
+            // Assuming the URL pattern matches your server's WebSocket setup
+            console.log(stompClient.ws.url);
+            let url = stompClient.ws.url;
+            url = url.replace("ws://localhost:9000/secured/app/", "");
+            sessionId = url.split('/')[0]; // Extract sessionId from URL
+            console.log("Your current session is: " + sessionId);
+            onConnect();
+        }, error => {
+            console.error("Connection error: ", error);
+            if (onError) {
+                onError(error);
             }
-        );
+        });
     },
 
-    subscribeToChat(callback) {
-        const destination = '/secured/user/queue/specific-user';
-        this.subscribe(destination, callback);
+    subscribeToChat(onMessage) {
+        alert("subscribing")
+        const destination = `/secured/user/queue/specific-user`;
+        stompClient.subscribe('/user/secured/user/queue/specific-user', function(message) {
+            alert("recieved")
+            const receivedMessage = JSON.parse(message.body);
+            onMessage(receivedMessage)
+            // Handle the received message
+        });
+        
     },
 
-    subscribe(destination, callback) {
+    subscribe(destination, onMessage, user) {
         if (!stompClient || !stompClient.connected) {
             console.error('Cannot subscribe: WebSocket is not connected');
             return;
         }
-        stompClient.subscribe(destination, (message) => {
-            callback(JSON.parse(message.body));
+        console.log(destination)
+        stompClient.subscribe(`${destination}`, message => {
+            if (onMessage) {
+                onMessage(JSON.parse(message.body)); // Parse the JSON message
+            }
         });
     },
 
     sendChatMessage(message) {
-        alert("message sent")
-        const destination = '/secured/chat';
+        const destination = '/app/secured/chat';
         this.send(destination, message);
     },
 

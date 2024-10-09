@@ -1,4 +1,5 @@
 <template>
+    {{ id }}
         <div v-for="message in messages" :key="message.id" :class="message.sender.username === username ? 'user-message' : 'others-message'" @messageDeleted="(id) => this.messages = this.messages.filter(item => item.id != id)">
             <message :message="message" @messageDeleted="removeMessage"></message>
         </div>
@@ -17,14 +18,26 @@ export default {
     data(){
         return {
             username: this.$store.getters.username,
+            id: this.$store.getters.userId,
             message: {
                 sender: {username: this.$store.getters.username}
             },
         }
     },
     created(){
-        this.$store.dispatch('SUBSCRIBE_TO_CHAT');
-    },
+            socket.connect(this.$store.token, ()=>socket.subscribeToChat(message=>{
+                if(message.from = this.contact){
+                    alert("received")
+                    const newMessage = {};
+                    newMessage.message = message.message;
+                    newMessage.sender.username = newMessage
+                    newMessage.sender.id = this.contact;
+                    newMessage.receivedOn = message.time;
+                    newMessage.read = true;
+                    this.messages.push(newMessage);
+                }
+            }));
+        },
     methods: {
         sendMessage(){
             service.createMessage(this.contact, this.message)
@@ -38,10 +51,9 @@ export default {
                     this.message = {}
                     // Sending the message using the Vuex action
                     socket.sendChatMessage(messagePayload);
-
                 })
                 .catch(err => alert(err.response.status))
-        },
+    }
     }
 }
 </script>
