@@ -7,10 +7,6 @@
         <option value="popularity">Most Popular</option>
       </select>
     </div>
-    <div v-if="posts.length === 0">
-      <p>Wow, such empty</p>
-      <img src="http://localhost:9000/images/Cheems.jpg" alt="placeholder" class="place-holder" />
-    </div>
     <div v-for="post in filteredPosts" :key="post.id">
       <router-link :to="{ name: 'post', params: { post: post.id } }">
         <header>
@@ -32,6 +28,7 @@
   </div>
 </template>
 <script>
+import { faTruckField } from '@fortawesome/free-solid-svg-icons/faTruckField';
 import Post from '../components/Post.vue';
 import PostService from '../services/PostService';
 import dayjs from 'dayjs';
