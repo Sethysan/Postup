@@ -133,7 +133,7 @@ public class JdbcForumDao implements ForumsDao {
         List<SearchResultsDto> list = new ArrayList<>();
 
         String sql = "SELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post, COUNT(favorite_forums.forum_id) AS favorited, moderation.username AS moderator FROM forums" +
-                "LEFT JOIN moderation ON moderation.username = forums.author LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? \n" +
+                " LEFT JOIN moderation ON moderation.username = forums.author LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? \n" +
                 "LEFT JOIN posts ON posts.forum_id = forums.forum_id \n" +
                 "AND (posts.description ILIKE ? OR posts.title ILIKE ?) \n" +
                 "WHERE (forums.description ILIKE ? OR forums.topic ILIKE ?) \n" +
