@@ -1,6 +1,9 @@
 <template>
   
   <p v-if="isLoading">Loading...</p>
+  <div v-if="error">
+      <p>Oops, it looks like this post couldn't load</p>
+    </div>
   <post v-if="!isLoading" :post="postData" :replies="replies"></post>
 </template>
 
@@ -17,6 +20,7 @@ export default {
         postData: {},
         replies: [],
         isLoading: true,
+        error: false
     }
   },
   created(){
@@ -31,9 +35,9 @@ export default {
                   this.replies = res.data
                   this.isLoading = false;
                 })
-              .catch(err => alert("unable to fetch replies"))
+              .catch(err => this.error = true)
           })
-        .catch(err => alert("unable to fetch post"));
+        .catch(err => this.error = true);
     }
   }
 }

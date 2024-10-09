@@ -6,6 +6,9 @@
     <div v-if="isloadingPost">
       <p>loading . . .</p>
     </div>
+    <div v-if="error">
+      <p>Oops, it looks like this post couldn't load</p>
+    </div>
     <div v-for="forum in favorites" :key="forum.id">
         <forum-snippet :forum="forum"></forum-snippet>
     </div>
@@ -20,7 +23,8 @@ export default {
     data() {
         return {
             favorites: [],
-            isloading: true
+            isloading: true,
+            error: false
         }
     },
     created() {
@@ -32,7 +36,7 @@ export default {
                     this.isloading = false
                 } else {
                     console.error("Unexpected response format:", res);
-                    alert("Failed to load favorite forums. Please try again.");
+                    this.error = true
                 }
             })
             .catch(err => {
