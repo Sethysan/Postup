@@ -15,6 +15,10 @@
       <router-link v-bind:to="{ name: 'favorites' }" v-if="userName"
         :class="getLinkClass('favorites')">FAVORITES</router-link>&nbsp;
     </button>
+    <button v-if="isLoggedIn" class="nav-btn">
+      <router-link v-bind:to="{ name: 'messages' }" v-if="userName"
+        :class="getLinkClass('messages')">MESSAGES</router-link>&nbsp;
+    </button>
     <!-- <div v-if="this.isLoggedIn" class="separator"></div> -->
     <button v-if="isLoggedIn" class="nav-btn">
       <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''"
