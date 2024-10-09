@@ -7,7 +7,7 @@
                 <span class="reply-time">• {{ getTimeElapsed(reply.timeOfCreation) }}</span>
             </div>
         </div>
-
+        {{ reply }}
         <p>{{ reply.description }}</p>
         <div class="post-footer flex items-center justify-start mt-md px-md xs:px-0">
             <!-- Voting Buttons -->
@@ -146,6 +146,7 @@ export default {
                     .then(response => {
                         this.$store.commit('SET_NOTIFICATION', `Post ${this.reply.id} was deleted.`);
                         this.$forceUpdate();
+
                     })
                     .catch(error => {
                         alert("error " + error.response.status)
