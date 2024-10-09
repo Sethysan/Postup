@@ -8,5 +8,8 @@ export default {
     },
     getUsers(forumId) {
         return http.get(`/users/filtered/${forumId}`);
+    },
+    getAllUsers(){
+        return http.get(`/users`);
     }
 }

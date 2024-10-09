@@ -122,24 +122,34 @@ public class JdbcReplyDao implements ReplyDao {
     }
 
     @Override
-    public boolean addVote(long postId, long replyId, int route) {
+    public boolean addVote(long postId, long replyId, boolean route) {
         String sql = "INSERT INTO reply_upvote(reply_id, user_id) VALUES (?, ?)";
-        if (route == 1) {
+        String check = "SELECT * FROM reply_upvote WHERE reply_id = ? AND user_id = ?";
+        String check2 = "SELECT * FROM reply_downvote WHERE reply_id = ? AND user_id = ?";
+        if (!route) {
             sql = "INSERT INTO reply_downvote(reply_id, user_id) VALUES (?, ?)";
+            String temp = check;
+            check = check2;
+            check2 = temp;
         }
-        try {
-            jdbcTemplate.update(sql, postId, replyId);
-        }
-        catch (DuplicateKeyException e){
+        // check the user hasn't already down the action they ae trying to do
+        SqlRowSet results = jdbcTemplate.queryForRowSet(check, postId, replyId);
+        if(results.next()){
             return false;
         }
+        //checks if the oppisite has not been done
+        results = jdbcTemplate.queryForRowSet(check2, postId, replyId);
+        if(results.next()){
+            undoVote(postId, replyId, !route);
+        }
+        jdbcTemplate.update(sql, postId, replyId);
         return true;
     }
 
     @Override
-    public void undoVote(long postId, long replyId, int route) {
+    public void undoVote(long postId, long replyId, boolean route) {
         String sql = "DELETE FROM reply_upvote WHERE reply_id = ? AND user_id = ?";
-        if (route == 1) {
+        if (!route) {
             sql = "DELETE FROM reply_downvote WHERE reply_id = ? AND user_id = ?";
         }
         jdbcTemplate.update(sql, postId, replyId);

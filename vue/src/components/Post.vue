@@ -1,4 +1,5 @@
 <template>
+    {{ post }}
     <div v-if="isImageFullscreen" class="fullscreen-container" @click="toggleImageFullscreen">
         <img :src="post.image" class="post-image-fullscreen" />
     </div>
@@ -87,25 +88,25 @@ import dayjs from 'dayjs';
 import service from '../services/PostService';
 import replySerive from '../services/RepliesService'
 import Replies from './Replies.vue';
-import { useToast } from 'vue-toastification';
+// import { useToast } from 'vue-toastification';
 
 export default {
-    setup() {
-        const toast = useToast();
-        function handleError(err, message) {
-            if (err.response?.status === 401) {
-                toast("You must be logged in to vote", {
-                    position: "bottom-center",
-                });
-            } else {
-                toast.error(`${message} Status code: ${err.response?.status || 'Unknown'}`);
-            }
-        }
-        return {
-            handleError,
-            toast
-        };
-    },
+    // setup() {
+    //     // const toast = useToast();
+    //     // function handleError(err, message) {
+    //     //     if (err.response?.status === 401) {
+    //     //         // toast("You must be logged in to vote", {
+    //     //             // position: "bottom-center",
+                
+    //     //     } else {
+    //     //         // toast.error(`${message} Status code: ${err.response?.status || 'Unknown'}`);
+    //     //     }
+    //     },
+    //     // return {
+    //     //     handleError,
+    //     //     // toast
+    //     // };
+    // // },
     props: {
         post: {
             type: Object,

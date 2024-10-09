@@ -14,6 +14,6 @@ public interface ReplyDao {
     public ReplyResponseDto updateReply(long id, CreateReplyDto reply);
     public void deleteReply(long replyId);
     public List<ReplyResponseDto> getPostThreads(long postId, long userId);
-    public boolean addVote(long replyId, long userId, int route);
-    public void undoVote(long replyId, long userId, int route);
+    public boolean addVote(long replyId, long userId, boolean route);
+    public void undoVote(long replyId, long userId, boolean route);
 }
