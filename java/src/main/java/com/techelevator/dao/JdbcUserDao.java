@@ -1,12 +1,10 @@
 package com.techelevator.dao;
 
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.RegisterUserDto;
+import com.techelevator.model.User;
+import com.techelevator.service.ImageDownloader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,15 +12,21 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.techelevator.model.User;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Component
 public class JdbcUserDao implements UserDao {
 
     private final JdbcTemplate jdbcTemplate;
+    private ImageDownloader imageDownloader;
 
-    public JdbcUserDao(JdbcTemplate jdbcTemplate) {
+    @Autowired
+
+    public JdbcUserDao(JdbcTemplate jdbcTemplate, ImageDownloader imageDownloader) {
         this.jdbcTemplate = jdbcTemplate;
+        this.imageDownloader = imageDownloader;
     }
 
     @Override
@@ -78,9 +82,19 @@ public class JdbcUserDao implements UserDao {
         String insertUserSql = "INSERT INTO users (username, password_hash, role, user_image) values (LOWER(TRIM(?)), ?, ?, ?) RETURNING user_id";
         String password_hash = new BCryptPasswordEncoder().encode(user.getPassword());
         String ssRole = user.getRole().toUpperCase().startsWith("ROLE_") ? user.getRole().toUpperCase() : "ROLE_" + user.getRole().toUpperCase();
+
         try {
             int newUserId = jdbcTemplate.queryForObject(insertUserSql, int.class, user.getUsername(), password_hash, ssRole, user.getUserImage());
             newUser = getUserById(newUserId);
+            if (user.getUserImage() != null && !user.getUserImage().isEmpty()) {
+                String destinationFolder = "src/main/resources/images/";
+                String fileName = "user_" + newUserId + ".jpg";
+                try {
+                    imageDownloader.saveImageFromUrl(newUser.getUserImage(), destinationFolder, fileName);
+                } catch (RuntimeException e) {
+                    System.err.println("Failed to download image for user " + user.getUsername() + ": " + e.getMessage());
+                }
+            }
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
         } catch (DataIntegrityViolationException e) {
@@ -88,6 +102,7 @@ public class JdbcUserDao implements UserDao {
         }
         return newUser;
     }
+
     @Override
     public void updateUserImage(long id, String userImage) {
         String sql = "UPDATE users SET user_image = ? WHERE user_id = ?";
@@ -108,9 +123,14 @@ public class JdbcUserDao implements UserDao {
         jdbcTemplate.update(sql, id);
     }
 
+    public void unbanUser(long id) {
+        String sql = "UPDATE users SET role = 'ROLE_USER' WHERE user_id = ?;";
+        jdbcTemplate.update(sql, id);
+    }
+
     public List<User> getUsersFiltered() {
         List<User> users = new ArrayList<>();
-        String sql = "SELECT user_id, username, password_hash, role FROM users WHERE role = 'ROLE_USER';";
+        String sql = "SELECT user_id, username, password_hash, role, user_image FROM users WHERE role = 'ROLE_USER';";
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
             while (results.next()) {
@@ -121,6 +141,22 @@ public class JdbcUserDao implements UserDao {
             throw new DaoException("Unable to connect to server or database", e);
         }
         return users;
+    }
+
+    public List<User> getUsersForAdmins() {
+        List<User> list = new ArrayList<>();
+        String sql = "SELECT user_id, username, password_hash, role, user_image FROM users WHERE role = 'ROLE_USER' OR role = 'ROLE_BANNED';";
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+            while (results.next()) {
+                User user = mapRowToUser(results);
+                list.add(user);
+            }
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        }
+        System.out.println(list.toString());
+        return list;
     }
 
     private User mapRowToUser(SqlRowSet rs) {

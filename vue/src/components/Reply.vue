@@ -1,6 +1,14 @@
 <template>
     <div class="thread">
-        <p>{{ reply.user.username }}</p>
+        <div class="reply-header">
+            <div class="reply-meta">
+                <img v-if="reply.user_image" :src="reply.user_image" class="user-image" />
+                <span class="reply-user">{{ reply.user.username }}</span>
+                <span class="reply-time">• {{ getTimeElapsed(reply.timeOfCreation) }}</span>
+            </div>
+        </div>
+
+
         <p>{{ reply.description }}</p>
         <div class="post-footer flex items-center justify-start mt-md px-md xs:px-0">
             <!-- Voting Buttons -->
@@ -40,6 +48,7 @@
 </template>
 
 <script>
+import dayjs from 'dayjs';
 import replySerive from '../services/RepliesService';
 export default {
     props: ['reply', 'indent'],
@@ -142,12 +151,48 @@ export default {
                         alert("error " + error.response.status)
                     });
             }
-        }
+        },
+        getTimeElapsed(timeOfCreation) {
+            // dayjs converts time into a readable format and calculates the elapsed time
+            return dayjs(timeOfCreation).fromNow();
+        },
     }
 }
 </script>
 
 <style>
+.reply-header {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 12px;
+    gap: 10px;
+}
+
+.reply-meta {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.875rem;
+}
+
+.user-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    /* border: 2px solid #ddd;  */
+}
+
+.reply-user {
+    font-size: 1rem;
+}
+
+.reply-time {
+    color: rgb(107, 105, 105);
+}
+
+
 .vote-container {
     display: flex;
     align-items: center;

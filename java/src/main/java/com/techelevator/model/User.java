@@ -14,16 +14,17 @@ public class User {
    private String password;
    @JsonIgnore
    private boolean activated;
-   private String userImage;
+   @JsonIgnore
+   private String user_image;
    private Set<Authority> authorities = new HashSet<>();
 
    public User() { }
 
-   public User(int id, String username, String password, String userImage , String authorities) {
+   public User(int id, String username, String password, String user_image , String authorities) {
       this.id = id;
       this.username = username;
       this.password = password;
-      this.userImage = userImage;
+      this.user_image = user_image;
       if (authorities != null) this.setAuthorities(authorities);
       this.activated = true;
    }
@@ -53,11 +54,11 @@ public class User {
    }
 
    public String getUserImage() {
-      return userImage;
+      return user_image;
    }
 
    public void setUserImage(String userImage) {
-      this.userImage = userImage;
+      this.user_image = userImage;
    }
 
    public boolean isActivated() {
@@ -93,12 +94,13 @@ public class User {
               activated == user.activated &&
               Objects.equals(username, user.username) &&
               Objects.equals(password, user.password) &&
+              Objects.equals(user_image, user.user_image) &&
               Objects.equals(authorities, user.authorities);
    }
 
    @Override
    public int hashCode() {
-      return Objects.hash(id, username, password, activated, authorities);
+      return Objects.hash(id, username, password, user_image, activated, authorities);
    }
 
    @Override
@@ -106,7 +108,7 @@ public class User {
       return "User{" +
               "id=" + id +
               ", username='" + username + '\'' +
-              ", userImage='" + userImage + '\'' +
+              ", userImage='" + user_image + '\'' +
               ", activated=" + activated +
               ", authorities=" + authorities +
               '}';

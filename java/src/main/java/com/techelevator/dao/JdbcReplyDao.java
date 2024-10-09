@@ -23,7 +23,7 @@ public class JdbcReplyDao implements ReplyDao {
     @Override
     public List<ReplyResponseDto> getReplies(long userId) {
         List<ReplyResponseDto> threads = new ArrayList<>();
-        String sql = "SELECT replies.*, comment_replies.*, users.username, COUNT(reply_upvote.reply_id) AS likes, COUNT(reply_downvote.reply_id) AS dislikes, COUNT(upvote.user_id) AS upvotes_from_user, COUNT(downvote.user_id) AS downvotes_from_user\n" +
+        String sql = "SELECT replies.*, comment_replies.*, users.username, users.user_image COUNT(reply_upvote.reply_id) AS likes, COUNT(reply_downvote.reply_id) AS dislikes, COUNT(upvote.user_id) AS upvotes_from_user, COUNT(downvote.user_id) AS downvotes_from_user\n" +
                 "FROM replies \n" +
                 "JOIN users ON users.user_id = replies.user_id LEFT JOIN comment_replies ON comment_replies.reply_id = replies.reply_id \n" +
                 "LEFT JOIN reply_upvote ON reply_upvote.reply_id = replies.reply_id \n" +
@@ -31,7 +31,7 @@ public class JdbcReplyDao implements ReplyDao {
                 "LEFT JOIN users AS upvote ON reply_upvote.user_id = upvote.user_id AND upvote.user_id = ?\n" +
                 "LEFT JOIN users AS downvote ON reply_downvote.user_id = downvote.user_id AND downvote.user_id = ?\n" +
                 "GROUP BY replies.reply_id, comment_replies.parent_id, comment_replies.reply_id, users.username\n" +
-                "ORDER BY replies.reply_id;";
+                "users.user_image ORDER BY replies.reply_id;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId, userId);
         if (results.next()) {
             threads = mapRowToThread(results);
@@ -83,7 +83,7 @@ public class JdbcReplyDao implements ReplyDao {
     @Override
     public List<ReplyResponseDto> getPostThreads(long postId, long userId) {
         List<ReplyResponseDto> threads = new ArrayList<>();
-        String sql = "SELECT replies.*, comment_replies.*, users.username, COUNT(reply_upvote.reply_id) AS likes, COUNT(reply_downvote.reply_id) AS dislikes, COUNT(upvote.user_id) AS upvotes_from_user, COUNT(downvote.user_id) AS downvotes_from_user\n" +
+        String sql = "SELECT replies.*, comment_replies.*, users.username, users.user_image, COUNT(reply_upvote.reply_id) AS likes, COUNT(reply_downvote.reply_id) AS dislikes, COUNT(upvote.user_id) AS upvotes_from_user, COUNT(downvote.user_id) AS downvotes_from_user\n" +
                 "FROM replies \n" +
                 "JOIN users ON users.user_id = replies.user_id LEFT JOIN comment_replies ON comment_replies.reply_id = replies.reply_id \n" +
                 "LEFT JOIN reply_upvote ON reply_upvote.reply_id = replies.reply_id \n" +
@@ -91,7 +91,7 @@ public class JdbcReplyDao implements ReplyDao {
                 "LEFT JOIN users AS upvote ON reply_upvote.user_id = upvote.user_id AND upvote.user_id = ?\n" +
                 "LEFT JOIN users AS downvote ON reply_downvote.user_id = downvote.user_id AND downvote.user_id = ?\n" +
                 "WHERE replies.post_id = ?\n" +
-                "GROUP BY replies.reply_id, comment_replies.parent_id, comment_replies.reply_id, users.username \n" +
+                "GROUP BY replies.reply_id, comment_replies.parent_id, comment_replies.reply_id, users.username, users.user_image \n" +
                 "ORDER BY replies.reply_id;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId, userId, postId);
         threads = mapRowToThread(results);
@@ -122,25 +122,34 @@ public class JdbcReplyDao implements ReplyDao {
     }
 
     @Override
-    public boolean addVote(long postId, long replyId, int route) {
+    public boolean addVote(long postId, long replyId, boolean route) {
         String sql = "INSERT INTO reply_upvote(reply_id, user_id) VALUES (?, ?)";
         String check = "SELECT * FROM reply_upvote WHERE reply_id = ? AND user_id = ?";
-        if (route == 1) {
+        String check2 = "SELECT * FROM reply_downvote WHERE reply_id = ? AND user_id = ?";
+        if (!route) {
             sql = "INSERT INTO reply_downvote(reply_id, user_id) VALUES (?, ?)";
-            check = "SELECT * FROM reply_downvote WHERE reply_id = ? AND user_id = ?";
+            String temp = check;
+            check = check2;
+            check2 = temp;
         }
+        // check the user hasn't already down the action they ae trying to do
         SqlRowSet results = jdbcTemplate.queryForRowSet(check, postId, replyId);
         if(results.next()){
             return false;
+        }
+        //checks if the oppisite has not been done
+        results = jdbcTemplate.queryForRowSet(check2, postId, replyId);
+        if(results.next()){
+            undoVote(postId, replyId, !route);
         }
         jdbcTemplate.update(sql, postId, replyId);
         return true;
     }
 
     @Override
-    public void undoVote(long postId, long replyId, int route) {
+    public void undoVote(long postId, long replyId, boolean route) {
         String sql = "DELETE FROM reply_upvote WHERE reply_id = ? AND user_id = ?";
-        if (route == 1) {
+        if (!route) {
             sql = "DELETE FROM reply_downvote WHERE reply_id = ? AND user_id = ?";
         }
         jdbcTemplate.update(sql, postId, replyId);
@@ -197,6 +206,7 @@ public class JdbcReplyDao implements ReplyDao {
             UserSnippetDto user = new UserSnippetDto();
             user.setId(row.getInt("user_id"));
             user.setUsername(row.getString("username"));
+            user.setUser_image(row.getString("user_image"));
             reply.setUser(user);
             return reply;
         }

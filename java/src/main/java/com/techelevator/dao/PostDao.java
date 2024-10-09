@@ -13,8 +13,8 @@ public interface PostDao {
     public void deletePost(long id);
 
 //route means the path to take in the method in the jdbc for example 1 is add for dislike and 0 is for dislike.
-    boolean addVote(long postId, long userId, int route);
-    void unvote(long postId, long userId, int route);
+    boolean addVote(long postId, long userId, boolean route);
+    void unvote(long postId, long userId, boolean route);
 
 //     Map<String,Boolean > checkVoteStatus(long postId, long userId);
 }

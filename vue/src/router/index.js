@@ -17,6 +17,7 @@ import FavoritesView from '../views/FavoritesView.vue';
 import ForumPostSerachView from '../views/ForumPostSerachView.vue';
 import MessagesView from '../views/MessagesView.vue';
 import DirectMessage from '../views/DirectMessage.vue';
+import Admin from '../components/Admin.vue';
 
 /**
  * The Vue Router is used to "direct" the browser to render a specific view component
@@ -145,6 +146,14 @@ const routes = [
       path: "/messages/:user",
       name: "direct-messages",
       component: DirectMessage,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+    path: "/users/admin",
+    name: "admin",
+    component: Admin,
       meta: {
         requiresAuth: true
       }

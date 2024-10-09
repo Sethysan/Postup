@@ -10,7 +10,7 @@
 <script>
 import service from '../services/MessageService';
 import Message from './Message.vue';
-import socket from '../services/SocketService'
+// import socket from '../services/SocketService'
 
 export default {
     components: {Message},

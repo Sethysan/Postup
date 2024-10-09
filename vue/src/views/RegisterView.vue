@@ -1,4 +1,5 @@
 <template>
+  {{ user }}
   <div id="register" class="text-center">
     <form v-on:submit.prevent="register">
       <h1>Create Account</h1>
@@ -18,6 +19,10 @@
         <input type="password" id="confirmPassword" v-model="user.confirmPassword" required />
       </div>
       <button type="submit">Create Account</button>
+      <div class="form-input-group">
+        <label for="userImage">Profile Image URL</label>
+        <input type="url" id="userImage" v-model="user.user_image" placeholder="Enter image URL" />
+      </div>
       <p><router-link v-bind:to="{ name: 'login' }">Already have an account? Log in.</router-link></p>
     </form>
   </div>

@@ -105,21 +105,21 @@ public class PostController {
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/posts/{id}/upvote")
     public void upvotePost(@PathVariable long id, Principal principal) {
-        if(!postDao.addVote(id, userDao.getUserByUsername(principal.getName()).getId(), 0)){
+        if(!postDao.addVote(id, userDao.getUserByUsername(principal.getName()).getId(), true)){
             throw new ResponseStatusException(HttpStatus.NO_CONTENT);
         }
     }
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/posts/{id}/upvote/unlike")
     public void unvotingLike(@PathVariable long id, Principal principal) {
-        postDao.unvote(id, userDao.getUserByUsername(principal.getName()).getId(), 0);
+        postDao.unvote(id, userDao.getUserByUsername(principal.getName()).getId(), true);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/posts/{id}/downvote")
     public void downvotePost(@PathVariable long id, Principal principal) {
-        if(!postDao.addVote(id, userDao.getUserByUsername(principal.getName()).getId(), 1)){
+        if(!postDao.addVote(id, userDao.getUserByUsername(principal.getName()).getId(), false)){
             throw new ResponseStatusException(HttpStatus.NO_CONTENT);
         }
     }
@@ -127,7 +127,7 @@ public class PostController {
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/posts/{id}/downvote/undislike")
     public void unvotingDislike(@PathVariable long id, Principal principal) {
-        postDao.unvote(id, userDao.getUserByUsername(principal.getName()).getId(),1);
+        postDao.unvote(id, userDao.getUserByUsername(principal.getName()).getId(),false);
     }
 
     public boolean checkUserRole(long postId, String username) {
@@ -163,25 +163,4 @@ public class PostController {
         return hasPermission;
     }
 
-//    @PreAuthorize("isAuthenticated()")
-//    @GetMapping("/posts/{postId}/vote/status")
-//    public ResponseEntity<Map<String, Boolean>> checkVoteStatus(@PathVariable ("postId") long postId, Principal principal) {
-//        try {
-//            var user = userDao.getUserByUsername(principal.getName());
-//            if (user == null) {
-//                ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-//            }
-//            long userId = user.getId();
-//            Map<String, Boolean> voteStatus = postDao.checkVoteStatus(postId, userId);
-//            return ResponseEntity.ok(voteStatus);
-//
-//        } catch (IllegalArgumentException e) {
-//            // Handle invalid postId or user-related issues
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-//
-//        } catch (Exception e) {
-//            // Catch any other exceptions and return 500 Internal Server Error
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-//        }
-//    }
 }

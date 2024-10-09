@@ -1,6 +1,6 @@
 import { createStore as _createStore } from 'vuex';
 import axios from 'axios';
-import service from '../services/SocketService'
+// import service from '../services/SocketService'
 
 const NOTIFICATION_TIMEOUT = 5000;
 
@@ -19,6 +19,7 @@ export function createStore(currentToken, currentUser, userList = []) {
       },
       SET_USER(state, user) {
         state.user = user;
+        console.log('Storing user in localStorage:', user);
         localStorage.setItem('user', JSON.stringify(user));
       },
       LOGOUT(state) {
@@ -59,6 +60,22 @@ export function createStore(currentToken, currentUser, userList = []) {
           user.role = 'ROLE_MODERATOR';
         } else {
           console.error('User not found for promotion:', userName);
+        }
+      },
+      BAN_USER(state, userName) {
+        const user = state.user.find(u => u.username === userName);
+        if (user) {
+          user.banned = true;
+        } else {
+          console.error('User not found for ban:', userName);
+        }
+      },
+      UNBAN_USER(state, userName) {
+        const user = state.user.find(u => u.username === userName);
+        if (user) {
+          user.banned = false;
+        } else {
+          console.error('User not found for unban:', userName);
         }
       }
     },

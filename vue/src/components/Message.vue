@@ -18,7 +18,7 @@
 
 <script>
 import service from '../services/MessageService'
-import socket from '../services/SocketService'
+// import socket from '../services/SocketService'
 
 export default {
     props: ['message'],
