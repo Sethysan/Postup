@@ -33,13 +33,13 @@ public class JdbcPostDao implements PostDao {
                 "    posts.*, \n" +
                 "    users.user_image,\n" +
                 "    COUNT(replies.description) AS reply_count,\n" +
-                "    COUNT(post_upvote) AS likes,\n" +
-                "    COUNT(post_downvote) AS dislikes,\n" +
+                "    COUNT(post_upvote.user_id) AS likes,\n" +
+                "    COUNT(post_downvote.user_id) AS dislikes,\n" +
                 "    COUNT(upvote.user_id) AS upvotes_from_user,\n" +
                 "    COUNT(downvote.user_id) AS downvotes_from_user\n" +
                 "FROM \n" +
                 "    posts\n" +
-                "LEFT JOIN \n" +
+                "JOIN \n" +
                 "    users ON posts.author = users.username -- Join users table to get user_image\n" +
                 "LEFT JOIN \n" +
                 "    replies ON replies.post_id = posts.post_id\n" +

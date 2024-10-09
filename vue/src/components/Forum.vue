@@ -1,4 +1,4 @@
-<template>
+<template>{{ forum }}
     <div class="forum">
         <h1>{{ forum.topic }}</h1>
         <p>{{ forum.description }}</p>
