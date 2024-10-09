@@ -1,8 +1,7 @@
 <template>
     <div class="forum">
-        {{ getListOfMods }}
         {{ isMod }}
-        {{ num }}
+        {{ this.forum.id}}
         <h1>{{ forum.topic }}</h1>
         <p>{{ forum.description }}</p>
         <button :class="forum.favorited ? 'favorited' : 'not-favorited'" @click="favorite">
@@ -31,21 +30,20 @@ export default {
             color: 'white',
             role: this.$store.getters.role,
             listOfModsOfForum: [],
-            isMod: false,
-            // num: Number(this.forum.id),
-
+            isMod: false
         }
     },
     created() {
         if (this.forum) {
             // If forum data is already passed as a prop, use it
             this.currentForum = this.forum;
+            // this.checkIfMod();
         } else {
             // Otherwise, fetch the forum from the service
             service.getForum(this.$route.params.forumId).then(res => {
                 this.currentForum = res.data;
-                this.checkIfMod()
             });
+            // this.checkIfMod();
         }
      
     },
@@ -74,9 +72,16 @@ export default {
         },
         checkIfMod() {
             this.isMod = false;
-            this.num = Number(this.forum.id);
-            ModeratorService.getListOfMods(this.num)
+            let num = 0;
+            if (this.forumId) {
+                num = this.forumId;
+            }
+            else {
+                let num = this.forumId;
+            }
+            ModeratorService.getListOfMods(num)
                 .then(res => {
+                    console.log(res.data);
                     this.listOfModsOfForum = res.data;
 
                     for (let mod of this.listOfModsOfForum) {

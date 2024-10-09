@@ -2,6 +2,13 @@
   <div>
     <forum :forum="forum"></forum>
     <post-search-button :forumId="forum.id"></post-search-button>
+    <div v-if="posts.length < 1 && !isloading">
+      <p>Wow, such empty!</p>
+      <img src=""/>
+    </div>
+    <div v-if="isloading">
+      <p>loading . . .</p>
+    </div>
     <post-list :posts="posts"></post-list>
   </div>
 </template>
@@ -22,6 +29,7 @@ export default {
       forum: {},
       forumId: 0,
       posts: [],
+      isloading: true
     }
   },
   created() {
@@ -34,10 +42,11 @@ export default {
           PostService.getForumPosts(this.forumId)
           .then(res => {
             this.posts = res.data;
+            this.isloading = false
           })
       }).catch((error) => {
         console.error("Error fetching forums by topic: ", error);
-      });
+      }).catch(err => alert("error"))
     }
     else {
       // Fetch forum by ID if 'topic' is not provided
@@ -47,6 +56,7 @@ export default {
         PostService.getForumPosts(this.forumId)
           .then(res => {
             this.posts = res.data;
+            this.isloading = false
           })
       }).catch((error) => {
         console.error("Error fetching forum by ID: ", error);

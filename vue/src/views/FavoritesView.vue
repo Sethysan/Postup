@@ -1,4 +1,11 @@
 <template>
+    <div v-if="favorites.length < 1 && !isloading">
+      <p>Wow, such empty!</p>
+      <img src=""/>
+    </div>
+    <div v-if="isloadingPost">
+      <p>loading . . .</p>
+    </div>
     <div v-for="forum in favorites" :key="forum.id">
         <forum-snippet :forum="forum"></forum-snippet>
     </div>
@@ -12,7 +19,8 @@ export default {
     components: { ForumSnippet },
     data() {
         return {
-            favorites: []
+            favorites: [],
+            isloading: true
         }
     },
     created() {
@@ -21,6 +29,7 @@ export default {
                 // Check if the response data is valid
                 if (res.data && Array.isArray(res.data)) {
                     this.favorites = res.data;
+                    this.isloading = false
                 } else {
                     console.error("Unexpected response format:", res);
                     alert("Failed to load favorite forums. Please try again.");
