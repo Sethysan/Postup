@@ -57,14 +57,12 @@ export default {
   mounted() {
     if (this.isLoggedIn) {
       this.startTokenCountdown(); 
-      this.$store.dispatch('CONNECT');
       // Start the countdown when the component is mounted
     }
   },
   beforeUnmount() {
     // Clear the interval when the component is destroyed
     clearInterval(this.interval);
-    this.$store.dispatch('DISCONNECT');
   }
 }
   ;

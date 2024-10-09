@@ -24,33 +24,11 @@ export default {
             },
         }
     },
-    created(){
-            socket.connect(this.$store.token, ()=>socket.subscribeToChat(message=>{
-                if(message.from = this.contact){
-                    alert("received")
-                    const newMessage = {};
-                    newMessage.message = message.message;
-                    newMessage.sender.username = newMessage
-                    newMessage.sender.id = this.contact;
-                    newMessage.receivedOn = message.time;
-                    newMessage.read = true;
-                    this.messages.push(newMessage);
-                }
-            }));
-        },
     methods: {
         sendMessage(){
             service.createMessage(this.contact, this.message)
                 .then(res => {
                     this.messages.unshift(res.data);
-                    const messagePayload = {
-                        from: this.username, // Current user's username
-                        to: this.contact,                  // Recipient's username
-                        message: this.message.message,               // Message text
-                    };
-                    this.message = {}
-                    // Sending the message using the Vuex action
-                    socket.sendChatMessage(messagePayload);
                 })
                 .catch(err => alert(err.response.status))
     }
