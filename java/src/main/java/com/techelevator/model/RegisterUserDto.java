@@ -15,6 +15,7 @@ public class RegisterUserDto {
     private String password;
     @NotEmpty
     private String confirmPassword;
+    private String userImage;
     @NotEmpty(message = "Please select a role for this user.")
     private String role;
 
@@ -40,6 +41,14 @@ public class RegisterUserDto {
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    public String getUserImage() {
+        return userImage;
+    }
+
+    public void setUserImage(String userImage) {
+        this.userImage = userImage;
     }
 
     public String getRole() {

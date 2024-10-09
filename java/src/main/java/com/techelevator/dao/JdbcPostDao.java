@@ -1,10 +1,5 @@
 package com.techelevator.dao;
-import com.techelevator.model.Moderation;
-import com.techelevator.model.Post;
-import com.techelevator.model.User;
-import org.springframework.security.core.parameters.P;
-import java.time.LocalDate;
-import java.util.List;
+
 import com.techelevator.model.request.CreatePostDto;
 import com.techelevator.model.responses.PostResponseDto;
 import com.techelevator.service.ImageDownloader;
@@ -14,10 +9,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class JdbcPostDao implements PostDao {
@@ -33,36 +27,61 @@ public class JdbcPostDao implements PostDao {
     @Override
     public PostResponseDto getPostById(long id, long user) {
         PostResponseDto post = null;
-        String sql = "SELECT posts.*, COUNT(post_upvote.post_id) AS likes, COUNT(post_downvote.post_id) AS dislikes, COUNT(upvote.user_id) AS upvotes_from_user, COUNT(downvote.user_id) AS downvotes_from_user FROM posts\n" +
+//        todo: add user image
+//        added user_image!
+        String sql = "SELECT posts.*,\n" +
+                "users.user_image, COUNT(post_upvote.post_id) AS likes,\n" +
+                "COUNT(post_downvote.post_id) AS dislikes,\n" +
+                "COUNT(upvote.user_id) AS upvotes_from_user,\n" +
+                "COUNT(downvote.user_id) AS downvotes_from_user\n" +
+                "FROM posts\n" +
+                //     Join to get user_image from the author
+                "LEFT JOIN users ON posts.author = users.username\n" +
                 "LEFT JOIN post_upvote ON posts.post_id = post_upvote.post_id \n" +
                 "LEFT JOIN post_downvote ON posts.post_id = post_downvote.post_id\n" +
                 "LEFT JOIN users AS upvote ON post_upvote.user_id = upvote.user_id AND upvote.user_id = ?\n" +
                 "LEFT JOIN users AS downvote ON post_downvote.user_id = downvote.user_id AND downvote.user_id = ?\n" +
                 "LEFT JOIN replies ON posts.post_id = replies.post_id\n" + // Fetch comments related to the post"
                 "WHERE posts.post_id = ?\n" +
-                "GROUP BY posts.post_id;";
+                "GROUP BY posts.post_id, users.user_image;"; //Add users.user_image to the GROUP BY clause
+
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user, user, id);
         if (results.next()) {
             post = mapRowToPost(results);
         }
+        System.out.println("postbyid: " + post);
         return post;
     }
 
     @Override
     public List<PostResponseDto> getPosts(long forum, long user, String keyword, int limit, boolean sortByPopularity, boolean today) {
         List<PostResponseDto> posts = new ArrayList<>();
-        String sql = "SELECT posts.*, COUNT(replies.description), COUNT(post_upvote.post_id) AS likes, COUNT(post_downvote.post_id) AS dislikes, COUNT(upvote.user_id) AS upvotes_from_user, COUNT(downvote.user_id) AS downvotes_from_user FROM posts LEFT JOIN replies ON replies.post_id = posts.post_id LEFT JOIN post_upvote ON posts.post_id = post_upvote.post_id " +
-                "LEFT JOIN post_downvote ON posts.post_id = post_downvote.post_id " +
+//        todo: add user_image
+//        added user_image!
+        String sql = "SELECT posts.*, users.user_image,\n" +
+                "COUNT(replies.description) AS reply_count,\n" +
+                "COUNT(post_upvote.post_id) AS likes,\n" +
+                "COUNT(post_downvote.post_id) AS dislikes,\n" +
+                "COUNT(upvote.user_id) AS upvotes_from_user,\n" +
+                "COUNT(downvote.user_id) AS downvotes_from_user\n" +
+                "FROM posts\n" +
+                "LEFT JOIN users ON posts.author = users.username\n" + //join users table to get user_image
+                "LEFT JOIN replies ON replies.post_id = posts.post_id LEFT JOIN post_upvote ON\n" +
+                " posts.post_id = post_upvote.post_id\n" +
+                "LEFT JOIN post_downvote ON posts.post_id = post_downvote.post_id\n" +
                 "LEFT JOIN users AS upvote ON post_upvote.user_id = upvote.user_id AND upvote.user_id = ? \n" +
-                "LEFT JOIN users AS downvote ON post_downvote.user_id = downvote.user_id AND downvote.user_id = ? " +
-                "WHERE (posts.description ILIKE ? OR replies.description ILIKE ?) ";
+                "LEFT JOIN users AS downvote ON post_downvote.user_id = downvote.user_id AND downvote.user_id = ?\n" +
+                "WHERE (posts.description ILIKE ? OR replies.description ILIKE ?)";
         if (forum > 0) {
             sql += " AND posts.forum_id = " + forum;
         }
         if (today) {
-            sql += " AND (CAST(posts.time_of_creation AS Date) = CURRENT_DATE OR CAST(replies.time_of_creation AS DATE) = CURRENT_DATE  OR CAST(post_upvote.time_of_creation AS DATE) = CURRENT_DATE OR CAST(post_downvote.time_of_creation AS DATE) = CURRENT_DATE)";
+            sql += " AND (CAST(posts.time_of_creation AS Date) = CURRENT_DATE\n" +
+                    "OR CAST(replies.time_of_creation AS DATE) = CURRENT_DATE\n" +
+                    "OR CAST(post_upvote.time_of_creation AS DATE) = CURRENT_DATE\n" + "" +
+                    "OR CAST(post_downvote.time_of_creation AS DATE) = CURRENT_DATE)";
         }
-        sql += " GROUP BY posts.post_id ";
+        sql += " GROUP BY posts.post_id, users.user_image "; //added user_image
         sql += sortByPopularity ? " ORDER BY COUNT(post_upvote.post_id) - COUNT(post_downvote.post_id) DESC" : " ORDER BY post_id DESC";
         if (limit > 0) {
             sql += " LIMIT " + limit;
@@ -75,6 +94,7 @@ public class JdbcPostDao implements PostDao {
         while (results.next()) {
             posts.add(mapRowToPost(results));
         }
+        System.out.println(posts);
         return posts;
     }
 
@@ -148,33 +168,6 @@ public class JdbcPostDao implements PostDao {
         jdbcTemplate.update(sql, postId, replyId);
     }
 
-//    public Map<String, Boolean> checkVoteStatus(long postId, long userId) {
-//        // Check if the user has upvoted or downvoted the post
-//        // If the user has upvoted the post, the upvoted key will be true
-//        // exists returns a boolean value based on whether the subquery returns any (1) rows
-//        String sql = "SELECT \n" +
-//                "EXISTS( SELECT 1 FROM post_upvote WHERE post_id = ? AND user_id = ?)\n " +
-//                "AS upvoted,\n " +
-//                "EXISTS(SELECT 1 FROM post_downvote WHERE post_id = ? AND user_id = ?)\n " +
-//                "AS downvoted;";
-//
-//        // voteStatus is a map that contains the keys upvoted and downvoted
-//        // and there values are either true or false
-//        Map<String, Object> voteStatus = jdbcTemplate.queryForMap(sql, postId, userId, postId, userId);
-//
-//        // As QueryForMap returns an object that can be interpreted as
-//        // as either a boolean or an integer, depending on the database
-//        // we need to cast the values to boolean to avoid ClassCastExceptions
-//        Map<String, Boolean> result = new HashMap<>();
-//        //ternary to check if the value is null, if it is, set it to false
-//        result.put("upvoted", voteStatus.get("upvoted") != null ? (Boolean) voteStatus.get("upvoted") : false);
-//        //ternary to check if the value is null, if it is, set it to false
-//        result.put("downvoted", voteStatus.get("downvoted") != null ? (Boolean) voteStatus.get("downvoted") : false);
-//
-//        return result;
-//    }
-
-
     private PostResponseDto mapRowToPost(SqlRowSet row) {
         PostResponseDto post = new PostResponseDto();
         post.setTitle(row.getString("title"));
@@ -189,6 +182,7 @@ public class JdbcPostDao implements PostDao {
         post.setHasDownvoted(row.getInt("downvotes_from_user") == 1);
         post.setImage(row.getString("image"));
         post.setTimeOfCreation(row.getTimestamp("time_of_creation"));
+        post.setCreator_image(row.getString("user_image"));
         return post;
     }
 }

@@ -15,6 +15,8 @@ public class PostResponseDto {
     private boolean hasUpvoted;
     private boolean hasDownvoted;
     private Timestamp timeOfCreation;
+    private String creator_image;
+
 
     public long getId() {
         return id;
@@ -104,6 +106,14 @@ public class PostResponseDto {
         this.timeOfCreation = timeOfCreation;
     }
 
+    public String getCreator_image() {
+        return creator_image;
+    }
+
+    public void setCreator_image(String creator_image) {
+        this.creator_image = creator_image;
+    }
+
     @Override
     public String toString() {
         return "PostResponseDto{" +
@@ -115,6 +125,7 @@ public class PostResponseDto {
                 ", upvotes=" + upvotes +
                 ", downvotes=" + downvotes +
                 ", creator_username='" + creator_username + '\'' +
+                ", creator_image='" + creator_image + '\'' +
                 ", hasUpvoted=" + hasUpvoted +
                 ", hasDownvoted=" + hasDownvoted +
                 '}';

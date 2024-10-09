@@ -14,14 +14,16 @@ public class User {
    private String password;
    @JsonIgnore
    private boolean activated;
+   private String userImage;
    private Set<Authority> authorities = new HashSet<>();
 
    public User() { }
 
-   public User(int id, String username, String password, String authorities) {
+   public User(int id, String username, String password, String userImage , String authorities) {
       this.id = id;
       this.username = username;
       this.password = password;
+      this.userImage = userImage;
       if (authorities != null) this.setAuthorities(authorities);
       this.activated = true;
    }
@@ -48,6 +50,14 @@ public class User {
 
    public void setPassword(String password) {
       this.password = password;
+   }
+
+   public String getUserImage() {
+      return userImage;
+   }
+
+   public void setUserImage(String userImage) {
+      this.userImage = userImage;
    }
 
    public boolean isActivated() {
@@ -96,6 +106,7 @@ public class User {
       return "User{" +
               "id=" + id +
               ", username='" + username + '\'' +
+              ", userImage='" + userImage + '\'' +
               ", activated=" + activated +
               ", authorities=" + authorities +
               '}';

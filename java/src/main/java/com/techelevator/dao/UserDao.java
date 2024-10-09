@@ -19,4 +19,7 @@ public interface UserDao {
     void banUser(long id);
 
     List<User> getUsersFiltered();
+
+    void updateUserImage(long id, String userImage);
+
 }
