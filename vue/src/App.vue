@@ -50,16 +50,16 @@ export default {
       return this.$route.name === routeName ? 'router-link-active' : 'router-link-nonactive';
     }
   },
-  mounted() {
-    if (this.isLoggedIn) {
-      this.startTokenCountdown(); 
-      // Start the countdown when the component is mounted
-    }
-  },
-  beforeUnmount() {
-    // Clear the interval when the component is destroyed
-    clearInterval(this.interval);
-  }
+  // mounted() {
+  //   if (this.isLoggedIn) {
+  //     this.startTokenCountdown(); 
+  //     // Start the countdown when the component is mounted
+  //   }
+  // },
+  // beforeUnmount() {
+  //   // Clear the interval when the component is destroyed
+  //   clearInterval(this.interval);
+  // }
 }
   ;
 </script>
@@ -73,19 +73,6 @@ export default {
   background-color: rgba(240, 107, 19, 0.909);
 
 }
-/* #nav {
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  justify-content: space-evenly;
-  top: 0;
-  left: 0;
-  width: 5%;
-  height: 100%;
-  background-color: rgb(240, 107, 19);
-  color: white;
-
-} */
 
 body,
 html {

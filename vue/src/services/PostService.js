@@ -49,7 +49,5 @@ export default {
   unvotingDislike(id) {
     return http.put(`/api/posts/${id}/downvote/undislike`);
   }
-  // checkVoteStatus(postId) {
-  //   return http.get(`/api/posts/${postId}/vote/status`);
-  // }
+ 
 };
