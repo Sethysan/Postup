@@ -8,6 +8,9 @@
       <div role="alert" v-if="this.$route.query.registration">
         Thank you for registering, please sign in.
       </div>
+      <div role="alert" v-if="bannedUser">
+        {{ bannedMessage }}
+      </div>
       <div class="form-input-group">
         <label for="username">Username</label>
         <input type="text" id="username" v-model="user.username" required autofocus />
@@ -39,7 +42,9 @@ export default {
         password: ""
       },
       invalidCredentials: false,
-      showWelcomeMessage: false 
+      showWelcomeMessage: false,
+      bannedUser: false,
+      bannedMessage: "You have been banned.",
     };
   },
   methods: {
@@ -61,6 +66,13 @@ export default {
           if (response.status === 401) {
             this.invalidCredentials = true;
           }
+          if (response.status === 403) {
+            this.bannedUser = true;
+            this.user = {
+              username: "",
+              password: ""
+            };
+          }
         });
     }
   }
@@ -75,4 +87,8 @@ export default {
 label {
   margin-right: 0.5rem;
 }
+.hidden { 
+  display: none; 
+}
+
 </style>
