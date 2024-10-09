@@ -79,8 +79,8 @@ INSERT INTO post_downvote (post_id, user_id) VALUES
 (2, 2);  -- Ash     downvoted post 2
 -- Insert mock replies
 INSERT INTO replies (description, post_id, user_id, time_of_creation) VALUES
-('I love Python too! It’s my go-to language.', 1, 2, '2024-01-05 15:00:00'),
-('I prefer JavaScript for web development.', 1, 3, '2024-01-05 15:30:00'),
+('I love Python too! It’s my go-to language.', 1, 2, '2024-01-05 15:00:00'), --1
+('I prefer JavaScript for web development.', 1, 3, '2024-01-05 15:30:00'), --2
 ('Great list! I agree with most of the games here.', 2, 1, '2024-01-06 16:00:00'),
 ('Try using the debugger tool in your IDE.', 3, 4, '2024-01-07 17:00:00'),
 ('AI is going to revolutionize every industry.', 5, 2, '2024-01-09 19:00:00'),
@@ -88,7 +88,7 @@ INSERT INTO replies (description, post_id, user_id, time_of_creation) VALUES
 ('I can’t believe how clear the details are. This is truly cutting-edge science.', 1, 3, '2024-10-05 09:45:00'),
 ('The Wolf-Rayet star is fascinating. The formation of cosmic dust plays such a critical role in star and planet formation.', 2, 1, '2024-10-05 10:30:00'),
 ('This is why the Webb telescope is such a valuable tool for astronomers.', 3, 2, '2024-10-05 11:30:00'),
-('Elden Ring really deserves its spot at the top. The open-world experience was incredible.', 1, 3, '2024-10-05 12:15:00'),
+('Elden Ring really deserves its spot at the top. The open-world experience was incredible.', 1, 3, '2024-10-05 12:15:00'), --10
 ('Tears of the Kingdom took everything great about Breath of the Wild and expanded it. I loved it.', 1, 2, '2024-10-05 12:20:00'),
 ('Starfield was everything I wanted from a space RPG. Bethesda nailed it!', 2, 1, '2024-10-05 12:45:00'),
 ('The game was a bit buggy at launch, but they’ve patched it up really well since then.', 2, 3, '2024-10-05 12:50:00'),

@@ -132,14 +132,28 @@ public class JdbcForumDao implements ForumsDao {
     public List<SearchResultsDto> getForumsBySearch(String searchTerm, long user) {
         List<SearchResultsDto> list = new ArrayList<>();
 
-        String sql = "SSELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post, COUNT(favorite_forums.forum_id) AS favorited, moderation.username AS moderator  FROM forums \\n\" +\n" +
-                "                \"LEFT JOIN moderation ON moderation.username = forums.author LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? \n" +
-                "LEFT JOIN posts ON posts.forum_id = forums.forum_id \n" +
-                "AND (posts.description ILIKE ? OR posts.title ILIKE ?) \n" +
-                "WHERE (forums.description ILIKE ? OR forums.topic ILIKE ?) \n" +
-                "OR (posts.description ILIKE ? OR posts.title ILIKE ?) \n" +
-                "GROUP BY forums.forum_id, posts.post_id, moderation " +
-                "ORDER BY posts.description DESC, forums.forum_id;";
+        String sql = "SELECT \n" +
+                "    forums.*, \n" +
+                " posts.title AS post_title, posts.description AS post_description, posts.title AS post_title, " +
+                "    MAX(posts.time_of_creation) AS most_recent_post, \n" +
+                "    COUNT(favorite_forums.forum_id) AS favorited, \n" +
+                "    moderation.username AS moderator \n" +
+                "FROM \n" +
+                "    forums\n" +
+                "LEFT JOIN \n" +
+                "    moderation ON moderation.username = forums.author \n" +
+                "LEFT JOIN \n" +
+                "    favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ?\n" +
+                "LEFT JOIN \n" +
+                "    posts ON posts.forum_id = forums.forum_id \n" +
+                "    AND (posts.description ILIKE ? OR posts.title ILIKE ? ) \n" +
+                "WHERE \n" +
+                "    (forums.description ILIKE ? OR forums.topic ILIKE ? ) \n" +
+                "    OR (posts.description ILIKE ? OR posts.title ILIKE ? ) \n" +
+                "GROUP BY \n" +
+                "    forums.forum_id, moderation.username, posts.description, posts.title, posts.post_id\n" +
+                "ORDER BY \n" +
+                "    forums.forum_id, posts.description DESC";
 
         searchTerm = "%" + searchTerm + "%";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, user, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm);
