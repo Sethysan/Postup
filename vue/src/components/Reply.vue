@@ -1,8 +1,9 @@
 <template>
     <div class="thread">
         <div class="reply-header">
+            {{ reply.user }}
             <div class="reply-meta">
-                <img v-if="reply.user_image" :src="reply.user_image" class="user-image" />
+                <img v-if="reply.user_image" :src="reply.user_image" class="reply-user-image" />
                 <span class="reply-user">{{ reply.user.username }}</span>
                 <span class="reply-time">• {{ getTimeElapsed(reply.timeOfCreation) }}</span>
             </div>
@@ -176,7 +177,7 @@ export default {
     font-size: 0.875rem;
 }
 
-.user-image {
+.reply-user-image {
     width: 40px;
     height: 40px;
     border-radius: 50%;
