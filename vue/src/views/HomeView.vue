@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <router-link v-bind:to="{ name: 'admin' }">Admin</router-link> 
+    <button ><router-link v-bind:to="{ name: 'admin' }">Admin</router-link></button>
     <h1 class="title">Todays Top 10 Popular Posts</h1>
     <post-list :posts="posts"></post-list>
     <h1>Top 5 Most Active Forums</h1>
