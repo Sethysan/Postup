@@ -1,5 +1,15 @@
 <template>
     <router-link :to="{name: 'forum', params: {id: forumId}}">Back</router-link>
+    <div v-if="posts.length < 1 && !isloading">
+      <p>Wow, such empty!</p>
+      <img src=""/>
+    </div>
+    <div v-if="isloadingPost">
+      <p>loading . . .</p>
+    </div>
+    <div v-if="error">
+      <p>Oops, it looks like this search couldn't load</p>
+    </div>
     <post-list :posts="posts"></post-list>
 </template>
 
@@ -16,7 +26,9 @@ export default {
             forum: {},
             posts: [],
             forumId: 0,
-            keyword: ""
+            keyword: "",
+            isloading: true,
+            error: false,
         }
     },
     created(){
@@ -26,10 +38,13 @@ export default {
             .then(res => {
                 this.forum = res.data;
                 PostService.getForumPostByKeyword(this.forumId, this.keyword)
-                    .then(res => this.posts = res.data)
-                    .catch(err => err.status)
+                    .then(res => {
+                        this.posts = res.data
+                        this.isloading = false
             })
-            .catch(err => alert(err.status))
+                    .catch(err => this.error = true)
+            })
+            .catch(err => this.error = true)
     },
 }
 </script>

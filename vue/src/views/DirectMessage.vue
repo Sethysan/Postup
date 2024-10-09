@@ -1,5 +1,12 @@
 <template>
-<div class="message-container">
+  <div v-if="messages.length < 1 && isloading">
+      <p>Wow, such empty!</p>
+      <img src=""/>
+    </div>
+   <div v-if="error">
+      <p>Oops, it looks like the chat couldn't load</p>
+    </div>
+<div class="message-container" v-if="!error && !isloading">
   <messages :messages="messages" :contact="this.$route.params.user"></messages>
 </div>
 </template>
@@ -12,12 +19,18 @@ export default {
   components: { Messages },
   data(){
     return {
-        messages: []
+        messages: [],
+        error: false,
+        isloading: true
     }
   },
   created(){
     service.getMessages(this.$route.params.user)
         .then(res => this.messages = res.data)
+        .catch(err => {
+          this.error = true
+          this.isloading = false
+        })
   },
 }
 </script>
