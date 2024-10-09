@@ -20,6 +20,6 @@ public interface UserDao {
 
     List<User> getUsersFiltered();
 
-    void updateUserImage(long id, String userImage);
+    void updateUserImage(long id, String user_image);
 
 }

@@ -48,8 +48,7 @@ export default {
 <style>
 .title {
   text-align: center;
-  /* Center the text horizontally */
   margin-top: 20px;
-  /* Optional: Adjust margin for better spacing */
 }
+
 </style>

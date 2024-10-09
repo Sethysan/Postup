@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +76,7 @@ public class UserController {
         if (currentUser.getId() == id || currentUser.getAuthorities().stream().anyMatch(a -> a.getName().equals("ROLE_ADMIN"))) {
             try {
                 // Save the file locally or upload to cloud storage
-                String fileName = saveImage(image);
+                String fileName = saveImage(id,image);
                 // Update the user's image URL in the database
                 userDao.updateUserImage(id, fileName);
             } catch (Exception e) {
@@ -81,11 +86,15 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You do not have permission to upload an image for this user.");
         }
     }
-    private String saveImage(MultipartFile image) {
-        // Logic to save the image file and return its URL or file path
-        String fileName = "path/to/save/" + image.getOriginalFilename();
-        // Save the file using image.transferTo(new File(fileName));
-        return fileName;
+    private String saveImage(long id,MultipartFile image) {
+        try {
+            String fileName = "src/main/resources/images/" + "user_" + id + ".jpg";
+            Path path = Paths.get(fileName);
+            Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            return fileName; // You may return a URL if you host the image publicly
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save image", e);
+        }
     }
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/user/{id}/image")

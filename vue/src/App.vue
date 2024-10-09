@@ -1,32 +1,32 @@
-<template>
+<template >
+  <div id="nav">
+    <div class="logged-in" v-if="isLoggedIn">
+    <p>Logged in as {{ userName }}</p>
+  </div>
+    <button class="nav-btn">
+      <router-link v-bind:to="{ name: 'home' }" :class="getLinkClass('home')">HOME</router-link>&nbsp;
+    </button>
+    <!-- <div class="separator"></div> -->
+    <button class="nav-btn">
+      <router-link v-bind:to="{ name: 'forums' }" :class="getLinkClass('forums')">FORUMS</router-link>&nbsp;
+    </button>
+    <!-- <div v-if="this.isLoggedIn" class="separator"></div> -->
+    <button v-if="isLoggedIn" class="nav-btn">
+      <router-link v-bind:to="{ name: 'favorites' }" v-if="userName"
+        :class="getLinkClass('favorites')">FAVORITES</router-link>&nbsp;
+    </button>
+    <!-- <div v-if="this.isLoggedIn" class="separator"></div> -->
+    <button v-if="isLoggedIn" class="nav-btn">
+      <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''"
+        class="router-link-nonactive">LOGOUT</router-link>
+    </button>
+    <!-- <div v-if="!this.isLoggedIn" class="separator"></div> -->
+    <button v-if="!this.isLoggedIn" class="nav-btn">
+      <router-link v-bind:to="{ name: 'login' }" v-if="$store.state.token == ''"
+        class="router-link-nonactive">LOGIN</router-link>
+    </button>
+  </div>
   <div id="capstone-app">
-    <div v-if="isLoggedIn">
-      <p>Logged in as {{ userName }}</p>
-    </div>
-    <div id="nav">
-      <button class="nav-btn">
-        <router-link v-bind:to="{ name: 'home' }" :class="getLinkClass('home')">Home</router-link>&nbsp;
-      </button>
-      <div class="separator">|</div>
-      <button class="nav-btn">
-        <router-link v-bind:to="{ name: 'forums' }" :class="getLinkClass('forums')">Forums</router-link>&nbsp;
-      </button>
-      <div v-if="this.isLoggedIn" class="separator">|</div>
-      <button v-if="isLoggedIn" class="nav-btn">
-        <router-link v-bind:to="{ name: 'favorites' }" v-if="userName"
-          :class="getLinkClass('favorites')">Favorites</router-link>&nbsp;
-      </button>
-      <div v-if="this.isLoggedIn" class="separator">|</div>
-      <button v-if="isLoggedIn" class="nav-btn">
-        <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''"
-          class="router-link-nonactive">Logout</router-link>
-      </button>
-      <div v-if="!this.isLoggedIn" class="separator">|</div>
-      <button v-if="!this.isLoggedIn" class="nav-btn">
-        <router-link v-bind:to="{ name: 'login' }" v-if="$store.state.token == ''"
-          class="router-link-nonactive">Login</router-link>
-      </button>
-    </div>
     <router-view />
   </div>
 </template>
@@ -57,40 +57,68 @@ export default {
 #nav {
   display: flex;
   justify-content: space-evenly;
-  padding-bottom: 1vh;
-  padding-top: 1vh;
-  background-color: rgb(240, 108, 19);
-  color: white;
-  border-radius: 8px;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: rgba(240, 107, 19, 0.909);
+
 }
-#capstone-app{
+/* #nav {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  justify-content: space-evenly;
+  top: 0;
+  left: 0;
+  width: 5%;
+  height: 100%;
+  background-color: rgb(240, 107, 19);
+  color: white;
+
+} */
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
+#capstone-app {
   font-family: Arial, Helvetica, sans-serif;
+  background: radial-gradient(circle, rgb(255, 255, 255) 50%, rgb(240, 107, 19));
 
 }
 
 .nav-btn {
-  background-color: transparent;
-  color: white;
-  border: none;
-  font-size: 16px;
-  padding: 5px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    font-size: 25px;
+    padding: 5px;
+    transition: transform 0.3s ease-in-out; /* Smooth transition for hover effects */
 }
 
 .nav-btn .router-link-active,
-.nav-btn .router-link-exact-active {
+.router-link-exact-active {
   text-decoration: none;
+  font-size: 30px;
   color: white;
-
+  transition: .3s ease-in-out;
 }
 
-.nav-btn .router-link-nonactive {
+.router-link-nonactive {
   text-decoration: none;
+  color: black;
+  transition: .3s ease-in-out;
+}
+#logged-in{
   color: black;
 }
 
-.nav-btn .router-link-nonactive:hover {
+.router-link-nonactive:hover {
   text-decoration: none;
-  color: white;
+  transform: scaleX(3);
+  transition: transform 0.3s ease-in-out;
 }
 
 .separator {

@@ -1,5 +1,5 @@
 package com.techelevator.dao;
-
+import com.techelevator.service.ImageDownloader;
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.RegisterUserDto;
 import com.techelevator.model.User;
@@ -18,11 +18,12 @@ public class JdbcUserDaoTests extends BaseDaoTests {
     private static final User USER_3 = new User(3, "user3", "user3", "user1_image_url", "ROLE_USER");
 
     private JdbcUserDao sut;
+    private ImageDownloader imageDownloader;
 
     @Before
     public void setup() {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        sut = new JdbcUserDao(jdbcTemplate);
+        sut = new JdbcUserDao(jdbcTemplate, imageDownloader);
     }
 
     @Test(expected = IllegalArgumentException.class)

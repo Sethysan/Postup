@@ -13,19 +13,19 @@
     </div>
     <div v-for="post in filteredPosts" :key="post.id">
       <router-link :to="{ name: 'post', params: { post: post.id } }">
-      <header>       
-          <h1>{{ post.title }}</h1>       
-        <div class="post-meta">
-          <img v-if="post.creator_image" :src="post.creator_image" class="user-image" />
-          <p class="post-author">{{ post.creator_username }}</p>
-          <p class="post-time">{{ getTimeElapsed(post.timeOfCreation) }}</p>
-        </div>      
-      </header>
-      <section>
-        <img v-if="post.image" :src="post.image" class="post-image" />
-        <!-- <p> {{ post.description }} </p> -->
-      </section>
-    </router-link>
+        <header>
+          <div class="post-meta">
+            <img v-if="post.creator_image" :src="post.creator_image" class="user-image" />
+            <p class="post-author">{{ post.creator_username }} </p>
+            <p class="post-time">• {{ getTimeElapsed(post.timeOfCreation) }}</p>
+          </div>
+          <h3 class="post-list-title">{{ post.title }}</h3>
+        </header>
+        <section>
+          <img v-if="post.image" :src="post.image" class="post-image" />
+          <!-- <p> {{ post.description }} </p> -->
+        </section>
+      </router-link>
       <button v-if="post.creator_username === user" class="btn btn-delete deletePost"
         @click="deletePost(post.id)">Delete</button>
     </div>
@@ -114,17 +114,31 @@ export default {
   cursor: pointer;
   transition: transform 0.3s ease;
 }
-.post-meta {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    /* Adjust spacing between author and time */
-    font-size: 0.875rem;
+
+.post-list-meta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  /* Adjust spacing between author and time */
+  font-size: 0.875rem;
+
 }
-.post-author{
-    font-size: 1.25rem;
+
+.post-author {
+  font-size: 1.25rem;
 }
-.post-time{
-    color:rgb(107, 105, 105) ;
+
+.post-time {
+  color: rgb(107, 105, 105);
+}
+
+.post-list-title {
+  margin-bottom: 16px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 0px;
+}
+select{
+  /* background-color:rgb(253, 197, 129); */
 }
 </style>
