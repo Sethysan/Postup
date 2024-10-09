@@ -1,4 +1,5 @@
 <template>
+    {{ forum }}
     <div class="forum">
         <h1>{{ forum.topic }}</h1>
         <p>{{ forum.description }}</p>
@@ -10,7 +11,7 @@
             <button class="create-post-button">Create Post</button>
         </router-link>
         <router-link :to="{ name: 'promote', params: { forumId: forum.Id } }">
-            <button class="promote-button">Promote to Moderator</button>
+            <button v-if="role === 'ROLE_MODERATOR' || role === 'ROLE_ADMIN'" class="promote-button">Promote to Moderator</button>
         </router-link>
     </div>
 </template>
@@ -24,7 +25,8 @@ export default {
     data() {
         return {
             currentForum: {},
-            color: 'white'
+            color: 'white',
+            role: this.$store.getters.role
         }
     },
     created() {
