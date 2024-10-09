@@ -1,6 +1,6 @@
 BEGIN TRANSACTION;
 
-DROP TABLE IF EXISTS comment_replies, reply_upvote, reply_downvote, replies, post_upvote, post_downvote, posts, moderation, forums, direct_message, users;
+DROP TABLE IF EXISTS favorite_forums, comment_replies, reply_upvote, reply_downvote, replies, post_upvote, post_downvote, posts, moderation, forums, direct_message, users;
 
 CREATE TABLE users (
 	user_id SERIAL,
