@@ -19,6 +19,7 @@
 import service from '../services/ForumService'
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import ModeratorService from '../services/ModeratorService';
 
 export default {
     props: ['forum'],
@@ -63,6 +64,9 @@ export default {
             // dayjs converts time into a readable format and calculates the elapsed time
             return dayjs(creationTime).fromNow();
         },
+        checkIfMod() {
+
+        }
     }
 }
 </script>
