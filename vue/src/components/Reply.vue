@@ -8,7 +8,6 @@
             </div>
         </div>
 
-
         <p>{{ reply.description }}</p>
         <div class="post-footer flex items-center justify-start mt-md px-md xs:px-0">
             <!-- Voting Buttons -->

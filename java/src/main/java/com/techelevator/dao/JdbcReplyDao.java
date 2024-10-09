@@ -95,6 +95,7 @@ public class JdbcReplyDao implements ReplyDao {
                 "ORDER BY replies.reply_id;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId, userId, postId);
         threads = mapRowToThread(results);
+        System.out.println("threads: " + threads.toString());
         return threads;
     }
 
@@ -187,7 +188,7 @@ public class JdbcReplyDao implements ReplyDao {
                         rootReplies.add(parentReply);
                     }
                 }
-//            System.out.println(reply);
+            System.out.println(reply);
             }
         return rootReplies;
         }
@@ -206,7 +207,7 @@ public class JdbcReplyDao implements ReplyDao {
             UserSnippetDto user = new UserSnippetDto();
             user.setId(row.getInt("user_id"));
             user.setUsername(row.getString("username"));
-            user.setUser_image(row.getString("user_image"));
+//            user.setUser_image(row.getString("user_image"));
             reply.setUser(user);
             return reply;
         }

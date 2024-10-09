@@ -1,5 +1,4 @@
 <template>
-    <!-- {{ post }} -->
     <div v-if="isImageFullscreen" class="fullscreen-container" @click="toggleImageFullscreen">
         <img :src="post.image" class="post-image-fullscreen" />
     </div>
