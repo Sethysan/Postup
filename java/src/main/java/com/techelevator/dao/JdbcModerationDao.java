@@ -30,13 +30,14 @@ public class JdbcModerationDao implements ModerationDao{
 
     public List<Moderation> getListOfModeratorsOfForum(long id){
         List<Moderation> list = new ArrayList<>();
-        String sql = "SELECT * FROM moderation WHERE forum_id = ?;";
+        String sql = "SELECT forum_id, username, role FROM moderation WHERE forum_id = ?;";
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
         while (results.next()) {
             Moderation mod = mapRowToModeration(results);
             list.add(mod);
         }
+        System.out.println("moderator list \n" + list);
         return list;
     }
 

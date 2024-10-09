@@ -1,6 +1,8 @@
 <template>
-    {{ this.$store.getters.users }}
     <div class="forum">
+        {{ getListOfMods }}
+        {{ isMod }}
+        {{ num }}
         <h1>{{ forum.topic }}</h1>
         <p>{{ forum.description }}</p>
         <button :class="forum.favorited ? 'favorited' : 'not-favorited'" @click="favorite">
@@ -29,7 +31,9 @@ export default {
             color: 'white',
             role: this.$store.getters.role,
             listOfModsOfForum: [],
-            isMod: false
+            isMod: false,
+            // num: Number(this.forum.id),
+
         }
     },
     created() {
@@ -43,6 +47,7 @@ export default {
                 this.checkIfMod()
             });
         }
+     
     },
     methods: {
         favorite() {
@@ -69,7 +74,8 @@ export default {
         },
         checkIfMod() {
             this.isMod = false;
-            ModeratorService.getListOfMods(this.forum.id)
+            this.num = Number(this.forum.id);
+            ModeratorService.getListOfMods(this.num)
                 .then(res => {
                     this.listOfModsOfForum = res.data;
 
