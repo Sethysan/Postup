@@ -3,7 +3,6 @@
         <img :src="post.image" class="post-image-fullscreen" />
     </div>
     <div v-else class="post">
-        {{ post }}
         <div class="post-header">
             <!-- Back Button -->
             <div class="back-button" @click="goBack">
@@ -76,9 +75,9 @@
             </div>
             <!-- Replies Component -->
             <div v-if="!isImageFullscreen">
-                <replies :replies="replies"></replies>
             </div>
         </div>
+        <replies :replies="replies"></replies>
     </div>
 
 </template>

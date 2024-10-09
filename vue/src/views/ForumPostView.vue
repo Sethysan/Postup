@@ -32,6 +32,7 @@ export default {
             reviewService.getReplies(this.postId)
               .then(res => {
                   this.replies = res.data
+                  console.log(this.replies)
                   this.isLoading = false;
                 })
               .catch(err => this.error = true)

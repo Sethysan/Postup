@@ -1,9 +1,8 @@
 <template>
     <div class="thread">
-        {{reply.user.user_image }}
         <div class="reply-header">
             <div class="reply-meta">
-                <img v-if="reply.user.user_image" :src="reply.image" class="reply-user-image" />
+                <img  v-if="reply.user && reply.user.user_image" :src="reply.user.user_image" class="reply-user-image" />
                 <span class="reply-user">{{ reply.user.username }}</span>
                 <span class="reply-time">• {{ getTimeElapsed(reply.timeOfCreation) }}</span>
             </div>
