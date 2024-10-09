@@ -1,7 +1,6 @@
 <template>
     <div class="thread">
         <div class="reply-header">
-            {{ reply.user }}
             <div class="reply-meta">
                 <img v-if="reply.user_image" :src="reply.user_image" class="reply-user-image" />
                 <span class="reply-user">{{ reply.user.username }}</span>
