@@ -69,6 +69,22 @@ export function createStore(currentToken, currentUser, userList = []) {
           console.error('User not found for promotion:', userName);
         }
       },
+      BAN_USER(state, userName) {
+        const user = state.user.find(u => u.username === userName);
+        if (user) {
+          user.banned = true;
+        } else {
+          console.error('User not found for ban:', userName);
+        }
+      },
+      UNBAN_USER(state, userName) {
+        const user = state.user.find(u => u.username === userName);
+        if (user) {
+          user.banned = false;
+        } else {
+          console.error('User not found for unban:', userName);
+        }
+      }
     },
     getters: {
       username(state, getters) {
