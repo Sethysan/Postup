@@ -40,6 +40,7 @@ public class ReplyController {
         if(principal != null){
             user = userDao.getUserByUsername(principal.getName()).getId();
         }
+        System.out.println("user: " + user);
         return replyDao.getPostThreads(id, user);
     }
 
