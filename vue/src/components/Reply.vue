@@ -31,7 +31,7 @@
                 </button>
             </div>
         </div>
-        <button v-if="reply.user.username === user || role==='ROLE_MODERATOR' || role==='ROLE_ADMIN'" class="deletePost" @click="deleteReply">Delete</button>
+        <button v-if="reply.user.username === user || checkIfMod || role==='ROLE_ADMIN'" class="deletePost" @click="deleteReply">Delete</button>
         <button @click="() => { formVisibility = true }">Reply</button>
         <div v-if="formVisibility">
             <form v-on:submit.prevent="addReply">
@@ -49,6 +49,8 @@
 <script>
 import dayjs from 'dayjs';
 import replySerive from '../services/RepliesService';
+import PostService from '../services/PostService';
+import ModeratorService from '../services/ModeratorService';
 export default {
     props: ['reply', 'indent'],
     data() {
@@ -62,7 +64,9 @@ export default {
             user: this.$store.getters.username,
             upvoted: false,
             downvoted: false,
-            role: this.$store.getters.role
+            role: this.$store.getters.role,
+            post: {},
+            listOfModsOfForum: []
         }
     },
     created() {
@@ -145,7 +149,7 @@ export default {
                 replySerive.deleteReply(this.reply.id)
                     .then(response => {
                         this.$store.commit('SET_NOTIFICATION', `Post ${this.reply.id} was deleted.`);
-                        this.$forceUpdate();
+                        this.$router.go();
                     })
                     .catch(error => {
                         alert("error " + error.response.status)
@@ -156,6 +160,28 @@ export default {
             // dayjs converts time into a readable format and calculates the elapsed time
             return dayjs(timeOfCreation).fromNow();
         },
+        checkIfMod() {
+            let isMod = false;
+
+            PostService.getPostById(this.reply.postId)
+                .then(res => {
+                    this.post = res.data;
+                })
+                .catch(err => alert(err));
+
+            ModeratorService.getListOfMods(this.post.forumId)
+                .then(res => {
+                    this.listOfModsOfForum = res.data;
+                })
+                .catch(err => alert(err));
+
+            for (let mod of this.listOfModsOfForum) {
+                if (mod.username === this.$store.getters.username) {
+                    isMod = true;
+                }
+            }
+            return isMod;
+        }
     }
 }
 </script>

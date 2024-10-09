@@ -1,5 +1,5 @@
 <template>
-    {{ forum }}
+    {{ this.$store.getters.users }}
     <div class="forum">
         <h1>{{ forum.topic }}</h1>
         <p>{{ forum.description }}</p>
@@ -11,7 +11,7 @@
             <button class="create-post-button">Create Post</button>
         </router-link>
         <router-link :to="{ name: 'promote', params: { forumId: forum.Id } }">
-            <button v-if="role === 'ROLE_MODERATOR' || role === 'ROLE_ADMIN'" class="promote-button">Promote to Moderator</button>
+            <button v-if=" isMod || role === 'ROLE_ADMIN'" class="promote-button">Promote to Moderator</button>
         </router-link>
     </div>
 </template>
@@ -27,7 +27,9 @@ export default {
         return {
             currentForum: {},
             color: 'white',
-            role: this.$store.getters.role
+            role: this.$store.getters.role,
+            listOfModsOfForum: [],
+            isMod: false
         }
     },
     created() {
@@ -38,6 +40,7 @@ export default {
             // Otherwise, fetch the forum from the service
             service.getForum(this.$route.params.forumId).then(res => {
                 this.currentForum = res.data;
+                this.checkIfMod()
             });
         }
     },
@@ -65,7 +68,18 @@ export default {
             return dayjs(creationTime).fromNow();
         },
         checkIfMod() {
+            this.isMod = false;
+            ModeratorService.getListOfMods(this.forum.id)
+                .then(res => {
+                    this.listOfModsOfForum = res.data;
 
+                    for (let mod of this.listOfModsOfForum) {
+                        if (mod.username === this.$store.getters.username) {
+                            this.isMod = true;
+                        }
+                    }
+                })
+                .catch(err => alert(err));
         }
     }
 }
