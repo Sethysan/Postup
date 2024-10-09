@@ -1,5 +1,4 @@
 <template>
-    {{ role }}
     <div class="thread">
         <div class="reply-header">
             {{ reply.user }}
