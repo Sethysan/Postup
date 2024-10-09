@@ -49,10 +49,10 @@ public class JdbcPostDao implements PostDao {
                 "    post_downvote ON posts.post_id = post_downvote.post_id\n" +
                 "LEFT JOIN \n" +
                 "    users AS upvote ON post_upvote.user_id = upvote.user_id AND upvote.user_id = ?\n" +
-                "LEFT JOIN \n" +
+                "LEFT JOIN\n" +
                 "    users AS downvote ON post_downvote.user_id = downvote.user_id AND downvote.user_id = ?\n" +
                 "WHERE \n" +
-                "    (posts.description ILIKE '%' OR replies.description ILIKE '%') AND posts.post_id = ?\n" +
+                "posts.post_id = ?\n" +
                 "GROUP BY posts.post_id, users.user_image;"; //Add users.user_image to the GROUP BY clause
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user, user, id);
@@ -68,20 +68,30 @@ public class JdbcPostDao implements PostDao {
         List<PostResponseDto> posts = new ArrayList<>();
 //        todo: add user_image
 //        added user_image!
-        String sql = "SELECT posts.*, users.user_image, \n" +
-                "COUNT(replies.description) AS reply_count,\n" +
-                "COUNT(post_upvotes) AS likes,\n" +
-                "COUNT(post_downvote) AS dislikes,\n" +
-                "COUNT(upvotes.user_id) AS upvotes_from_user,\n" +
-                "COUNT(downvotes.user_id) AS downvotes_from_user\n" +
-                "FROM posts\n" +
-                "LEFT JOIN users ON posts.author = users.username\n" + //join users table to get user_image
-                "LEFT JOIN replies ON replies.post_id = posts.post_id LEFT JOIN post_upvote ON\n" +
-                " posts.post_id = post_upvote.post_id\n" +
-                "LEFT JOIN post_downvote ON posts.post_id = post_downvote.post_id\n" +
-                "LEFT JOIN users AS upvote ON post_upvote.user_id = upvote.user_id AND upvote.user_id = ? \n" +
-                "LEFT JOIN users AS downvote ON post_downvote.user_id = downvote.user_id AND downvote.user_id = ?\n" +
-                "WHERE (posts.description ILIKE ? OR replies.description ILIKE ?)";
+        String sql = "SELECT \n" +
+                "    posts.*, \n" +
+                "    users.user_image,\n" +
+                "    COUNT(replies.description) AS reply_count,\n" +
+                "    COUNT(post_upvote) AS likes,\n" +
+                "    COUNT(post_downvote) AS dislikes,\n" +
+                "    COUNT(upvote.user_id) AS upvotes_from_user,\n" +
+                "    COUNT(downvote.user_id) AS downvotes_from_user\n" +
+                "FROM \n" +
+                "    posts\n" +
+                "LEFT JOIN \n" +
+                "    users ON posts.author = users.username -- Join users table to get user_image\n" +
+                "LEFT JOIN \n" +
+                "    replies ON replies.post_id = posts.post_id\n" +
+                "LEFT JOIN \n" +
+                "    post_upvote ON posts.post_id = post_upvote.post_id\n" +
+                "LEFT JOIN \n" +
+                "    post_downvote ON posts.post_id = post_downvote.post_id\n" +
+                "LEFT JOIN \n" +
+                "    users AS upvote ON post_upvote.user_id = upvote.user_id AND upvote.user_id = ?\n" +
+                "LEFT JOIN\n" +
+                "    users AS downvote ON post_downvote.user_id = downvote.user_id AND downvote.user_id = ?\n" +
+                "WHERE \n" +
+                "    (posts.description ILIKE ? OR replies.description ILIKE ?) \n";
         if (forum > 0) {
             sql += " AND posts.forum_id = " + forum;
         }
