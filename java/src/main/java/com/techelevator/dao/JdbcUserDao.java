@@ -47,7 +47,7 @@ public class JdbcUserDao implements UserDao {
     @Override
     public List<User> getUsers() {
         List<User> users = new ArrayList<>();
-        String sql = "SELECT user_id, username, password_hash, role, user_image FROM users";
+        String sql = "SELECT user_id, username, password_hash, role, user_image FROM users WHERE user_id <> 1";
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
             while (results.next()) {
@@ -64,7 +64,7 @@ public class JdbcUserDao implements UserDao {
     public User getUserByUsername(String username) {
         if (username == null) throw new IllegalArgumentException("Username cannot be null");
         User user = null;
-        String sql = "SELECT user_id, username, password_hash, role, user_image  FROM users WHERE username = LOWER(TRIM(?));";
+        String sql = "SELECT * FROM users WHERE username = LOWER(TRIM(?));";
         try {
             SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, username);
             if (rowSet.next()) {
@@ -155,7 +155,6 @@ public class JdbcUserDao implements UserDao {
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
         }
-        System.out.println(list.toString());
         return list;
     }
 

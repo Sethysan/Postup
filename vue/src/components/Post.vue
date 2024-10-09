@@ -58,7 +58,7 @@
                     <span>{{ replies.length }} Comments</span>
                 </button>
                 <!-- Delete Button -->
-                <button v-if="post.creator_username === user" class="delete-button" @click="deletePost">Delete</button>
+                <button v-if="post.creator_username === user || role==='ROLE_MODERATOR' || role ==='ROLE_ADMIN'" class="delete-button" @click="deletePost">Delete</button>
             </div>
             <!-- Reply Form -->
             <div v-if="user">
@@ -87,25 +87,25 @@ import dayjs from 'dayjs';
 import service from '../services/PostService';
 import replySerive from '../services/RepliesService'
 import Replies from './Replies.vue';
-import { useToast } from 'vue-toastification';
+// import { useToast } from 'vue-toastification';
 
 export default {
-    setup() {
-        const toast = useToast();
-        function handleError(err, message) {
-            if (err.response?.status === 401) {
-                toast("You must be logged in to vote", {
-                    position: "bottom-center",
-                });
-            } else {
-                toast.error(`${message} Status code: ${err.response?.status || 'Unknown'}`);
-            }
-        }
-        return {
-            handleError,
-            toast
-        };
-    },
+    // setup() {
+    //     // const toast = useToast();
+    //     // function handleError(err, message) {
+    //     //     if (err.response?.status === 401) {
+    //     //         // toast("You must be logged in to vote", {
+    //     //             // position: "bottom-center",
+                
+    //     //     } else {
+    //     //         // toast.error(`${message} Status code: ${err.response?.status || 'Unknown'}`);
+    //     //     }
+    //     },
+    //     // return {
+    //     //     handleError,
+    //     //     // toast
+    //     // };
+    // // },
     props: {
         post: {
             type: Object,
@@ -124,7 +124,8 @@ export default {
             downvoted: false,
             user: this.$store.getters.username,
             formVisibility: false,
-            newReply: {}
+            newReply: {},
+            role: this.$store.getters.role
         }
     },
     created() {
@@ -133,7 +134,6 @@ export default {
             this.downvoted = this.post.hasDownvoted;
 
     },
-    props: ['post', 'replies'],
     methods: {
         goBack() {
             this.$router.go(-1); // This navigates back in the history stack

@@ -1,4 +1,4 @@
-import http from './httpService'; // Import the shared Axios instance
+import http from "./httpService"; // Import the shared Axios instance
 
 export default {
   // Create Forum
@@ -27,5 +27,5 @@ export default {
   },
   unvotingDislikes(id) {
     return http.put(`/api/replies/${id}/downvote/undislike`);
-  }
-}
+  },
+};

@@ -1,14 +1,16 @@
 <template>
-  <div v-for="message in messages" :key="message.id" :class="message.sender.username === username ? 'user-message' : 'others-message'" @messageDeleted="(id) => this.messages = this.messages.filter(item => item.id != id)">
-    <message :message="message"></message>
-  </div>
-  <textarea v-model="message.message" placeholder="Enter your message"></textarea>
-  <button :onclick="sendMessage">Send</button>
+    {{ id }}
+        <div v-for="message in messages" :key="message.id" :class="message.sender.username === username ? 'user-message' : 'others-message'" @messageDeleted="(id) => this.messages = this.messages.filter(item => item.id != id)">
+            <message :message="message" @messageDeleted="removeMessage"></message>
+        </div>
+        <textarea v-model="message.message" placeholder="Enter your message"></textarea>
+        <button :onclick="sendMessage">Send</button>
 </template>
 
 <script>
 import service from '../services/MessageService';
 import Message from './Message.vue';
+// import socket from '../services/SocketService'
 
 export default {
     components: {Message},
@@ -16,6 +18,7 @@ export default {
     data(){
         return {
             username: this.$store.getters.username,
+            id: this.$store.getters.userId,
             message: {
                 sender: {username: this.$store.getters.username}
             },
@@ -26,10 +29,9 @@ export default {
             service.createMessage(this.contact, this.message)
                 .then(res => {
                     this.messages.unshift(res.data);
-                    this.message = {}
                 })
                 .catch(err => alert(err.response.status))
-        },
+    }
     }
 }
 </script>

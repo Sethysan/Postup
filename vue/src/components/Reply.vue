@@ -1,14 +1,12 @@
 <template>
     <div class="thread">
         <div class="reply-header">
-            {{ reply.user }}
             <div class="reply-meta">
                 <img v-if="reply.user_image" :src="reply.user_image" class="reply-user-image" />
                 <span class="reply-user">{{ reply.user.username }}</span>
                 <span class="reply-time">• {{ getTimeElapsed(reply.timeOfCreation) }}</span>
             </div>
         </div>
-
 
         <p>{{ reply.description }}</p>
         <div class="post-footer flex items-center justify-start mt-md px-md xs:px-0">
@@ -33,7 +31,7 @@
                 </button>
             </div>
         </div>
-        <button v-if="reply.user.username === user" class="deletePost" @click="deleteReply">Delete</button>
+        <button v-if="reply.user.username === user || role==='ROLE_MODERATOR' || role==='ROLE_ADMIN'" class="deletePost" @click="deleteReply">Delete</button>
         <button @click="() => { formVisibility = true }">Reply</button>
         <div v-if="formVisibility">
             <form v-on:submit.prevent="addReply">
@@ -63,7 +61,8 @@ export default {
             },
             user: this.$store.getters.username,
             upvoted: false,
-            downvoted: false
+            downvoted: false,
+            role: this.$store.getters.role
         }
     },
     created() {

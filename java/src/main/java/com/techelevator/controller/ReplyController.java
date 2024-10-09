@@ -40,6 +40,7 @@ public class ReplyController {
         if(principal != null){
             user = userDao.getUserByUsername(principal.getName()).getId();
         }
+        System.out.println("user: " + user);
         return replyDao.getPostThreads(id, user);
     }
 
@@ -94,21 +95,21 @@ public class ReplyController {
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/replies/{id}/upvote")
     public void upvotePost(@PathVariable long id, Principal principal) {
-        if(!replyDao.addVote(id, userDao.getUserByUsername(principal.getName()).getId(), 0)){
+        if(!replyDao.addVote(id, userDao.getUserByUsername(principal.getName()).getId(), true)){
             throw new ResponseStatusException(HttpStatus.NO_CONTENT);
         }
     }
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/replies/{id}/upvote/unlike")
     public void unvotingLike(@PathVariable long id, Principal principal) {
-        replyDao.undoVote(id, userDao.getUserByUsername(principal.getName()).getId(), 0);
+        replyDao.undoVote(id, userDao.getUserByUsername(principal.getName()).getId(), true);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/replies/{id}/downvote")
     public void downvotePost(@PathVariable long id, Principal principal) {
-        if(!replyDao.addVote(id, userDao.getUserByUsername(principal.getName()).getId(), 1)){
+        if(!replyDao.addVote(id, userDao.getUserByUsername(principal.getName()).getId(), false)){
             throw new ResponseStatusException(HttpStatus.NO_CONTENT);
         }
     }
@@ -116,7 +117,7 @@ public class ReplyController {
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/replies/{id}/downvote/undislike")
     public void unvotingDislike(@PathVariable long id, Principal principal) {
-        replyDao.undoVote(id, userDao.getUserByUsername(principal.getName()).getId(),1);
+        replyDao.undoVote(id, userDao.getUserByUsername(principal.getName()).getId(),false);
     }
 
     public boolean checkUserRoleForReply(long replyId, String username) {
