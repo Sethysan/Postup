@@ -41,6 +41,7 @@ public class JdbcPostDao implements PostDao {
                 "    users ON posts.author = users.username -- Join users table to get user_image\n" +
                 "LEFT JOIN \n" +
                 "    replies ON replies.post_id = posts.post_id\n" +
+                "LEFT JOIN comment_replies ON replies.reply_id = comment_replies.reply_id " +
                 "LEFT JOIN \n" +
                 "    post_upvote ON posts.post_id = post_upvote.post_id\n" +
                 "LEFT JOIN \n" +
@@ -81,6 +82,7 @@ public class JdbcPostDao implements PostDao {
                 "    users ON posts.author = users.username -- Join users table to get user_image\n" +
                 "LEFT JOIN \n" +
                 "    replies ON replies.post_id = posts.post_id\n" +
+                "LEFT JOIN comment_replies ON replies.reply_id = comment_replies.reply_id " +
                 "LEFT JOIN \n" +
                 "    post_upvote ON posts.post_id = post_upvote.post_id\n" +
                 "LEFT JOIN \n" +
@@ -211,6 +213,7 @@ public class JdbcPostDao implements PostDao {
         post.setImage(row.getString("image"));
         post.setTimeOfCreation(row.getTimestamp("time_of_creation"));
         post.setCreator_image(row.getString("user_image"));
+        post.setReplyCount(row.getInt("reply_count"));
         return post;
     }
 }
