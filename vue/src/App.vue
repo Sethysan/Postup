@@ -50,16 +50,16 @@ export default {
       return this.$route.name === routeName ? 'router-link-active' : 'router-link-nonactive';
     }
   },
-  mounted() {
-    if (this.isLoggedIn) {
-      this.startTokenCountdown(); 
-      // Start the countdown when the component is mounted
-    }
-  },
-  beforeUnmount() {
-    // Clear the interval when the component is destroyed
-    clearInterval(this.interval);
-  }
+  // mounted() {
+  //   if (this.isLoggedIn) {
+  //     this.startTokenCountdown(); 
+  //     // Start the countdown when the component is mounted
+  //   }
+  // },
+  // beforeUnmount() {
+  //   // Clear the interval when the component is destroyed
+  //   clearInterval(this.interval);
+  // }
 }
   ;
 </script>
