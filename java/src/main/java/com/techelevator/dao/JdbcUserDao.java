@@ -140,6 +140,7 @@ public class JdbcUserDao implements UserDao {
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
         }
+        System.out.println(list.toString());
         return list;
     }
 
