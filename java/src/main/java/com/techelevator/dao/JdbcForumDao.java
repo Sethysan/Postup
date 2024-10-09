@@ -138,8 +138,8 @@ public class JdbcForumDao implements ForumsDao {
                 "AND (posts.description ILIKE ? OR posts.title ILIKE ?) \n" +
                 "WHERE (forums.description ILIKE ? OR forums.topic ILIKE ?) \n" +
                 "OR (posts.description ILIKE ? OR posts.title ILIKE ?) \n" +
-                "GROUP BY forums.forum_id, posts.post_id, moderation " +
-                "ORDER BY posts.description DESC, forums.forum_id;";
+                "GROUP BY forums.forum_id, posts.post_id, moderator " +
+                "ORDER BY posts.description DESC, forums.forum_id";
 
         searchTerm = "%" + searchTerm + "%";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, user, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm);
