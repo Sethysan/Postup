@@ -115,7 +115,7 @@ public class JdbcUserDao implements UserDao {
 
     public List<User> getUsersFiltered() {
         List<User> users = new ArrayList<>();
-        String sql = "SELECT user_id, username, password_hash, role FROM users WHERE role = 'ROLE_USER';";
+        String sql = "SELECT user_id, username, password_hash, role, user_image FROM users WHERE role = 'ROLE_USER';";
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
             while (results.next()) {
@@ -130,7 +130,7 @@ public class JdbcUserDao implements UserDao {
 
     public List<User> getUsersForAdmins() {
         List<User> list = new ArrayList<>();
-        String sql = "SELECT user_id, username, password_hash, role FROM users WHERE role = 'ROLE_USER' OR role = 'ROLE_BANNED;";
+        String sql = "SELECT user_id, username, password_hash, role, user_image FROM users WHERE role = 'ROLE_USER' OR role = 'ROLE_BANNED;";
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
             while (results.next()) {
