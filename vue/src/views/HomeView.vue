@@ -9,6 +9,9 @@
     <div v-if="isloadingPost">
       <p>loading . . .</p>
     </div>
+    <div v-if="postLoadingError">
+      <p>Oops, it looks like popular posts couldn't load</p>
+    </div>
     <post-list :posts="posts"></post-list>
     <h1>Top 5 Most Active Forums</h1>
     <div v-if="forums.length < 1 && !isloadingForum">
@@ -17,6 +20,9 @@
     </div>
     <div v-if="isloadingForum">
       <p>loading . . .</p>
+    </div>
+    <div v-if="postLoadingError">
+      <p>Oops, it looks like actie forums couldn't load</p>
     </div>
     <div v-for="forum in forums" :key="forum.id">
       <forum-snippet :forum="forum"></forum-snippet>
@@ -40,7 +46,9 @@ export default {
       forums: [],
       role: this.$store.getters.role,
       isloadingPost: true,
-      isloadingForum: true
+      isloadingForum: true,
+      postLoadingError:false,
+      forumLoadingError: false
     };
   },
   created() {
@@ -49,17 +57,18 @@ export default {
         console.log('Fetched posts:', res.data);
         this.posts = res.data;
         this.isloadingPost = false
-        ForumService.getActiveForums()
+      })
+      .catch(error => {
+        this.postLoadingError = true;
+      });
+    this.user = this.$store.getters.username;
+    ForumService.getActiveForums()
           .then(res => {
             console.log('Fetched forums:', res.data);
             this.forums = res.data;
             this.isloadingForum = false
           })
-      })
-      .catch(error => {
-        console.error("Error fetching popular posts:", error);
-      });
-    this.user = this.$store.getters.username;
+          .catch(err => this.forumLoadingError = true)
   }
 };
 
