@@ -16,6 +16,7 @@ public class PostResponseDto {
     private boolean hasDownvoted;
     private Timestamp timeOfCreation;
     private String creator_image;
+    private int replyCount;
 
 
     public long getId() {
@@ -112,6 +113,14 @@ public class PostResponseDto {
 
     public void setCreator_image(String creator_image) {
         this.creator_image = creator_image;
+    }
+
+    public int getReplyCount() {
+        return replyCount;
+    }
+
+    public void setReplyCount(int replyCount) {
+        this.replyCount = replyCount;
     }
 
     @Override

@@ -76,32 +76,32 @@ INSERT INTO post_downvote (post_id, user_id) VALUES
 (2, 1),  -- Forrest downvoted post 2
 (2, 2);  -- Ash     downvoted post 2
 -- Insert mock replies
-INSERT INTO replies (description, time_of_creation , post_id, user_id) VALUES
-( 'I love Python too! It’s my go-to language.', '2024-01-05 15:00:00', 1, 2),
-( 'I prefer JavaScript for web development.', '2024-01-05 15:30:00', 1, 3),
-( 'Great list! I agree with most of the games here.', '2024-01-06 16:00:00', 2, 1),
-( 'Try using the debugger tool in your IDE.', '2024-01-07 17:00:00', 3, 4),
-( 'AI is going to revolutionize every industry.', '2024-01-09 19:00:00', 5, 2),
-( 'These images are breathtaking! The James Webb Telescope is revolutionizing space exploration.', '2024-10-05 09:30:00', 1, 2),
-( 'I can’t believe how clear the details are. This is truly cutting-edge science.', '2024-10-05 09:45:00', 1, 3),
-( 'The Wolf-Rayet star is fascinating. The formation of cosmic dust plays such a critical role in star and planet formation.', '2024-10-05 10:30:00', 2, 1),
-('This is why the Webb telescope is such a valuable tool for astronomers.', '2024-10-05 11:30:00', 3, 2),
-( 'Elden Ring really deserves its spot at the top. The open-world experience was incredible.', '2024-10-05 12:15:00', 1, 3),
-( 'Tears of the Kingdom took everything great about Breath of the Wild and expanded it. I loved it.', '2024-10-05 12:20:00', 1, 2),
-( 'Starfield was everything I wanted from a space RPG. Bethesda nailed it!', '2024-10-05 12:45:00', 2, 1),
-( 'The game was a bit buggy at launch, but they’ve patched it up really well since then.', '2024-10-05 12:50:00', 2, 3),
-( 'Phantom Liberty is a great expansion, but the core issues with Cyberpunk 2077 are still there.', '2024-10-05 13:20:00', 3, 2),
-( 'Idris Elba’s character is a fantastic addition, but I still feel like the game needed more polish.', '2024-10-05 13:30:00', 3, 4),
-( 'Closures are created whenever a function is created inside another function, and they allow the inner function to access the outer function’s scope.', '2024-10-05 14:15:00', 1, 2),
-( 'Are you sure you are not trying to access an invalid index? Make sure the index exists before you remove an item from the ArrayList.', '2024-10-05 14:45:00', 2, 3),
-( 'Both are great for web development, but Python might be easier for a beginner. Java, on the other hand, is more widely used in enterprise solutions.', '2024-10-05 15:20:00', 3, 4),
-( 'If you are familiar with Java, I would recommend Spring. It’s more structured, though Django can be quicker to start with.', '2024-10-05 15:30:00', 3, 1),
-( 'Quantum computing could solve problems like cryptography and climate modeling that classical computers can’t handle.', '2024-10-05 16:15:00', 1, 2),
-( 'The potential of quantum computing is huge, but I’m worried about how long it will take to see real-world applications.', '2024-10-05 16:25:00', 1, 4),
-( 'AI will definitely change the workforce, but I think it will create new opportunities in fields we can’t even imagine yet.', '2024-10-05 16:45:00', 2, 3),
-( 'AI taking over repetitive tasks will free up humans to focus on creative and strategic work. It could lead to a more productive society.', '2024-10-05 16:50:00', 2, 1),
-( '5G will be a game-changer, especially in industries that rely on real-time data processing, like healthcare and autonomous vehicles.', '2024-10-05 17:20:00', 3, 4),
-( 'I’m excited about 5G, but I’m also concerned about the environmental impact of rolling out all this new infrastructure.', '2024-10-05 17:30:00', 3, 3);
+INSERT INTO replies (description, post_id, user_id, time_of_creation) VALUES
+('I love Python too! It’s my go-to language.', 1, 2, '2024-01-05 15:00:00'), --1
+('I prefer JavaScript for web development.', 1, 3, '2024-01-05 15:30:00'), --2
+('Great list! I agree with most of the games here.', 2, 1, '2024-01-06 16:00:00'),
+('Try using the debugger tool in your IDE.', 3, 4, '2024-01-07 17:00:00'),
+('AI is going to revolutionize every industry.', 5, 2, '2024-01-09 19:00:00'),
+('These images are breathtaking! The James Webb Telescope is revolutionizing space exploration.', 1, 2, '2024-10-05 09:30:00'),
+('I can’t believe how clear the details are. This is truly cutting-edge science.', 1, 3, '2024-10-05 09:45:00'),
+('The Wolf-Rayet star is fascinating. The formation of cosmic dust plays such a critical role in star and planet formation.', 2, 1, '2024-10-05 10:30:00'),
+('This is why the Webb telescope is such a valuable tool for astronomers.', 3, 2, '2024-10-05 11:30:00'),
+('Elden Ring really deserves its spot at the top. The open-world experience was incredible.', 1, 3, '2024-10-05 12:15:00'), --10
+('Tears of the Kingdom took everything great about Breath of the Wild and expanded it. I loved it.', 1, 2, '2024-10-05 12:20:00'),
+('Starfield was everything I wanted from a space RPG. Bethesda nailed it!', 2, 1, '2024-10-05 12:45:00'),
+('The game was a bit buggy at launch, but they’ve patched it up really well since then.', 2, 3, '2024-10-05 12:50:00'),
+('Phantom Liberty is a great expansion, but the core issues with Cyberpunk 2077 are still there.', 3, 2, '2024-10-05 13:20:00'),
+('Idris Elba’s character is a fantastic addition, but I still feel like the game needed more polish.', 3, 4, '2024-10-05 13:30:00'),
+('Closures are created whenever a function is created inside another function, and they allow the inner function to access the outer function’s scope.', 1, 2, '2024-10-05 14:15:00'),
+('Are you sure you are not trying to access an invalid index? Make sure the index exists before you remove an item from the ArrayList.', 2, 3, '2024-10-05 14:45:00'),
+('Both are great for web development, but Python might be easier for a beginner. Java, on the other hand, is more widely used in enterprise solutions.', 3, 4, '2024-10-05 15:20:00'),
+('If you are familiar with Java, I would recommend Spring. It’s more structured, though Django can be quicker to start with.', 3, 1, '2024-10-05 15:30:00'),
+('Quantum computing could solve problems like cryptography and climate modeling that classical computers can’t handle.', 1, 2, '2024-10-05 16:15:00'),
+('The potential of quantum computing is huge, but I’m worried about how long it will take to see real-world applications.', 1, 4, '2024-10-05 16:25:00'),
+('AI will definitely change the workforce, but I think it will create new opportunities in fields we can’t even imagine yet.', 2, 3, '2024-10-05 16:45:00'),
+('AI taking over repetitive tasks will free up humans to focus on creative and strategic work. It could lead to a more productive society.', 2, 1, '2024-10-05 16:50:00'),
+('5G will be a game-changer, especially in industries that rely on real-time data processing, like healthcare and autonomous vehicles.', 3, 4, '2024-10-05 17:20:00'),
+('I’m excited about 5G, but I’m also concerned about the environmental impact of rolling out all this new infrastructure.', 3, 3, '2024-10-05 17:30:00');
 
 -- Insert mock reply upvotes
 INSERT INTO reply_upvote (reply_id, user_id) VALUES

@@ -147,6 +147,7 @@ export default {
                     .then(response => {
                         this.$store.commit('SET_NOTIFICATION', `Post ${this.reply.id} was deleted.`);
                         this.$forceUpdate();
+
                     })
                     .catch(error => {
                         alert("error " + error.response.status)

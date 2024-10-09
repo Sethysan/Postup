@@ -27,23 +27,33 @@ public class JdbcPostDao implements PostDao {
     @Override
     public PostResponseDto getPostById(long id, long user) {
         PostResponseDto post = null;
-//        todo: add user image
-//        added user_image!
-        String sql = "SELECT posts.*,\n" +
-                "users.user_image, COUNT(post_upvote.post_id) AS likes,\n" +
-                "COUNT(post_downvote.post_id) AS dislikes,\n" +
-                "COUNT(upvote.user_id) AS upvotes_from_user,\n" +
-                "COUNT(downvote.user_id) AS downvotes_from_user\n" +
-                "FROM posts\n" +
-                //     Join to get user_image from the author
-                "LEFT JOIN users ON posts.author = users.username\n" +
-                "LEFT JOIN post_upvote ON posts.post_id = post_upvote.post_id \n" +
-                "LEFT JOIN post_downvote ON posts.post_id = post_downvote.post_id\n" +
-                "LEFT JOIN users AS upvote ON post_upvote.user_id = upvote.user_id AND upvote.user_id = ?\n" +
-                "LEFT JOIN users AS downvote ON post_downvote.user_id = downvote.user_id AND downvote.user_id = ?\n" +
-                "LEFT JOIN replies ON posts.post_id = replies.post_id\n" + // Fetch comments related to the post"
-                "WHERE posts.post_id = ?\n" +
-                "GROUP BY posts.post_id, users.user_image;"; //Add users.user_image to the GROUP BY clause
+        String sql = "SELECT \n" +
+                "    posts.*, \n" +
+                "    users.user_image,\n" +
+                "    COUNT(DISTINCT replies.reply_id) AS reply_count,\n" +
+                "    COUNT(DISTINCT post_upvote.user_id) AS likes,\n" +
+                "    COUNT(DISTINCT post_downvote.user_id) AS dislikes,\n" +
+                "    COUNT(DISTINCT CASE WHEN upvote.user_id IS NOT NULL THEN upvote.user_id END) AS upvotes_from_user,\n" +
+                "    COUNT(DISTINCT CASE WHEN downvote.user_id IS NOT NULL THEN downvote.user_id END) AS downvotes_from_user\n" +
+                "FROM \n" +
+                "    posts\n" +
+                "JOIN \n" +
+                "    users ON posts.author = users.username -- Join users table to get user_image\n" +
+                "LEFT JOIN \n" +
+                "    replies ON replies.post_id = posts.post_id\n" +
+                "LEFT JOIN comment_replies ON replies.reply_id = comment_replies.reply_id " +
+                "LEFT JOIN \n" +
+                "    post_upvote ON posts.post_id = post_upvote.post_id\n" +
+                "LEFT JOIN \n" +
+                "    post_downvote ON posts.post_id = post_downvote.post_id\n" +
+                "LEFT JOIN \n" +
+                "    users AS upvote ON post_upvote.user_id = upvote.user_id AND upvote.user_id = ?\n" +
+                "LEFT JOIN \n" +
+                "    users AS downvote ON post_downvote.user_id = downvote.user_id AND downvote.user_id =  ?\n" +
+                "WHERE \n" +
+                "    posts.post_id = ?\n" +
+                "GROUP BY \n" +
+                "    posts.post_id, users.user_image;\n"; //Add users.user_image to the GROUP BY clause
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user, user, id);
         if (results.next()) {
@@ -58,20 +68,31 @@ public class JdbcPostDao implements PostDao {
         List<PostResponseDto> posts = new ArrayList<>();
 //        todo: add user_image
 //        added user_image!
-        String sql = "SELECT posts.*, users.user_image,\n" +
-                "COUNT(replies.description) AS reply_count,\n" +
-                "COUNT(post_upvote.post_id) AS likes,\n" +
-                "COUNT(post_downvote.post_id) AS dislikes,\n" +
-                "COUNT(upvote.user_id) AS upvotes_from_user,\n" +
-                "COUNT(downvote.user_id) AS downvotes_from_user\n" +
-                "FROM posts\n" +
-                "LEFT JOIN users ON posts.author = users.username\n" + //join users table to get user_image
-                "LEFT JOIN replies ON replies.post_id = posts.post_id LEFT JOIN post_upvote ON\n" +
-                " posts.post_id = post_upvote.post_id\n" +
-                "LEFT JOIN post_downvote ON posts.post_id = post_downvote.post_id\n" +
-                "LEFT JOIN users AS upvote ON post_upvote.user_id = upvote.user_id AND upvote.user_id = ? \n" +
-                "LEFT JOIN users AS downvote ON post_downvote.user_id = downvote.user_id AND downvote.user_id = ?\n" +
-                "WHERE (posts.description ILIKE ? OR replies.description ILIKE ?)";
+        String sql = "SELECT \n" +
+                "    posts.*, \n" +
+                "    users.user_image,\n" +
+                "    COUNT(replies.reply_id) AS reply_count,\n" +
+                "    COUNT(DISTINCT post_upvote) AS likes,\n" +
+                "    COUNT(DISTINCT post_downvote) AS dislikes,\n" +
+                "    COUNT(upvote.user_id) AS upvotes_from_user,\n" +
+                "    COUNT(downvote.user_id) AS downvotes_from_user\n" +
+                "FROM \n" +
+                "    posts\n" +
+                "LEFT JOIN \n" +
+                "    users ON posts.author = users.username -- Join users table to get user_image\n" +
+                "LEFT JOIN \n" +
+                "    replies ON replies.post_id = posts.post_id\n" +
+                "LEFT JOIN comment_replies ON replies.reply_id = comment_replies.reply_id " +
+                "LEFT JOIN \n" +
+                "    post_upvote ON posts.post_id = post_upvote.post_id\n" +
+                "LEFT JOIN \n" +
+                "    post_downvote ON posts.post_id = post_downvote.post_id\n" +
+                "LEFT JOIN \n" +
+                "    users AS upvote ON post_upvote.user_id = upvote.user_id AND upvote.user_id = ?\n" +
+                "LEFT JOIN\n" +
+                "    users AS downvote ON post_downvote.user_id = downvote.user_id AND downvote.user_id = ?\n" +
+                "WHERE \n" +
+                "    (posts.description ILIKE ? OR replies.description ILIKE ?) \n";
         if (forum > 0) {
             sql += " AND posts.forum_id = " + forum;
         }
@@ -192,6 +213,7 @@ public class JdbcPostDao implements PostDao {
         post.setImage(row.getString("image"));
         post.setTimeOfCreation(row.getTimestamp("time_of_creation"));
         post.setCreator_image(row.getString("user_image"));
+        post.setReplyCount(row.getInt("reply_count"));
         return post;
     }
 }

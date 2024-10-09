@@ -132,14 +132,14 @@ public class JdbcForumDao implements ForumsDao {
     public List<SearchResultsDto> getForumsBySearch(String searchTerm, long user) {
         List<SearchResultsDto> list = new ArrayList<>();
 
-        String sql = "SSELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post, COUNT(favorite_forums.forum_id) AS favorited, moderation.username AS moderator  FROM forums \\n\" +\n" +
-                "                \"LEFT JOIN moderation ON moderation.username = forums.author LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? \n" +
+        String sql = "SELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post, COUNT(favorite_forums.forum_id) AS favorited, moderation.username AS moderator FROM forums" +
+                " LEFT JOIN moderation ON moderation.username = forums.author LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? \n" +
                 "LEFT JOIN posts ON posts.forum_id = forums.forum_id \n" +
                 "AND (posts.description ILIKE ? OR posts.title ILIKE ?) \n" +
                 "WHERE (forums.description ILIKE ? OR forums.topic ILIKE ?) \n" +
                 "OR (posts.description ILIKE ? OR posts.title ILIKE ?) \n" +
-                "GROUP BY forums.forum_id, posts.post_id, moderation " +
-                "ORDER BY posts.description DESC, forums.forum_id;";
+                "GROUP BY forums.forum_id, posts.post_id, moderator " +
+                "ORDER BY posts.description DESC, forums.forum_id";
 
         searchTerm = "%" + searchTerm + "%";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, user, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm);
