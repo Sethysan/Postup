@@ -124,10 +124,5 @@ public class ModerationController {
         else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only Admins can promote Others to Admin.");
         }
-
-
-        //Both of these need to be discussed first
-        //TODO make an banning user path and method
-        //TODO make an promoting an user back to a user path and method
     }
 }

@@ -45,6 +45,12 @@ public class UserController {
         }
         return filteredList;
     }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/users/admin")
+    public List<User> getUsersToPromoteOrBan() {
+        return userDao.getUsersForAdmins();
+    }
+
 
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/user/{id}/ban")
@@ -62,6 +68,25 @@ public class UserController {
         }
         else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You do not have permission to ban this User");
+        }
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/user/{id}/unban")
+    public void unbanUser(@PathVariable long id, Principal user) {
+        Set<Authority> roles = userDao.getUserByUsername(user.getName()).getAuthorities();
+        boolean isAdmin = false;
+
+        for (Authority role : roles) {
+            if (role.getName().equals("ROLE_ADMIN")) {
+                isAdmin = true;
+            }
+        }
+        if (isAdmin) {
+            userDao.unbanUser(id);
+        }
+        else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You do not have permission to unban this User!");
         }
     }
     @PreAuthorize("isAuthenticated()")

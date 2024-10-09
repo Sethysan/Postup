@@ -108,6 +108,11 @@ public class JdbcUserDao implements UserDao {
         jdbcTemplate.update(sql, id);
     }
 
+    public void unbanUser(long id) {
+        String sql = "UPDATE users SET role = 'ROLE_USER' WHERE user_id = ?;";
+        jdbcTemplate.update(sql, id);
+    }
+
     public List<User> getUsersFiltered() {
         List<User> users = new ArrayList<>();
         String sql = "SELECT user_id, username, password_hash, role FROM users WHERE role = 'ROLE_USER';";
@@ -121,6 +126,21 @@ public class JdbcUserDao implements UserDao {
             throw new DaoException("Unable to connect to server or database", e);
         }
         return users;
+    }
+
+    public List<User> getUsersForAdmins() {
+        List<User> list = new ArrayList<>();
+        String sql = "SELECT user_id, username, password_hash, role FROM users WHERE role = 'ROLE_USER' OR role = 'ROLE_BANNED;";
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+            while (results.next()) {
+                User user = mapRowToUser(results);
+                list.add(user);
+            }
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        }
+        return list;
     }
 
     private User mapRowToUser(SqlRowSet rs) {

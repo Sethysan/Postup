@@ -17,8 +17,9 @@ public interface UserDao {
 
     void promoteUserToAdmin(int userId);
     void banUser(long id);
-
+    void unbanUser(long id);
     List<User> getUsersFiltered();
+    List<User> getUsersForAdmins();
 
     void updateUserImage(long id, String userImage);
 
