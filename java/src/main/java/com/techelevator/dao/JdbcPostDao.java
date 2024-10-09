@@ -161,12 +161,9 @@ public class JdbcPostDao implements PostDao {
 
     public void unvote(long postId, long replyId, int route) {
         String sql = "DELETE FROM post_upvote WHERE post_id = ? AND user_id = ?";
-        System.out.println("route ?:"+ route);
         if (route == 1) {
-            System.out.println("route 1:" + route);
             sql = "DELETE FROM post_downvote WHERE post_id = ? AND user_id = ?";
         }
-        System.out.println("route end :" + route);
         jdbcTemplate.update(sql, postId, replyId);
     }
 
