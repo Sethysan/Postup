@@ -31,4 +31,13 @@ public class UserSnippetDto {
     public void setUser_image(String user_image) {
         this.user_image = user_image;
     }
+
+    @Override
+    public String toString() {
+        return "UserSnippetDto{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", user_image='" + user_image + '\'' +
+                '}';
+    }
 }
