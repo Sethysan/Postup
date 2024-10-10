@@ -30,6 +30,7 @@
         class="router-link-nonactive">LOGIN</router-link>
     </button>
   </div>
+  <WidgetContainerModal />
   <div id="capstone-app">
     <router-view />
   </div>
@@ -37,8 +38,11 @@
 <script>
 import jwt_decode from 'jwt-decode';
 import ModeratorService from './services/ModeratorService';
+import {container} from 'jenesius-vue-modal'
 
 export default {
+  components: {WidgetContainerModal: container},
+  name: "App",
   computed: {
     // Get the user's name from Vuex
     userName() {

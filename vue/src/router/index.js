@@ -1,6 +1,6 @@
 import { createRouter as createRouter, createWebHistory } from 'vue-router'
 import { useStore } from 'vuex'
-
+import {useModalRouter} from "jenesius-vue-modal";
 // Import components
 import HomeView from '../views/HomeView.vue';
 import LoginView from '../views/LoginView.vue';
@@ -18,6 +18,7 @@ import ForumPostSerachView from '../views/ForumPostSerachView.vue';
 import MessagesView from '../views/MessagesView.vue';
 import DirectMessage from '../views/DirectMessage.vue';
 import Admin from '../components/Admin.vue';
+import LoggedInMessgae from '../components/LoggedInMessgae.vue';
 
 /**
  * The Vue Router is used to "direct" the browser to render a specific view component
@@ -34,6 +35,14 @@ const routes = [
     component: HomeView,
     meta: {
       requiresAuth: false
+    }
+  },
+  {
+    path: '/logged-in',
+    name:'logged-in',
+    component: useModalRouter(LoggedInMessgae),
+    meta: {
+      requiresAuth: true
     }
   },
   {
@@ -165,6 +174,9 @@ const router = createRouter({
   history: createWebHistory(),
   routes: routes
 });
+
+
+useModalRouter.init(router);
 
 router.beforeEach((to) => {
 

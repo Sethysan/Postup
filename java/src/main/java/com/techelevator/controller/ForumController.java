@@ -6,6 +6,7 @@ import com.techelevator.dao.UserDao;
 import com.techelevator.model.Authority;
 import com.techelevator.model.Forum;
 import com.techelevator.model.ForumDto;
+import com.techelevator.model.User;
 import com.techelevator.model.responses.SearchResultsDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -104,7 +105,14 @@ public class ForumController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/forums/favorites")
     public List<Forum> getFavoritedForums(Principal principal){
-        return forumsDao.getFavoriteForums(userDao.getUserByUsername(principal.getName()).getId());
+        long user = -1;
+        if(principal != null){
+            User yup = userDao.getUserByUsername(principal.getName());
+            if(yup != null){
+                user = yup.getId();
+            }
+        }
+        return forumsDao.getFavoriteForums(user);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

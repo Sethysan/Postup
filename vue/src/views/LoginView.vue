@@ -31,11 +31,13 @@
 </template>
 
 <script>
+import { openModal } from "jenesius-vue-modal";
+import LoggedInMessgae from "../components/LoggedInMessgae.vue";
 import authService from "../services/AuthService";
 import ModeratorService from "../services/ModeratorService";
 
 export default {
-  components: {},
+  components: {LoggedInMessgae},
   data() {
     return {
       user: {
@@ -49,7 +51,7 @@ export default {
     };
   },
   methods: {
-    login() {
+   login() {
       authService
         .login(this.user)
         .then(response => {
@@ -58,11 +60,9 @@ export default {
             this.$store.commit("SET_USER", response.data.user);
             ModeratorService.getUserAccess(response.data.user.id)
             .then(res => {
-              alert(res.data)
               this.$store.dispatch('SET_ACCESS', res.data);
             });
-            alert(`Welcome, ${this.user.username}`);
-            this.$router.push("/");
+            this.show()
           }
         })
         .catch(error => {
@@ -80,8 +80,19 @@ export default {
             };
           }
         });
-    }
-  }
+    },
+    async show(){
+      const modal = await openModal(LoggedInMessgae, {username: this.user.username});
+        let count = 2;
+
+        modal.onclose = () => {
+          count--;
+          //The modal window will be closed after five attempts.
+          if (count > 0) return false;
+        }
+        this.$router.push("/")
+      }
+  },
 };
 </script>
 

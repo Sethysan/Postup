@@ -38,10 +38,9 @@ public class PostController {
         if(principal != null){
             String username = principal.getName();
             User userObj = userDao.getUserByUsername(username);
-            if (userObj == null) {
-                throw new IllegalArgumentException("User not found with username: " + username);
-        }
-            user = userObj.getId();
+            if (userObj != null) {
+                user = userObj.getId();
+            }
         }
         boolean sortByPopularity = false;
         if(filter.equals("popularity")){
@@ -54,7 +53,10 @@ public class PostController {
     public List<PostResponseDto> getPostsByForum(@PathVariable long id, @RequestParam(defaultValue="") String keyword, @RequestParam(defaultValue="-1") int limit, @RequestParam(defaultValue="") String filter, Principal principal){
         long user = -1;
         if(principal != null){
-            user = userDao.getUserByUsername(principal.getName()).getId();
+            User yup = userDao.getUserByUsername(principal.getName()) ;
+            if(yup!=null){
+                user = yup.getId();
+            }
         }
         boolean sortByPopularity = false;
         if(filter.equals("popularity")){
@@ -67,7 +69,10 @@ public class PostController {
     public PostResponseDto getPostById(@PathVariable long id, Principal principal){
         long user = -1;
         if(principal != null){
-            user = userDao.getUserByUsername(principal.getName()).getId();
+            User yup = userDao.getUserByUsername(principal.getName()) ;
+            if(yup!=null){
+                user = yup.getId();
+            }
         }
         return postDao.getPostById(id, user);
     }
