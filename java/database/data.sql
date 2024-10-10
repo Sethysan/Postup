@@ -118,7 +118,7 @@ INSERT INTO reply_downvote (reply_id, user_id) VALUES
 (5, 3),  -- Lilly   downvoted reply 5
 (4, 3);  -- Lilly   downvoted reply 4
 
--- Insert mock comment replies (threaded replies)
+ --Insert mock comment replies (threaded replies)
 INSERT INTO comment_replies (parent_id, reply_id) VALUES
 (1, 2 ), (1, 7 ), (2, 10 ), (3, 4 ),
 (3, 13 ), (5, 6 ), (5, 22 ), (6, 8 ),
