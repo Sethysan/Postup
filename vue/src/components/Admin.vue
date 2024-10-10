@@ -103,5 +103,20 @@ export default {
 html{
     background-color: rgb(240, 107, 19);
 }
+tbody tr td:first-child {
+    color: white;
+    font-weight: bold;
+}
+
+button {
+    background-color:grey; /* Primary color */
+  color: white; /* Text color */
+    border-color: black; /* Remove default border */
+  border-radius: 5px; /* Rounded corners */
+  padding: 2px 8px; /* Padding for size */
+  font-size: 14px; /* Font size */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth transition */
+}
 
 </style>

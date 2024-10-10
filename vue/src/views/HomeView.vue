@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <button v-if="role === 'ROLE_ADMIN'" class="admin-button"><router-link v-bind:to="{ name: 'admin' }">Admin</router-link></button>
+    <button v-if="role === 'ROLE_ADMIN'" class="admin-button"><router-link v-bind:to="{ name: 'admin' }">Admin Access</router-link></button>
     <h1 class="title">Todays Top 10 Popular Posts</h1>
     <div v-if="posts.length < 1 && !isloadingPost">
       <p>Wow, such empty!</p>
@@ -81,7 +81,7 @@ export default {
   margin-top: 20px;
 }
 .admin-button {
-  background-color:rgb(240, 107, 19); /* Primary color */
+  background-color:grey; /* Primary color */
   color: white; /* Text color */
   border-color: black; /* Remove default border */
   border-radius: 5px; /* Rounded corners */
