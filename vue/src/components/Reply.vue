@@ -39,7 +39,7 @@
                     </svg>
                     <span>Reply</span>
                 </button>
-            <button v-if="reply.user.username === user || isMod|| role==='ROLE_ADMIN'" class="deletePost" @click="deleteReply">Delete</button>
+            <button v-if="reply.user.username === user || isMod || role==='ROLE_ADMIN'" class="deletePost" @click="deleteReply">Delete</button>
         </div>
         <div v-if="formVisibility">
             <form v-on:submit.prevent="addReply">
@@ -77,8 +77,8 @@ export default {
     },
     created() {
         this.user = this.$store.getters.username,
-            this.upvoted = this.reply.hasUpvoted,
-            this.downvoted = this.reply.hasDownvoted;
+        this.upvoted = this.reply.hasUpvoted,
+        this.downvoted = this.reply.hasDownvoted;
     },
     methods: {
         addReply() {
