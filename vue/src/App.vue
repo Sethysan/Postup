@@ -35,8 +35,6 @@
   </div>
 </template>
 <script>
-import jwt_decode from 'jwt-decode';
-import ModeratorService from './services/ModeratorService';
 
 export default {
   computed: {

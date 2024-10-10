@@ -134,7 +134,7 @@ public class JdbcForumDao implements ForumsDao {
 
         String sql = "SELECT \n" +
                 "    forums.*, \n" +
-                " posts.title AS post_title, posts.description AS post_description, posts.title AS post_title, " +
+                " posts.title AS post_title, posts.description AS post_description, posts.post_id AS post_id, " +
                 "    MAX(posts.time_of_creation) AS most_recent_post, \n" +
                 "    COUNT(favorite_forums.forum_id) AS favorited, \n" +
                 "    moderation.username AS moderator \n" +
@@ -204,7 +204,7 @@ public class JdbcForumDao implements ForumsDao {
             }
             if (row.getString("post_description") != null) {
                 snippet.setDescription(row.getString("post_description"));
-                snippet.setTitle(row.getString("title"));
+                snippet.setTitle(row.getString("post_title"));
                 snippet.setId((row.getLong("post_id")));
                 map.get(forumId).addPost(snippet);
                 snippet = new PostSnippet();
