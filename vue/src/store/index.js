@@ -4,12 +4,13 @@ import axios from 'axios';
 
 const NOTIFICATION_TIMEOUT = 5000;
 
-export function createStore(currentToken, currentUser, userList = []) {
+export function createStore(currentToken, currentUser, currentAccess, userList = []) {
   let store = _createStore({
     state: {
       token: currentToken || '',
       user: currentUser || {},
-      users: userList
+      users: userList,
+      access: currentAccess || []
     },
     mutations:{
       SET_AUTH_TOKEN(state, token) {
@@ -25,9 +26,15 @@ export function createStore(currentToken, currentUser, userList = []) {
       LOGOUT(state) {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        localStorage.removeItem('access')
         state.token = '';
         state.user = {};
+        state.access = []
         axios.defaults.headers.common = {};
+      },
+      SET_ACCESS(state, access){
+        localStorage.setItem('access', JSON.stringify(access));
+        state.access = access;
       },
       SET_NOTIFICATION(state, notification) {
         if (state.notification) {
@@ -79,6 +86,12 @@ export function createStore(currentToken, currentUser, userList = []) {
         }
       }
     },
+    actions: {
+      SET_ACCESS({state, commit}, access){
+        localStorage.setItem('access', JSON.stringify(access))
+        state.access = access;
+      }
+    },
     getters: {
       username(state, getters) {
         if(state.token != ''){
@@ -96,6 +109,9 @@ export function createStore(currentToken, currentUser, userList = []) {
       },
       userId(state){
         return state.user.id
+      },
+      access(state){
+        return state.access
       }
     }
   });

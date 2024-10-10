@@ -1,7 +1,5 @@
 <template>
     <div class="forum">
-        {{ isMod }}
-        {{ this.forum.id}}
         <h1>{{ forum.topic }}</h1>
         <p>{{ forum.description }}</p>
         <button :class="forum.favorited ? 'favorited' : 'not-favorited'" @click="favorite">
@@ -12,7 +10,7 @@
             <button class="create-post-button">Create Post</button>
         </router-link>
         <router-link :to="{ name: 'promote', params: { forumId: forum.Id } }">
-            <button v-if=" isMod || role === 'ROLE_ADMIN'" class="promote-button">Promote to Moderator</button>
+            <button v-if="checkIfMod || role === 'ROLE_ADMIN'" class="promote-button">Promote to Moderator</button>
         </router-link>
     </div>
 </template>
@@ -23,14 +21,15 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import ModeratorService from '../services/ModeratorService';
 
 export default {
-    props: ['forum'],
+    props: ['forum', 'forumId'],
     data() {
         return {
             currentForum: {},
             color: 'white',
             role: this.$store.getters.role,
             listOfModsOfForum: [],
-            isMod: false
+            isMod: false,
+            forumId: 0,
         }
     },
     created() {
@@ -40,12 +39,10 @@ export default {
             // this.checkIfMod();
         } else {
             // Otherwise, fetch the forum from the service
-            service.getForum(this.$route.params.forumId).then(res => {
+            service.getForum(this.forumId).then(res => {
                 this.currentForum = res.data;
             });
-            // this.checkIfMod();
         }
-     
     },
     methods: {
         favorite() {
@@ -70,28 +67,38 @@ export default {
             // dayjs converts time into a readable format and calculates the elapsed time
             return dayjs(creationTime).fromNow();
         },
+    },
+    computed: {
         checkIfMod() {
-            this.isMod = false;
-            let num = 0;
-            if (this.forumId) {
-                num = this.forumId;
-            }
-            else {
-                let num = this.forumId;
-            }
-            ModeratorService.getListOfMods(num)
-                .then(res => {
-                    console.log(res.data);
-                    this.listOfModsOfForum = res.data;
+    const access = this.$store.getters.access;
 
-                    for (let mod of this.listOfModsOfForum) {
-                        if (mod.username === this.$store.getters.username) {
-                            this.isMod = true;
-                        }
-                    }
-                })
-                .catch(err => alert(err));
+    // Log the access value for debugging
+    console.log("Access:", access);
+
+    // Check if access is an array
+    if (Array.isArray(access)) {
+        const foundIndex = access.map(item => item.forumId).findIndex(id => id === this.forumId);
+        console.log("Access is an array. ForumId:", this.forumId, "Found Index:", foundIndex);
+        return foundIndex !== -1; // true if found, false otherwise
+    }
+
+    // If access is a JSON string, parse it
+    try {
+        const parsedAccess = JSON.parse(access);
+        console.log("Parsed Access:", parsedAccess);
+        
+        if (Array.isArray(parsedAccess)) {
+            const foundIndex = parsedAccess.map(item => item.forumId).findIndex(id => id === this.forum.id);
+            console.log("Parsed access is an array. ForumId:", this.forum.id, "Found Index:", foundIndex);
+            return foundIndex !== -1; // true if found, false otherwise
         }
+    } catch (error) {
+        console.error("Failed to parse access:", error);
+    }
+
+    return false; // Return false if access is not an array or parsing fails
+}
+
     }
 }
 </script>

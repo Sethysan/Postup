@@ -5,6 +5,7 @@ import com.techelevator.dao.UserDao;
 import com.techelevator.model.Authority;
 import com.techelevator.model.Moderation;
 import com.techelevator.model.User;
+import com.techelevator.model.responses.UserResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -52,7 +53,7 @@ public class UserController {
     }
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/users/admin")
-    public List<User> getUsersToPromoteOrBan() {
+    public List<UserResponseDto> getUsersToPromoteOrBan() {
         return userDao.getUsersForAdmins();
     }
 

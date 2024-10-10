@@ -3,6 +3,7 @@ package com.techelevator.dao;
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.RegisterUserDto;
 import com.techelevator.model.User;
+import com.techelevator.model.responses.UserResponseDto;
 import com.techelevator.service.ImageDownloader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -143,19 +144,49 @@ public class JdbcUserDao implements UserDao {
         return users;
     }
 
-    public List<User> getUsersForAdmins() {
-        List<User> list = new ArrayList<>();
-        String sql = "SELECT user_id, username, password_hash, role, user_image FROM users WHERE role = 'ROLE_USER' OR role = 'ROLE_BANNED';";
+    @Override
+    public List<UserResponseDto> getUsersForAdmins() {
+        List<UserResponseDto> list = new ArrayList<>();
+        String sql = "SELECT * FROM users WHERE role = 'ROLE_USER' OR role = 'ROLE_BANNED';";
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
             while (results.next()) {
-                User user = mapRowToUser(results);
-                list.add(user);
+                list.add(mapRowToUserResponst(results));
             }
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
         }
         return list;
+    }
+
+    @Override
+    public UserResponseDto getUserForAdmin(String username) {
+        UserResponseDto user = null;
+        String sql = "SELECT * FROM users WHERE username = ?";
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
+            if (results.next()) {
+                user = mapRowToUserResponst(results);
+            }
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        }
+        return user;
+    }
+
+    @Override
+    public UserResponseDto getUserForAdmin(int id){
+        UserResponseDto user = null;
+        String sql = "SELECT * FROM users WHERE user_id = ?";
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+            if (results.next()) {
+                user = mapRowToUserResponst(results);
+            }
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        }
+        return user;
     }
 
     private User mapRowToUser(SqlRowSet rs) {
@@ -166,6 +197,14 @@ public class JdbcUserDao implements UserDao {
         user.setAuthorities(Objects.requireNonNull(rs.getString("role")));
         user.setUserImage(rs.getString("user_image"));
         user.setActivated(true);
+        return user;
+    }
+
+    private UserResponseDto mapRowToUserResponst(SqlRowSet row) {
+        UserResponseDto user = new UserResponseDto();
+        user.setId(row.getLong("user_id"));
+        user.setUsername(row.getString("username"));
+        user.setRole(row.getString("role"));
         return user;
     }
 }

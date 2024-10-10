@@ -65,7 +65,7 @@ public class AuthenticationController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(path = "/register", method = RequestMethod.POST)
-    public void register(@Valid @RequestBody RegisterUserDto newUser) {
+    public void register(@RequestBody RegisterUserDto newUser) {
         System.out.println("Payload received: " + newUser);
         try {
             if (userDao.getUserByUsername(newUser.getUsername()) != null) {

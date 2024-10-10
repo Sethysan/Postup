@@ -32,6 +32,7 @@
 
 <script>
 import authService from "../services/AuthService";
+import ModeratorService from "../services/ModeratorService";
 
 export default {
   components: {},
@@ -57,6 +58,11 @@ export default {
             this.$store.commit("SET_USER", response.data.user);
             this.$store.commit('SUBSCRIBE_TO_CHAT');
             this.$store.commit('SUBCRIBE_TO_POST');
+            ModeratorService.getUserAccess(response.data.user.id)
+            .then(res => {
+              alert(res.data)
+              this.$store.dispatch('SET_ACCESS', res.data);
+            });
             alert(`Welcome, ${this.user.username}`);
             this.$router.push("/");
           }

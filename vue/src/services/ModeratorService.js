@@ -14,5 +14,8 @@ export default {
     },
     getListOfMods(forumId) {
         return http.get(`/moderation/forum/${forumId}`);
+    } ,
+    getUserAccess(user) {
+        return http.get(`/moderation/user/${user}`);
     } 
 }
