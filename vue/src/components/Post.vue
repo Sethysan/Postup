@@ -252,7 +252,7 @@ export default {
         checkIfMod() {
     const access = this.$store.getters.access;
     if (Array.isArray(access)) {
-        return foundIndex = access.map(item => item.forumId).findIndex(id => id === this.post.forum_id) !== -1
+        return access.map(item => item.forumId).findIndex(id => id === this.post.forum_id) !== -1
     }
     try {
         const parsedAccess = JSON.parse(access);        

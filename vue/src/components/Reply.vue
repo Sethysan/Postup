@@ -166,23 +166,6 @@ export default {
             // dayjs converts time into a readable format and calculates the elapsed time
             return dayjs(timeOfCreation).fromNow();
         },
-    },
-    computed: {
-        checkIfMod() {
-    const access = this.$store.getters.access;
-    if (Array.isArray(access)) {
-        return foundIndex = access.map(item => item.forumId).findIndex(id => id === this.forumId) !== -1
-    }
-    try {
-        const parsedAccess = JSON.parse(access);        
-        if (Array.isArray(parsedAccess)) {
-            return parsedAccess.map(item => item.forumId).findIndex(id => id === this.forumId) !== -1;
-        }
-    } catch (error) {
-        console.error("Failed to parse access:", error);
-    }
-    return false; // Return false if access is not an array or parsing fails
-}
     }
     }
 </script>
