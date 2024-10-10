@@ -35,6 +35,8 @@
   </div>
 </template>
 <script>
+import jwt_decode from 'jwt-decode';
+import ModeratorService from './services/ModeratorService';
 
 export default {
   computed: {
@@ -52,7 +54,12 @@ export default {
     getLinkClass(routeName) {
       return this.$route.name === routeName ? 'router-link-active' : 'router-link-nonactive';
     }
-  }
+  },
+  data() {
+    return {
+      role: this.$store.getters.role
+    };
+  },
 }
   ;
 </script>
