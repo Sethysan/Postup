@@ -1,5 +1,6 @@
 <template>
     <div class="thread">
+        {{ isMod }}
         <div class="reply-header">
             <div class="reply-meta">
                 <img  v-if="reply.user && reply.user.user_image" :src="reply.user.user_image" class="reply-user-image" />
@@ -38,7 +39,7 @@
                     </svg>
                     <span>Reply</span>
                 </button>
-            <button v-if="reply.user.username === user || checkIfMod || role==='ROLE_ADMIN'" class="deletePost" @click="deleteReply">Delete</button>
+            <button v-if="reply.user.username === user || isMod|| role==='ROLE_ADMIN'" class="deletePost" @click="deleteReply">Delete</button>
         </div>
         <div v-if="formVisibility">
             <form v-on:submit.prevent="addReply">
@@ -48,7 +49,7 @@
             </form>
         </div>
         <div class="comments" :style="{ marginLeft: `${indent + 20}px` }">
-            <reply v-for="comment in reply.replies" :key="comment.id" :reply="comment" :indent="indent + 20"></reply>
+            <reply v-for="comment in reply.replies" :key="comment.id" :reply="comment" :indent="indent + 20" :isMod="isMod"></reply>
         </div>
     </div>
 </template>
@@ -56,10 +57,9 @@
 <script>
 import dayjs from 'dayjs';
 import replySerive from '../services/RepliesService';
-import PostService from '../services/PostService';
-import ModeratorService from '../services/ModeratorService';
+
 export default {
-    props: ['reply', 'indent'],
+    props: ['reply', 'indent', 'isMod'],
     data() {
         return {
             styles: { margin: this.indent },
@@ -72,7 +72,6 @@ export default {
             upvoted: false,
             downvoted: false,
             role: this.$store.getters.role,
-            post: {},
             listOfModsOfForum: []
         }
     },
@@ -167,30 +166,25 @@ export default {
             // dayjs converts time into a readable format and calculates the elapsed time
             return dayjs(timeOfCreation).fromNow();
         },
+    },
+    computed: {
         checkIfMod() {
-            let isMod = false;
-
-            PostService.getPostById(this.reply.postId)
-                .then(res => {
-                    this.post = res.data;
-                })
-                .catch(err => alert(err));
-
-            ModeratorService.getListOfMods(this.post.forumId)
-                .then(res => {
-                    this.listOfModsOfForum = res.data;
-                })
-                .catch(err => alert(err));
-
-            for (let mod of this.listOfModsOfForum) {
-                if (mod.username === this.$store.getters.username) {
-                    isMod = true;
-                }
-            }
-            return isMod;
-        }
+    const access = this.$store.getters.access;
+    if (Array.isArray(access)) {
+        return foundIndex = access.map(item => item.forumId).findIndex(id => id === this.forumId) !== -1
     }
+    try {
+        const parsedAccess = JSON.parse(access);        
+        if (Array.isArray(parsedAccess)) {
+            return parsedAccess.map(item => item.forumId).findIndex(id => id === this.forumId) !== -1;
+        }
+    } catch (error) {
+        console.error("Failed to parse access:", error);
+    }
+    return false; // Return false if access is not an array or parsing fails
 }
+    }
+    }
 </script>
 
 <style>

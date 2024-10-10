@@ -1,6 +1,5 @@
 import { createStore as _createStore } from 'vuex';
 import axios from 'axios';
-// import service from '../services/SocketService'
 
 const NOTIFICATION_TIMEOUT = 5000;
 

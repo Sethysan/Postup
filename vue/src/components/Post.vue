@@ -77,7 +77,7 @@
             <div v-if="!isImageFullscreen">
             </div>
         </div>
-        <replies :replies="replies"></replies>
+        <replies :replies="replies" :isMod="checkIfMod"></replies>
     </div>
 
 </template>
