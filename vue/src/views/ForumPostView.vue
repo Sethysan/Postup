@@ -1,9 +1,11 @@
 <template>
+  <div>
   <p v-if="isLoading">Loading...</p>
   <div v-if="error">
       <p>Oops, it looks like this post couldn't load</p>
-    </div>
+  </div>
   <post v-if="!isLoading" :post="postData" :replies="replies"></post>
+</div>
 </template>
 
 <script>

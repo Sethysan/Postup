@@ -56,8 +56,6 @@ export default {
           if (response.status == 200) {
             this.$store.commit("SET_AUTH_TOKEN", response.data.token);
             this.$store.commit("SET_USER", response.data.user);
-            this.$store.commit('SUBSCRIBE_TO_CHAT');
-            this.$store.commit('SUBCRIBE_TO_POST');
             ModeratorService.getUserAccess(response.data.user.id)
             .then(res => {
               alert(res.data)
