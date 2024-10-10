@@ -166,7 +166,7 @@ button {
 }
 
 .welcome-message {
-  color: #4dc7ff;
+  color: #177099;
   background-color: #ddd7d7;
   border: 1px solid #424f73;
 }

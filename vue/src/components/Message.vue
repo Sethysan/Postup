@@ -1,6 +1,6 @@
 <template>
   <div v-if="!deleted">
-    <button :onclick="() => {showOptions = true}">
+    <button :onclick="() => {showOptions = true}" >
         <p v-if="!updateMode">{{ message.message }}</p>
         <textarea v-if="updateMode" v-model="message.message"></textarea>
         <button v-if="updateMode" :onclick="update">Update</button>

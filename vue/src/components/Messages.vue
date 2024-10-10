@@ -1,6 +1,6 @@
 <template>
     {{ id }}
-        <div v-for="message in messages" :key="message.id" :class="message.sender.username === username ? 'user-message' : 'others-message'" @messageDeleted="(id) => this.messages = this.messages.filter(item => item.id != id)">
+        <div class="user-message-link" v-for="message in messages" :key="message.id" :class="message.sender.username === username ? 'user-message' : 'others-message'" @messageDeleted="(id) => this.messages = this.messages.filter(item => item.id != id)">
             <message :message="message" @messageDeleted="removeMessage"></message>
         </div>
         <textarea v-model="message.message" placeholder="Enter your message"></textarea>
@@ -39,5 +39,8 @@ export default {
 <style>
     .user-message {
         text-align: right;
+    }
+    .user-message-link{
+        text-decoration: none;
     }
 </style>

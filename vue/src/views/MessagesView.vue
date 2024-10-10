@@ -2,10 +2,10 @@
     <h1>Messages</h1>
   <contact-list :contacts="contacts"></contact-list>
   <button :onclick="onVisible" v-if="!visible">Start New Message</button>
-  <select v-if="visible" v-model="user">
+  <select v-if="visible" v-model="user" >
     <option v-for="user in users" :key="user.id" :value="user">{{ user.username }}</option>
   </select>
-  <button :onclick="goToMessages" v-if="visible">Start Message With {{ filter }}</button>
+  <button :onclick="goToMessages" v-if="visible" >Start Message With {{ filter }}</button>
 </template>
 
 <script>
@@ -43,6 +43,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.user-message-link{
+  text-decoration: none;
+}
 </style>

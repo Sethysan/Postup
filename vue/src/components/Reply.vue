@@ -166,7 +166,7 @@ export default {
                         this.$store.commit('SET_NOTIFICATION', `Post ${this.reply.id} was deleted.`);
                         this.currentReply.user.username = 'removed';
                         this.currentReply.description = 'removed';
-                        this.currentReply.user.user_image = 'https://sm.ign.com/ign_ap/cover/a/avatar-gen/avatar-generations_hugw.jpg';
+                        this.currentReply.user.user_image = '/images/avatars/removed.jpg';
                     })
                     .catch(error => {
                         alert("error " + error.response.status)
