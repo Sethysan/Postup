@@ -84,7 +84,7 @@ public class JdbcForumDao implements ForumsDao {
     @Override
     public List<Forum> getFavoriteForums(long user) {
         List<Forum> favorites = new ArrayList<>();
-        String sql = "SELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post, COUNT(favorite_forums.forum_id) AS favorited, moderation.username AS moderator  FROM forums \n" +
+        String sql = "SELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post, COUNT(favorite_forums.forum_id) AS favorited, moderation.username AS moderator FROM forums \n" +
                 "LEFT JOIN moderation ON moderation.username = forums.author \n" +
                 "LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ?\n" +
                 "LEFT JOIN posts ON posts.forum_id = forums.forum_id \n" +
@@ -96,6 +96,7 @@ public class JdbcForumDao implements ForumsDao {
         while(results.next()){
             favorites.add(mapRowToForum(results));
         }
+        System.out.println(favorites);
         return favorites;
     }
 
