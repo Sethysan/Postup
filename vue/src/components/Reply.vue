@@ -2,12 +2,12 @@
     <div class="thread">
         <div class="reply-header">
             <div class="reply-meta">
-                <img  v-if="reply.user && reply.user.user_image" :src="reply.user.user_image" class="reply-user-image" />
-                <span class="reply-user">{{ reply.user.username }}</span>
+                <img  v-if="reply.user && currentReply.user.user_image" :src="currentReply.user.user_image" class="reply-user-image" />
+                <span class="reply-user">{{ currentReply.user.username }}</span>
                 <span class="reply-time">• {{ getTimeElapsed(reply.timeOfCreation) }}</span>
             </div>
         </div>
-        <p>{{ reply.description }}</p>
+        <p>{{ currentReply.description }}</p>
         <div class="reply-footer">
             <!-- Voting Buttons -->
             <div :class="['vote-container', { 'active-upvote': upvoted, 'active-downvote': downvoted }]">
@@ -76,13 +76,15 @@ export default {
             upvoted: false,
             downvoted: false,
             role: this.$store.getters.role,
-            access: this.$store.getters.access
+            access: this.$store.getters.access,
+            currentReply: {}
         }
     },
     created() {
         this.user = this.$store.getters.username,
         this.upvoted = this.reply.hasUpvoted,
         this.downvoted = this.reply.hasDownvoted;
+        this.currentReply = this.reply;
     },
     methods: {
         addReply() {
@@ -113,7 +115,6 @@ export default {
                         // If already downvoted, remove downvote
                         if (this.downvoted) {
                             this.reply.downvotes--;
-                            this.downvoted = false;
                         }
                         this.reply.upvotes++;
                         this.upvoted = true;
@@ -157,9 +158,11 @@ export default {
         deleteReply() {
             if (confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
                 replySerive.deleteReply(this.reply.id)
-                    .then(response => {
+                    .then(res => {
                         this.$store.commit('SET_NOTIFICATION', `Post ${this.reply.id} was deleted.`);
-                        this.$router.go();
+                        this.currentReply.user.username = 'removed';
+                        this.currentReply.description = 'removed';
+                        this.currentReply.user.user_image = 'https://sm.ign.com/ign_ap/cover/a/avatar-gen/avatar-generations_hugw.jpg';
                     })
                     .catch(error => {
                         alert("error " + error.response.status)

@@ -30,7 +30,7 @@ public class JdbcReplyDao implements ReplyDao {
                 "LEFT JOIN reply_downvote ON replies.reply_id = reply_downvote.reply_id \n" +
                 "LEFT JOIN users AS upvote ON reply_upvote.user_id = upvote.user_id AND upvote.user_id = ?\n" +
                 "LEFT JOIN users AS downvote ON reply_downvote.user_id = downvote.user_id AND downvote.user_id = ?\n" +
-                "GROUP BY replies.reply_id, comment_replies.parent_id, comment_replies.reply_id, users.username\n" +
+                "GROUP BY replies.reply_id, comment_replies.parent_id, comment_replies.reply_id, users.username, users.user_image\n" +
                 "users.user_image ORDER BY replies.reply_id;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId, userId);
         if (results.next()) {
@@ -42,7 +42,7 @@ public class JdbcReplyDao implements ReplyDao {
     @Override
     public ReplyResponseDto getReplyById(long id, long userId) {
         ReplyResponseDto reply = new ReplyResponseDto();
-        String sql = "SELECT replies.*, comment_replies.*,users.username, COUNT(reply_upvote.reply_id) AS likes, COUNT(reply_downvote.reply_id) AS dislikes, COUNT(upvote.user_id) AS upvotes_from_user, COUNT(downvote.user_id) AS downvotes_from_user\n" +
+        String sql = "SELECT replies.*, comment_replies.*, users.user_image, users.username, COUNT(reply_upvote.reply_id) AS likes, COUNT(reply_downvote.reply_id) AS dislikes, COUNT(upvote.user_id) AS upvotes_from_user, COUNT(downvote.user_id) AS downvotes_from_user\n" +
                 "FROM replies \n" +
                 "JOIN users ON users.user_id = replies.user_id LEFT JOIN comment_replies ON comment_replies.reply_id = replies.reply_id \n" +
                 "LEFT JOIN reply_upvote ON reply_upvote.reply_id = replies.reply_id \n" +
@@ -50,7 +50,7 @@ public class JdbcReplyDao implements ReplyDao {
                 "LEFT JOIN users AS upvote ON reply_upvote.user_id = upvote.user_id AND upvote.user_id = ?\n" +
                 "LEFT JOIN users AS downvote ON reply_downvote.user_id = downvote.user_id AND downvote.user_id = ?\n" +
                 "WHERE replies.reply_id = ? " +
-                "GROUP BY replies.reply_id, comment_replies.parent_id, comment_replies.reply_id, users.username\n" +
+                "GROUP BY replies.reply_id, comment_replies.parent_id, comment_replies.reply_id, users.username, users.user_image \n" +
                 "ORDER BY replies.reply_id";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId, userId, id);
         if (results.next()) {
@@ -63,7 +63,7 @@ public class JdbcReplyDao implements ReplyDao {
     @Override
     public List<ReplyResponseDto> getReplyByUser(long userId, long loggedInUserId) {
         List<ReplyResponseDto> replies = new ArrayList<>();
-        String sql = "SELECT replies.*, comment_replies.*, users.username, COUNT(reply_upvote.reply_id) AS likes, COUNT(reply_downvote.reply_id) AS dislikes, COUNT(upvote.user_id) AS upvotes_from_user, COUNT(downvote.user_id) AS downvotes_from_user\n" +
+        String sql = "SELECT replies.*, comment_replies.*, users.user_image AS user_image, COUNT(reply_upvote.reply_id) AS likes, COUNT(reply_downvote.reply_id) AS dislikes, COUNT(upvote.user_id) AS upvotes_from_user, COUNT(downvote.user_id) AS downvotes_from_user\n" +
                 "FROM replies \n" +
                 "JOIN users ON users.user_id = replies.user_id LEFT JOIN comment_replies ON comment_replies.reply_id = replies.reply_id \n" +
                 "LEFT JOIN reply_upvote ON reply_upvote.reply_id = replies.reply_id \n" +
@@ -71,7 +71,7 @@ public class JdbcReplyDao implements ReplyDao {
                 "LEFT JOIN users AS upvote ON reply_upvote.user_id = upvote.user_id AND upvote.user_id = ?\n" +
                 "LEFT JOIN users AS downvote ON reply_downvote.user_id = downvote.user_id AND downvote.user_id = ?\n" +
                 "WHERE replies.user_id = ? " +
-                "GROUP BY replies.reply_id, comment_replies.parent_id, comment_replies.reply_id, users.username\n" +
+                "GROUP BY replies.reply_id, comment_replies.parent_id, comment_replies.reply_id, users.username, users.user_image\n" +
                 "ORDER BY replies.reply_id";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, loggedInUserId, loggedInUserId, userId);
         while (results.next()) {
@@ -83,7 +83,7 @@ public class JdbcReplyDao implements ReplyDao {
     @Override
     public List<ReplyResponseDto> getPostThreads(long postId, long userId) {
         List<ReplyResponseDto> threads = new ArrayList<>();
-        String sql = "SELECT replies.*, comment_replies.*, users.username, users.user_image, COUNT(reply_upvote.reply_id) AS likes, COUNT(reply_downvote.reply_id) AS dislikes, COUNT(upvote.user_id) AS upvotes_from_user, COUNT(downvote.user_id) AS downvotes_from_user\n" +
+        String sql = "SELECT replies.*, users.username, comment_replies.*, users.username, users.user_image, COUNT(reply_upvote.reply_id) AS likes, COUNT(reply_downvote.reply_id) AS dislikes, COUNT(upvote.user_id) AS upvotes_from_user, COUNT(downvote.user_id) AS downvotes_from_user\n" +
                 "FROM replies \n" +
                 "JOIN users ON users.user_id = replies.user_id LEFT JOIN comment_replies ON comment_replies.reply_id = replies.reply_id \n" +
                 "LEFT JOIN reply_upvote ON reply_upvote.reply_id = replies.reply_id \n" +
@@ -117,9 +117,10 @@ public class JdbcReplyDao implements ReplyDao {
     }
 
     @Transactional
-    public void deleteReply(long replyId) {
+    public ReplyResponseDto deleteReply(long replyId) {
        String sql = "UPDATE replies SET user_id = 1, description = 'removed' WHERE reply_id = ?";
        jdbcTemplate.update(sql, replyId);
+       return this.getReplyById(replyId, 1);
     }
 
     @Override
