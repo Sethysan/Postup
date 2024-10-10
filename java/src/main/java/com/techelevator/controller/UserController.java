@@ -21,6 +21,7 @@ import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -123,13 +124,18 @@ public class UserController {
         }
     }
     @PreAuthorize("isAuthenticated()")
-    @PutMapping("/user/{id}/image")
-    public void updateUserImage(@PathVariable long id, @RequestBody String userImage, Principal user) {
+    @PutMapping("api/user/{id}")
+    public void updateUserDetails(@PathVariable long id, @RequestBody  String updates, Principal user) {
         User currentUser = userDao.getUserByUsername(user.getName());
+
         if (currentUser.getId() == id || currentUser.getAuthorities().stream().anyMatch(a -> a.getName().equals("ROLE_ADMIN"))) {
-            userDao.updateUserImage(id, userImage);
+            // Update user image if provided
+            if (updates != null && !updates.isEmpty()) {
+                userDao.updateUserImage(id, updates);
+            }
+
         } else {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You do not have permission to update this user's image.");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You do not have permission to update this user's details.");
         }
     }
 }

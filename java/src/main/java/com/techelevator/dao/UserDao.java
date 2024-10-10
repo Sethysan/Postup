@@ -26,4 +26,6 @@ public interface UserDao {
 
     void updateUserImage(long id, String user_image);
 
+
+
 }

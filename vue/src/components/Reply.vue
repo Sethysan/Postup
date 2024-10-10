@@ -167,6 +167,7 @@ export default {
                         this.currentReply.user.username = 'removed';
                         this.currentReply.description = 'removed';
                         this.currentReply.user.user_image = '/images/avatars/removed.jpg';
+                        
                     })
                     .catch(error => {
                         alert("error " + error.response.status)

@@ -1,89 +1,91 @@
 <template>
     <div>
-    <div v-if="isImageFullscreen" class="fullscreen-container" @click="toggleImageFullscreen">
-        <img :src="post.image" class="post-image-fullscreen" />
-    </div>
-    <div v-else class="post">
-        <div class="post-header">
-            <!-- Back Button -->
-            <div class="back-button" @click="goBack">
-                <svg fill="currentColor" height="16" icon-name="back-outline" viewBox="0 0 20 20" width="16"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M19 9.375H2.51l7.932-7.933-.884-.884-9 9a.625.625 0 0 0 0 .884l9 9 .884-.884-7.933-7.933H19v-1.25Z">
-                    </path>
-                </svg>
-            </div>
-            <!-- Author and Metadata -->
-            <div class="post-meta">
-                <img v-if="post.creator_image" :src="imageSrc" class="user-image" />
-                <span class="post-author">{{ post.creator_username }}</span>
-                <span class="post-time">• {{ getTimeElapsed(post.timeOfCreation) }}</span>
-            </div>
+        <div v-if="isImageFullscreen" class="fullscreen-container" @click="toggleImageFullscreen">
+            <img :src="post.image" class="post-image-fullscreen" />
         </div>
-        <!-- <share-form :post="post" :url="`http://localhost:5173/posts/${this.post.id}`"></share-form> -->
-        <h1 class="post-title">{{ post.title }}</h1>
-        <p class="post-description">{{ post.description }}</p>
-        <div class="post-image-container">
-            <img v-if="post.image" :src="post.image" class="post-image" @click="toggleImageFullscreen" />
-
-            <!-- Post Footer: Votes, Comments, Delete Button -->
-            <div class="post-footer">
-                <!-- Voting Buttons -->
-                <div :class="['vote-container', { 'active-upvote': upvoted, 'active-downvote': downvoted }]">
-                    <button @click="upvote" :class="{ 'active-upvote': upvoted, 'downvote-active': downvoted }"
-                        class="vote-button">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20"
-                            class="vote-icon">
-                            <path
-                                d="M12.877 19H7.123A1.125 1.125 0 0 1 6 17.877V11H2.126a1.114 1.114 0 0 1-1.007-.7 1.249 1.249 0 0 1 .171-1.343L9.166.368a1.128 1.128 0 0 1 1.668.004l7.872 8.581a1.25 1.25 0 0 1 .176 1.348 1.113 1.113 0 0 1-1.005.7H14v6.877A1.125 1.125 0 0 1 12.877 19ZM7.25 17.75h5.5v-8h4.934L10 1.31 2.258 9.75H7.25v8Z" />
-                        </svg>
-                    </button>
-                    <span class="vote-count">{{ post.upvotes - post.downvotes }}</span>
-                    <button @click="downvote" :class="{ 'active-downvote': downvoted, 'active-upvote': upvoted }"
-                        class="vote-button">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20"
-                            class="vote-icon">
-                            <path
-                                d="M10 20a1.122 1.122 0 0 1-.834-.372l-7.872-8.581A1.251 1.251 0 0 1 1.118 9.7 1.114 1.114 0 0 1 2.123 9H6V2.123A1.125 1.125 0 0 1 7.123 1h5.754A1.125 1.125 0 0 1 14 2.123V9h3.874a1.114 1.114 0 0 1 1.007.7 1.25 1.25 0 0 1-.171 1.345l-7.876 8.589A1.128 1.128 0 0 1 10 20Zm-7.684-9.75L10 18.69l7.741-8.44H12.75v-8h-5.5v8H2.316Zm15.469-.05c-.01 0-.014.007-.012.013l.012-.013Z" />
-                        </svg>
-                    </button>
-                </div>
-                <!-- Comments Count -->
-                <button aria-label="View comments. {{ post.replyCount }} replies available" class="comment-button">
-                    <svg aria-hidden="true" class="icon-comment"  height="20" viewBox="0 0 20 20"
-                        width="20" xmlns="http://www.w3.org/2000/svg">
+        <div v-else class="post">
+            <div class="post-header">
+                <!-- Back Button -->
+                <div class="back-button" @click="goBack">
+                    <svg fill="currentColor" height="16" icon-name="back-outline" viewBox="0 0 20 20" width="16"
+                        xmlns="http://www.w3.org/2000/svg">
                         <path
-                            d="M7.725 19.872a.718.718 0 0 1-.607-.328.725.725 0 0 1-.118-.397V16H3.625A2.63 2.63 0 0 1 1 13.375v-9.75A2.629 2.629 0 0 1 3.625 1h12.75A2.63 2.63 0 0 1 19 3.625v9.75A2.63 2.63 0 0 1 16.375 16h-4.161l-4 3.681a.725.725 0 0 1-.489.191ZM3.625 2.25A1.377 1.377 0 0 0 2.25 3.625v9.75a1.377 1.377 0 0 0 1.375 1.375h4a.625.625 0 0 1 .625.625v2.575l3.3-3.035a.628.628 0 0 1 .424-.165h4.4a1.377 1.377 0 0 0 1.375-1.375v-9.75a1.377 1.377 0 0 0-1.374-1.375H3.625Z" fill="#272525">
+                            d="M19 9.375H2.51l7.932-7.933-.884-.884-9 9a.625.625 0 0 0 0 .884l9 9 .884-.884-7.933-7.933H19v-1.25Z">
                         </path>
                     </svg>
-                    <span>{{ post.replyCount }} Comments</span>
-                </button>
-                <!-- Delete Button -->
-                <button v-if="post.creator_username === user || isMod || role ==='ROLE_ADMIN'" class="delete-button" @click="deletePost">Delete</button>
-            </div>
-            <!-- Reply Form -->
-            <div v-if="user">
-                <!-- Textarea for adding a comment, expanding when clicked -->
-                <div class="reply-container">
-                    <textarea v-model="newReply.description" placeholder="Add a comment" @focus="expandTextarea"
-                        :class="{ expanded: formVisibility }" @blur="formVisibility || cancelReply()"></textarea>
-                    <!-- Buttons appear only when the textarea is expanded -->
-                    <div v-if="formVisibility" class="comment-buttons">
-                        <button @click="addReply" class="submit-button">Submit</button>
-                        <button @click="cancelReply" class="cancel-button">Cancel</button>
-                    </div>
+                </div>
+                <!-- Author and Metadata -->
+                <div class="post-meta">
+                    <img v-if="post.creator_image" :src="imageSrc" class="user-image" />
+                    <span class="post-author">{{ post.creator_username }}</span>
+                    <span class="post-time">• {{ getTimeElapsed(post.timeOfCreation) }}</span>
                 </div>
             </div>
-            <!-- Replies Component -->
-            <div v-if="!isImageFullscreen">
+            <!-- <share-form :post="post" :url="`http://localhost:5173/posts/${this.post.id}`"></share-form> -->
+            <h1 class="post-title">{{ post.title }}</h1>
+            <p class="post-description">{{ post.description }}</p>
+            <div class="post-image-container">
+                <img v-if="post.image" :src="post.image" class="post-image" @click="toggleImageFullscreen" />
+
+                <!-- Post Footer: Votes, Comments, Delete Button -->
+                <div class="post-footer">
+                    <!-- Voting Buttons -->
+                    <div :class="['vote-container', { 'active-upvote': upvoted, 'active-downvote': downvoted }]">
+                        <button @click="upvote" :class="{ 'active-upvote': upvoted, 'downvote-active': downvoted }"
+                            class="vote-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20"
+                                class="vote-icon">
+                                <path
+                                    d="M12.877 19H7.123A1.125 1.125 0 0 1 6 17.877V11H2.126a1.114 1.114 0 0 1-1.007-.7 1.249 1.249 0 0 1 .171-1.343L9.166.368a1.128 1.128 0 0 1 1.668.004l7.872 8.581a1.25 1.25 0 0 1 .176 1.348 1.113 1.113 0 0 1-1.005.7H14v6.877A1.125 1.125 0 0 1 12.877 19ZM7.25 17.75h5.5v-8h4.934L10 1.31 2.258 9.75H7.25v8Z" />
+                            </svg>
+                        </button>
+                        <span class="vote-count">{{ post.upvotes - post.downvotes }}</span>
+                        <button @click="downvote" :class="{ 'active-downvote': downvoted, 'active-upvote': upvoted }"
+                            class="vote-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20"
+                                class="vote-icon">
+                                <path
+                                    d="M10 20a1.122 1.122 0 0 1-.834-.372l-7.872-8.581A1.251 1.251 0 0 1 1.118 9.7 1.114 1.114 0 0 1 2.123 9H6V2.123A1.125 1.125 0 0 1 7.123 1h5.754A1.125 1.125 0 0 1 14 2.123V9h3.874a1.114 1.114 0 0 1 1.007.7 1.25 1.25 0 0 1-.171 1.345l-7.876 8.589A1.128 1.128 0 0 1 10 20Zm-7.684-9.75L10 18.69l7.741-8.44H12.75v-8h-5.5v8H2.316Zm15.469-.05c-.01 0-.014.007-.012.013l.012-.013Z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <!-- Comments Count -->
+                    <button aria-label="View comments. {{ post.replyCount }} replies available" class="comment-button">
+                        <svg aria-hidden="true" class="icon-comment" height="20" viewBox="0 0 20 20" width="20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M7.725 19.872a.718.718 0 0 1-.607-.328.725.725 0 0 1-.118-.397V16H3.625A2.63 2.63 0 0 1 1 13.375v-9.75A2.629 2.629 0 0 1 3.625 1h12.75A2.63 2.63 0 0 1 19 3.625v9.75A2.63 2.63 0 0 1 16.375 16h-4.161l-4 3.681a.725.725 0 0 1-.489.191ZM3.625 2.25A1.377 1.377 0 0 0 2.25 3.625v9.75a1.377 1.377 0 0 0 1.375 1.375h4a.625.625 0 0 1 .625.625v2.575l3.3-3.035a.628.628 0 0 1 .424-.165h4.4a1.377 1.377 0 0 0 1.375-1.375v-9.75a1.377 1.377 0 0 0-1.374-1.375H3.625Z"
+                                fill="#272525">
+                            </path>
+                        </svg>
+                        <span>{{ post.replyCount }} Comments</span>
+                    </button>
+                    <!-- Delete Button -->
+                    <button v-if="post.creator_username === user || isMod || role === 'ROLE_ADMIN'"
+                        class="delete-button" @click="deletePost">Delete</button>
+                </div>
+                <!-- Reply Form -->
+                <div v-if="user">
+                    <!-- Textarea for adding a comment, expanding when clicked -->
+                    <div class="reply-container">
+                        <textarea v-model="newReply.description" placeholder="Add a comment" @focus="expandTextarea"
+                            :class="{ expanded: formVisibility }" @blur="formVisibility || cancelReply()"></textarea>
+                        <!-- Buttons appear only when the textarea is expanded -->
+                        <div v-if="formVisibility" class="comment-buttons">
+                            <button @click="addReply" class="submit-button">Submit</button>
+                            <button @click="cancelReply" class="cancel-button">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Replies Component -->
+                <div v-if="!isImageFullscreen">
+                </div>
+            </div>
+            <div>
+                <replies :replies="replies" :forumId="post.forum_id"></replies>
             </div>
         </div>
-        <div>
-        <replies :replies="replies" :forumId="post.forum_id"></replies>
     </div>
-    </div>
-</div>
 </template>
 
 <script>
@@ -103,7 +105,7 @@ export default {
     //     //     if (err.response?.status === 401) {
     //     //         // toast("You must be logged in to vote", {
     //     //             // position: "bottom-center",
-                
+
     //     //     } else {
     //     //         // toast.error(`${message} Status code: ${err.response?.status || 'Unknown'}`);
     //     //     }
@@ -141,11 +143,11 @@ export default {
     },
     created() {
         this.user = this.$store.getters.username,
-        this.upvoted = this.post.hasUpvoted,
-        this.downvoted = this.post.hasDownvoted;
+            this.upvoted = this.post.hasUpvoted,
+            this.downvoted = this.post.hasDownvoted;
         this.isMod = this.checkIfMod
     },
-    mounted(){
+    mounted() {
         this.forumId = this.post_forumId
     },
     methods: {
@@ -260,24 +262,25 @@ export default {
     },
     computed: {
         imageSrc() {
-      const isUrl = this.post.creator_image.startsWith('http');
-      return isUrl ? this.post.creator_image : `${this.post.creator_image}`;
-    },
+            const sanitizedImage = this.post.creator_image.trim().replace(/"/g, '');
+            const isUrl = sanitizedImage.startsWith('http');
+            return isUrl ? sanitizedImage : `${sanitizedImage}`;
+        },
         checkIfMod() {
-    const access = this.$store.getters.access;
-    if (Array.isArray(access)) {
-        return access.map(item => item.forumId).findIndex(id => id === this.post.forum_id) !== -1
-    }
-    try {
-        const parsedAccess = JSON.parse(access);        
-        if (Array.isArray(parsedAccess)) {
-            return parsedAccess.map(item => item.forumId).findIndex(id => id === this.post.forum_id) !== -1;
+            const access = this.$store.getters.access;
+            if (Array.isArray(access)) {
+                return access.map(item => item.forumId).findIndex(id => id === this.post.forum_id) !== -1
+            }
+            try {
+                const parsedAccess = JSON.parse(access);
+                if (Array.isArray(parsedAccess)) {
+                    return parsedAccess.map(item => item.forumId).findIndex(id => id === this.post.forum_id) !== -1;
+                }
+            } catch (error) {
+                console.error("Failed to parse access:", error);
+            }
+            return false; // Return false if access is not an array or parsing fails
         }
-    } catch (error) {
-        console.error("Failed to parse access:", error);
-    }
-    return false; // Return false if access is not an array or parsing fails
-}
     }
 }
 </script>
@@ -374,9 +377,12 @@ export default {
     transition: background-color 0.3s ease;
 
 }
+
 .icon-comment {
-    fill: #272525; /* Replace #333 with your desired darker color */
-  }
+    fill: #272525;
+    /* Replace #333 with your desired darker color */
+}
+
 .comment-buttons {
     position: absolute;
     bottom: 10px;
@@ -503,18 +509,21 @@ textarea.expanded {
     /* Adjust spacing between author and time */
     font-size: 0.875rem;
 }
+
 .user-image {
-    width: 40px; 
-    height: 40px; 
-    border-radius: 50%; 
-    object-fit: cover; 
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
     /* border: 2px solid #ddd;  */
 }
-.post-author{
+
+.post-author {
     font-size: 1.25rem;
 }
-.post-time{
-    color:rgb(107, 105, 105) ;
+
+.post-time {
+    color: rgb(107, 105, 105);
 }
 
 .post-header {
@@ -551,5 +560,4 @@ textarea.expanded {
 .back-button:hover {
     background-color: rgb(218, 217, 217);
 }
-
 </style>

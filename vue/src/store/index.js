@@ -1,57 +1,67 @@
-import { createStore as _createStore } from 'vuex';
-import axios from 'axios';
+import { createStore as _createStore } from "vuex";
+import axios from "axios";
 
 const NOTIFICATION_TIMEOUT = 5000;
 
-export function createStore(currentToken, currentUser, currentAccess, userList = []) {
+export function createStore(
+  currentToken,
+  currentUser,
+  currentAccess,
+  userList = []
+) {
   let store = _createStore({
     state: {
-      token: currentToken || '',
+      token: currentToken || "",
       user: currentUser || {},
       users: userList,
-      access: currentAccess || []
+      access: currentAccess || [],
     },
-    mutations:{
+    mutations: {
+      SET_USER_IMAGE(state, userImage) {
+        const sanitizedImageUrl = userImage.trim().replace(/"/g, '');
+        state.user.user_image = sanitizedImageUrl;
+        localStorage.setItem("user", JSON.stringify(state.user));
+      },
       SET_AUTH_TOKEN(state, token) {
         state.token = token;
-        localStorage.setItem('token', token);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        localStorage.setItem("token", token);
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       },
       SET_USER(state, user) {
         state.user = user;
-        console.log('Storing user in localStorage:', user);
-        localStorage.setItem('user', JSON.stringify(user));
+        console.log("Storing user in localStorage:", user);
+        localStorage.setItem("user", JSON.stringify(user));
       },
       LOGOUT(state) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        localStorage.removeItem('access')
-        state.token = '';
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        localStorage.removeItem("access");
+        state.token = "";
         state.user = {};
-        state.access = []
+        state.access = [];
         axios.defaults.headers.common = {};
       },
-      SET_ACCESS(state, access){
-        localStorage.setItem('access', JSON.stringify(access));
+      SET_ACCESS(state, access) {
+        localStorage.setItem("access", JSON.stringify(access));
         state.access = access;
       },
       SET_NOTIFICATION(state, notification) {
         if (state.notification) {
-          this.commit('CLEAR_NOTIFICATION');
+          this.commit("CLEAR_NOTIFICATION");
         }
-        if (typeof notification === 'string') {
+        if (typeof notification === "string") {
           notification = {
             message: notification,
-            type: 'error',
-            timeout: NOTIFICATION_TIMEOUT
-          }
+            type: "error",
+            timeout: NOTIFICATION_TIMEOUT,
+          };
         } else {
-          notification.type = notification.type || 'error';
+          notification.type = notification.type || "error";
           notification.timeout = notification.timeout || NOTIFICATION_TIMEOUT;
         }
         state.notification = notification;
         notification.timer = window.setTimeout(() => {
-          this.commit('CLEAR_NOTIFICATION');
+          this.commit("CLEAR_NOTIFICATION");
         }, notification.timeout);
       },
       CLEAR_NOTIFICATION(state) {
@@ -61,58 +71,63 @@ export function createStore(currentToken, currentUser, currentAccess, userList =
         state.notification = null;
       },
       PROMOTE_USER(state, userName) {
-        const user = state.user.find(u => u.username === userName);
+        const user = state.user.find((u) => u.username === userName);
         if (user) {
-          user.role = 'ROLE_MODERATOR';
+          user.role = "ROLE_MODERATOR";
         } else {
-          console.error('User not found for promotion:', userName);
+          console.error("User not found for promotion:", userName);
         }
       },
       BAN_USER(state, userName) {
-        const user = state.user.find(u => u.username === userName);
+        const user = state.user.find((u) => u.username === userName);
         if (user) {
           user.banned = true;
         } else {
-          console.error('User not found for ban:', userName);
+          console.error("User not found for ban:", userName);
         }
       },
       UNBAN_USER(state, userName) {
-        const user = state.user.find(u => u.username === userName);
+        const user = state.user.find((u) => u.username === userName);
         if (user) {
           user.banned = false;
         } else {
-          console.error('User not found for unban:', userName);
+          console.error("User not found for unban:", userName);
         }
-      }
+      },
     },
     actions: {
-      SET_ACCESS({state, commit}, access){
-        localStorage.setItem('access', JSON.stringify(access))
+      SET_ACCESS({ state, commit }, access) {
+        localStorage.setItem("access", JSON.stringify(access));
         state.access = access;
-      }
+      },
     },
     getters: {
       username(state, getters) {
-        if(state.token != ''){
-          return JSON.parse(localStorage.getItem('user')).username;
+        if (state.token != "") {
+          return JSON.parse(localStorage.getItem("user")).username;
         }
       },
+      userImage(state) {
+        return state.user.user_image;
+      },
       role(state) {
-        if(!state.user || !state.user.authorities){
-          return 'ROLE_USER';
+        if (!state.user || !state.user.authorities) {
+          return "ROLE_USER";
         }
-        return state.user.authorities.length > 0 ? state.user.authorities[0].name : 'ROLE_USER'
+        return state.user.authorities.length > 0
+          ? state.user.authorities[0].name
+          : "ROLE_USER";
       },
       users(state) {
         return state.user;
       },
-      userId(state){
-        return state.user.id
+      userId(state) {
+        return state.user.id;
       },
-      access(state){
-        return state.access
-      }
-    }
+      access(state) {
+        return state.access;
+      },
+    },
   });
   return store;
 }

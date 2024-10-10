@@ -9,6 +9,8 @@ public class LoginDto {
 
    private String username;
    private String password;
+   private String user_image;
+
 
    public String getUsername() {
       return username;
@@ -26,11 +28,20 @@ public class LoginDto {
       this.password = password;
    }
 
+   public String getUserImage() {
+      return user_image;
+   }
+
+   public void setUserImage(String userImage) {
+      this.user_image = userImage;
+   }
+
    @Override
    public String toString() {
       return "LoginDTO{" +
               "username='" + username + '\'' +
               ", password='" + password + '\'' +
+              ", user_image='" + user_image + '\'' +
               '}';
    }
 }

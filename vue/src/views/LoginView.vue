@@ -36,6 +36,7 @@ import LoggedInMessgae from "../components/LoggedInMessgae.vue";
 import authService from "../services/AuthService";
 import ModeratorService from "../services/ModeratorService";
 
+
 export default {
   components: {LoggedInMessgae},
   data() {
@@ -58,6 +59,7 @@ export default {
           if (response.status == 200) {
             this.$store.commit("SET_AUTH_TOKEN", response.data.token);
             this.$store.commit("SET_USER", response.data.user);
+            this.$store.commit("SET_USER_IMAGE", response.data.user.userImage);
             ModeratorService.getUserAccess(response.data.user.id)
             .then(res => {
               this.$store.dispatch('SET_ACCESS', res.data);

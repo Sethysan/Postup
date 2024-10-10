@@ -104,6 +104,7 @@ public class JdbcUserDao implements UserDao {
         return newUser;
     }
 
+
     @Override
     public void updateUserImage(long id, String userImage) {
         String sql = "UPDATE users SET user_image = ? WHERE user_id = ?";
@@ -114,6 +115,7 @@ public class JdbcUserDao implements UserDao {
         }
     }
 
+    @Override
     public void promoteUserToAdmin(int userId) {
         String sql = "UPDATE users SET role = 'ROLE_ADMIN' WHERE user_id = ?";
         jdbcTemplate.update(sql, userId);

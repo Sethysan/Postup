@@ -11,10 +11,12 @@ public class LoginResponseDto {
 
     private String token;
     private User user;
+    private String user_image;
 
     public LoginResponseDto(String token, User user) {
         this.token = token;
         this.user = user;
+        this.user_image = user.getUserImage();
     }
 
     @JsonProperty("token")
@@ -31,7 +33,15 @@ public class LoginResponseDto {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public String getUser_image() {
+        return user_image;
+    }
+
+    public String getUserImage() {
+        return user_image;
+    }
+
+    public void setUserImage(String userImage) {
+        this.user_image = userImage;
     }
 }

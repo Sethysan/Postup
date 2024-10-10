@@ -1,8 +1,13 @@
-<template >
+<template>
   <div id="nav">
-    <div class="logged-in" v-if="isLoggedIn">
-    <p>Logged in as {{ userName }}</p>
-  </div>
+    <div class="user-info" v-if="isLoggedIn">
+      <div class="user-image-container" @mouseover="showEditTooltip = true" @mouseleave="showEditTooltip = false"
+        @click="toggleEditForm">
+        <img :src="userImage" alt="User Image" class="user-image" />
+        <span v-if="showEditTooltip" class="edit-tooltip">Edit Details</span>
+      </div>
+      <p>Logged in as {{ userName }}</p>
+    </div>
     <button class="nav-btn">
       <router-link v-bind:to="{ name: 'home' }" :class="getLinkClass('home')">HOME</router-link>&nbsp;
     </button>
@@ -29,6 +34,21 @@
       <router-link v-bind:to="{ name: 'login' }" v-if="$store.state.token == ''"
         class="router-link-nonactive">LOGIN</router-link>
     </button>
+    <div class="logo-container">
+      <img src="/images/POST-UP_logo.png" alt="Logo" class="logo" />
+    </div>
+  </div>
+
+  <div v-if="editFormVisible" class="edit-form">
+    <h3>Edit Your Details</h3>
+    <form @submit.prevent="updateUserDetails">
+      <div class="form-group">
+        <label for="userImage">Profile Image URL:</label>
+        <input type="text" v-model="updatedUserImage" placeholder="Enter new image URL" />
+      </div>
+      <button type="submit">Save Changes</button>
+      <button type="button" @click="toggleEditForm">Cancel</button>
+    </form>
   </div>
   <WidgetContainerModal />
   <div id="capstone-app">
@@ -36,36 +56,67 @@
   </div>
 </template>
 <script>
-import jwt_decode from 'jwt-decode';
+import UserService from './services/UserService.js';
 import ModeratorService from './services/ModeratorService';
-import {container} from 'jenesius-vue-modal'
+import { container } from 'jenesius-vue-modal'
 
 export default {
-  components: {WidgetContainerModal: container},
+  components: { WidgetContainerModal: container },
   name: "App",
+  data() {
+    return {
+      showEditTooltip: false,
+      editFormVisible: false,
+      updatedUserImage: '',
+      role: this.$store.getters.role
+    };
+  },
+  created() {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user && user.user_image) {
+      const sanitizedImageUrl = user.user_image.trim().replace(/"/g, '');
+      this.$store.commit("SET_USER_IMAGE", sanitizedImageUrl);
+    }
+  },
   computed: {
     // Get the user's name from Vuex
     userName() {
       return this.$store.getters.username;
     },
-
     // Compute whether the user is logged in
     isLoggedIn() {
       return this.$store.state.token !== '';
-    }
+    },
+    userImage() {
+      return this.$store.getters.userImage;
+    },
   },
   methods: {
     getLinkClass(routeName) {
       return this.$route.name === routeName ? 'router-link-active' : 'router-link-nonactive';
+    },
+    toggleEditForm() {
+      this.editFormVisible = !this.editFormVisible;
+      if (this.editFormVisible) {
+        // Populate the form with the current details
+        this.updatedUserImage = this.userImage;
+      }
+    },
+    updateUserDetails() {
+      const sanitizedImageUrl = this.updatedUserImage.trim().replace(/"/g, '');
+      const updates = JSON.stringify(sanitizedImageUrl);
+      UserService.updateUserDetails(this.$store.getters.userId, updates)
+        .then(() => {
+          this.$store.commit('SET_USER_IMAGE', this.updatedUserImage);
+          alert('User details updated successfully.');
+          this.toggleEditForm(); // Close the form after saving
+        }).catch(error => {
+          console.error('Error updating user details:', error);
+          alert('Failed to update user details.');
+        });
     }
-  },
-  data() {
-    return {
-      role: this.$store.getters.role
-    };
-  },
-}
-  ;
+  }
+};
 </script>
 <style>
 #nav {
@@ -80,11 +131,91 @@ export default {
 
 }
 
+.logo-container {
+
+  top: 0;
+  right: 20px;
+  height: calc(2 * 60px);
+  /* Adjust '60px' to match the height of your nav */
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 100%;
+  object-fit: contain;
+  /* Ensures the logo scales nicely */
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-image-container {
+  position: relative;
+  cursor: pointer;
+}
+
 body,
 html {
   margin: 0;
   padding: 0;
 }
+
+.user-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.edit-tooltip {
+  position: absolute;
+  top: 0;
+  left: 60px;
+  background-color: #333;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.edit-form {
+  position: fixed;
+  top: 70px;
+  /* Adjust this value based on the height of your #nav */
+  left: 0;
+  right: 50%;
+  margin: 0 auto;
+  max-width: 600px;
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  /* Make sure the form is above other elements */
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
 
 #capstone-app {
   font-family: Arial, Helvetica, sans-serif;
@@ -98,12 +229,13 @@ html {
 }
 
 .nav-btn {
-    background-color: transparent;
-    color: white;
-    border: none;
-    font-size: 25px;
-    padding: 5px;
-    transition: transform 0.3s ease-in-out; /* Smooth transition for hover effects */
+  background-color: transparent;
+  color: white;
+  border: none;
+  font-size: 25px;
+  padding: 5px;
+  transition: transform 0.3s ease-in-out;
+  /* Smooth transition for hover effects */
 }
 
 .nav-btn .router-link-active,
@@ -119,7 +251,8 @@ html {
   color: black;
   transition: .3s ease-in-out;
 }
-#logged-in{
+
+#logged-in {
   color: black;
 }
 
@@ -132,9 +265,9 @@ html {
 .separator {
   align-content: center;
 }
-.post-author{
+
+.post-author {
   color: black;
   text-decoration: none;
 }
-
 </style>
