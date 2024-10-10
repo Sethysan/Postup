@@ -1,9 +1,10 @@
 <template>
     <div class="forum">
-        {{ isMod }}
-        {{ this.forum.id}}
-        <h1>{{ forum.topic }}</h1>
-        <p>{{ forum.description }}</p>
+        <!-- todo: add styling -->
+        <div class="forum-header">
+            <h1 class="forum-topic">{{ forum.topic }}</h1>
+            <p class="forum-description">{{ forum.description }}</p>
+        </div>
         <button :class="forum.favorited ? 'favorited' : 'not-favorited'" @click="favorite">
             {{ forum.favorited ? 'Favorited' : 'Favorite?' }}
         </button> <!-- eventually a heart will likely go inside the favorite button or the button will be a heart  -->
@@ -12,7 +13,7 @@
             <button class="create-post-button">Create Post</button>
         </router-link>
         <router-link :to="{ name: 'promote', params: { forumId: forum.Id } }">
-            <button v-if=" isMod || role === 'ROLE_ADMIN'" class="promote-button">Promote to Moderator</button>
+            <button v-if="checkIfMod || role === 'ROLE_ADMIN'" class="promote-button">Promote to Moderator</button>
         </router-link>
     </div>
 </template>
@@ -23,14 +24,15 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import ModeratorService from '../services/ModeratorService';
 
 export default {
-    props: ['forum'],
+    props: ['forum', 'forumId'],
     data() {
         return {
             currentForum: {},
             color: 'white',
             role: this.$store.getters.role,
             listOfModsOfForum: [],
-            isMod: false
+            isMod: false,
+            forumId: 0,
         }
     },
     created() {
@@ -39,13 +41,11 @@ export default {
             this.currentForum = this.forum;
         } else {
             // Otherwise, fetch the forum from the service
-            service.getForum(this.$route.params.forumId).then(res => {
+            service.getForum(this.forumId).then(res => {
                 this.currentForum = res.data;
                 this.checkIfMod();
             });
-            
         }
-     
     },
     methods: {
         favorite() {
@@ -70,28 +70,23 @@ export default {
             // dayjs converts time into a readable format and calculates the elapsed time
             return dayjs(creationTime).fromNow();
         },
+    },
+    computed: {
         checkIfMod() {
-            this.isMod = false;
-            // let num = 0;
-            // if (this.forumId) {
-            //     num = this.forumId;
-            // }
-            // else {
-            //     let num = this.forumId;
-            // }
-            ModeratorService.getListOfMods(this.forum.id)
-                .then(res => {
-                    console.log(res.data)
-                    this.listOfModsOfForum = res.data;
-
-                    for (let mod of this.listOfModsOfForum) {
-                        if (mod.username === this.$store.getters.username) {
-                            this.isMod = true;
-                        }
-                    }
-                })
-                .catch(err => alert(err));
+    const access = this.$store.getters.access;
+    if (Array.isArray(access)) {
+        return foundIndex = access.map(item => item.forumId).findIndex(id => id === this.forumId) !== -1
+    }
+    try {
+        const parsedAccess = JSON.parse(access);        
+        if (Array.isArray(parsedAccess)) {
+            return parsedAccess.map(item => item.forumId).findIndex(id => id === this.forum.id) !== -1;
         }
+    } catch (error) {
+        console.error("Failed to parse access:", error);
+    }
+    return false; // Return false if access is not an array or parsing fails
+}
     }
 }
 </script>
@@ -117,7 +112,8 @@ button:hover {
 .create-post-button {
     margin-left: 10px;
 }
-.promote-button{
+
+.promote-button {
     margin-left: 10px;
 }
 
@@ -128,6 +124,7 @@ button:hover {
 .not-favorited {
     background-color: #e15d20;
 }
+
 .favorited:hover {
     background-color: rgb(174, 1, 1);
 }

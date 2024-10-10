@@ -36,6 +36,7 @@
 </template>
 <script>
 import jwt_decode from 'jwt-decode';
+import ModeratorService from './services/ModeratorService';
 
 export default {
   computed: {
@@ -53,17 +54,7 @@ export default {
     getLinkClass(routeName) {
       return this.$route.name === routeName ? 'router-link-active' : 'router-link-nonactive';
     }
-  },
-  // mounted() {
-  //   if (this.isLoggedIn) {
-  //     this.startTokenCountdown(); 
-  //     // Start the countdown when the component is mounted
-  //   }
-  // },
-  // beforeUnmount() {
-  //   // Clear the interval when the component is destroyed
-  //   clearInterval(this.interval);
-  // }
+  }
 }
   ;
 </script>
@@ -74,7 +65,9 @@ export default {
   left: 0;
   width: 100%;
   z-index: 1000;
-  background-color: rgba(240, 107, 19, 0.909);
+  background-color: rgb(240, 107, 19);
+  padding: 10px;
+  margin-bottom: 0px;
 
 }
 
@@ -86,8 +79,13 @@ html {
 
 #capstone-app {
   font-family: Arial, Helvetica, sans-serif;
-  background: radial-gradient(circle, rgb(255, 255, 255) 50%, rgb(240, 107, 19));
-
+  background: radial-gradient(circle, rgb(255, 166, 107) 35%, rgba(240, 107, 19, 0.927));
+  padding-left: 2vw;
+  padding-right: 2vw;
+  margin-top: 0px;
+  padding-top: 10px;
+  margin-bottom: 0px;
+  padding-bottom: 8vh;
 }
 
 .nav-btn {

@@ -25,12 +25,13 @@ public class JdbcModerationDao implements ModerationDao{
             Moderation mod = mapRowToModeration(results);
             list.add(mod);
         }
+        System.out.println("sending back to client " + list);
         return list;
     }
 
     public List<Moderation> getListOfModeratorsOfForum(long id){
         List<Moderation> list = new ArrayList<>();
-        String sql = "SELECT forum_id, username, role FROM moderation WHERE forum_id = ?;";
+        String sql = "SELECT * FROM moderation WHERE forum_id = ?;";
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
         while (results.next()) {
@@ -55,11 +56,9 @@ public class JdbcModerationDao implements ModerationDao{
         Moderation mod = null;
         String sql = "SELECT * FROM moderation WHERE forum_id = ? and username = ?;";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, id, username);
-
         if (result.next()) {
             mod = mapRowToModeration(result);
         }
-
         return mod;
     }
 

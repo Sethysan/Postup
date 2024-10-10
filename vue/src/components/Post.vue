@@ -49,16 +49,16 @@
                 </div>
                 <!-- Comments Count -->
                 <button aria-label="View comments. {{ post.replyCount }} replies available" class="comment-button">
-                    <svg aria-hidden="true" class="icon-comment" fill="currentColor" height="20" viewBox="0 0 20 20"
+                    <svg aria-hidden="true" class="icon-comment"  height="20" viewBox="0 0 20 20"
                         width="20" xmlns="http://www.w3.org/2000/svg">
                         <path
-                            d="M7.725 19.872a.718.718 0 0 1-.607-.328.725.725 0 0 1-.118-.397V16H3.625A2.63 2.63 0 0 1 1 13.375v-9.75A2.629 2.629 0 0 1 3.625 1h12.75A2.63 2.63 0 0 1 19 3.625v9.75A2.63 2.63 0 0 1 16.375 16h-4.161l-4 3.681a.725.725 0 0 1-.489.191ZM3.625 2.25A1.377 1.377 0 0 0 2.25 3.625v9.75a1.377 1.377 0 0 0 1.375 1.375h4a.625.625 0 0 1 .625.625v2.575l3.3-3.035a.628.628 0 0 1 .424-.165h4.4a1.377 1.377 0 0 0 1.375-1.375v-9.75a1.377 1.377 0 0 0-1.374-1.375H3.625Z">
+                            d="M7.725 19.872a.718.718 0 0 1-.607-.328.725.725 0 0 1-.118-.397V16H3.625A2.63 2.63 0 0 1 1 13.375v-9.75A2.629 2.629 0 0 1 3.625 1h12.75A2.63 2.63 0 0 1 19 3.625v9.75A2.63 2.63 0 0 1 16.375 16h-4.161l-4 3.681a.725.725 0 0 1-.489.191ZM3.625 2.25A1.377 1.377 0 0 0 2.25 3.625v9.75a1.377 1.377 0 0 0 1.375 1.375h4a.625.625 0 0 1 .625.625v2.575l3.3-3.035a.628.628 0 0 1 .424-.165h4.4a1.377 1.377 0 0 0 1.375-1.375v-9.75a1.377 1.377 0 0 0-1.374-1.375H3.625Z" fill="#272525">
                         </path>
                     </svg>
                     <span>{{ post.replyCount }} Comments</span>
                 </button>
                 <!-- Delete Button -->
-                <button v-if="post.creator_username === user || isMod || role ==='ROLE_ADMIN'" class="delete-button" @click="deletePost">Delete</button>
+                <button v-if="post.creator_username === user || checkIfMod || role ==='ROLE_ADMIN'" class="delete-button" @click="deletePost">Delete</button>
             </div>
             <!-- Reply Form -->
             <div v-if="user">
@@ -247,20 +247,24 @@ export default {
                     });
             }
         },
-        checkIfMod() {
-            this.isMod = false;
-            ModeratorService.getListOfMods(this.post.forum.id)
-                .then(res => {
-                    this.listOfModsOfForum = res.data;
-                    for (let mod of this.listOfModsOfForum) {
-                        if (mod.username === this.$store.getters.username) {
-                            this.isMod = true;
-                        }
-                    }
-                })
-                .catch(err => alert(err));
-        }
     },
+    computed: {
+        checkIfMod() {
+    const access = this.$store.getters.access;
+    if (Array.isArray(access)) {
+        return foundIndex = access.map(item => item.forumId).findIndex(id => id === this.post.forum_id) !== -1
+    }
+    try {
+        const parsedAccess = JSON.parse(access);        
+        if (Array.isArray(parsedAccess)) {
+            return parsedAccess.map(item => item.forumId).findIndex(id => id === this.post.forum_id) !== -1;
+        }
+    } catch (error) {
+        console.error("Failed to parse access:", error);
+    }
+    return false; // Return false if access is not an array or parsing fails
+}
+    }
 }
 </script>
 
@@ -348,6 +352,7 @@ export default {
 
 }
 
+
 .comment-count {
     align-items: center;
     background-color: rgb(228, 228, 228);
@@ -355,9 +360,10 @@ export default {
     transition: background-color 0.3s ease;
 
 }
-
+.icon-comment {
+    fill: #272525; /* Replace #333 with your desired darker color */
+  }
 .comment-buttons {
-    background-color: transparent;
     position: absolute;
     bottom: 10px;
     right: 10px;

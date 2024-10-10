@@ -124,6 +124,8 @@ export default {
 
 .create-post {
   margin: 20px;
+  padding-bottom: 20%;
+  padding-right: 65%;
 }
 
 .form-group {

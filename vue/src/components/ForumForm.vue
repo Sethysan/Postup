@@ -1,22 +1,25 @@
 <template>
-    <form v-on:submit.prevent="submitForm">
-        <div class="forum-form">
-            <h1>Forum Form</h1>
-            <div>
-                <label for="title">Title</label>
-                <input type="text" id="title" name="title" v-model="editForum.topic" />
-                <div>
-                    <label for="description">Description</label>
-                    <input type="text" id="description" name="description" v-model="editForum.description" />
-                </div>
+    <div class="create-forum">
+        <h2>Create a Forum</h2>
+        <form v-on:submit.prevent="submitForm">
+            <div class="form-group">
+                <label for="title">Forum Title:</label>
+                <textarea class="title-input" v-model="editForum.topic" id="title" required></textarea>
             </div>
-            <div>Author: {{ author }} </div>
-            <br>
-            <button class="btn-submit" type="submit">Submit</button>
-            <button class="btn-cancel" type="button" v-on:click="cancelForm">Cancel</button>
-        </div>
-    </form>
+
+            <div class="form-group">
+                <label for="description">Forum Description:</label>
+                <textarea v-model="editForum.description" id="description" required></textarea>
+            </div>
+            <div class="button-div">
+                <button class="submit-button" type="submit">Submit</button>
+                <button class="cancel-button" type="button" v-on:click="cancelForm">Cancel</button>
+            </div>
+        </form>
+
+    </div>
 </template>
+
 
 <script>
 import forumService from '../services/ForumService.js';
@@ -101,4 +104,63 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.button-div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cancel-button,
+.submit-button {
+    display: inline-block;
+    padding: 5px 10px;
+    margin-bottom: 15px;
+    background-color: #e15d20;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: .5s;
+    margin-top: 20px;
+    display: inline-block;
+}
+
+.cancel-button:hover,
+.submit-button:hover {
+    background-color: #a33908;
+}
+
+.title-input {
+    padding-top: 5px;
+    width: 100%;
+    height: 20px;
+}
+
+.create-forum {
+    margin: 20px;
+    padding-bottom: 20%;
+    padding-right: 65%;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <forum :forum="forum"></forum>
+    <forum :forum="forum" :forumId="forum.id"></forum>
     <post-search-button :forumId="forum.id"></post-search-button>
     <div v-if="posts.length < 1 && !isloading">
       <p>Wow, such empty!</p>

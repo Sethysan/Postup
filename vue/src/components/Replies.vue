@@ -4,7 +4,7 @@
       <img src=""/>
     </div>
   <div class="replies-list">
-    <reply v-for="reply in replies" :key="reply.id" :reply="reply" :indent="0"></reply>
+    <reply v-for="reply in replies" :key="reply.id" :reply="reply" :indent="100"></reply>
   </div>
 </template>
 

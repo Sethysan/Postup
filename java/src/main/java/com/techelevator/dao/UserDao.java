@@ -2,6 +2,7 @@ package com.techelevator.dao;
 
 import com.techelevator.model.RegisterUserDto;
 import com.techelevator.model.User;
+import com.techelevator.model.responses.UserResponseDto;
 
 import java.util.List;
 
@@ -19,7 +20,9 @@ public interface UserDao {
     void banUser(long id);
     void unbanUser(long id);
     List<User> getUsersFiltered();
-    List<User> getUsersForAdmins();
+    List<UserResponseDto> getUsersForAdmins();
+    UserResponseDto getUserForAdmin(String username);
+    UserResponseDto getUserForAdmin(int id);
 
     void updateUserImage(long id, String user_image);
 
