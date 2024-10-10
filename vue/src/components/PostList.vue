@@ -8,7 +8,7 @@
       </select>
     </div>
     <div v-for="post in filteredPosts" :key="post.id">
-      <router-link :to="{ name: 'post', params: { post: post.id } }">
+      <router-link :to="{ name: 'post', params: { post: post.id } }" class="forum-link">
         <header>
           <div class="post-meta">
             <img v-if="post.creator_image" :src="post.creator_image" class="user-image" />
@@ -104,7 +104,7 @@ export default {
 
 .post-image {
   width: 100%;
-  background-color: black;
+  background-color: rgb(0, 0, 0);
   max-height: 400px;
   object-fit: contain;
   border-radius: 8px;
@@ -131,11 +131,10 @@ export default {
 
 .post-list-title {
   margin-bottom: 16px;
-  margin-left: 0px;
+  margin-left: 2vw;
   margin-right: 0px;
   margin-top: 0px;
+  color: rgba(0, 0, 0, 0.767);
 }
-select{
-  /* background-color:rgb(253, 197, 129); */
-}
+
 </style>

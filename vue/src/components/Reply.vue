@@ -2,14 +2,13 @@
     <div class="thread">
         <div class="reply-header">
             <div class="reply-meta">
-                <img v-if="reply.user_image" :src="reply.user_image" class="reply-user-image" />
+                <img  v-if="reply.user && reply.user.user_image" :src="reply.user.user_image" class="reply-user-image" />
                 <span class="reply-user">{{ reply.user.username }}</span>
                 <span class="reply-time">• {{ getTimeElapsed(reply.timeOfCreation) }}</span>
             </div>
         </div>
-
         <p>{{ reply.description }}</p>
-        <div class="post-footer flex items-center justify-start mt-md px-md xs:px-0">
+        <div class="reply-footer">
             <!-- Voting Buttons -->
             <div :class="['vote-container', { 'active-upvote': upvoted, 'active-downvote': downvoted }]">
                 <button @click="upvote" :class="{ 'active-upvote': upvoted, 'downvote-active': downvoted }"
@@ -30,9 +29,17 @@
                     </svg>
                 </button>
             </div>
+            <button @click="() => { formVisibility = true }" aria-label="View comments. {{ post.replyCount }} replies available" class="comment-button">
+                    <svg aria-hidden="true" class="icon-comment" height="20" viewBox="0 0 20 20"
+                        width="20" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M7.725 19.872a.718.718 0 0 1-.607-.328.725.725 0 0 1-.118-.397V16H3.625A2.63 2.63 0 0 1 1 13.375v-9.75A2.629 2.629 0 0 1 3.625 1h12.75A2.63 2.63 0 0 1 19 3.625v9.75A2.63 2.63 0 0 1 16.375 16h-4.161l-4 3.681a.725.725 0 0 1-.489.191ZM3.625 2.25A1.377 1.377 0 0 0 2.25 3.625v9.75a1.377 1.377 0 0 0 1.375 1.375h4a.625.625 0 0 1 .625.625v2.575l3.3-3.035a.628.628 0 0 1 .424-.165h4.4a1.377 1.377 0 0 0 1.375-1.375v-9.75a1.377 1.377 0 0 0-1.374-1.375H3.625Z" fill="#272525">
+                        </path>
+                    </svg>
+                    <span>Reply</span>
+                </button>
+            <button v-if="reply.user.username === user || checkIfMod || role==='ROLE_ADMIN'" class="deletePost" @click="deleteReply">Delete</button>
         </div>
-        <button v-if="reply.user.username === user || checkIfMod || role==='ROLE_ADMIN'" class="deletePost" @click="deleteReply">Delete</button>
-        <button @click="() => { formVisibility = true }">Reply</button>
         <div v-if="formVisibility">
             <form v-on:submit.prevent="addReply">
                 <textarea v-model="newReply.description"></textarea>
@@ -207,7 +214,7 @@ export default {
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
-    /* border: 2px solid #ddd;  */
+    
 }
 
 .reply-user {
@@ -217,7 +224,13 @@ export default {
 .reply-time {
     color: rgb(107, 105, 105);
 }
-
+.reply-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    margin-bottom: 5vh;
+}
 
 .vote-container {
     display: flex;
@@ -281,7 +294,7 @@ export default {
 }
 
 /* Comment button */
-.comment-button {
+.comment-button { 
     background-color: transparent;
     border: none;
     display: flex;

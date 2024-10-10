@@ -1,7 +1,10 @@
 <template>
     <div class="forum">
-        <h1>{{ forum.topic }}</h1>
-        <p>{{ forum.description }}</p>
+        <!-- todo: add styling -->
+        <div class="forum-header">
+            <h1 class="forum-topic">{{ forum.topic }}</h1>
+            <p class="forum-description">{{ forum.description }}</p>
+        </div>
         <button :class="forum.favorited ? 'favorited' : 'not-favorited'" @click="favorite">
             {{ forum.favorited ? 'Favorited' : 'Favorite?' }}
         </button> <!-- eventually a heart will likely go inside the favorite button or the button will be a heart  -->
@@ -124,7 +127,8 @@ button:hover {
 .create-post-button {
     margin-left: 10px;
 }
-.promote-button{
+
+.promote-button {
     margin-left: 10px;
 }
 
@@ -135,6 +139,7 @@ button:hover {
 .not-favorited {
     background-color: #e15d20;
 }
+
 .favorited:hover {
     background-color: rgb(174, 1, 1);
 }
