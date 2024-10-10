@@ -85,7 +85,7 @@ export default {
   color: white; /* Text color */
   border-color: black; /* Remove default border */
   border-radius: 5px; /* Rounded corners */
-  padding: 10px 20px; /* Padding for size */
+  padding: 2px 8px; /* Padding for size */
   font-size: 16px; /* Font size */
   cursor: pointer; /* Pointer cursor on hover */
   transition: background-color 0.3s; /* Smooth transition */
