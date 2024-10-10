@@ -6,7 +6,7 @@
     <form @submit.prevent="createPost">
       <div class="form-group">
         <label for="title">Post Title:</label>
-        <textarea class="title-input" v-model="postTitle" id="title" required></textarea>
+        <textarea class="title-input" v-model="postTitle" id="title" required autofocus></textarea>
       </div>
 
       <div class="form-group">

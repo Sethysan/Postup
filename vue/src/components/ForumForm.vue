@@ -4,7 +4,7 @@
         <form v-on:submit.prevent="submitForm">
             <div class="form-group">
                 <label for="title">Forum Title:</label>
-                <textarea class="title-input" v-model="editForum.topic" id="title" required></textarea>
+                <textarea class="title-input" v-model="editForum.topic" id="title" required autofocus></textarea>
             </div>
 
             <div class="form-group">
