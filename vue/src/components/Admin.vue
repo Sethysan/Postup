@@ -100,5 +100,8 @@ export default {
 </script>
 
 <style>
+html{
+    background-color: rgb(240, 107, 19);
+}
 
 </style>
