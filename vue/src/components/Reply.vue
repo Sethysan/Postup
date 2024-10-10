@@ -2,7 +2,7 @@
     <div class="thread">
         <div class="reply-header">
             <div class="reply-meta">
-                <img  v-if="reply.user && currentReply.user.user_image" :src="currentReply.user.user_image" class="reply-user-image" />
+                <img v-if="reply.user && reply.user.user_image" :src="imageSrc" class="reply-user-image" />
                 <span class="reply-user">{{ currentReply.user.username }}</span>
                 <span class="reply-time">• {{ getTimeElapsed(reply.timeOfCreation) }}</span>
             </div>
@@ -29,16 +29,19 @@
                     </svg>
                 </button>
             </div>
-            <button @click="() => { formVisibility = true }" aria-label="View comments. {{ post.replyCount }} replies available" class="comment-button">
-                    <svg aria-hidden="true" class="icon-comment" height="20" viewBox="0 0 20 20"
-                        width="20" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M7.725 19.872a.718.718 0 0 1-.607-.328.725.725 0 0 1-.118-.397V16H3.625A2.63 2.63 0 0 1 1 13.375v-9.75A2.629 2.629 0 0 1 3.625 1h12.75A2.63 2.63 0 0 1 19 3.625v9.75A2.63 2.63 0 0 1 16.375 16h-4.161l-4 3.681a.725.725 0 0 1-.489.191ZM3.625 2.25A1.377 1.377 0 0 0 2.25 3.625v9.75a1.377 1.377 0 0 0 1.375 1.375h4a.625.625 0 0 1 .625.625v2.575l3.3-3.035a.628.628 0 0 1 .424-.165h4.4a1.377 1.377 0 0 0 1.375-1.375v-9.75a1.377 1.377 0 0 0-1.374-1.375H3.625Z" fill="#272525">
-                        </path>
-                    </svg>
-                    <span>Reply</span>
-                </button>
-            <button v-if="reply.user.username === user || checkIfMod || role==='ROLE_ADMIN'" class="deletePost" @click="deleteReply">Delete</button>
+            <button @click="() => { formVisibility = true }"
+                aria-label="View comments. {{ post.replyCount }} replies available" class="comment-button">
+                <svg aria-hidden="true" class="icon-comment" height="20" viewBox="0 0 20 20" width="20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M7.725 19.872a.718.718 0 0 1-.607-.328.725.725 0 0 1-.118-.397V16H3.625A2.63 2.63 0 0 1 1 13.375v-9.75A2.629 2.629 0 0 1 3.625 1h12.75A2.63 2.63 0 0 1 19 3.625v9.75A2.63 2.63 0 0 1 16.375 16h-4.161l-4 3.681a.725.725 0 0 1-.489.191ZM3.625 2.25A1.377 1.377 0 0 0 2.25 3.625v9.75a1.377 1.377 0 0 0 1.375 1.375h4a.625.625 0 0 1 .625.625v2.575l3.3-3.035a.628.628 0 0 1 .424-.165h4.4a1.377 1.377 0 0 0 1.375-1.375v-9.75a1.377 1.377 0 0 0-1.374-1.375H3.625Z"
+                        fill="#272525">
+                    </path>
+                </svg>
+                <span>Reply</span>
+            </button>
+            <button v-if="reply.user.username === user || checkIfMod || role === 'ROLE_ADMIN'" class="deletePost"
+                @click="deleteReply">Delete</button>
         </div>
         <div v-if="formVisibility">
             <form v-on:submit.prevent="addReply">
@@ -48,7 +51,8 @@
             </form>
         </div>
         <div class="comments" :style="{ marginLeft: `${indent + 20}px` }">
-            <reply v-for="comment in reply.replies" :key="comment.id" :reply="comment" :indent="indent + 20" :forumId="forumId"></reply>
+            <reply v-for="comment in reply.replies" :key="comment.id" :reply="comment" :indent="indent + 20"
+                :forumId="forumId"></reply>
         </div>
     </div>
 </template>
@@ -82,8 +86,8 @@ export default {
     },
     created() {
         this.user = this.$store.getters.username,
-        this.upvoted = this.reply.hasUpvoted,
-        this.downvoted = this.reply.hasDownvoted;
+            this.upvoted = this.reply.hasUpvoted,
+            this.downvoted = this.reply.hasDownvoted;
         this.currentReply = this.reply;
     },
     methods: {
@@ -175,23 +179,27 @@ export default {
         },
     },
     computed: {
+        imageSrc() {
+            const userImage = this.reply.user.user_image.startsWith('http');
+            return userImage ? this.reply.user.user_image : `${this.reply.user.user_image}`;
+        },
         checkIfMod() {
-    const access = this.$store.getters.access;
-    if (Array.isArray(access)) {
-        return access.map(item => item.forumId).findIndex(id => id === this.forumId) !== -1
-    }
-    try {
-        const parsedAccess = JSON.parse(access);        
-        if (Array.isArray(parsedAccess)) {
-            return parsedAccess.map(item => item.forumId).findIndex(id => id === this.forumId) !== -1;
+            const access = this.$store.getters.access;
+            if (Array.isArray(access)) {
+                return access.map(item => item.forumId).findIndex(id => id === this.forumId) !== -1
+            }
+            try {
+                const parsedAccess = JSON.parse(access);
+                if (Array.isArray(parsedAccess)) {
+                    return parsedAccess.map(item => item.forumId).findIndex(id => id === this.forumId) !== -1;
+                }
+            } catch (error) {
+                console.error("Failed to parse access:", error);
+            }
+            return false; // Return false if access is not an array or parsing fails
         }
-    } catch (error) {
-        console.error("Failed to parse access:", error);
     }
-    return false; // Return false if access is not an array or parsing fails
 }
-    }
-    }
 </script>
 
 <style>
@@ -215,7 +223,7 @@ export default {
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
-    
+
 }
 
 .reply-user {
@@ -225,6 +233,7 @@ export default {
 .reply-time {
     color: rgb(107, 105, 105);
 }
+
 .reply-footer {
     display: flex;
     justify-content: space-between;
@@ -295,7 +304,7 @@ export default {
 }
 
 /* Comment button */
-.comment-button { 
+.comment-button {
     background-color: transparent;
     border: none;
     display: flex;
@@ -307,6 +316,8 @@ export default {
 .comment-button svg {
     margin-right: 5px;
     fill: lightgray;
+
+    ;
 }
 
 .comment-button:hover svg {
