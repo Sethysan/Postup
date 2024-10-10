@@ -62,7 +62,8 @@ export default {
             .then(res => {
               this.$store.dispatch('SET_ACCESS', res.data);
             });
-            this.show()
+            this.show({header: `Welcome, ${this.user.username}`, message: "You are now logged into Post-Up"})
+            this.$router.push("/")
           }
         })
         .catch(error => {
@@ -78,19 +79,19 @@ export default {
               username: "",
               password: ""
             };
+            this.show({header: `Sorry, login unsuccessful`, message: "this user has been banned"})
           }
         });
     },
-    async show(){
-      const modal = await openModal(LoggedInMessgae, {username: this.user.username});
-        let count = 2;
+    async show(props){
+      const modal = await openModal(LoggedInMessgae, props);
+        let count = 1;
 
         modal.onclose = () => {
           count--;
           //The modal window will be closed after five attempts.
           if (count > 0) return false;
         }
-        this.$router.push("/")
       }
   },
 };

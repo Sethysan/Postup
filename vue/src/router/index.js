@@ -19,6 +19,7 @@ import MessagesView from '../views/MessagesView.vue';
 import DirectMessage from '../views/DirectMessage.vue';
 import Admin from '../components/Admin.vue';
 import LoggedInMessgae from '../components/LoggedInMessgae.vue';
+import ShareForm from '../components/ShareForm.vue';
 
 /**
  * The Vue Router is used to "direct" the browser to render a specific view component
@@ -131,6 +132,14 @@ const routes = [
     name: "post",
     component: ForumPostView,
     props: true,
+    meta: {
+      requiresAuth: false
+    }
+  },
+  {
+    path: "/posts/share",
+    name: "share",
+    component: ShareForm,
     meta: {
       requiresAuth: false
     }

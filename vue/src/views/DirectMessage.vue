@@ -6,7 +6,7 @@
    <div v-if="error">
       <p>Oops, it looks like the chat couldn't load</p>
     </div>
-<div class="message-container" v-if="!error && !isloading">
+<div class="message-container" v-if="!error">
   <messages :messages="messages" :contact="this.$route.params.user"></messages>
 </div>
 </template>
