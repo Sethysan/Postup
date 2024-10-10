@@ -1,5 +1,4 @@
 <template>
-    {{ users }}
     <div class="admin">
         <h1>Admin</h1>
         <p>Admin page</p>
@@ -43,7 +42,7 @@ export default {
                     console.log(response.data);
                     this.users = response.data.map(user => ({
                         ...user,
-                        isBanned: user.authorities.some(a => a.name === 'ROLE_BANNED')
+                        isBanned: user.role === 'ROLE_BANNED'
                     }));
                 })
                 .catch(error => {
