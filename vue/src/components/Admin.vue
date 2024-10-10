@@ -42,7 +42,7 @@ export default {
                     console.log(response.data);
                     this.users = response.data.map(user => ({
                         ...user,
-                        isBanned: user.authorities.some(a => a.name === 'ROLE_BANNED')
+                        isBanned: user.role === 'ROLE_BANNED'
                     }));
                 })
                 .catch(error => {
@@ -100,5 +100,8 @@ export default {
 </script>
 
 <style>
+html{
+    background-color: rgb(240, 107, 19);
+}
 
 </style>
