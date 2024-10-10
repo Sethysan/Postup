@@ -58,7 +58,7 @@
                     <span>{{ post.replyCount }} Comments</span>
                 </button>
                 <!-- Delete Button -->
-                <button v-if="post.creator_username === user || isMod || role ==='ROLE_ADMIN'" class="delete-button" @click="deletePost">Delete</button>
+                <button v-if="post.creator_username === user || checkIfMod || role ==='ROLE_ADMIN'" class="delete-button" @click="deletePost">Delete</button>
             </div>
             <!-- Reply Form -->
             <div v-if="user">
@@ -247,20 +247,24 @@ export default {
                     });
             }
         },
-        checkIfMod() {
-            this.isMod = false;
-            ModeratorService.getListOfMods(this.post.forum.id)
-                .then(res => {
-                    this.listOfModsOfForum = res.data;
-                    for (let mod of this.listOfModsOfForum) {
-                        if (mod.username === this.$store.getters.username) {
-                            this.isMod = true;
-                        }
-                    }
-                })
-                .catch(err => alert(err));
-        }
     },
+    computed: {
+        checkIfMod() {
+    const access = this.$store.getters.access;
+    if (Array.isArray(access)) {
+        return foundIndex = access.map(item => item.forumId).findIndex(id => id === this.post.forum_id) !== -1
+    }
+    try {
+        const parsedAccess = JSON.parse(access);        
+        if (Array.isArray(parsedAccess)) {
+            return parsedAccess.map(item => item.forumId).findIndex(id => id === this.post.forum_id) !== -1;
+        }
+    } catch (error) {
+        console.error("Failed to parse access:", error);
+    }
+    return false; // Return false if access is not an array or parsing fails
+}
+    }
 }
 </script>
 

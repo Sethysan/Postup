@@ -74,34 +74,19 @@ export default {
     computed: {
         checkIfMod() {
     const access = this.$store.getters.access;
-
-    // Log the access value for debugging
-    console.log("Access:", access);
-
-    // Check if access is an array
     if (Array.isArray(access)) {
-        const foundIndex = access.map(item => item.forumId).findIndex(id => id === this.forumId);
-        console.log("Access is an array. ForumId:", this.forumId, "Found Index:", foundIndex);
-        return foundIndex !== -1; // true if found, false otherwise
+        return foundIndex = access.map(item => item.forumId).findIndex(id => id === this.forumId) !== -1
     }
-
-    // If access is a JSON string, parse it
     try {
-        const parsedAccess = JSON.parse(access);
-        console.log("Parsed Access:", parsedAccess);
-        
+        const parsedAccess = JSON.parse(access);        
         if (Array.isArray(parsedAccess)) {
-            const foundIndex = parsedAccess.map(item => item.forumId).findIndex(id => id === this.forum.id);
-            console.log("Parsed access is an array. ForumId:", this.forum.id, "Found Index:", foundIndex);
-            return foundIndex !== -1; // true if found, false otherwise
+            return parsedAccess.map(item => item.forumId).findIndex(id => id === this.forum.id) !== -1;
         }
     } catch (error) {
         console.error("Failed to parse access:", error);
     }
-
     return false; // Return false if access is not an array or parsing fails
 }
-
     }
 }
 </script>
