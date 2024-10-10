@@ -38,7 +38,10 @@ public class ReplyController {
     public List<ReplyResponseDto> getRepliesByPost(@PathVariable long id, Principal principal){
         long user = -1;
         if(principal != null){
-            user = userDao.getUserByUsername(principal.getName()).getId();
+            User yup = userDao.getUserByUsername(principal.getName()) ;
+            if(yup!=null){
+                user = yup.getId();
+            }
         }
         System.out.println("user: " + user);
         return replyDao.getPostThreads(id, user);
@@ -48,7 +51,10 @@ public class ReplyController {
     public ReplyResponseDto getReplyById(@PathVariable long id, Principal principal){
         long user = -1;
         if(principal != null){
-            user = userDao.getUserByUsername(principal.getName()).getId();
+            User yup = userDao.getUserByUsername(principal.getName()) ;
+            if(yup!=null){
+                user = yup.getId();
+            }
         }
         return replyDao.getReplyById(id, user);
     }
@@ -58,7 +64,10 @@ public class ReplyController {
     public List<ReplyResponseDto> getUserReplies(@PathVariable long id, Principal principal){
         long user = -1;
         if(principal != null){
-            user = userDao.getUserByUsername(principal.getName()).getId();
+            User yup = userDao.getUserByUsername(principal.getName()) ;
+            if(yup!=null){
+                user = yup.getId();
+            }
         }
         return replyDao.getReplyByUser(id, user);
     }

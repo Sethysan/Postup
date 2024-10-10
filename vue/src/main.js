@@ -7,7 +7,6 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faThumbsUp, faThumbsDown } from '@fortawesome/free-regular-svg-icons';
 import { faCircleArrowUp, faCircleArrowDown} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-// import Toast, { POSITION } from 'vue-toastification';
 // import 'vue-toastification/dist/index.css';
 
 library.add(faThumbsUp, faThumbsDown,faCircleArrowUp,faCircleArrowDown);
