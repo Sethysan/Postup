@@ -236,7 +236,8 @@ export default {
 }
 .search-button{
     margin-bottom: 15px;
-    background-color:rgb(222, 221, 221) ;
+    color: white;
+    background-color:grey ;
     cursor: pointer;
     transition: .5s;
     margin-top: 20px;

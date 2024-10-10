@@ -1,11 +1,11 @@
 <template>
     <h1>Messages</h1>
   <contact-list :contacts="contacts"></contact-list>
-  <button :onclick="onVisible" v-if="!visible">Start New Message</button>
+  <button class="btn-message" :onclick="onVisible" v-if="!visible">Start New Message</button>
   <select v-if="visible" v-model="user">
     <option v-for="user in users" :key="user.id" :value="user">{{ user.username }}</option>
   </select>
-  <button :onclick="goToMessages" v-if="visible">Start Message With {{ filter }}</button>
+  <button class="btn-message" :onclick="goToMessages" v-if="visible">Start Message With {{ filter }}</button>
 </template>
 
 <script>
@@ -44,5 +44,14 @@ export default {
 </script>
 
 <style>
-
+.btn-message {
+  background-color: grey;
+  color: white;
+  border-color: black; /* Remove default border */
+  border-radius: 5px; /* Rounded corners */
+  padding: 2px 8px; /* Padding for size */
+  font-size: 14px; /* Font size */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth transition */
+}
 </style>
