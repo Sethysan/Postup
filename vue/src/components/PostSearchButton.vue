@@ -1,7 +1,7 @@
 <template>
     <div>
       <input v-model="keyword" type="text" placeholder="search" />
-      <button type="button" :onclick="search">Search</button>
+      <button class="btn-post-search" type="button" :onclick="search">Search</button>
     </div>
   </template>
   
@@ -20,4 +20,17 @@
     }
   };
   </script>
+
+  <style>
+.btn-post-search{
+  background-color: grey;
+  color: white;
+  border-color: black; /* Remove default border */
+  border-radius: 5px; /* Rounded corners */
+  padding: 2px 8px; /* Padding for size */
+  font-size: 14px; /* Font size */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth transition */
+}
+</style>
   
