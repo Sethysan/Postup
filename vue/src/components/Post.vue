@@ -21,6 +21,7 @@
                 <span class="post-time">• {{ getTimeElapsed(post.timeOfCreation) }}</span>
             </div>
         </div>
+        <!-- <share-form :post="post" :url="`http://localhost:5173/posts/${this.post.id}`"></share-form> -->
         <h1 class="post-title">{{ post.title }}</h1>
         <p class="post-description">{{ post.description }}</p>
         <div class="post-image-container">
@@ -91,6 +92,8 @@ import service from '../services/PostService';
 import replySerive from '../services/RepliesService'
 import Replies from './Replies.vue';
 import ModeratorService from '../services/ModeratorService';
+import { openModal, promptModal } from 'jenesius-vue-modal';
+import ShareForm from './ShareForm.vue';
 // import { useToast } from 'vue-toastification';
 
 export default {
@@ -120,7 +123,7 @@ export default {
             required: true
         }
     },
-    components: { Replies },
+    components: { Replies, ShareForm },
     data() {
         return {
             isImageFullscreen: false,
@@ -132,7 +135,8 @@ export default {
             role: this.$store.getters.role,
             listOfModsOfForum: [],
             isMod: false,
-            forumId: 0
+            forumId: 0,
+            isSharing: false
         }
     },
     created() {
