@@ -150,13 +150,13 @@ button {
 
 .error-message,
 .welcome-message {
-  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bolder;
   padding: 10px;
   margin: 10px auto;
+  margin-left: 0px;
   border-radius: 5px;
-  width: calc(100% - 2rem);
-  max-width: 500px;
-  /* Limit the maximum width */
+  width: 70%;
+  max-width: 100%;
   box-sizing: border-box;
 }
 
@@ -175,6 +175,7 @@ button {
 @media (max-width: 850px) {
   .form-input-group {
     padding: 0 1rem;
+    padding-bottom: 1rem;
     width: 100%;
   }
 
@@ -192,7 +193,16 @@ button {
   margin-bottom: 75rem;
 }
 p{
-  padding: 1rem;
+  padding: 2rem;
+}
+.error-message{
+  margin-left: 1rem;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+h1{
+  margin-left:1rem;
 }
 }
+
 </style>

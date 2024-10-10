@@ -83,15 +83,15 @@ export default {
     loadStockImages() {
       this.stockImages = [
 
-        { name: 'Default Avatar 1', url: '/public/images/avatars/stock1.jpg' },
-        { name: 'Default Avatar 2', url: '/public/images/avatars/stock2.jpg' },
-        { name: 'Default Avatar 3', url: '/public/images/avatars/stock3.jpg' },
-        { name: 'Default Avatar 4', url: '/public/images/avatars/stock4.jpg' },
-        { name: 'Default Avatar 5', url: '/public/images/avatars/stock5.jpg' },
-        { name: 'Default Avatar 6', url: '/public/images/avatars/stock6.jpg' },
-        { name: 'Default Avatar 7', url: '/public/images/avatars/stock7.jpg' },
-        { name: 'Default Avatar 8', url: '/public/images/avatars/stock8.jpg' },
-        { name: 'Default Avatar 9', url: '/public/images/avatars/stock9.jpg' },
+        { name: 'Default Avatar 1', url: '/images/avatars/stock1.jpg' },
+        { name: 'Default Avatar 2', url: '/images/avatars/stock2.jpg' },
+        { name: 'Default Avatar 3', url: '/images/avatars/stock3.jpg' },
+        { name: 'Default Avatar 4', url: '/images/avatars/stock4.jpg' },
+        { name: 'Default Avatar 5', url: '/images/avatars/stock5.jpg' },
+        { name: 'Default Avatar 6', url: '/images/avatars/stock6.jpg' },
+        { name: 'Default Avatar 7', url: '/images/avatars/stock7.jpg' },
+        { name: 'Default Avatar 8', url: '/images/avatars/stock8.jpg' },
+        { name: 'Default Avatar 9', url: '/images/avatars/stock9.jpg' },
       ];
     },
     selectStockImage(url) {
@@ -202,13 +202,16 @@ button {
 }
 
 .error-message {
-  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bolder;
+  width: 71%;
+  max-width: 100%;
   color: #ff4d4d;
-  background-color: #ffe6e6;
+  background-color: #fad2d2;
   border: 1px solid #ff4d4d;
   padding: 10px;
   margin: 10px 0;
-  border-radius: 5px;
+  border-radius: 8px;
+  margin-left: 0px;
 }
 
 .credit {
@@ -235,6 +238,10 @@ button {
   input[type="url"],
   button {
     width: 100%;
+  }
+  .error-message {
+    margin-left: 5px;
+    width: 93%;
   }
 
 }
@@ -273,6 +280,9 @@ button {
   button {
     padding: 0.5rem;
   }
-
+  .error-message {
+    margin-left: 14px;
+    width: 90%;
+  }
 }
 </style>

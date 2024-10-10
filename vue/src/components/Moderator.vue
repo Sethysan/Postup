@@ -18,7 +18,7 @@
                 <!-- also inside loop button for promote to moderator -->
                 <!-- will also be a table component <td> -->
                 <td>
-                    <button @click="promoteUser(user)">Promote to Moderator</button>
+                    <button class="btn-mod" @click="promoteUser(user)">Promote to Moderator</button>
                 </td>
             </tr>
         </tbody>
@@ -73,4 +73,14 @@ export default {
 
 <style scoped>
 
+.btn-mod {
+    background-color: grey; /* Primary color */
+  color: white; /* Text color */
+  border-color: black; /* Remove default border */
+  border-radius: 5px; /* Rounded corners */
+  padding: 2px 8px; /* Padding for size */
+  font-size: 14px; /* Font size */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth transition */
+}
 </style>

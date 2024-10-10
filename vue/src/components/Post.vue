@@ -16,7 +16,7 @@
             </div>
             <!-- Author and Metadata -->
             <div class="post-meta">
-                <img v-if="post.creator_image" :src="post.creator_image" class="user-image" />
+                <img v-if="post.creator_image" :src="imageSrc" class="user-image" />
                 <span class="post-author">{{ post.creator_username }}</span>
                 <span class="post-time">• {{ getTimeElapsed(post.timeOfCreation) }}</span>
             </div>
@@ -259,6 +259,10 @@ export default {
         },
     },
     computed: {
+        imageSrc() {
+      const isUrl = this.post.creator_image.startsWith('http');
+      return isUrl ? this.post.creator_image : `${this.post.creator_image}`;
+    },
         checkIfMod() {
     const access = this.$store.getters.access;
     if (Array.isArray(access)) {

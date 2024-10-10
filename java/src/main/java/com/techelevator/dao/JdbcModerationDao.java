@@ -38,7 +38,6 @@ public class JdbcModerationDao implements ModerationDao{
             Moderation mod = mapRowToModeration(results);
             list.add(mod);
         }
-        System.out.println("moderator list \n" + list);
         return list;
     }
 
