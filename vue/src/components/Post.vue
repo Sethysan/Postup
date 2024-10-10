@@ -1,4 +1,5 @@
 <template>
+    <div>
     <div v-if="isImageFullscreen" class="fullscreen-container" @click="toggleImageFullscreen">
         <img :src="post.image" class="post-image-fullscreen" />
     </div>
@@ -58,7 +59,7 @@
                     <span>{{ post.replyCount }} Comments</span>
                 </button>
                 <!-- Delete Button -->
-                <button v-if="post.creator_username === user || checkIfMod || role ==='ROLE_ADMIN'" class="delete-button" @click="deletePost">Delete</button>
+                <button v-if="post.creator_username === user || isMod || role ==='ROLE_ADMIN'" class="delete-button" @click="deletePost">Delete</button>
             </div>
             <!-- Reply Form -->
             <div v-if="user">
@@ -77,9 +78,11 @@
             <div v-if="!isImageFullscreen">
             </div>
         </div>
-        <replies :replies="replies" :isMod="checkIfMod"></replies>
+        <div>
+        <replies :replies="replies" :forumId="post.forum_id"></replies>
     </div>
-
+    </div>
+</div>
 </template>
 
 <script>
@@ -128,15 +131,18 @@ export default {
             newReply: {},
             role: this.$store.getters.role,
             listOfModsOfForum: [],
-            isMod: false
+            isMod: false,
+            forumId: 0
         }
     },
     created() {
         this.user = this.$store.getters.username,
-            this.upvoted = this.post.hasUpvoted,
-            this.downvoted = this.post.hasDownvoted;
-        this.checkIfMod
-
+        this.upvoted = this.post.hasUpvoted,
+        this.downvoted = this.post.hasDownvoted;
+        this.isMod = this.checkIfMod
+    },
+    mounted(){
+        this.forumId = this.post_forumId
     },
     methods: {
         goBack() {
