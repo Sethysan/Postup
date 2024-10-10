@@ -81,9 +81,9 @@ export default {
   margin-top: 20px;
 }
 .admin-button {
-  background-color:blue; /* Primary color */
+  background-color:rgb(240, 107, 19); /* Primary color */
   color: white; /* Text color */
-  border: none; /* Remove default border */
+  border-color: black; /* Remove default border */
   border-radius: 5px; /* Rounded corners */
   padding: 10px 20px; /* Padding for size */
   font-size: 16px; /* Font size */
@@ -92,7 +92,7 @@ export default {
 }
 
 .admin-button:hover {
-  background-color: blue; /* Darker shade on hover */
+  background-color: rgb(240, 107, 19); /* Darker shade on hover */
 }
 
 .admin-button a {
