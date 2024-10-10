@@ -14,11 +14,11 @@
                 <tr v-for="user in users" :key="user.id">
                     <td>{{ user.username }}</td>
                     <td>
-                        <button @click="promoteToAdmin(user)">Promote to Admin</button>
+                        <button class="btn-admin" @click="promoteToAdmin(user)">Promote to Admin</button>
                     </td>
                     <td>
-                        <button v-if="!user.isBanned" @click="banUser(user)">BAN</button>
-                        <button v-else @click="unbanUser(user)">UNBAN</button>
+                        <button class="btn-admin" v-if="!user.isBanned" @click="banUser(user)">BAN</button>
+                        <button class="btn-admin" v-else @click="unbanUser(user)">UNBAN</button>
                     </td>
                 </tr>
             </tbody>
@@ -108,7 +108,7 @@ tbody tr td:first-child {
     font-weight: bold;
 }
 
-button {
+.btn-admin {
     background-color:grey; /* Primary color */
   color: white; /* Text color */
     border-color: black; /* Remove default border */
