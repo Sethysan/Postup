@@ -39,11 +39,11 @@ export default {
         if (this.forum) {
             // If forum data is already passed as a prop, use it
             this.currentForum = this.forum;
-            // this.checkIfMod();
         } else {
             // Otherwise, fetch the forum from the service
             service.getForum(this.forumId).then(res => {
                 this.currentForum = res.data;
+                this.checkIfMod();
             });
         }
     },
@@ -75,7 +75,7 @@ export default {
         checkIfMod() {
     const access = this.$store.getters.access;
     if (Array.isArray(access)) {
-        return foundIndex = access.map(item => item.forumId).findIndex(id => id === this.forumId) !== -1
+        return access.map(item => item.forumId).findIndex(id => id === this.forumId) !== -1
     }
     try {
         const parsedAccess = JSON.parse(access);        

@@ -1,6 +1,5 @@
 import { createStore as _createStore } from 'vuex';
 import axios from 'axios';
-// import service from '../services/SocketService'
 
 const NOTIFICATION_TIMEOUT = 5000;
 
@@ -99,7 +98,7 @@ export function createStore(currentToken, currentUser, currentAccess, userList =
         }
       },
       role(state) {
-        if(state.user == {}){
+        if(!state.user || !state.user.authorities){
           return 'ROLE_USER';
         }
         return state.user.authorities.length > 0 ? state.user.authorities[0].name : 'ROLE_USER'

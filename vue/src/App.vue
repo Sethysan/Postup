@@ -54,7 +54,12 @@ export default {
     getLinkClass(routeName) {
       return this.$route.name === routeName ? 'router-link-active' : 'router-link-nonactive';
     }
-  }
+  },
+  data() {
+    return {
+      role: this.$store.getters.role
+    };
+  },
 }
   ;
 </script>

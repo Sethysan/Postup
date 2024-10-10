@@ -101,14 +101,14 @@ public class ForumController {
         return forumsDao.getForumsBySearch(searchTerm, user);
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/forums/favorites")
     public List<Forum> getFavoritedForums(Principal principal){
         return forumsDao.getFavoriteForums(userDao.getUserByUsername(principal.getName()).getId());
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/forum/{id}/favorites")
     public void addFavorite(@PathVariable long id,  Principal principal){
         forumsDao.addFavorite(id, userDao.getUserByUsername(principal.getName()).getId());

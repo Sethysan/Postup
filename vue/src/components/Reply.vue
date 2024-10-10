@@ -2,12 +2,12 @@
     <div class="thread">
         <div class="reply-header">
             <div class="reply-meta">
-                <img  v-if="reply.user && reply.user.user_image" :src="reply.user.user_image" class="reply-user-image" />
-                <span class="reply-user">{{ reply.user.username }}</span>
+                <img  v-if="reply.user && currentReply.user.user_image" :src="currentReply.user.user_image" class="reply-user-image" />
+                <span class="reply-user">{{ currentReply.user.username }}</span>
                 <span class="reply-time">• {{ getTimeElapsed(reply.timeOfCreation) }}</span>
             </div>
         </div>
-        <p>{{ reply.description }}</p>
+        <p>{{ currentReply.description }}</p>
         <div class="reply-footer">
             <!-- Voting Buttons -->
             <div :class="['vote-container', { 'active-upvote': upvoted, 'active-downvote': downvoted }]">
@@ -48,7 +48,7 @@
             </form>
         </div>
         <div class="comments" :style="{ marginLeft: `${indent + 20}px` }">
-            <reply v-for="comment in reply.replies" :key="comment.id" :reply="comment" :indent="indent + 20"></reply>
+            <reply v-for="comment in reply.replies" :key="comment.id" :reply="comment" :indent="indent + 20" :forumId="forumId"></reply>
         </div>
     </div>
 </template>
@@ -56,10 +56,14 @@
 <script>
 import dayjs from 'dayjs';
 import replySerive from '../services/RepliesService';
-import PostService from '../services/PostService';
-import ModeratorService from '../services/ModeratorService';
+
 export default {
-    props: ['reply', 'indent'],
+    props: ['reply', 'indent', 'forumId'],
+    // props: {
+    //     reply: Object,
+    //     indent: Number,
+    //     forumId: Number
+    // },
     data() {
         return {
             styles: { margin: this.indent },
@@ -72,14 +76,15 @@ export default {
             upvoted: false,
             downvoted: false,
             role: this.$store.getters.role,
-            post: {},
-            listOfModsOfForum: []
+            access: this.$store.getters.access,
+            currentReply: {}
         }
     },
     created() {
         this.user = this.$store.getters.username,
-            this.upvoted = this.reply.hasUpvoted,
-            this.downvoted = this.reply.hasDownvoted;
+        this.upvoted = this.reply.hasUpvoted,
+        this.downvoted = this.reply.hasDownvoted;
+        this.currentReply = this.reply;
     },
     methods: {
         addReply() {
@@ -110,7 +115,6 @@ export default {
                         // If already downvoted, remove downvote
                         if (this.downvoted) {
                             this.reply.downvotes--;
-                            this.downvoted = false;
                         }
                         this.reply.upvotes++;
                         this.upvoted = true;
@@ -154,9 +158,11 @@ export default {
         deleteReply() {
             if (confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
                 replySerive.deleteReply(this.reply.id)
-                    .then(response => {
+                    .then(res => {
                         this.$store.commit('SET_NOTIFICATION', `Post ${this.reply.id} was deleted.`);
-                        this.$router.go();
+                        this.currentReply.user.username = 'removed';
+                        this.currentReply.description = 'removed';
+                        this.currentReply.user.user_image = 'https://sm.ign.com/ign_ap/cover/a/avatar-gen/avatar-generations_hugw.jpg';
                     })
                     .catch(error => {
                         alert("error " + error.response.status)
@@ -167,30 +173,25 @@ export default {
             // dayjs converts time into a readable format and calculates the elapsed time
             return dayjs(timeOfCreation).fromNow();
         },
+    },
+    computed: {
         checkIfMod() {
-            let isMod = false;
-
-            PostService.getPostById(this.reply.postId)
-                .then(res => {
-                    this.post = res.data;
-                })
-                .catch(err => alert(err));
-
-            ModeratorService.getListOfMods(this.post.forumId)
-                .then(res => {
-                    this.listOfModsOfForum = res.data;
-                })
-                .catch(err => alert(err));
-
-            for (let mod of this.listOfModsOfForum) {
-                if (mod.username === this.$store.getters.username) {
-                    isMod = true;
-                }
-            }
-            return isMod;
-        }
+    const access = this.$store.getters.access;
+    if (Array.isArray(access)) {
+        return access.map(item => item.forumId).findIndex(id => id === this.forumId) !== -1
     }
+    try {
+        const parsedAccess = JSON.parse(access);        
+        if (Array.isArray(parsedAccess)) {
+            return parsedAccess.map(item => item.forumId).findIndex(id => id === this.forumId) !== -1;
+        }
+    } catch (error) {
+        console.error("Failed to parse access:", error);
+    }
+    return false; // Return false if access is not an array or parsing fails
 }
+    }
+    }
 </script>
 
 <style>
