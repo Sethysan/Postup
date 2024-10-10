@@ -37,13 +37,13 @@ export default {
         if (this.forum) {
             // If forum data is already passed as a prop, use it
             this.currentForum = this.forum;
-            // this.checkIfMod();
         } else {
             // Otherwise, fetch the forum from the service
             service.getForum(this.$route.params.forumId).then(res => {
                 this.currentForum = res.data;
+                this.checkIfMod();
             });
-            // this.checkIfMod();
+            
         }
      
     },
@@ -72,16 +72,16 @@ export default {
         },
         checkIfMod() {
             this.isMod = false;
-            let num = 0;
-            if (this.forumId) {
-                num = this.forumId;
-            }
-            else {
-                let num = this.forumId;
-            }
-            ModeratorService.getListOfMods(num)
+            // let num = 0;
+            // if (this.forumId) {
+            //     num = this.forumId;
+            // }
+            // else {
+            //     let num = this.forumId;
+            // }
+            ModeratorService.getListOfMods(this.forum.id)
                 .then(res => {
-                    console.log(res.data);
+                    console.log(res.data)
                     this.listOfModsOfForum = res.data;
 
                     for (let mod of this.listOfModsOfForum) {
