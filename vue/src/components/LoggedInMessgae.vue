@@ -1,17 +1,16 @@
 <template>
     <div class="pop-up">
-    <h2>Welcome, {{ username }}</h2>
-    <p>You are now logged in to Post-Up</p>
+    <h2>{{ header }}</h2>
+    <p>{{  message }}</p>
     <!-- <button @click="close">Ok</button> -->
     </div>
 </template>
 
 <script>
-import {closeModal} from 'jenesius-vue-modal';
 
 export default {
     name: 'LoggedInMessage',
-    props: ['username'],
+    props: ['header', 'message'],
     data(){
 
     },
