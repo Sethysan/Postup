@@ -1,5 +1,6 @@
 <template>
     <router-link :to="{ name: 'forum', params: { id: forum.id } }" class="forum-link">
+        <div class="forum-snippet"></div>
         <h2>{{ forum.topic }}
             <!-- formatted time elapsed display with styling -->
             <p class="inline-time"> {{ forum.author }} </p>

@@ -110,7 +110,7 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public void updateUserImage(long id, String userImage) {
-        String sql = "UPDATE users SET user_image = ? WHERE user_id = ?";
+        String sql = "UPDATE users SET user_image = REPLACE(?, '\"', '') WHERE user_id = ?";
         try {
             jdbcTemplate.update(sql, userImage, id);
         } catch (CannotGetJdbcConnectionException e) {

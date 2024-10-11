@@ -54,11 +54,11 @@ public class User {
    }
 
    public String getUserImage() {
-      return user_image;
+      return trimQuotes(this.user_image);
    }
 
    public void setUserImage(String userImage) {
-      this.user_image = userImage;
+      this.user_image = trimQuotes(userImage);
    }
 
    public boolean isActivated() {
@@ -101,6 +101,12 @@ public class User {
    @Override
    public int hashCode() {
       return Objects.hash(id, username, password, user_image, activated, authorities);
+   }
+   public String trimQuotes(String input) {
+      if (input != null && input.startsWith("\"") && input.endsWith("\"")) {
+         return input.substring(1, input.length() - 1);
+      }
+      return input;
    }
 
    @Override

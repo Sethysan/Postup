@@ -11,11 +11,13 @@
       <router-link :to="{ name: 'post', params: { post: post.id } }" class="forum-link">
         <header>
           <div class="post-meta">
-            <img v-if="post.creator_image" :src="post.creator_image" class="user-image" />
-            <p class="post-author">{{ post.creator_username }} </p>
+            <div class="user-image-frame">
+              <img v-if="post.creator_image" :src="post.creator_image" class="user-image" />
+            </div>
+              <p class="post-author">{{ post.creator_username }} </p>
             <p class="post-time">• {{ getTimeElapsed(post.timeOfCreation) }}</p>
+            <h3 class="post-list-title">{{ post.title }}</h3>
           </div>
-          <h3 class="post-list-title">{{ post.title }}</h3>
         </header>
         <section>
           <img v-if="post.image" :src="post.image" class="post-image" />
@@ -118,7 +120,6 @@ export default {
   gap: 5px;
   /* Adjust spacing between author and time */
   font-size: 0.875rem;
-
 }
 
 .post-author {
@@ -136,5 +137,4 @@ export default {
   margin-top: 0px;
   color: rgba(0, 0, 0, 0.767);
 }
-
 </style>
