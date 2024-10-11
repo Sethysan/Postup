@@ -239,8 +239,9 @@ export default {
 
 .reply-footer {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex start;
     align-items: center;
+    gap: 10px;
     margin-top: 12px;
     margin-bottom: 5vh;
 }

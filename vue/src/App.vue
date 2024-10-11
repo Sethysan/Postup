@@ -183,7 +183,7 @@ export default {
 }
 
 .user-portrait {
-  height: calc(2 * 60px);
+  width: calc(2 * 60px);
   height: calc(2 * 60px);
   border-radius: 50%;
   object-fit: cover;

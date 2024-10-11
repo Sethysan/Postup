@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS favorite_forums, comment_replies, reply_upvote, reply_downv
 CREATE TABLE users (
 	user_id SERIAL,
 	username varchar(25) NOT NULL UNIQUE,
-	password_hash varchar(200) NOT NULL,
+	password_hash varchar(250) NOT NULL,
 	role varchar(50) NOT NULL,
 	user_image varchar(500),
 	CONSTRAINT PK_user PRIMARY KEY (user_id)
@@ -25,7 +25,7 @@ CREATE TABLE direct_message (
 
 CREATE TABLE forums (
     forum_id SERIAL,
-    topic varchar(200) NOT NULL,
+    topic varchar(300) NOT NULL,
     description varchar(1000),
     author varchar(25) NOT NULL,
     time_of_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -77,7 +77,7 @@ CREATE TABLE post_downvote (
 -- I did not add cascade here as the replies might need to work a little different to immitate reddit properly
 CREATE TABLE replies (
     reply_id SERIAL,
-    description varchar(200),
+    description varchar(400),
     time_of_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     post_id int,
     user_id int,

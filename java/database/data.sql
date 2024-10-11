@@ -15,7 +15,8 @@ INSERT INTO users (username, password_hash, role, user_image) VALUES
 ( 'Ash', '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', 'ROLE_USER', 'https://plus.unsplash.com/premium_photo-1664541336896-b3d5f7dec9a3?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
 ( 'Lilly', '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', 'ROLE_MODERATOR', 'https://images.unsplash.com/photo-1586297135537-94bc9ba060aa?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
 ( 'Mutex', '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', 'ROLE_ADMIN', 'https://images.unsplash.com/photo-1678286742832-26543bb49959?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
-( 'Daniel', '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', 'ROLE_USER', 'https://plus.unsplash.com/premium_photo-1661580702098-b1a081567ba3?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+( 'Daniel', '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', 'ROLE_USER', 'https://plus.unsplash.com/premium_photo-1661580702098-b1a081567ba3?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+( 'Post Malone','$2a$10$ULDRx1DQzKSPSnvYvU8dveGjKRRzGkCWvQTwOP9/TaA7dWyUd4iJa','ROLE_USER', 'https://static0.gamerantimages.com/wordpress/wp-content/uploads/2024/03/elden-ring-malenia-challenge-rune-level-1-broken-arm.jpg');
 
 -- Insert mock forums
 INSERT INTO forums (topic, description, author, time_of_creation) VALUES
@@ -26,7 +27,7 @@ INSERT INTO forums (topic, description, author, time_of_creation) VALUES
 
 -- Insert mock posts
 INSERT INTO posts (title, description, image, author, forum_id, time_of_creation) VALUES
-( 'Starfield: Bethesda’s Space RPG Breaks Records', 'Bethesda’s highly anticipated space RPG, Starfield, has broken multiple records, including over 6 million players at launch. Players explore an open-world galaxy, filled with planets, space stations, and a deep narrative to uncover.', 'https://cdn.akamai.steamstatic.com/steam/apps/1716740/capsule_616x353.jpg?t=1691779121', 'Lilly', 2, '2024-10-05 12:30:00'),
+( 'Elden Ring: Shadow of the Erdtree DLC Review', 'When I gave Elden Ring a 10 two years ago, I did so not just because it’s an incredible game, but because it also raised the bar for open-world games as a whole. The way it encourages exploration, rewards curiosity, and challenges you to find your own individual solutions to difficult combat encounters by including tons of different viable weapons, spells, and other build options is absolutely exemplary. Now, FromSoftware is back to raise the bar on everyone yet again, this time when it comes to what you’d expect from a "simple" DLC. Shadow of the Erdtree may not do anything radically different from the base game, but this expansion somehow feels like a scaled-down version of that same experience that recaptures all of the magic of playing Elden Ring for the first time, with more content packed within than many fully priced games. Its unexpectedly large realm is filled with new secrets, new discoveries, a ton of new build options to experiment with, as well as some of the most challenging and unforgettable boss battles Souls fans will have ever seen.', 'https://platform.polygon.com/wp-content/uploads/sites/2/chorus/uploads/chorus_asset/file/25297591/elden_ring_shadow_erdtree_details.jpg?quality=90&strip=all&crop=7.8125%2C0%2C84.375%2C100&w=750', 'Lilly', 2, '2024-10-05 12:30:00'),
 ( 'Cyberpunk 2077: Phantom Liberty Expansion Review', 'Phantom Liberty, the much-anticipated expansion for Cyberpunk 2077, introduces Idris Elba’s character Solomon Reed, expanding on the world of Night City with brand-new areas and quests. Does this expansion redeem the game after its rocky launch?', 'https://cdn.akamai.steamstatic.com/steam/apps/1091500/header.jpg?t=1693568339', 'Forrest', 2, '2024-10-05 13:00:00'),
 ( 'Understanding JavaScript Closures', 'Can someone explain closures in JavaScript? I keep getting confused by the concept of inner functions having access to outer function variables.', 'https://edward-huang.com/images/what-is-really-so-special-about-javascript-closure-/Closure%20JS.png', 'Forrest', 3, '2024-10-05 14:00:00'),
 ( 'Help with Java ArrayList', 'I need help with adding and removing elements from an ArrayList in Java. I keep getting `IndexOutOfBoundsException`. Can someone tell me what I am doing wrong?', 'https://upload.wikimedia.org/wikipedia/en/3/30/Java_programming_language_logo.svg', 'Ash', 3, '2024-10-05 14:30:00'),
@@ -77,17 +78,17 @@ INSERT INTO post_downvote (post_id, user_id) VALUES
 (2, 2);  -- Ash     downvoted post 2
 -- Insert mock replies
 INSERT INTO replies (description, post_id, user_id, time_of_creation) VALUES
-('I love Python too! It’s my go-to language.', 1, 2, '2024-01-05 15:00:00'), --1
-('I prefer JavaScript for web development.', 1, 3, '2024-01-05 15:30:00'), --2
+('My experience so far “Oh boy, I sure do hope I remember how to play” ....gets annihilated in seconds... “Guess I don’t”', 1, 2, '2024-01-05 15:00:00'), --1
+('I platinum''d the game two years ago and I ended by stripping naked and resetting my stats. I died 10 times to the first enemy on the broken arch.', 1, 3, '2024-01-05 15:30:00'), --2
 ('Great list! I agree with most of the games here.', 2, 1, '2024-01-06 16:00:00'),
 ('Try using the debugger tool in your IDE.', 3, 4, '2024-01-07 17:00:00'),
 ('AI is going to revolutionize every industry.', 5, 2, '2024-01-09 19:00:00'),
 ('These images are breathtaking! The James Webb Telescope is revolutionizing space exploration.', 1, 2, '2024-10-05 09:30:00'),
-('I can’t believe how clear the details are. This is truly cutting-edge science.', 1, 3, '2024-10-05 09:45:00'),
+('I''m the same. Hasn''t been pretty', 1, 3, '2024-10-05 09:45:00'),
 ('The Wolf-Rayet star is fascinating. The formation of cosmic dust plays such a critical role in star and planet formation.', 2, 1, '2024-10-05 10:30:00'),
 ('This is why the Webb telescope is such a valuable tool for astronomers.', 3, 2, '2024-10-05 11:30:00'),
-('Elden Ring really deserves its spot at the top. The open-world experience was incredible.', 1, 3, '2024-10-05 12:15:00'), --10
-('Tears of the Kingdom took everything great about Breath of the Wild and expanded it. I loved it.', 1, 2, '2024-10-05 12:20:00'),
+('They''ll dial it back or I''ll level up', 1, 3, '2024-10-05 12:15:00'), --10
+('GET GOOD', 1, 7, '2024-10-05 12:20:00'),
 ('Starfield was everything I wanted from a space RPG. Bethesda nailed it!', 2, 1, '2024-10-05 12:45:00'),
 ('The game was a bit buggy at launch, but they’ve patched it up really well since then.', 2, 3, '2024-10-05 12:50:00'),
 ('Phantom Liberty is a great expansion, but the core issues with Cyberpunk 2077 are still there.', 3, 2, '2024-10-05 13:20:00'),
@@ -96,8 +97,8 @@ INSERT INTO replies (description, post_id, user_id, time_of_creation) VALUES
 ('Are you sure you are not trying to access an invalid index? Make sure the index exists before you remove an item from the ArrayList.', 2, 3, '2024-10-05 14:45:00'),
 ('Both are great for web development, but Python might be easier for a beginner. Java, on the other hand, is more widely used in enterprise solutions.', 3, 4, '2024-10-05 15:20:00'),
 ('If you are familiar with Java, I would recommend Spring. It’s more structured, though Django can be quicker to start with.', 3, 1, '2024-10-05 15:30:00'),
-('Quantum computing could solve problems like cryptography and climate modeling that classical computers can’t handle.', 1, 2, '2024-10-05 16:15:00'),
-('The potential of quantum computing is huge, but I’m worried about how long it will take to see real-world applications.', 1, 4, '2024-10-05 16:25:00'),
+('But but “the game is fun so it be totally unoptimized that’s okay', 1, 2, '2024-10-05 16:15:00'),
+('Pretty much the excuse since day one. "The stutters are bad but they only happen once per area then it is fine because the shaders will be compiled". Once per area is the problem, every first attempt at fighting a boss always causes a stutter because you haven''t visited there before.', 1, 4, '2024-10-05 16:25:00'),
 ('AI will definitely change the workforce, but I think it will create new opportunities in fields we can’t even imagine yet.', 2, 3, '2024-10-05 16:45:00'),
 ('AI taking over repetitive tasks will free up humans to focus on creative and strategic work. It could lead to a more productive society.', 2, 1, '2024-10-05 16:50:00'),
 ('5G will be a game-changer, especially in industries that rely on real-time data processing, like healthcare and autonomous vehicles.', 3, 4, '2024-10-05 17:20:00'),
