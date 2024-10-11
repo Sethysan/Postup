@@ -105,7 +105,7 @@ CREATE TABLE reply_downvote (
 -- replies to replies for threaded replies
 CREATE TABLE comment_replies (
     parent_id INT,
-    reply_id INT UNIQUE,
+    reply_id INT,
     time_of_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT PK_primary_key PRIMARY KEY (reply_id, parent_id),
     CONSTRAINT FK_replies_child FOREIGN KEY (reply_id) REFERENCES replies(reply_id) ON DELETE CASCADE,

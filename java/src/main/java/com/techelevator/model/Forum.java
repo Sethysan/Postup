@@ -75,4 +75,18 @@ public class Forum {
     public void setModerator(String moderator) {
         this.moderator = moderator;
     }
+
+    @Override
+    public String toString() {
+        return "Forum{" +
+                "id=" + id +
+                ", topic='" + topic + '\'' +
+                ", description='" + description + '\'' +
+                ", author='" + author + '\'' +
+                ", timeOfCreation=" + timeOfCreation +
+                ", mostRecentPost=" + mostRecentPost +
+                ", isFavorited=" + isFavorited +
+                ", moderator='" + moderator + '\'' +
+                '}';
+    }
 }

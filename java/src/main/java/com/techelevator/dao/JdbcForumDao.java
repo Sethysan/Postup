@@ -46,7 +46,7 @@ public class JdbcForumDao implements ForumsDao {
     public List<Forum> getActiveForum(long user) {
         List<Forum> list = new ArrayList<>();
         String sql = "SELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post, COUNT(favorite_forums.forum_id) AS favorited, moderation.username AS moderator  FROM forums \n" +
-                "LEFT JOIN moderation ON moderation.username = forums.author LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? LEFT JOIN posts ON posts.forum_id = forums.forum_id GROUP BY forums.forum_id, moderator ORDER BY most_recent_post;";
+                "LEFT JOIN moderation ON moderation.username = forums.author LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? LEFT JOIN posts ON posts.forum_id = forums.forum_id GROUP BY forums.forum_id, moderator ORDER BY most_recent_post LIMIT 5;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user);
         while (results.next()) {
             list.add(mapRowToForum(results));
@@ -184,6 +184,7 @@ public class JdbcForumDao implements ForumsDao {
         forum.setFavorited(rs.getInt("favorited") > 0);
         forum.setMostRecentPost(rs.getTimestamp("most_recent_post"));
         forum.setModerator(rs.getString("moderator"));
+        System.out.println(forum);
         return forum;
     }
 

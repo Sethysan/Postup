@@ -55,7 +55,11 @@ export default {
                         this.color = "white"
                         this.forum.favorited = false;
                     })
-                    .catch(err => alert(err))
+                    .catch(err => service.addFavorite(this.forum.id)
+                    .then(res => {
+                        this.color = "red"
+                        this.forum.favorited = true;
+                    }))
             }
             else {
                 service.addFavorite(this.forum.id)
@@ -63,6 +67,12 @@ export default {
                         this.color = "red"
                         this.forum.favorited = true;
                     })
+                    .catch(err => service.removeFavorite(this.forum.id)
+                    .then(res => {
+                        this.color = "white"
+                        this.forum.favorited = false;
+                    })
+                    .catch(err => alert(err)))
                     .catch(err => alert(err))
             }
         },

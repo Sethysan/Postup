@@ -83,10 +83,13 @@ public class JdbcUserDao implements UserDao {
         String insertUserSql = "INSERT INTO users (username, password_hash, role, user_image) values (LOWER(TRIM(?)), ?, ?, ?) RETURNING user_id";
         String password_hash = new BCryptPasswordEncoder().encode(user.getPassword());
         String ssRole = user.getRole().toUpperCase().startsWith("ROLE_") ? user.getRole().toUpperCase() : "ROLE_" + user.getRole().toUpperCase();
-
         try {
             int newUserId = jdbcTemplate.queryForObject(insertUserSql, int.class, user.getUsername(), password_hash, ssRole, user.getUserImage());
             newUser = getUserById(newUserId);
+            if(newUserId > 0){
+                insertUserSql = "INSERT INTO favorite_forums(user_id, forum_id) VALUES (?, ?);";
+                jdbcTemplate.update(insertUserSql, newUserId, 1);
+            }
             if (user.getUserImage() != null && !user.getUserImage().isEmpty()) {
                 String destinationFolder = "src/main/resources/images/";
                 String fileName = "user_" + newUserId + ".jpg";
