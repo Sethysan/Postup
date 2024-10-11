@@ -346,7 +346,7 @@ export default {
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-    background: radial-gradient(circle, rgb(60, 184, 255) 45%, rgba(248, 131, 29, 0.609));
+    background: radial-gradient(circle, rgb(137, 181, 206) 45%, rgb(239, 149, 70));
     border: 2px solid #ccc;
     border-color: black;
     border-radius: 25px;
