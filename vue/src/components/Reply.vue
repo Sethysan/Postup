@@ -2,7 +2,9 @@
     <div class="thread">
         <div class="reply-header">
             <div class="reply-meta">
-                <img v-if="reply.user && reply.user.user_image" :src="imageSrc" class="reply-user-image" />
+                <div class="user-image-frame">
+                    <img v-if="reply.user && reply.user.user_image" :src="imageSrc" class="reply-user-image" />
+                </div>
                 <span class="reply-user">{{ currentReply.user.username }}</span>
                 <span class="reply-time">• {{ getTimeElapsed(reply.timeOfCreation) }}</span>
             </div>
@@ -167,7 +169,7 @@ export default {
                         this.currentReply.user.username = 'removed';
                         this.currentReply.description = 'removed';
                         this.currentReply.user.user_image = '/images/avatars/removed.jpg';
-                        
+
                     })
                     .catch(error => {
                         alert("error " + error.response.status)

@@ -5,8 +5,8 @@
         @click="toggleEditForm">
         <img :src="userImage" alt="User Image" class="user-portrait" />
         <span v-if="showEditTooltip" class="edit-tooltip">Do you want to change you profile picture?</span>
+        <p class="name">Logged in as {{ userName }}</p>
       </div>
-      <p>Logged in as {{ userName }}</p>
     </div>
     <button class="nav-btn">
       <router-link v-bind:to="{ name: 'home' }" :class="getLinkClass('home')">HOME</router-link>&nbsp;
@@ -38,20 +38,21 @@
       <img src="/images/POST-UP_logo.png" alt="Logo" class="logo" />
     </div>
   </div>
-
+ 
+  <!-- form for update user image -->
   <div v-if="editFormVisible" class="edit-form">
-
-    <form @submit.prevent="updateUserDetails">
-      <div class="form-group">
-        <label for="userImage">Profile Image URL</label>
-        <input type="text" v-model="updatedUserImage" placeholder="Enter new image URL" />
-      </div>
-      <div class="edit-pic-btns">
-        <button class="pic-save" type="submit">Save</button>
-        <button class="pic-cancel" type="button" @click="toggleEditForm">Cancel</button>
-      </div>
-    </form>
+  <form @submit.prevent="updateUserDetails">
+    <div class="form-group">
+      <label for="userImage">Profile Image URL</label>
+      <input type="text" v-model="updatedUserImage" placeholder="Enter new image URL" />
+    </div>
+    <div class="edit-pic-btns">
+      <button class="pic-save" type="submit">Save</button>
+      <button class="pic-cancel" type="button" @click="toggleEditForm">Cancel</button>
+    </div>
+  </form>
   </div>
+
   <WidgetContainerModal />
   <div id="capstone-app">
     <router-view />
@@ -70,7 +71,12 @@ export default {
       showEditTooltip: false,
       editFormVisible: false,
       updatedUserImage: '',
-      role: this.$store.getters.role
+      role: this.$store.getters.role,
+      isDragging: false,
+      dragStartX: 0,
+      dragStartY: 0,
+      offsetX: 0,
+      offsetY: 0,
     };
   },
   created() {
@@ -117,6 +123,7 @@ export default {
           alert('Failed to update user details.');
         });
     }
+  
   }
 };
 </script>
@@ -135,7 +142,7 @@ export default {
 .logo-container {
   top: 0;
   right: 20px;
-  height: calc(2 * 60px);
+  height: calc(2 * 65px);
   /* Adjust '60px' to match the height of your nav */
   display: flex;
   align-items: center;
@@ -154,14 +161,25 @@ export default {
 }
 
 .user-image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: relative;
   cursor: pointer;
 }
 
-body,
-html {
-  margin: 0;
-  padding: 0;
+.name {
+  position: absolute;
+  bottom: -12px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.733);
+  width: 100%;
+  padding: 3px 7px;
+  text-align: center;
+  border-radius: 10px;
+  /* border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px; */
+  transform: translateY(50%);
 }
 
 .user-portrait {
@@ -170,6 +188,13 @@ html {
   border-radius: 50%;
   object-fit: cover;
 }
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
 
 .edit-tooltip {
   position: absolute;
@@ -188,19 +213,20 @@ html {
   justify-content: center;
   display: flex;
   top: 100px;
-  /* Adjust this value based on the height of your #nav */
   left: 0;
   right: 65%;
   margin: 0 auto;
   max-width: 15%;
-  background: rgb(60, 183, 255);
+  background: radial-gradient(circle, rgb(60, 184, 255) 45%, rgba(248, 131, 29, 0.699));
   border: 1px solid #ddd;
   padding: 20px;
-  padding-bottom: 10px;  
+  padding-bottom: 10px;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   z-index: 999;
-  /* Make sure the form is above other elements */
+  cursor: move;
+  transition: transform 0.1s ease-out;
+
 }
 
 .form-group label {
@@ -220,7 +246,8 @@ html {
   border: 1px solid #ccc;
   border-radius: 5px;
 }
-.edit-pic-btns{
+
+.edit-pic-btns {
   display: flex;
   margin-top: 15px;
   margin-bottom: 5px;
@@ -237,9 +264,10 @@ html {
   color: white;
 }
 
-.pic-save:hover, 
-.pic-cancel:hover{
-  background-color: rgb(185, 98, 22) !important;;
+.pic-save:hover,
+.pic-cancel:hover {
+  background-color: rgb(185, 98, 22) !important;
+  ;
 
 }
 
