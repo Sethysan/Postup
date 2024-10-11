@@ -552,17 +552,17 @@ INSERT INTO comment_replies (parent_id, reply_id) VALUES
 
 -- Replies for 'Space odyssey: Stunning images from the James Webb telescope' (post_id 11)
 INSERT INTO replies (description, post_id, user_id) VALUES
-('The detail in these images is mind-blowing!', 15, 8),  -- 161
-('I never knew star formation could look so beautiful.', 15, 7),  -- 162
-('What do you think is the most exciting aspect of this image?', 15, 3),  -- 163
-('NASA has outdone themselves with the JWST!', 15, 14),  -- 164
-('I can’t wait to see what else they discover!', 15, 15);  -- 165
+('The detail in these images is mind-blowing!', 18, 8),  -- 161
+('I never knew star formation could look so beautiful.', 18, 7),  -- 162
+('What do you think is the most exciting aspect of this image?', 18, 3),  -- 163
+('NASA has outdone themselves with the JWST!', 18, 14),  -- 164
+('I can’t wait to see what else they discover!', 18, 15);  -- 165
 
 -- Threaded replies for 'Space odyssey: Stunning images from the James Webb telescope'
 INSERT INTO replies (description, post_id, user_id) VALUES
-('I’m curious about how they captured such clarity.', 15, 6),  -- 166
-('Will we get to see more images from Rho Ophiuchi?', 15, 7),  -- 167
-('These images remind me of the wonders of space.', 15, 8);  -- 168
+('I’m curious about how they captured such clarity.', 18, 6),  -- 166
+('Will we get to see more images from Rho Ophiuchi?', 18, 7),  -- 167
+('These images remind me of the wonders of space.', 18, 8);  -- 168
 
 -- Associating threaded replies
 INSERT INTO comment_replies (parent_id, reply_id) VALUES
@@ -572,17 +572,17 @@ INSERT INTO comment_replies (parent_id, reply_id) VALUES
 
 -- Replies for 'NASA’s James Webb Telescope Captures the Fiery Remains...' (post_id 12)
 INSERT INTO replies (description, post_id, user_id) VALUES
-('The Southern Ring Nebula is one of my favorites!', 16, 9),  -- 169
-('How does JWST compare to Hubble in terms of detail?', 16, 10),  -- 170
-('I’m fascinated by the life cycle of stars.', 16, 11),  -- 171
-('This telescope is a game changer for astronomy!', 16, 22),  -- 172
-('What other nebulae do you think they will explore next?', 16, 23);  -- 173
+('The Southern Ring Nebula is one of my favorites!', 19, 9),  -- 169
+('How does JWST compare to Hubble in terms of detail?', 19, 10),  -- 170
+('I’m fascinated by the life cycle of stars.', 19, 17),  -- 171
+('This telescope is a game changer for astronomy!', 19, 22),  -- 172
+('What other nebulae do you think they will explore next?', 19, 23);  -- 173
 
 -- Threaded replies for 'NASA’s James Webb Telescope Captures the Fiery Remains...'
 INSERT INTO replies (description, post_id, user_id) VALUES
-('I hope they keep releasing more images!', 16, 9),  -- 174
-('What technology allows JWST to capture such clarity?', 16, 5),  -- 175
-('The colors in these images are incredible!', 16, 6);  -- 176
+('I hope they keep releasing more images!', 19, 9),  -- 174
+('What technology allows JWST to capture such clarity?', 19, 5),  -- 175
+('The colors in these images are incredible!', 19, 6);  -- 176
 
 -- Associating threaded replies
 INSERT INTO comment_replies (parent_id, reply_id) VALUES
@@ -592,17 +592,17 @@ INSERT INTO comment_replies (parent_id, reply_id) VALUES
 
 -- Replies for 'Latest SpaceX launch discussion' (post_id 13)
 INSERT INTO replies (description, post_id, user_id) VALUES
-('SpaceX continues to push the boundaries of space travel!', 17, 7),  -- 177
-('I’m excited about the potential for Mars missions.', 17, 9),  -- 178
-('What do you think was the highlight of the latest launch?', 17, 19),  -- 179
-('The technology they’re developing is fascinating!', 17, 12),  -- 180
-('I’m curious about how they handle recovery of the rockets.', 17, 10);  -- 181
+('SpaceX continues to push the boundaries of space travel!', 20, 7),  -- 177
+('I’m excited about the potential for Mars missions.', 20, 9),  -- 178
+('What do you think was the highlight of the latest launch?', 20, 19),  -- 179
+('The technology they’re developing is fascinating!', 20, 12),  -- 180
+('I’m curious about how they handle recovery of the rockets.', 20, 10);  -- 181
 
 -- Threaded replies for 'Latest SpaceX launch discussion'
 INSERT INTO replies (description, post_id, user_id) VALUES
-('How do you think SpaceX will influence future space missions?', 17, 12),  -- 182
-('The live streams of the launches are always so exciting!', 17, 15),  -- 183
-('Can anyone explain how their Starship technology works?', 17, 14);  -- 184
+('How do you think SpaceX will influence future space missions?', 20, 12),  -- 182
+('The live streams of the launches are always so exciting!', 20, 15),  -- 183
+('Can anyone explain how their Starship technology works?', 20, 14);  -- 184
 
 -- Associating threaded replies
 INSERT INTO comment_replies (parent_id, reply_id) VALUES
@@ -614,17 +614,17 @@ INSERT INTO comment_replies (parent_id, reply_id) VALUES
 
 -- Replies for 'How to Grow Tomatoes' (post_id 14)
 INSERT INTO replies (description, post_id, user_id) VALUES
-('I’ve had great success with cherry tomatoes!', 19, 15),  -- 188
-('What are your tips for preventing blight?', 19, 16),  -- 189
-('Companion planting really helps with pests!', 19, 7),  -- 190
-('I use raised beds for better drainage.', 19, 5),  -- 191
-('What variety do you recommend for beginners?', 19, 4);  -- 192
+('I’ve had great success with cherry tomatoes!', 21, 15),  -- 188
+('What are your tips for preventing blight?', 21, 16),  -- 189
+('Companion planting really helps with pests!', 21, 7),  -- 190
+('I use raised beds for better drainage.', 21, 5),  -- 191
+('What variety do you recommend for beginners?', 21, 4);  -- 192
 
 -- Threaded replies for 'How to Grow Tomatoes'
 INSERT INTO replies (description, post_id, user_id) VALUES
-('I love the flavor of heirloom tomatoes!', 19, 11),  -- 193
-('Do you have any tricks for pruning them?', 19, 12),  -- 194
-('How often should I water them?', 19, 5);  -- 195
+('I love the flavor of heirloom tomatoes!', 21, 11),  -- 193
+('Do you have any tricks for pruning them?', 21, 12),  -- 194
+('How often should I water them?', 21, 5);  -- 195
 
 -- Associating threaded replies
 INSERT INTO comment_replies (parent_id, reply_id) VALUES
@@ -634,17 +634,17 @@ INSERT INTO comment_replies (parent_id, reply_id) VALUES
 
 -- Replies for 'Best Tools for Gardening' (post_id 15)
 INSERT INTO replies (description, post_id, user_id) VALUES
-('A good trowel is essential for any gardener!', 20, 11),  -- 196
-('I can’t live without my pruning shears!', 20, 4),  -- 197
-('What do you think about electric garden tools?', 20, 5),  -- 198
-('Hand tools always feel more reliable to me.', 20, 6),  -- 199
-('I recommend investing in high-quality gloves!', 20, 7);  -- 200
+('A good trowel is essential for any gardener!', 22, 11),  -- 196
+('I can’t live without my pruning shears!', 22, 4),  -- 197
+('What do you think about electric garden tools?', 22, 5),  -- 198
+('Hand tools always feel more reliable to me.', 22, 6),  -- 199
+('I recommend investing in high-quality gloves!', 22, 7);  -- 200
 
 -- Threaded replies for 'Best Tools for Gardening'
 INSERT INTO replies (description, post_id, user_id) VALUES
-('What’s your favorite brand for gardening tools?', 20, 8),  -- 201
-('I find that lighter tools help with fatigue.', 20, 9),  -- 202
-('Are there any tools that are worth splurging on?', 20, 10);  -- 203
+('What’s your favorite brand for gardening tools?', 22, 8),  -- 201
+('I find that lighter tools help with fatigue.', 22, 9),  -- 202
+('Are there any tools that are worth splurging on?', 22, 10);  -- 203
 
 -- Associating threaded replies
 INSERT INTO comment_replies (parent_id, reply_id) VALUES
