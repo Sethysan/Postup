@@ -26,7 +26,7 @@
             <!-- <share-form :post="post" :url="`http://localhost:5173/posts/${this.post.id}`"></share-form> -->
             <h1 class="post-title">{{ post.title }}</h1>
             <p class="post-description">{{ post.description }}</p>
-            <div class="post-image-container">
+            <div v-if="post.image" class="post-image-container">
                 <img v-if="post.image" :src="post.image" class="post-image" @click="toggleImageFullscreen" />
 
                 <!-- Post Footer: Votes, Comments, Delete Button -->
