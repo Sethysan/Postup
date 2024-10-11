@@ -3,8 +3,8 @@
     <div class="user-info" v-if="isLoggedIn">
       <div class="user-image-container" @mouseover="showEditTooltip = true" @mouseleave="showEditTooltip = false"
         @click="toggleEditForm">
-        <img :src="userImage" alt="User Image" class="user-image" />
-        <span v-if="showEditTooltip" class="edit-tooltip">Edit Details</span>
+        <img :src="userImage" alt="User Image" class="user-portrait" />
+        <span v-if="showEditTooltip" class="edit-tooltip">Do you want to change you profile picture?</span>
       </div>
       <p>Logged in as {{ userName }}</p>
     </div>
@@ -40,14 +40,16 @@
   </div>
 
   <div v-if="editFormVisible" class="edit-form">
-    <h3>Edit Your Details</h3>
+
     <form @submit.prevent="updateUserDetails">
       <div class="form-group">
-        <label for="userImage">Profile Image URL:</label>
+        <label for="userImage">Profile Image URL</label>
         <input type="text" v-model="updatedUserImage" placeholder="Enter new image URL" />
       </div>
-      <button type="submit">Save Changes</button>
-      <button type="button" @click="toggleEditForm">Cancel</button>
+      <div class="edit-pic-btns">
+        <button class="pic-save" type="submit">Save</button>
+        <button class="pic-cancel" type="button" @click="toggleEditForm">Cancel</button>
+      </div>
     </form>
   </div>
   <WidgetContainerModal />
@@ -128,11 +130,9 @@ export default {
   background-color: rgb(240, 107, 19);
   padding: 10px;
   margin-bottom: 0px;
-
 }
 
 .logo-container {
-
   top: 0;
   right: 20px;
   height: calc(2 * 60px);
@@ -164,9 +164,9 @@ html {
   padding: 0;
 }
 
-.user-image {
-  width: 50px;
-  height: 50px;
+.user-portrait {
+  height: calc(2 * 60px);
+  height: calc(2 * 60px);
   border-radius: 50%;
   object-fit: cover;
 }
@@ -185,37 +185,63 @@ html {
 
 .edit-form {
   position: fixed;
-  top: 70px;
+  justify-content: center;
+  display: flex;
+  top: 100px;
   /* Adjust this value based on the height of your #nav */
   left: 0;
-  right: 50%;
+  right: 65%;
   margin: 0 auto;
-  max-width: 600px;
-  background: #fff;
+  max-width: 15%;
+  background: rgb(60, 183, 255);
   border: 1px solid #ddd;
   padding: 20px;
+  padding-bottom: 10px;  
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   z-index: 999;
   /* Make sure the form is above other elements */
 }
 
-.form-group {
-  margin-bottom: 10px;
-}
-
 .form-group label {
   display: block;
+  display: flex;
+  justify-content: center;
   margin-bottom: 5px;
 }
 
 .form-group input {
+  display: flex;
+  justify-content: center;
   width: 100%;
+  margin-top: 15px;
+  margin-right: 15px;
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
+.edit-pic-btns{
+  display: flex;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  justify-content: space-between;
+}
 
+.pic-save,
+.pic-cancel {
+  background-color: rgb(248, 133, 29) !important;
+  transition: transform 0.3s ease-in-out;
+  border-radius: 5px;
+  width: 70px;
+  padding: 5px;
+  color: white;
+}
+
+.pic-save:hover, 
+.pic-cancel:hover{
+  background-color: rgb(185, 98, 22) !important;;
+
+}
 
 #capstone-app {
   font-family: Arial, Helvetica, sans-serif;

@@ -29,11 +29,17 @@ public class LoginDto {
    }
 
    public String getUserImage() {
-      return user_image;
+      return trimQuotes(this.user_image);
    }
 
    public void setUserImage(String userImage) {
-      this.user_image = userImage;
+      this.user_image = trimQuotes(userImage);
+   }
+   public String trimQuotes(String input) {
+      if (input != null && input.startsWith("\"") && input.endsWith("\"")) {
+         return input.substring(1, input.length() - 1);
+      }
+      return input;
    }
 
    @Override
