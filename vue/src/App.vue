@@ -1,9 +1,9 @@
 <template>
   <div id="nav">
     <div class="user-info" v-if="isLoggedIn">
-      <div class="user-image-container" @mouseover="showEditTooltip = true" @mouseleave="showEditTooltip = false"
+      <div  class="user-image-container" @mouseover="showEditTooltip = true" @mouseleave="showEditTooltip = false"
         @click="toggleEditForm">
-        <img :src="userImage" alt="User Image" class="user-portrait" />
+        <img  v-if="userImage" :src="userImage" alt="User Image" class="user-portrait" />
         <span v-if="showEditTooltip" class="edit-tooltip">Do you want to change you profile picture?</span>
         <p class="name">Logged in as {{ userName }}</p>
       </div>

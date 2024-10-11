@@ -44,11 +44,13 @@ export default {
     },
     created() {
         if (this.forum) {
+
             // If forum data is already passed as a prop, use it
             this.currentForum = this.forum;
         } else {
             // Otherwise, fetch the forum from the service
             service.getForum(this.forumId).then(res => {
+
                 this.currentForum = res.data;
                 this.checkIfMod();
             });

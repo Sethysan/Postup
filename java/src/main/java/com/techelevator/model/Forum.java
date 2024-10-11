@@ -52,11 +52,15 @@ public class Forum {
         this.timeOfCreation = timeOfCreation;
     }
 
+    public boolean setIsFavorited(){
+        return isFavorited;
+    }
+
     public boolean isFavorited() {
         return isFavorited;
     }
 
-    public void setFavorited(boolean favorited) {
+    public void setIsFavorited(boolean favorited) {
         isFavorited = favorited;
     }
 
