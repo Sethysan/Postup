@@ -210,6 +210,8 @@ export default {
 </script>
 
 <style>
+
+
 .reply-header {
     display: flex;
     align-items: center;
