@@ -1,13 +1,18 @@
 <template>
+    <div class="forum-snippet">
     <router-link :to="{ name: 'forum', params: { id: forum.id } }" class="forum-link">
-        <div class="forum-snippet"></div>
-        <h2>{{ forum.topic }}
-            <!-- formatted time elapsed display with styling -->
-            <p class="inline-time"> {{ forum.author }} </p>
-            <p class="inline-time"> {{ getTimeElapsed(forum.timeOfCreation) }} </p>
-        </h2>
-        <p>{{ forum.description }}</p>
-    </router-link>
+            <div class="forum-header">
+                <h2 class="forum-topic">{{ forum.topic }}
+                    <div class="sub-header">
+                        <!-- formatted time elapsed display with styling -->
+                        <p class="inline-time"> {{ forum.author }} </p>
+                        <p class="inline-time"> {{ getTimeElapsed(forum.timeOfCreation) }} </p>
+                    </div>
+                </h2>
+                <p class="forum-description">{{ forum.description }}</p>
+            </div>
+        </router-link>
+    </div>
 </template>
 
 <script>
@@ -26,7 +31,7 @@ export default {
 </script>
 
 <style>
-    .forum-item {
+.forum-item {
     border: 1px solid #ddd;
     padding: 1rem;
     margin-bottom: 2rem;
@@ -60,5 +65,24 @@ export default {
 
 .container {
     margin-bottom: 4rem;
+}
+
+.forum-snippet {
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-content: space-evenly;
+    background: radial-gradient(circle, rgb(137, 181, 206) 45%, rgb(239, 149, 70));
+    border: 2px solid #ccc;
+    border-color: black;
+    border-radius: 25px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin: 3vh;
+    min-height: 200px;
+    max-width: 600px;
+    /* Adjust the width as needed */
+    width: 100%;
+    /* Ensures it is responsive */
 }
 </style>
