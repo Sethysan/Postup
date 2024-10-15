@@ -18,7 +18,7 @@
                 @click="share"
                 :style="{ backgroundColor: network.color }"
                 >
-                <i :class="network.icon"></i>
+                <i :class="network.icon">{{ network.network }}</i>
                 </div>
             </share-network>
       </div>

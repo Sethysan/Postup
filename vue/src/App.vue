@@ -1,9 +1,9 @@
 <template>
   <div id="nav">
     <div class="user-info" v-if="isLoggedIn">
-      <div class="user-image-container" @mouseover="showEditTooltip = true" @mouseleave="showEditTooltip = false"
+      <div  class="user-image-container" @mouseover="showEditTooltip = true" @mouseleave="showEditTooltip = false"
         @click="toggleEditForm">
-        <img :src="userImage" alt="User Image" class="user-portrait" />
+        <img  v-if="userImage" :src="userImage" alt="User Image" class="user-portrait" />
         <span v-if="showEditTooltip" class="edit-tooltip">Do you want to change you profile picture?</span>
         <p class="name">Logged in as {{ userName }}</p>
       </div>
@@ -53,6 +53,7 @@
     </form>
   </div>
 
+
   <WidgetContainerModal />
 
   <video autoplay loop muted id="capstone-app">
@@ -76,6 +77,12 @@ export default {
       showEditTooltip: false,
       editFormVisible: false,
       updatedUserImage: '',
+      role: this.$store.getters.role,
+      isDragging: false,
+      dragStartX: 0,
+      dragStartY: 0,
+      offsetX: 0,
+      offsetY: 0,
       role: this.$store.getters.role,
       isDragging: false,
       dragStartX: 0,
@@ -148,6 +155,7 @@ export default {
   top: 0;
   right: 20px;
   height: calc(2 * 65px);
+  height: calc(2 * 65px);
   /* Adjust '60px' to match the height of your nav */
   display: flex;
   align-items: center;
@@ -169,6 +177,9 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: relative;
   cursor: pointer;
 }
@@ -185,14 +196,33 @@ export default {
   /* border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px; */
   transform: translateY(50%);
+.name {
+  position: absolute;
+  bottom: -12px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.733);
+  width: 100%;
+  padding: 3px 7px;
+  text-align: center;
+  border-radius: 10px;
+  /* border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px; */
+  transform: translateY(50%);
 }
 
 .user-portrait {
-  height: calc(2 * 60px);
+  width: calc(2 * 60px);
   height: calc(2 * 60px);
   border-radius: 50%;
   object-fit: cover;
 }
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
 
 body,
 html {
@@ -223,12 +253,17 @@ html {
   margin: 0 auto;
   max-width: 15%;
   background: radial-gradient(circle, rgb(60, 184, 255) 45%, rgba(248, 131, 29, 0.699));
+  background: radial-gradient(circle, rgb(60, 184, 255) 45%, rgba(248, 131, 29, 0.699));
   border: 1px solid #ddd;
   padding: 20px;
+  padding-bottom: 10px;
   padding-bottom: 10px;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   z-index: 999;
+  cursor: move;
+  transition: transform 0.1s ease-out;
+
   cursor: move;
   transition: transform 0.1s ease-out;
 
@@ -253,6 +288,8 @@ html {
 }
 
 .edit-pic-btns {
+
+.edit-pic-btns {
   display: flex;
   margin-top: 15px;
   margin-bottom: 5px;
@@ -269,6 +306,10 @@ html {
   color: white;
 }
 
+.pic-save:hover,
+.pic-cancel:hover {
+  background-color: rgb(185, 98, 22) !important;
+  ;
 .pic-save:hover,
 .pic-cancel:hover {
   background-color: rgb(185, 98, 22) !important;

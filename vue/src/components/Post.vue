@@ -16,7 +16,9 @@
                 </div>
                 <!-- Author and Metadata -->
                 <div class="post-meta">
-                    <img v-if="post.creator_image" :src="imageSrc" class="user-image" />
+                    <div class="user-image-frame">
+                        <img v-if="post.creator_image" :src="imageSrc" class="user-image" />
+                    </div>
                     <span class="post-author">{{ post.creator_username }}</span>
                     <span class="post-time">• {{ getTimeElapsed(post.timeOfCreation) }}</span>
                 </div>
@@ -24,7 +26,7 @@
             <!-- <share-form :post="post" :url="`http://localhost:5173/posts/${this.post.id}`"></share-form> -->
             <h1 class="post-title">{{ post.title }}</h1>
             <p class="post-description">{{ post.description }}</p>
-            <div class="post-image-container">
+            <div v-if="post.image" class="post-image-container">
                 <img v-if="post.image" :src="post.image" class="post-image" @click="toggleImageFullscreen" />
 
                 <!-- Post Footer: Votes, Comments, Delete Button -->
@@ -517,6 +519,15 @@ textarea.expanded {
     object-fit: cover;
     /* border: 2px solid #ddd;  */
 }
+.user-image-frame {
+  width: 44px; 
+  height: 44px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.587); 
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+}
 
 .post-author {
     font-size: 1.25rem;
@@ -543,21 +554,19 @@ textarea.expanded {
 }
 
 .back-button {
-    background-color: #E4E4E4;
-    /* Change to your desired background color */
+    background-color: rgba(60, 183, 255, 0.84);
+    color: white;
     border-radius: 50%;
-    /* Makes the background circular */
     padding: 8px;
-    /* Adjusts the size of the circle */
     display: inline-flex;
-    /* Centers the SVG within the container */
     align-items: center;
     justify-content: center;
-    transition: .3;
+    transition: transform 0.4s, background-color .4s;
     cursor: pointer;
 }
 
 .back-button:hover {
-    background-color: rgb(218, 217, 217);
+    background-color: rgb(33, 156, 228);
+    transform: scale(1.05);
 }
 </style>
