@@ -95,6 +95,7 @@ public class JdbcUserDao implements UserDao {
                 String fileName = "user_" + newUserId + ".jpg";
                 try {
                     imageDownloader.saveImageFromUrl(newUser.getUserImage(), destinationFolder, fileName);
+                    newUser.setUserImage(fileName);
                 } catch (RuntimeException e) {
                     System.err.println("Failed to download image for user " + user.getUsername() + ": " + e.getMessage());
                 }
@@ -113,6 +114,10 @@ public class JdbcUserDao implements UserDao {
         String sql = "UPDATE users SET user_image = REPLACE(?, '\"', '') WHERE user_id = ?";
         try {
             jdbcTemplate.update(sql, userImage, id);
+            int userId = (int) id;
+            User user = getUserById(userId);
+            user.setUserImage(userImage);
+
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
         }

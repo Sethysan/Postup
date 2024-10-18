@@ -129,6 +129,7 @@ public class JdbcPostDao implements PostDao {
             String destinationFolder = "src/main/resources/images/";
             String fileName = "post_" + id + ".jpg";
             imageDownloader.saveImageFromUrl(post.getImage(), destinationFolder, fileName);
+            post.setImage(fileName);
         }
         return this.getPostById(id, -1);
     }

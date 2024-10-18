@@ -53,9 +53,8 @@
     </form>
   </div>
 
-  <WidgetContainerModal />
-  <!-- <div id="capstone-app"> -->
 
+  <WidgetContainerModal />
 
   <video autoplay loop muted id="capstone-app">
     <source src="/images/city.mp4" type="video/webm">
@@ -63,7 +62,7 @@
   </video>
 
   <router-view />
-  <!-- </div> -->
+
 </template>
 <script>
 import UserService from './services/UserService.js';
@@ -78,6 +77,12 @@ export default {
       showEditTooltip: false,
       editFormVisible: false,
       updatedUserImage: '',
+      role: this.$store.getters.role,
+      isDragging: false,
+      dragStartX: 0,
+      dragStartY: 0,
+      offsetX: 0,
+      offsetY: 0,
       role: this.$store.getters.role,
       isDragging: false,
       dragStartX: 0,
@@ -134,6 +139,7 @@ export default {
   }
 };
 </script>
+
 <style>
 #nav {
   display: flex;
@@ -149,6 +155,7 @@ export default {
 .logo-container {
   top: 0;
   right: 20px;
+  height: calc(2 * 65px);
   height: calc(2 * 65px);
   /* Adjust '60px' to match the height of your nav */
   display: flex;
@@ -171,8 +178,25 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: relative;
   cursor: pointer;
+}
+
+.name {
+  position: absolute;
+  bottom: -12px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.733);
+  width: 100%;
+  padding: 3px 7px;
+  text-align: center;
+  border-radius: 10px;
+  /* border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px; */
+  transform: translateY(50%);
 }
 
 .name {
@@ -203,6 +227,13 @@ html {
 }
 
 
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
+
 .edit-tooltip {
   position: absolute;
   top: 0;
@@ -225,12 +256,17 @@ html {
   margin: 0 auto;
   max-width: 15%;
   background: radial-gradient(circle, rgb(60, 184, 255) 45%, rgba(248, 131, 29, 0.699));
+  background: radial-gradient(circle, rgb(60, 184, 255) 45%, rgba(248, 131, 29, 0.699));
   border: 1px solid #ddd;
   padding: 20px;
+  padding-bottom: 10px;
   padding-bottom: 10px;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   z-index: 999;
+  cursor: move;
+  transition: transform 0.1s ease-out;
+
   cursor: move;
   transition: transform 0.1s ease-out;
 
@@ -275,6 +311,12 @@ html {
 .pic-cancel:hover {
   background-color: rgb(185, 98, 22) !important;
   ;
+}
+
+.pic-save:hover,
+.pic-cancel:hover {
+  background-color: rgb(185, 98, 22) !important;
+  ;
 
 }
 
@@ -289,7 +331,7 @@ html {
   padding-bottom: 8vh;
 } */
 
-/* #capstone-app {
+#capstone-app {
   font-family: Arial, Helvetica, sans-serif;
   z-index: -1000;
   left: 50%;
@@ -304,18 +346,6 @@ html {
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   object-fit: cover;
-  background-position: center;
-} */
-
-#capstone-app {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1; /* Place the video behind all other content */
-  object-fit: cover; /* Ensure the video covers the entire background */
-  background-size: cover;
   background-position: center;
 }
 
