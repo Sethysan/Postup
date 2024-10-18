@@ -1,9 +1,9 @@
 <template>
   <div id="nav">
     <div class="user-info" v-if="isLoggedIn">
-      <div  class="user-image-container" @mouseover="showEditTooltip = true" @mouseleave="showEditTooltip = false"
+      <div class="user-image-container" @mouseover="showEditTooltip = true" @mouseleave="showEditTooltip = false"
         @click="toggleEditForm">
-        <img  v-if="userImage" :src="userImage" alt="User Image" class="user-portrait" />
+        <img v-if="userImage" :src="userImage" alt="User Image" class="user-portrait" />
         <span v-if="showEditTooltip" class="edit-tooltip">Do you want to change you profile picture?</span>
         <p class="name">Logged in as {{ userName }}</p>
       </div>
@@ -38,25 +38,32 @@
       <img src="/images/POST-UP_logo.png" alt="Logo" class="logo" />
     </div>
   </div>
- 
+
   <!-- form for update user image -->
   <div v-if="editFormVisible" class="edit-form">
-  <form @submit.prevent="updateUserDetails">
-    <div class="form-group">
-      <label for="userImage">Profile Image URL</label>
-      <input type="text" v-model="updatedUserImage" placeholder="Enter new image URL" />
-    </div>
-    <div class="edit-pic-btns">
-      <button class="pic-save" type="submit">Save</button>
-      <button class="pic-cancel" type="button" @click="toggleEditForm">Cancel</button>
-    </div>
-  </form>
+    <form @submit.prevent="updateUserDetails">
+      <div class="form-group">
+        <label for="userImage">Profile Image URL</label>
+        <input type="text" v-model="updatedUserImage" placeholder="Enter new image URL" />
+      </div>
+      <div class="edit-pic-btns">
+        <button class="pic-save" type="submit">Save</button>
+        <button class="pic-cancel" type="button" @click="toggleEditForm">Cancel</button>
+      </div>
+    </form>
   </div>
 
   <WidgetContainerModal />
-  <div id="capstone-app">
-    <router-view />
-  </div>
+  <!-- <div id="capstone-app"> -->
+
+
+  <video autoplay loop muted id="capstone-app">
+    <source src="/images/city.mp4" type="video/webm">
+    <source src="/images/city.mp4" type="video/mp4">
+  </video>
+
+  <router-view />
+  <!-- </div> -->
 </template>
 <script>
 import UserService from './services/UserService.js';
@@ -123,7 +130,7 @@ export default {
           alert('Failed to update user details.');
         });
     }
-  
+
   }
 };
 </script>
@@ -271,7 +278,7 @@ html {
 
 }
 
-#capstone-app {
+/* #capstone-app {
   font-family: Arial, Helvetica, sans-serif;
   background: radial-gradient(circle, rgb(255, 166, 107) 35%, rgba(240, 107, 19, 0.927));
   padding-left: 2vw;
@@ -280,6 +287,36 @@ html {
   padding-top: 10px;
   margin-bottom: 0px;
   padding-bottom: 8vh;
+} */
+
+/* #capstone-app {
+  font-family: Arial, Helvetica, sans-serif;
+  z-index: -1000;
+  left: 50%;
+  width: 50%;
+  width: 100vw;
+  height: 100vh;
+  top: 50%;
+  position: absolute;
+  background-size: cover;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  background-position: center;
+} */
+
+#capstone-app {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1; /* Place the video behind all other content */
+  object-fit: cover; /* Ensure the video covers the entire background */
+  background-size: cover;
+  background-position: center;
 }
 
 .nav-btn {
@@ -290,6 +327,11 @@ html {
   padding: 5px;
   transition: transform 0.3s ease-in-out;
   /* Smooth transition for hover effects */
+}
+
+router-view {
+  position: relative;
+  z-index: 1; /* Ensure the router-view content appears above the video */
 }
 
 .nav-btn .router-link-active,

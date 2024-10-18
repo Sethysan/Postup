@@ -1,24 +1,19 @@
 <template>
   <div class="posts">
-    <div>
-      <select name="filter" v-model="filter">
-        <option value="" v-if="!filter">Sort</option>
-        <option value="recent">Most Recent</option>
-        <option value="popularity">Most Popular</option>
-      </select>
-    </div>
-    <div v-for="post in filteredPosts" :key="post.id">
-      <router-link :to="{ name: 'post', params: { post: post.id } }" class="forum-link">
+
+    <div class="post-list">
+      <router-link :to="{ name: 'post', params: { post: post.id } }" class="post-link">
         <header>
           <div class="post-meta">
             <div class="user-image-frame">
               <img v-if="post.creator_image" :src="post.creator_image" class="user-image" />
             </div>
-              <p class="post-author">{{ post.creator_username }} </p>
+            <p class="post-author">{{ post.creator_username }} </p>
             <p class="post-time">• {{ getTimeElapsed(post.timeOfCreation) }}</p>
             <h3 class="post-list-title">{{ post.title }}</h3>
           </div>
         </header>
+        
         <section>
           <img v-if="post.image" :src="post.image" class="post-image" />
           <!-- <p> {{ post.description }} </p> -->
@@ -36,30 +31,20 @@ import PostService from '../services/PostService';
 import dayjs from 'dayjs';
 
 export default {
-  props: ['posts'],
   components: { Post },
+  props: {
+    post: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       filter: "",
       user: this.$store.getters.username,
     }
   },
-  computed: {
-    filteredPosts() {
-      let sortedPosts = [...this.posts];
-      if (this.filter === 'recent') {
-        sortedPosts.sort((a, b) => b.id - a.id);
-      } else if (this.filter === 'popularity') {
-        sortedPosts.sort((a, b) => (b.upvotes - b.downvotes) - (a.upvotes - a.downvotes));
-      }
-      return sortedPosts;
-    },
-  },
   methods: {
-    // filterPosts() {
-    //   // This triggers a re-evaluation of `filteredPosts` computed property.
-    //   console.log(this.filteredPosts);
-    // },
     deletePost(postId) {
       if (
         confirm("Are you sure you want to delete this post? This action cannot be undone.")
@@ -88,7 +73,6 @@ export default {
       }
     },
     getTimeElapsed(timeOfCreation) {
-      // dayjs converts time into a readable format and calculates the elapsed time
       return dayjs(timeOfCreation).fromNow();
     }
   }
@@ -118,7 +102,6 @@ export default {
   display: flex;
   align-items: center;
   gap: 5px;
-  /* Adjust spacing between author and time */
   font-size: 0.875rem;
 }
 
