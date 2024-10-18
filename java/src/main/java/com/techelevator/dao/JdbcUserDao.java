@@ -116,7 +116,7 @@ public class JdbcUserDao implements UserDao {
             jdbcTemplate.update(sql, userImage, id);
             int userId = (int) id;
             User user = getUserById(userId);
-            user.setUserImage();
+            user.setUserImage(userImage);
 
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);

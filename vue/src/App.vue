@@ -1,9 +1,9 @@
 <template>
   <div id="nav">
     <div class="user-info" v-if="isLoggedIn">
-      <div  class="user-image-container" @mouseover="showEditTooltip = true" @mouseleave="showEditTooltip = false"
+      <div class="user-image-container" @mouseover="showEditTooltip = true" @mouseleave="showEditTooltip = false"
         @click="toggleEditForm">
-        <img  v-if="userImage" :src="userImage" alt="User Image" class="user-portrait" />
+        <img v-if="userImage" :src="userImage" alt="User Image" class="user-portrait" />
         <span v-if="showEditTooltip" class="edit-tooltip">Do you want to change you profile picture?</span>
         <p class="name">Logged in as {{ userName }}</p>
       </div>
@@ -139,6 +139,7 @@ export default {
   }
 };
 </script>
+
 <style>
 #nav {
   display: flex;
@@ -196,6 +197,8 @@ export default {
   /* border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px; */
   transform: translateY(50%);
+}
+
 .name {
   position: absolute;
   bottom: -12px;
@@ -288,8 +291,6 @@ html {
 }
 
 .edit-pic-btns {
-
-.edit-pic-btns {
   display: flex;
   margin-top: 15px;
   margin-bottom: 5px;
@@ -310,6 +311,8 @@ html {
 .pic-cancel:hover {
   background-color: rgb(185, 98, 22) !important;
   ;
+}
+
 .pic-save:hover,
 .pic-cancel:hover {
   background-color: rgb(185, 98, 22) !important;
