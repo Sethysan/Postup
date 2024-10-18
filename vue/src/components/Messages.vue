@@ -1,5 +1,4 @@
 <template>
-    {{ id }}
         <div class="user-message-link" v-for="message in messages" :key="message.id" :class="message.sender.username === username ? 'user-message' : 'others-message'" @messageDeleted="(id) => this.messages = this.messages.filter(item => item.id != id)">
             <message :message="message" @messageDeleted="removeMessage"></message>
         </div>
