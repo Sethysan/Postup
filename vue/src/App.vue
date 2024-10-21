@@ -1,4 +1,5 @@
 <template>
+  <div class="wrapper">
   <div id="nav">
     <div class="user-info" v-if="isLoggedIn">
       <div class="user-image-container" @mouseover="showEditTooltip = true" @mouseleave="showEditTooltip = false"
@@ -56,13 +57,13 @@
 
   <WidgetContainerModal />
 
-  <video autoplay loop muted id="capstone-app">
+  <!-- <video autoplay loop muted id="capstone-app">
     <source src="/images/city.mp4" type="video/webm">
     <source src="/images/city.mp4" type="video/mp4">
-  </video>
+  </video> -->
 
   <router-view />
-
+</div>
 </template>
 <script>
 import UserService from './services/UserService.js';
@@ -141,13 +142,45 @@ export default {
 </script>
 
 <style>
+.wrapper{
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background-color: var(--secondary);
+}
+::after, ::before{
+  box-sizing: border-box;
+}
+
+body,
+html {
+  scrollbar-color: var(--primary) var(--secondary);
+  font-family: "Work Sans", sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #888;
+  background-color: var(--secondary);
+  text-align: left;
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+body{
+  padding: 1%;
+}
+
+:root {
+  --primary: #e50914 !important;
+  --secondary: #0f0f0f;
+  --nero: #181818;
+}
+
 #nav {
   display: flex;
   justify-content: space-evenly;
   left: 0;
   width: 100%;
   z-index: 1000;
-  background-color: rgb(240, 107, 19);
   padding: 10px;
   margin-bottom: 0px;
 }
@@ -220,19 +253,11 @@ export default {
   object-fit: cover;
 }
 
-body,
+/* body,
 html {
   margin: 0;
   padding: 0;
-}
-
-
-body,
-html {
-  margin: 0;
-  padding: 0;
-}
-
+} */
 
 .edit-tooltip {
   position: absolute;
@@ -331,7 +356,7 @@ html {
   padding-bottom: 8vh;
 } */
 
-#capstone-app {
+/* #capstone-app {
   font-family: Arial, Helvetica, sans-serif;
   z-index: -1000;
   left: 50%;
@@ -347,7 +372,7 @@ html {
   transform: translate(-50%, -50%);
   object-fit: cover;
   background-position: center;
-}
+} */
 
 .nav-btn {
   background-color: transparent;
@@ -361,7 +386,8 @@ html {
 
 router-view {
   position: relative;
-  z-index: 1; /* Ensure the router-view content appears above the video */
+  z-index: 1;
+  /* Ensure the router-view content appears above the video */
 }
 
 .nav-btn .router-link-active,

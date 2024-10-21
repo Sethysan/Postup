@@ -18,6 +18,7 @@
                 <div class="post-meta">
                     <div class="user-image-frame">
                         <img v-if="post.creator_image" :src="imageSrc" class="user-image" />
+                        <img v-else src="/images/avatars/no-image.jpg" class="user-image"/>
                     </div>
                     <span class="post-author">{{ post.creator_username }}</span>
                     <span class="post-time">• {{ getTimeElapsed(post.timeOfCreation) }}</span>
@@ -84,6 +85,7 @@
                 </div>
             </div>
             <div>
+                <!-- <replies :replies="replies" :isMod="checkIfMod"></replies> -->
                 <replies :replies="replies" :forumId="post.forum_id"></replies>
             </div>
         </div>
