@@ -3,8 +3,9 @@
         <div class="reply-body">
             <div class="reply-header">
                 <div class="reply-meta">
-                    <div class="user-image-frame">
+                    <div class="reply-user-image-frame">
                         <img v-if="reply.user && reply.user.user_image" :src="imageSrc" class="reply-user-image" />
+                        <img v-else src="/images/avatars/no-image.jpg" class="reply-user-image"/>
                     </div>
                     <span class="reply-user">{{ currentReply.user.username }}</span>
                     <span class="reply-time">• {{ getTimeElapsed(reply.timeOfCreation) }}</span>
@@ -236,6 +237,15 @@ export default {
     border-radius: 50%;
     object-fit: cover;
 
+}
+.reply-user-image-frame {
+  width: 44px; 
+  height: 44px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.587); 
+  display: flex;
+  align-items: center;
+  justify-content: center; 
 }
 
 .reply-user {

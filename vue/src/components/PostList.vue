@@ -1,40 +1,44 @@
 <template>
   <div class="posts">
-
-    <div class="post-list">
-      <router-link :to="{ name: 'post', params: { post: post.id } }" class="post-link">
-        <header>
-          <div class="post-meta">
-            <div class="user-image-frame">
-              <img v-if="post.creator_image" :src="post.creator_image" class="user-image" />
+    
+    <div v-for="post in posts" :key="post.id" class="post-list">
+      <div v-if="post">
+        <router-link :to="{ name: 'post', params: { post: post.id } }" class="post-link">
+          <header>
+            <div class="post-meta">
+              <div class="user-image-frame">
+                <img v-if="post.creator_image" :src="post.creator_image" class="user-image" />
+                <img v-else src="/images/avatars/no-image.jpg" class="user-image"/>
+              </div>
+              <p class="post-author">{{ post.creator_username }} </p>
+              <p class="post-time">• {{ getTimeElapsed(post.timeOfCreation) }}</p>
             </div>
-            <p class="post-author">{{ post.creator_username }} </p>
-            <p class="post-time">• {{ getTimeElapsed(post.timeOfCreation) }}</p>
-            <h3 class="post-list-title">{{ post.title }}</h3>
-          </div>
-        </header>
-        
-        <section>
-          <img v-if="post.image" :src="post.image" class="post-image" />
-          <!-- <p> {{ post.description }} </p> -->
-        </section>
-      </router-link>
-      <button v-if="post.creator_username === user" class="btn btn-delete deletePost"
-        @click="deletePost(post.id)">Delete</button>
+              <h2 class="post-list-title">{{ post.title }}</h2>
+          </header>
+
+          <section>
+            <img v-if="post.image" :src="post.image" class="post-image" />
+            <!-- <p> {{ post.description }} </p> -->
+          </section>
+        </router-link>
+        <button v-if="post.creator_username === user" class="btn btn-delete deletePost"
+          @click="deletePost(post.id)">Delete</button>
+      </div>
+      <div v-else>
+        <p>No post data available.</p>
+      </div>
     </div>
   </div>
 </template>
 <script>
-import { faTruckField } from '@fortawesome/free-solid-svg-icons/faTruckField';
-import Post from '../components/Post.vue';
+// import Post from '../components/Post.vue';
 import PostService from '../services/PostService';
 import dayjs from 'dayjs';
 
 export default {
-  components: { Post },
   props: {
-    post: {
-      type: Object,
+    posts: {
+      type: Array,
       required: true,
     },
   },

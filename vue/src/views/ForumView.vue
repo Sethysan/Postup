@@ -4,7 +4,6 @@
     <post-search-button :forumId="forum.id"></post-search-button>
     <div v-if="posts.length < 1 && !isloading">
       <p>Wow, such empty!</p>
-      <img src=""/>
     </div>
     <div v-if="isloading">
       <p>loading . . .</p>
@@ -13,6 +12,7 @@
       <p>Oops, it looks like this forum couldn't load</p>
     </div>
     <post-list :posts="posts"></post-list>
+    <!-- <post-list :post="post"></post-list> -->
   </div>
 </template>
 <script>
@@ -29,6 +29,7 @@ export default {
   },
   data() {
     return {
+      // post: {},
       forum: {},
       forumId: 0,
       posts: [],
@@ -43,9 +44,11 @@ export default {
       ForumService.getForumTopic(this.$route.query.topic)
         .then(res => {
           this.forum = res.data;
+          this.forumId = this.forum.id //added 10/19
           PostService.getForumPosts(this.forumId)
           .then(res => {
             this.posts = res.data;
+            // console.log(this.post);
             this.isloading = false
           })
       }).catch((error) => {

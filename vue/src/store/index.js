@@ -15,8 +15,12 @@ export function createStore(
       user: currentUser || {},
       users: userList,
       access: currentAccess || [],
+      currentPage: 1,
     },
     mutations: {
+      setCurrentPage(state, page) {
+        state.currentPage = page;
+      },
       SET_USER_IMAGE(state, userImage) {
         const sanitizedImageUrl = userImage.trim().replace(/"/g, '');
         state.user.user_image = sanitizedImageUrl;
@@ -102,7 +106,7 @@ export function createStore(
       },
     },
     getters: {
-      username(state, getters) {
+      username(state, getters) { //delete getters
         if (state.token != "") {
           return JSON.parse(localStorage.getItem("user")).username;
         }

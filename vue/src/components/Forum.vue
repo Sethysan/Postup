@@ -28,7 +28,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import ModeratorService from '../services/ModeratorService';
 
 export default {
-    props: ['forum', 'forumId'],
+    props: ['forum'],
     components: {
         PostSearchButton
     },
@@ -49,8 +49,7 @@ export default {
             this.currentForum = this.forum;
         } else {
             // Otherwise, fetch the forum from the service
-            service.getForum(this.forumId).then(res => {
-
+            service.getForum($route.params.forumId).then(res => {             
                 this.currentForum = res.data;
                 this.checkIfMod();
             });

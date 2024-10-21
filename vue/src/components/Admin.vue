@@ -50,7 +50,7 @@ export default {
                 });
         },
         promoteToAdmin(user) {
-            if(confirm(`Promote ${user.username} to admin?`)) {
+            if (confirm(`Promote ${user.username} to admin?`)) {
                 AdminService.promoteToAdmin(user.id)
                     .then(() => {
                         this.users = this.users.filter(u => u.id !== user.id);
@@ -62,7 +62,7 @@ export default {
             }
         },
         banUser(user) {
-            if(confirm(`Ban ${user.username}?`)) {
+            if (confirm(`Ban ${user.username}?`)) {
                 AdminService.banUser(user.id)
                     .then(() => {
                         user.isBanned = true;
@@ -74,7 +74,7 @@ export default {
             }
         },
         unbanUser(user) {
-            if(confirm(`Unban ${user.username}?`)) {
+            if (confirm(`Unban ${user.username}?`)) {
                 AdminService.unbanUser(user.id)
                     .then(() => {
                         user.isBanned = false;
@@ -86,10 +86,10 @@ export default {
             }
         },
         banOrUnban(user) {
-            if(user.role == 'ROLE_BANNED') {
+            if (user.role == 'ROLE_BANNED') {
                 this.unban = true;
-            }else{
-            this.unban = false;
+            } else {
+                this.unban = false;
             }
         }
     },
@@ -100,23 +100,27 @@ export default {
 </script>
 
 <style>
-html{
-    background-color: rgb(240, 107, 19);
-}
 tbody tr td:first-child {
     color: white;
     font-weight: bold;
 }
 
 .btn-admin {
-    background-color:grey; /* Primary color */
-  color: white; /* Text color */
-    border-color: black; /* Remove default border */
-  border-radius: 5px; /* Rounded corners */
-  padding: 2px 8px; /* Padding for size */
-  font-size: 14px; /* Font size */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth transition */
+    background-color: grey;
+    /* Primary color */
+    color: white;
+    /* Text color */
+    border-color: black;
+    /* Remove default border */
+    border-radius: 5px;
+    /* Rounded corners */
+    padding: 2px 8px;
+    /* Padding for size */
+    font-size: 14px;
+    /* Font size */
+    cursor: pointer;
+    /* Pointer cursor on hover */
+    transition: background-color 0.3s;
+    /* Smooth transition */
 }
-
 </style>
