@@ -1,69 +1,69 @@
 <template>
   <div class="wrapper">
-  <div id="nav">
-    <div class="user-info" v-if="isLoggedIn">
-      <div class="user-image-container" @mouseover="showEditTooltip = true" @mouseleave="showEditTooltip = false"
-        @click="toggleEditForm">
-        <img v-if="userImage" :src="userImage" alt="User Image" class="user-portrait" />
-        <span v-if="showEditTooltip" class="edit-tooltip">Do you want to change you profile picture?</span>
-        <p class="name">Logged in as {{ userName }}</p>
+    <div id="nav">
+      <div class="user-info" v-if="isLoggedIn">
+        <div class="user-image-container" @mouseover="showEditTooltip = true" @mouseleave="showEditTooltip = false"
+          @click="toggleEditForm">
+          <img v-if="userImage" :src="userImage" alt="User Image" class="user-portrait" />
+          <span v-if="showEditTooltip" class="edit-tooltip">Do you want to change you profile picture?</span>
+          <p class="name">{{ userName }}</p>
+        </div>
+      </div>
+      <button class="nav-btn">
+        <router-link v-bind:to="{ name: 'home' }" :class="getLinkClass('home')">HOME</router-link>&nbsp;
+      </button>
+      <!-- <div class="separator"></div> -->
+      <button class="nav-btn">
+        <router-link v-bind:to="{ name: 'forums' }" :class="getLinkClass('forums')">FORUMS</router-link>&nbsp;
+      </button>
+      <!-- <div v-if="this.isLoggedIn" class="separator"></div> -->
+      <button v-if="isLoggedIn" class="nav-btn">
+        <router-link v-bind:to="{ name: 'favorites' }" v-if="userName"
+          :class="getLinkClass('favorites')">FAVORITES</router-link>&nbsp;
+      </button>
+      <button v-if="isLoggedIn" class="nav-btn">
+        <router-link v-bind:to="{ name: 'messages' }" v-if="userName"
+          :class="getLinkClass('messages')">MESSAGES</router-link>&nbsp;
+      </button>
+      <!-- <div v-if="this.isLoggedIn" class="separator"></div> -->
+      <button v-if="isLoggedIn" class="nav-btn">
+        <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''"
+          class="router-link-nonactive">LOGOUT</router-link>
+      </button>
+      <!-- <div v-if="!this.isLoggedIn" class="separator"></div> -->
+      <button v-if="!this.isLoggedIn" class="nav-btn">
+        <router-link v-bind:to="{ name: 'login' }" v-if="$store.state.token == ''"
+          class="router-link-nonactive">LOGIN</router-link>
+      </button>
+      <div class="logo-container">
+        <img src="/images/POST-UP_logo.png" alt="Logo" class="logo" />
       </div>
     </div>
-    <button class="nav-btn">
-      <router-link v-bind:to="{ name: 'home' }" :class="getLinkClass('home')">HOME</router-link>&nbsp;
-    </button>
-    <!-- <div class="separator"></div> -->
-    <button class="nav-btn">
-      <router-link v-bind:to="{ name: 'forums' }" :class="getLinkClass('forums')">FORUMS</router-link>&nbsp;
-    </button>
-    <!-- <div v-if="this.isLoggedIn" class="separator"></div> -->
-    <button v-if="isLoggedIn" class="nav-btn">
-      <router-link v-bind:to="{ name: 'favorites' }" v-if="userName"
-        :class="getLinkClass('favorites')">FAVORITES</router-link>&nbsp;
-    </button>
-    <button v-if="isLoggedIn" class="nav-btn">
-      <router-link v-bind:to="{ name: 'messages' }" v-if="userName"
-        :class="getLinkClass('messages')">MESSAGES</router-link>&nbsp;
-    </button>
-    <!-- <div v-if="this.isLoggedIn" class="separator"></div> -->
-    <button v-if="isLoggedIn" class="nav-btn">
-      <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''"
-        class="router-link-nonactive">LOGOUT</router-link>
-    </button>
-    <!-- <div v-if="!this.isLoggedIn" class="separator"></div> -->
-    <button v-if="!this.isLoggedIn" class="nav-btn">
-      <router-link v-bind:to="{ name: 'login' }" v-if="$store.state.token == ''"
-        class="router-link-nonactive">LOGIN</router-link>
-    </button>
-    <div class="logo-container">
-      <img src="/images/POST-UP_logo.png" alt="Logo" class="logo" />
+
+    <!-- form for update user image -->
+    <div v-if="editFormVisible" class="edit-form">
+      <form @submit.prevent="updateUserDetails">
+        <div class="form-group">
+          <label for="userImage">Profile Image URL</label>
+          <input type="text" v-model="updatedUserImage" placeholder="Enter new image URL" />
+        </div>
+        <div class="edit-pic-btns">
+          <button class="pic-save" type="submit">Save</button>
+          <button class="pic-cancel" type="button" @click="toggleEditForm">Cancel</button>
+        </div>
+      </form>
     </div>
-  </div>
-
-  <!-- form for update user image -->
-  <div v-if="editFormVisible" class="edit-form">
-    <form @submit.prevent="updateUserDetails">
-      <div class="form-group">
-        <label for="userImage">Profile Image URL</label>
-        <input type="text" v-model="updatedUserImage" placeholder="Enter new image URL" />
-      </div>
-      <div class="edit-pic-btns">
-        <button class="pic-save" type="submit">Save</button>
-        <button class="pic-cancel" type="button" @click="toggleEditForm">Cancel</button>
-      </div>
-    </form>
-  </div>
 
 
-  <WidgetContainerModal />
+    <WidgetContainerModal />
 
-  <!-- <video autoplay loop muted id="capstone-app">
+    <!-- <video autoplay loop muted id="capstone-app">
     <source src="/images/city.mp4" type="video/webm">
     <source src="/images/city.mp4" type="video/mp4">
   </video> -->
 
-  <router-view />
-</div>
+    <router-view />
+  </div>
 </template>
 <script>
 import UserService from './services/UserService.js';
@@ -85,11 +85,6 @@ export default {
       offsetX: 0,
       offsetY: 0,
       role: this.$store.getters.role,
-      isDragging: false,
-      dragStartX: 0,
-      dragStartY: 0,
-      offsetX: 0,
-      offsetY: 0,
     };
   },
   created() {
@@ -142,13 +137,15 @@ export default {
 </script>
 
 <style>
-.wrapper{
+.wrapper {
   display: flex;
   flex-direction: column;
   min-height: 100%;
   background-color: var(--secondary);
 }
-::after, ::before{
+
+::after,
+::before {
   box-sizing: border-box;
 }
 
@@ -165,7 +162,8 @@ html {
   min-height: 100%;
   margin: 0;
 }
-body{
+
+body {
   padding: 1%;
 }
 
