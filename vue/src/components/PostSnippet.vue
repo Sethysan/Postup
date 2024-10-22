@@ -3,20 +3,20 @@
 
         <div v-if="post">
             <router-link :to="{ name: 'post', params: { post: post.id } }" class="post-link">
-                <header>
-                    <div class="post-meta">
-                        <div class="user-image-frame">
-                            <img v-if="post.creator_image" :src="post.creator_image" class="user-image" />
-                            <img v-else src="/images/avatars/no-image.jpg" class="user-image"/>
-                        </div>
-                        <p class="post-author">{{ post.creator_username }} </p>
-                        <p class="post-time">• {{ getTimeElapsed(post.timeOfCreation) }}</p>
-                    </div>
-                        <h2 class="title">{{ post.title }}</h2>
-                </header>
-
-                <section>
+                <section class="image-container">
                     <img v-if="post.image" :src="post.image" class="post-image" />
+                    <footer>
+                        <div class="post-meta">
+                            <div class="user-image-frame">
+                                <img v-if="post.creator_image" :src="post.creator_image" class="user-image" />
+                                <img v-else src="/images/avatars/no-image.jpg" class="user-image" />
+                            </div>
+                            <p class="post-author">{{ post.creator_username }} </p>
+                            <p class="post-time">• {{ getTimeElapsed(post.timeOfCreation) }}</p>
+                        </div>
+                        <h2 class="title">{{ post.title }}</h2>
+                    </footer>
+
                     <!-- <p> {{ post.description }} </p> -->
                 </section>
             </router-link>
@@ -45,47 +45,84 @@ export default {
 </script>
 
 <style scoped>
-.post-link{
+.post-link {
     text-decoration: none;
 }
 
 .post-snippet {
+    position: relative;
     border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 20px;
+    overflow: visible;
+    padding: 0px;
+    cursor: pointer;
+    border: solid .01px;
+    border-color: var(--nero);
 }
 
+.image-container:after {
+    content: "";
+    left: 0;
+    right: 0;
+    position: absolute;
+    box-shadow: 0px 0 120px 80px var(--nero);
+}
+
+
+.image-container {
+    position: relative;
+    width: 100%;
+    height: 22rem;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    line-height: 1.5rem;
+    font-weight: 600;
+    padding: 8px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 5;
+    /* Make sure footer stays on top of the image */
+}
 
 .post-meta {
+    padding: 0.5;
     display: flex;
     align-items: center;
+
 }
 
+.post-author,
 .post-time {
     margin-left: 10px;
-    color: #888;
+    color: var(--Primary);
 }
 
 .post-image {
     width: 100%;
-    max-height: 200px;
+    height: 100%;
     object-fit: cover;
-    margin-top: 10px;
-    border-radius: 5px;
+    display: block;
 }
 
-.btn-delete {
-    margin-top: 10px;
-    background-color: red;
-    color: white;
-    border: none;
-    border-radius: 3px;
-    padding: 5px 10px;
-    cursor: pointer;
+.user-image-frame {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 10px;
 }
 
-.btn-delete:hover {
-    background-color: darkred;
+.user-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    /* Ensure the user image is circular */
 }
-
 </style>

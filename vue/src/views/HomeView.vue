@@ -76,7 +76,6 @@ export default {
   computed: {
     filteredPosts() {
       let sortedPosts = [...this.posts];
-      console.log('Filtered Posts:', this.filteredPosts);
       if (this.selectedFilter === 'recent') {
         sortedPosts.sort((a, b) => new Date(b.timeOfCreation) - new Date(a.timeOfCreation));
       } else if (this.selectedFilter === 'popularity') {
@@ -88,7 +87,6 @@ export default {
   created() {
     PostService.getPopularPosts()
       .then((res) => {
-        console.log(res.data); // Log to verify data structure
         this.posts = res.data;
         this.isloadingPost = false;
 
