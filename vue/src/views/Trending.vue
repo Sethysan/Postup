@@ -10,7 +10,7 @@
                 :breakpoints="{ '640': { slidesPerView: 1, spaceBetween: 20, }, '768': { slidesPerView: 2, spaceBetween: 30, }, '1024': { slidesPerView: 3, spaceBetween: 30, }, }"
                 :coverflowEffect="{ rotate: 50, stretch: 0, depth: 100, modifier: 1, slideShadows: true, }"
                 :pagination="{ type: 'progressbar', }" :modules="modules">
-                <swiper-slide v-for="(post) in filteredPosts.slice(0, 10)" :key="post.id">
+                <swiper-slide v-for="(post) in filteredPosts.slice(0, 10)" :key="post.id" class="trending-post">
                     <post-snippet :post="post"></post-snippet>
                 </swiper-slide>
             </swiper>
@@ -59,8 +59,10 @@ export default {
     display: flex;
     flex-direction: column;
     height: auto;
-
-    background-color: var(--nero);
+    background-color:  var(--nero);
+}
+.trending-post{
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .7);
 }
 
 .trending-now {
