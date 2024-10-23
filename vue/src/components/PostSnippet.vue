@@ -16,8 +16,6 @@
                         </div>
                         <h2 class="title">{{ post.title }}</h2>
                     </footer>
-
-                    <!-- <p> {{ post.description }} </p> -->
                 </section>
             </router-link>
         </div>

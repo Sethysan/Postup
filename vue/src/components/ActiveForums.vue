@@ -1,30 +1,45 @@
 <template>
-    <div>
-        <h1>Active Forums</h1>
-        <ul>
-            <li v-for="forum in forums" :key="forum.id">
-                {{ forum.name }}
-            </li>
-        </ul>
-    </div>
+    <section id="active">
+        <div v-if="forumSnippet.length>0">
+            <div class="most-active">
+                <h1>Active Forums</h1>
+            </div>
+            <ul class="forum-wrapper">
+                <li v-for="(forum) in forums.slice(0, 5)" :key="forum.id" class="active-forum">
+                    <forum-snippet :forum="forum"></forum-snippet>
+                </li>
+            </ul>
+        </div>
+    </section>
 </template>
 
 <script>
+
+import ForumSnippet from '../components/ForumSnippet.vue';
+import dayjs from 'dayjs';
 export default {
-    data() {
-        return {
-            forums: [
-                { id: 1, name: 'Forum 1' },
-                { id: 2, name: 'Forum 2' },
-                { id: 3, name: 'Forum 3' }
-            ]
-        };
-    }
+    props: ['forums'],
+    components: { ForumSnippet },
+    name: 'Active',
 };
 </script>
 
 <style scoped>
-h1 {
-    color: blue;
+#active{
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    background-color: var(--nero);
+}
+.active-forum {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .7);
+}
+.most-active {
+    /* Ensure the text inside is centered */
+    text-align: center;
+}
+.forum-wrapper{
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 </style>
