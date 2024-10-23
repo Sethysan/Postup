@@ -9,10 +9,12 @@
       <div v-if="posts.length < 1 && !isloadingPost" class="status">
         <div>
           <p>Wow, such empty!</p>
+          <page-loader />
         </div>
 
         <div v-if="isloadingPost">
           <p>loading . . .</p>
+          <page-loader />
         </div>
 
         <div v-if="postLoadingError">
@@ -30,25 +32,34 @@
 
     </div>
     <!-- trending section -->
-    <div class="trending-posts">
+    <div v-if="posts.length > 1 && !isloadingPost && !postLoadingError" class="trending-posts">
       <trending :filteredPosts="filteredPosts" />
     </div>
 
+    <div v-if="forums.length === 0" class="drop-downs">
+
+      <div v-if="forums.length < 1 && !isloadingForum" class="status">
+
+        <div>
+          <p>Wow, such empty!</p>
+          <page-loader />
+        </div>
+
+
+        <div v-if="isloadingForum">
+          <p>loading . . .</p>
+          <page-loader />
+        </div>
+
+        <div v-if="forumLoadingError">
+          <p>Oops, it looks like active forums couldn't load</p>
+        </div>
+
+      </div>
+    </div>
+
     <div class="active-forums">
-      <h1>Top 5 Most Active Forums</h1>
-
-      <div v-if="forums.length < 1 && !isloadingForum">
-        <p>Wow, such empty!</p>
-      </div>
-
-      <div v-if="isloadingForum">
-        <p>loading . . .</p>
-      </div>
-
-      <div v-if="forumLoadingError">
-        <p>Oops, it looks like active forums couldn't load</p>
-      </div>
-
+      
       <!-- Forums grid -->
       <div class="forums-grid">
         <forum-snippet v-for="(forum) in forums.slice(0, 5)" :key="forum.id" :forum="forum" />
@@ -59,13 +70,14 @@
 </template>
 
 <script>
-import Trending from './Trending.vue';
+import Trending from '../components/Trending.vue';
 import ForumSnippet from '../components/ForumSnippet.vue';
 import PostService from '../services/PostService';
 import ForumService from '../services/ForumService';
+import PageLoader from '../components/PageLoader.vue';
 
 export default {
-  components: { ForumSnippet, Trending },
+  components: { ForumSnippet, Trending, PageLoader },
   data() {
     return {
       posts: [],
@@ -129,6 +141,12 @@ export default {
 </script>
 
 <style>
+.status {
+  display: flex;
+  text-align: center;
+  font-weight: 900;
+}
+
 .home {
   display: flex;
   flex-direction: column;
@@ -176,12 +194,13 @@ option {
   display: flex;
   justify-content: space-around;
   margin-top: 5rem;
-  padding-bottom: 1rem;
+  margin-bottom: 5rem;
+  padding-bottom: 10vh;
   height: 5vh;
 }
 
 .trending-posts {
-  height: 60vh;
+  height: auto;
   width: 100%;
 }
 
@@ -219,6 +238,6 @@ option {
   text-decoration: none;
   /* Remove underline from link */
   color: black
-  /* Link text color */
+    /* Link text color */
 }
-</style>
+</style>../components/Trending.vue
