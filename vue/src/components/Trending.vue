@@ -32,7 +32,7 @@ import { mapState, mapMutations } from 'vuex';
 
 export default {
     props: ['filteredPosts'],
-    components: { PostSnippet, Swiper, SwiperSlide },
+    components: {  PostSnippet,Swiper, SwiperSlide },
     name: 'Trending',
     setup() {
         return {

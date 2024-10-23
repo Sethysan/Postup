@@ -6,20 +6,21 @@
         <router-link v-bind:to="{ name: 'admin' }">Admin Access</router-link>
       </button>
 
-      <div v-if="posts.length < 1 && !isloadingPost" class="status">
+      <!-- loading & error messages for posts-->
+      <div v-if="isloadingPost">
+        <p>loading . . .</p>
+        <page-loader />
+      </div>
+
+      <div v-if="posts.length < 1 && !isloadingPost" class="status">       
         <div>
           <p>Wow, such empty!</p>
           <page-loader />
         </div>
+      </div>
 
-        <div v-if="isloadingPost">
-          <p>loading . . .</p>
-          <page-loader />
-        </div>
-
-        <div v-if="postLoadingError">
-          <p>Oops, it looks like popular posts couldn't load</p>
-        </div>
+      <div v-if="postLoadingError">
+        <p>Oops, it looks like popular posts couldn't load</p>
       </div>
 
       <div v-if="posts.length > 1 && !isloadingPost && !postLoadingError" class="filter-bar">
@@ -31,53 +32,48 @@
       </div>
 
     </div>
+
     <!-- trending section -->
     <div v-if="posts.length > 1 && !isloadingPost && !postLoadingError" class="trending-posts">
       <trending :filteredPosts="filteredPosts" />
     </div>
 
-    <div v-if="forums.length === 0" class="drop-downs">
-
-      <div v-if="forums.length < 1 && !isloadingForum" class="status">
-
-        <div>
-          <p>Wow, such empty!</p>
-          <page-loader />
-        </div>
-
-
-        <div v-if="isloadingForum">
-          <p>loading . . .</p>
-          <page-loader />
-        </div>
-
-        <div v-if="forumLoadingError">
-          <p>Oops, it looks like active forums couldn't load</p>
-        </div>
-
+    <!-- loading & error messages for forums-->
+    <div v-if="isloadingForum">
+      <p>loading . . .</p>
+      <page-loader />
+    </div>
+   
+    <div v-if="forums.length < 1 && !isloadingForum" class="status">
+      <div>
+        <p>Wow, such empty!</p>
+        <page-loader />
       </div>
     </div>
 
-    <div class="active-forums">
-      
-      <!-- Forums grid -->
+    <div v-if="forumLoadingError">
+      <p>Oops, it looks like active forums couldn't load</p>
+    </div>
+
+    
+    <div v-if="forums.length > 0 && !isloadingForum && !forumLoadingError" class="active-forums">
       <div class="forums-grid">
-        <forum-snippet v-for="(forum) in forums.slice(0, 5)" :key="forum.id" :forum="forum" />
+        <active-forums :forums="forums" />
       </div>
     </div>
-
-  </div>
+    
+</div>
 </template>
 
 <script>
 import Trending from '../components/Trending.vue';
-import ForumSnippet from '../components/ForumSnippet.vue';
+import ActiveForums from '../components/ActiveForums.vue';
 import PostService from '../services/PostService';
 import ForumService from '../services/ForumService';
 import PageLoader from '../components/PageLoader.vue';
 
 export default {
-  components: { ForumSnippet, Trending, PageLoader },
+  components: { ActiveForums, Trending, PageLoader },
   data() {
     return {
       posts: [],
@@ -106,15 +102,15 @@ export default {
       .then((res) => {
         this.posts = res.data;
         this.isloadingPost = false;
-
-        this.$nextTick(() => {
-          if (this.$refs.swiper) {
-            this.$refs.swiper.swiper.update();
-          }
-        });
+        // this.$nextTick(() => {
+        //   if (this.$refs.swiper) {
+        //     this.$refs.swiper.swiper.update();
+        //   }
+        // });
       })
       .catch(error => {
-        this.postLoadingError = true;
+        console.log("Failed to load posts: ", error)
+        this.postLoadingError = "Failed to load trending posts. Please try again later.";
       });
 
     this.user = this.$store.getters.username;
@@ -124,8 +120,9 @@ export default {
         this.forums = res.data;
         this.isloadingForum = false
       })
-      .catch(err => {
-        this.forumLoadingError = true;
+      .catch(error => {
+        console.error("Failed to load forums: ", error);
+        this.forumLoadingError = "Failed to load active forums. Please try again later.";
       });
   },
   methods: {
@@ -207,7 +204,7 @@ option {
 /* Grid for Forums (1 row, 5 columns) */
 .forums-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(auto-fit,minmax(250px, 1fr));
   grid-gap: 40px;
   margin: 20px 0;
 }

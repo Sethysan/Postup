@@ -1,23 +1,31 @@
 <template>
     <div class="forum-snippet">
-    <router-link :to="{ name: 'forum', params: { id: forum.id } }" class="forum-link">
-            <div class="forum-header">
-                <h2 class="forum-topic">{{ forum.topic }}
-                    <div class="sub-header">
-                        <!-- formatted time elapsed display with styling -->
-                        <p class="inline-time"> {{ forum.author }} </p>
-                        <p class="inline-time"> {{ getTimeElapsed(forum.timeOfCreation) }} </p>
-                    </div>
-                </h2>
-                <p class="forum-description">{{ forum.description }}</p>
-            </div>
-        </router-link>
+
+        <div v-if="forum">
+            <router-link :to="{ name: 'forum', params: { id: forum.id } }" class="forum-link">
+                <div class="forum-header">
+                    <h2 class="forum-topic">{{ forum.topic }}
+                        <div class="sub-header">
+                            <!-- formatted time elapsed display with styling -->
+                            <p class="inline-time"> {{ forum.author }} </p>
+                            <p class="inline-time"> {{ getTimeElapsed(forum.timeOfCreation) }} </p>
+                        </div>
+                    </h2>
+                    <p class="forum-description">{{ forum.description }}</p>
+                </div>
+            </router-link>
+        </div>
+        <div v-else>
+            <p>No forum data available.</p>
+        </div>
+
     </div>
 </template>
 
 <script>
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
 
 export default {
     props: ['forum'],
