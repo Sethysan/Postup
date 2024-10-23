@@ -45,7 +45,7 @@
       <form @submit.prevent="updateUserDetails">
         <div class="form-group">
           <label for="userImage">Profile Image URL</label>
-          <input type="text" v-model="updatedUserImage" placeholder="Enter new image URL" />
+          <input type="text" ref="myInput" v-model="updatedUserImage" placeholder="Enter new image URL" />
         </div>
         <div class="edit-pic-btns">
           <button class="pic-save" type="submit">Save</button>
@@ -71,6 +71,7 @@ import ModeratorService from './services/ModeratorService';
 import { container } from 'jenesius-vue-modal'
 
 export default {
+
   components: { WidgetContainerModal: container },
   name: "App",
   data() {
@@ -113,10 +114,6 @@ export default {
     },
     toggleEditForm() {
       this.editFormVisible = !this.editFormVisible;
-      if (this.editFormVisible) {
-        // Populate the form with the current details
-        this.updatedUserImage = this.userImage;
-      }
     },
     updateUserDetails() {
       const sanitizedImageUrl = this.updatedUserImage.trim().replace(/"/g, '');
@@ -132,6 +129,19 @@ export default {
         });
     }
 
+  },
+  watch: {
+    // Watch the editFormVisible property
+    editFormVisible(newVal) {
+      if (newVal) {
+        // Use $nextTick to ensure the input is in the DOM before trying to focus it
+        this.$nextTick(() => {
+          if (this.$refs.myInput) {
+            this.$refs.myInput.focus();
+          }
+        });
+      }
+    }
   }
 };
 </script>
@@ -233,14 +243,12 @@ body {
 .name {
   position: absolute;
   bottom: -12px;
-  color: white;
+  color: #888;
   background-color: rgba(0, 0, 0, 0.733);
   width: 100%;
   padding: 3px 7px;
   text-align: center;
   border-radius: 10px;
-  /* border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px; */
   transform: translateY(50%);
 }
 
@@ -249,22 +257,17 @@ body {
   height: calc(2 * 60px);
   border-radius: 50%;
   object-fit: cover;
+  z-index: 0;
 }
-
-/* body,
-html {
-  margin: 0;
-  padding: 0;
-} */
 
 .edit-tooltip {
   position: absolute;
   top: 0;
   left: 60px;
-  background-color: #333;
-  color: #fff;
+  color: #888;
+  background-color: rgba(0, 0, 0, 0.733);
   padding: 5px;
-  border-radius: 5px;
+  border-radius: 8px;
   font-size: 12px;
   white-space: nowrap;
 }
@@ -278,21 +281,18 @@ html {
   right: 65%;
   margin: 0 auto;
   max-width: 15%;
-  background: radial-gradient(circle, rgb(60, 184, 255) 45%, rgba(248, 131, 29, 0.699));
-  background: radial-gradient(circle, rgb(60, 184, 255) 45%, rgba(248, 131, 29, 0.699));
-  border: 1px solid #ddd;
+  background: radial-gradient(circle, var(--nero) 55%, rgba(0, 0, 0, 0.699));
+  border: 1px solid black;
   padding: 20px;
   padding-bottom: 10px;
   padding-bottom: 10px;
   border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  z-index: 999;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .7);
+  z-index: 10;
   cursor: move;
   transition: transform 0.1s ease-out;
-
   cursor: move;
   transition: transform 0.1s ease-out;
-
 }
 
 .form-group label {
@@ -305,12 +305,17 @@ html {
 .form-group input {
   display: flex;
   justify-content: center;
+  background-color: rgb(139, 138, 138);
   width: 100%;
   margin-top: 15px;
   margin-right: 15px;
   padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: 2px solid #000000;
+  border-radius: 8px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+.form-group input:focus{
+  outline:none;
 }
 
 .edit-pic-btns {
@@ -392,13 +397,13 @@ router-view {
 .router-link-exact-active {
   text-decoration: none;
   font-size: 30px;
-  color: white;
+  color: var(--primary);
   transition: .3s ease-in-out;
 }
 
 .router-link-nonactive {
   text-decoration: none;
-  color: black;
+  color: #888;
   transition: .3s ease-in-out;
 }
 

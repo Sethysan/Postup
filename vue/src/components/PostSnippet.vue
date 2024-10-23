@@ -52,7 +52,7 @@ export default {
 .post-snippet {
     position: relative;
     border-radius: 5px;
-    overflow: visible;
+    overflow: hidden;
     padding: 0px;
     cursor: pointer;
     border: solid .01px;

@@ -1,28 +1,33 @@
 <template>
   <div class="home">
-    <button v-if="role === 'ROLE_ADMIN'" class="admin-button">
-      <router-link v-bind:to="{ name: 'admin' }">Admin Access</router-link>
-    </button>
-    <div class="status">
-      <div v-if="posts.length < 1 && !isloadingPost">
-        <p>Wow, such empty!</p>
+    <div class="drop-downs">
+
+      <button v-if="role === 'ROLE_ADMIN'" class="admin-button">
+        <router-link v-bind:to="{ name: 'admin' }">Admin Access</router-link>
+      </button>
+
+      <div v-if="posts.length < 1 && !isloadingPost" class="status">
+        <div>
+          <p>Wow, such empty!</p>
+        </div>
+
+        <div v-if="isloadingPost">
+          <p>loading . . .</p>
+        </div>
+
+        <div v-if="postLoadingError">
+          <p>Oops, it looks like popular posts couldn't load</p>
+        </div>
       </div>
 
-      <div v-if="isloadingPost">
-        <p>loading . . .</p>
+      <div v-if="posts.length > 1 && !isloadingPost && !postLoadingError" class="filter-bar">
+        <select name="filter" v-model="selectedFilter" @change="applyFilter" class="filter">
+          <option value="">Sort</option>
+          <option value="recent">Most Recent</option>
+          <option value="popularity">Most Popular</option>
+        </select>
       </div>
 
-      <div v-if="postLoadingError">
-        <p>Oops, it looks like popular posts couldn't load</p>
-      </div>
-    </div>
-
-    <div class="filter-bar">
-      <select name="filter" v-model="selectedFilter" @change="applyFilter">
-        <option value="">Sort</option>
-        <option value="recent">Most Recent</option>
-        <option value="popularity">Most Popular</option>
-      </select>
     </div>
     <!-- trending section -->
     <div class="trending-posts">
@@ -124,17 +129,58 @@ export default {
 </script>
 
 <style>
-
-.home{
+.home {
   display: flex;
   flex-direction: column;
 }
 
 .title {
   text-align: center;
-  margin-top: 20px;
 }
-.trending-posts{
+
+.filter-bar {
+  display: flex;
+  height: 5vh;
+  min-width: auto;
+  flex-wrap: wrap;
+  align-content: end;
+
+}
+
+.filter {
+  border-radius: 8px;
+  color: var(--primary);
+  border-color: black;
+  background-color: var(--nero);
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  max-height: 2.5vh;
+  font-weight: 800;
+  cursor: pointer;
+  transition: .3s ease-in;
+  padding: 5px;
+}
+
+select:hover,
+select:focus {
+  background-color: #000000;
+  outline: none;
+}
+
+option {
+  outline: none;
+}
+
+.drop-downs {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 5rem;
+  padding-bottom: 1rem;
+  height: 5vh;
+}
+
+.trending-posts {
   height: 60vh;
   width: 100%;
 }
@@ -148,33 +194,31 @@ export default {
 }
 
 .admin-button {
-  background-color: grey;
-  /* Primary color */
-  color: white;
-  /* Text color */
+  display: flex;
+  height: 5vh;
+  padding: 5px;
+  min-width: auto;
+  flex-wrap: wrap;
+  align-content: end;
+  background-color: var(--nero);
+  color: var(--primary);
   border-color: black;
-  /* Remove default border */
-  border-radius: 5px;
-  /* Rounded corners */
-  padding: 2px 8px;
-  /* Padding for size */
-  font-size: 16px;
-  /* Font size */
+  border-radius: 8px;
+  max-height: 2.5vh;
+  font-weight: 800;
   cursor: pointer;
-  /* Pointer cursor on hover */
   transition: background-color 0.3s;
-  /* Smooth transition */
+
 }
 
 .admin-button:hover {
-  background-color: rgb(240, 107, 19);
-  /* Darker shade on hover */
+  background-color: black;
 }
 
 .admin-button a {
   text-decoration: none;
   /* Remove underline from link */
-  color: white;
+  color: black
   /* Link text color */
 }
 </style>
