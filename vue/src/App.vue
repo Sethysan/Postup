@@ -178,7 +178,7 @@ body {
 }
 
 :root {
-  --primary: #e50914 !important;
+  --primary: #e50914 ; /*!important*/
   --secondary: #0f0f0f;
   --nero: #181818;
 }
