@@ -152,6 +152,7 @@ export default {
   flex-direction: column;
   min-height: 100%;
   background-color: var(--secondary);
+  align-items: center
 }
 
 ::after,
@@ -186,7 +187,6 @@ body {
 #nav {
   display: flex;
   justify-content: space-evenly;
-  left: 0;
   width: 100%;
   z-index: 1000;
   padding: 10px;

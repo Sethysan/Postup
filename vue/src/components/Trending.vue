@@ -55,15 +55,28 @@ export default {
 </script>
 
 <style>
+.swiper-wrapper {
+    display: flex;
+    align-items: center; /* Vertically centers the slides */
+}
+
+.swiper-slide {
+    height: auto; /* Ensures the slide height adjusts to content */
+    flex-shrink: 0; /* Prevents the slide from shrinking */
+}
+
 #trending {
     display: flex;
     flex-direction: column;
-    height: auto;
+    max-width: 1500px;
+    margin: 0 auto;
     background-color: var(--nero);
+    
 }
 
 .trending-post {
-    box-shadow: 0 10px 30px rgba(0, 0, 0, .7);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, .9);
+    
 }
 
 .trending-now {
@@ -72,6 +85,10 @@ export default {
 }
 
 .body {
-    padding-top: 1rem;
+    position: relative;
+    width: 100%;
+    min-height: 350px;
+    overflow: hidden;
+    
 }
 </style>

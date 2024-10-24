@@ -1,6 +1,6 @@
 <template>
     <section id="active">
-        <div v-if="forumSnippet.length>0">
+        <div v-if="forums.length > 0">
             <div class="most-active">
                 <h1>Active Forums</h1>
             </div>
@@ -25,20 +25,23 @@ export default {
 </script>
 
 <style scoped>
-#active{
+#active {
     display: flex;
     flex-direction: column;
     height: auto;
     background-color: var(--nero);
 }
+
 .active-forum {
     box-shadow: 0 10px 30px rgba(0, 0, 0, .7);
 }
+
 .most-active {
     /* Ensure the text inside is centered */
     text-align: center;
 }
-.forum-wrapper{
+
+.forum-wrapper {
     padding-top: 1rem;
     padding-bottom: 1rem;
 }

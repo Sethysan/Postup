@@ -1,79 +1,58 @@
 <template>
+  <div class="drop-downs">
+
+    <!-- Admin access button -->
+    <button v-if="role === 'ROLE_ADMIN'" class="admin-button">
+      <router-link v-bind:to="{ name: 'admin' }">Admin Access</router-link>
+    </button>
+    <!-- filter drop-down for posts -->
+    <div v-if="posts.length > 0" class="filter-bar">
+    <select name="filter" v-model="selectedFilter" @change="applyFilter" class="filter">
+        <option value="">Sort</option>
+        <option value="recent">Most Recent</option>
+        <option value="popularity">Most Popular</option>
+      </select>
+    </div>
+  </div>
+  
+  
+  
   <div class="home">
-    <div class="drop-downs">
-
-      <button v-if="role === 'ROLE_ADMIN'" class="admin-button">
-        <router-link v-bind:to="{ name: 'admin' }">Admin Access</router-link>
-      </button>
-
-      <!-- loading & error messages for posts-->
-      <div v-if="isloadingPost">
-        <p>loading . . .</p>
-        <page-loader />
+    
+    <!-- Status Display for Posts -->
+    <status-display :isLoading="isloadingPost" :hasError="postLoadingError"
+    errorMessage="Oops, it looks like popular posts couldn't load">
+    <!-- Content to display when posts are successfully loaded -->
+      <div class="trending-posts">
+        <trending :filteredPosts="filteredPosts" />
       </div>
+    </status-display>
 
-      <div v-if="posts.length < 1 && !isloadingPost" class="status">       
-        <div>
-          <p>Wow, such empty!</p>
-          <page-loader />
+    <!-- Status Display for Forums -->
+    <status-display :isLoading="isloadingForum" :hasError="forumLoadingError"
+      errorMessage="Oops, it looks like active forums couldn't load">
+      <!-- Content to display when forums are successfully loaded -->
+
+      <div class="active-forums">
+        <div class="forums-grid">
+          <active-forums :forums="forums" />
         </div>
       </div>
+    </status-display>
 
-      <div v-if="postLoadingError">
-        <p>Oops, it looks like popular posts couldn't load</p>
-      </div>
-
-      <div v-if="posts.length > 1 && !isloadingPost && !postLoadingError" class="filter-bar">
-        <select name="filter" v-model="selectedFilter" @change="applyFilter" class="filter">
-          <option value="">Sort</option>
-          <option value="recent">Most Recent</option>
-          <option value="popularity">Most Popular</option>
-        </select>
-      </div>
-
-    </div>
-
-    <!-- trending section -->
-    <div v-if="posts.length > 1 && !isloadingPost && !postLoadingError" class="trending-posts">
-      <trending :filteredPosts="filteredPosts" />
-    </div>
-
-    <!-- loading & error messages for forums-->
-    <div v-if="isloadingForum">
-      <p>loading . . .</p>
-      <page-loader />
-    </div>
-   
-    <div v-if="forums.length < 1 && !isloadingForum" class="status">
-      <div>
-        <p>Wow, such empty!</p>
-        <page-loader />
-      </div>
-    </div>
-
-    <div v-if="forumLoadingError">
-      <p>Oops, it looks like active forums couldn't load</p>
-    </div>
-
-    
-    <div v-if="forums.length > 0 && !isloadingForum && !forumLoadingError" class="active-forums">
-      <div class="forums-grid">
-        <active-forums :forums="forums" />
-      </div>
-    </div>
-    
-</div>
+  </div>
 </template>
 
 <script>
-import Trending from '../components/Trending.vue';
 import ActiveForums from '../components/ActiveForums.vue';
+import StatusDisplay from '../components/StatusDisplay.vue';
+import Trending from '../components/Trending.vue';
+import PageLoader from '../components/PageLoader.vue';
 import PostService from '../services/PostService';
 import ForumService from '../services/ForumService';
-import PageLoader from '../components/PageLoader.vue';
 
 export default {
-  components: { ActiveForums, Trending, PageLoader },
+  components: { ActiveForums, StatusDisplay, Trending, PageLoader },
   data() {
     return {
       posts: [],
@@ -102,15 +81,10 @@ export default {
       .then((res) => {
         this.posts = res.data;
         this.isloadingPost = false;
-        // this.$nextTick(() => {
-        //   if (this.$refs.swiper) {
-        //     this.$refs.swiper.swiper.update();
-        //   }
-        // });
       })
       .catch(error => {
         console.log("Failed to load posts: ", error)
-        this.postLoadingError = "Failed to load trending posts. Please try again later.";
+        this.postLoadingError = true;
       });
 
     this.user = this.$store.getters.username;
@@ -120,9 +94,9 @@ export default {
         this.forums = res.data;
         this.isloadingForum = false
       })
-      .catch(error => {
-        console.error("Failed to load forums: ", error);
-        this.forumLoadingError = "Failed to load active forums. Please try again later.";
+      .catch(err => {
+        console.error("Failed to load forums: ", err);
+        this.forumLoadingError = true;
       });
   },
   methods: {
@@ -147,6 +121,8 @@ export default {
 .home {
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+
 }
 
 .title {
@@ -155,11 +131,9 @@ export default {
 
 .filter-bar {
   display: flex;
-  height: 5vh;
   min-width: auto;
   flex-wrap: wrap;
   align-content: end;
-
 }
 
 .filter {
@@ -170,7 +144,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   align-content: center;
-  max-height: 2.5vh;
+  min-height: 16px;
   font-weight: 800;
   cursor: pointer;
   transition: .3s ease-in;
@@ -189,11 +163,10 @@ option {
 
 .drop-downs {
   display: flex;
-  justify-content: space-around;
-  margin-top: 5rem;
-  margin-bottom: 5rem;
-  padding-bottom: 10vh;
-  height: 5vh;
+  justify-content: center;
+  height: 10.5vh;
+  width: 100%;
+  padding-right: 43.2%;
 }
 
 .trending-posts {
@@ -204,9 +177,8 @@ option {
 /* Grid for Forums (1 row, 5 columns) */
 .forums-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-gap: 40px;
-  margin: 20px 0;
 }
 
 .admin-button {
