@@ -1,24 +1,38 @@
 <template>
-    <div class="status">
-      <div v-if="isLoading">
-        <p>Loading . . .</p>
-        <page-loader />
-      </div>
-      <div v-else-if="hasError">
-        <p>{{ errorMessage }}</p>
-      </div>
-      <div v-else>
-                <slot></slot>
-      </div>
+  <div class="status">
+    <!-- Display the loader if isLoading is true -->
+    <div v-if="isLoading">
+      <p>Loading . . .</p>
+      <page-loader />
     </div>
-  </template>
-  
-  <script>
-  export default {
-    props: {
-      isLoading: Boolean,
-      hasError: Boolean,
-      errorMessage: String
-    }
+
+    <!-- Display the error message if hasError is true -->
+    <div v-else-if="hasError">
+      <p>{{ errorMessage }}</p>
+    </div>
+
+    <!-- Render the content when neither loading nor error is true -->
+    <div v-else>
+      <slot></slot>
+    </div>
+  </div>
+</template>
+
+<script>
+import PageLoader from '../components/PageLoader.vue';
+export default {
+  components: {PageLoader},
+  props: {
+    isLoading: Boolean,
+    hasError: Boolean,
+    errorMessage: String
   }
-  </script>
+}
+</script>
+
+<style scoped>
+.status {
+  text-align: center;
+  font-weight: 900;
+}
+</style>
