@@ -60,7 +60,7 @@ export default {
 
 }
 .post-snippet:hover {
-    box-shadow: 0 10px 5px #e509146f; /* Shadow grows on hover */
+    box-shadow: 0 10px 5px rgba(0, 0, 0, 0);
 }
 
 .image-container:after {
