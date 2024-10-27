@@ -58,6 +58,7 @@ export default {
 .swiper-wrapper {
     display: flex;
     align-items: center; /* Vertically centers the slides */
+    padding: 20px;
 }
 
 .swiper-slide {

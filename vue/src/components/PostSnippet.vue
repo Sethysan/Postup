@@ -55,6 +55,12 @@ export default {
     cursor: pointer;
     border: solid .01px;
     border-color: var(--nero);
+    box-shadow: 0 40px 160px rgb(0, 0, 0); 
+    transition: box-shadow 0.3s ease;
+
+}
+.post-snippet:hover {
+    box-shadow: 0 10px 5px #e509146f; /* Shadow grows on hover */
 }
 
 .image-container:after {
