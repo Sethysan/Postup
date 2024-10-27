@@ -46,14 +46,10 @@ export default {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, .2);
+    background-color: transparent;
 }
 
-.forum-item:hover {
-    transform: scale(1.002);
-    /* Slightly enlarge */
-    box-shadow: 0 4px 15px rgba(234, 85, 11, 0.5);
 
-}
 
 .forum-link {
     display: block;
@@ -92,5 +88,15 @@ export default {
     /* Adjust the width as needed */
     width: 100%;
     /* Ensures it is responsive */
+    box-shadow: 0 40px 160px rgb(0, 0, 0); 
+    transition: box-shadow 0.3s ease;
+}
+.forum-snippet:hover{
+    box-shadow: 0 10px 5px rgba(0, 0, 0, 0);
+}
+
+.forum-description{
+    color: #fff;
+    font-size: 1.3rem;
 }
 </style>

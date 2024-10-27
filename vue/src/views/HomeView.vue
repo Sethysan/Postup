@@ -123,6 +123,8 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   gap: 3rem;
+  align-items: center;
+  
 
 }
 
