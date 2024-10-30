@@ -9,17 +9,13 @@ commands = [
   "npm run build" # Build the Vue frontend
 ]
 
-
 [phases.start]
 # Start both backend and frontend
 commands = [
   # Start the Java Spring Boot application
-  "java -jar java/target/final-capstone-starter-1.0.jar"
-]
-
-[phases.start]
-commands = [
-  # Serve the built Vue.js app (optional)
+  "java -jar java/target/final-capstone-starter-1.0.jar",
+  
+  # Serve the Vue.js app
   "cd vue",
-  "npm run serve" 
+  "npm run serve"
 ]
