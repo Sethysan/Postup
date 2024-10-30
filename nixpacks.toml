@@ -2,7 +2,6 @@
 commands = [
   "apt-get update",              # Install Maven in the build phase
   "apt-get install -y maven",    # Ensure Maven is available
-  "cd backend",                  # Navigate to the backend folder
   "mvn clean install"            # Build the backend with Maven
 ]
 
