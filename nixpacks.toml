@@ -1,0 +1,24 @@
+[phases.build]
+# Build the Java backend using Maven
+commands = [
+  "cd java",
+  "mvn clean install" # Maven build command for Java backend
+]
+
+# Build the Vue frontend
+commands = [
+  "cd vue",
+  "npm install",
+  "npm run build" # Build the Vue frontend
+]
+
+[phases.start]
+# Start both backend and frontend
+commands = [
+  # Start the Java Spring Boot application
+  "java -jar java/target/final-capstone-starter-1.0.jar", # Adjust this to your actual JAR file name
+
+  # Serve the built Vue.js app (optional)
+  "cd vue",
+  "npm run serve" # You can serve the Vue app, or deploy the built assets elsewhere
+]
