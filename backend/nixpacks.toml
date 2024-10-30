@@ -7,5 +7,5 @@ commands = [
 
 #[phases.start]
 #commands = [
-#  "java -jar backend/target/final-capstone-starter-1.0.jar"  # Start the backend application
+#  "java -jar target/final-capstone-starter-1.0.jar"   # Start the backend application
 #]
