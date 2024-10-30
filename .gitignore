@@ -1,8 +1,10 @@
 # ignore temporary file created by Learn
 preview-curriculum.zip
 autoconfig.yaml
+
 #ignore thumbnails created by windows
 Thumbs.db
+
 #Ignore files build by Visual Studio
 *.obj
 *.exe
@@ -34,8 +36,6 @@ packages/
 node_modules
 /dist
 
-# Add any directories, files, or patterns you don't want to be tracked by version control
-
 # Eclipse
 .classpath
 .project
@@ -57,6 +57,7 @@ bin/
 # local env files
 .env.local
 .env.*.local
+.env
 
 # Log files
 npm-debug.log*
@@ -78,3 +79,6 @@ cypress/screenshots
 cypress/videos
 /tests/e2e/videos/
 /tests/e2e/screenshots/
+
+# Ignore application.properties file in the backend folder
+backend/src/main/resources/application.properties
