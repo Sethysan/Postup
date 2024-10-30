@@ -1,12 +1,10 @@
 [phases.build]
-# Build the Java backend using Maven
 commands = [
-  "cd backend",        # Ensure this matches your backend folder name
-  "mvn clean install"   # Build the Java Spring Boot backend
+  "cd backend",        # Navigate to the backend directory
+  "mvn clean install"  # Build the backend with Maven
 ]
 
 [phases.start]
-# Start the Java Spring Boot application
 commands = [
-  "java -jar backend/target/final-capstone-starter-1.0.jar"
+  "java -jar backend/target/final-capstone-starter-1.0.jar"  # Start the Spring Boot application
 ]
