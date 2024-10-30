@@ -2,7 +2,7 @@
 # Build the Java backend using Maven
 commands = [
   "cd java",
-  "mvn clean install" # Maven build command for Java backend
+  "mvn clean install", # Maven build command for Java backend
   # Build the Vue frontend
   "cd ../vue",
   "npm install",
