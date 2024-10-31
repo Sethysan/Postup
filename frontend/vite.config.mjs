@@ -17,10 +17,9 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
       "vue": "vue/dist/vue.esm-bundler.js", // Explicitly use ESM version of Vue
-      
     },
   },
-  base: './', //added after netlify error
+  base: '/', //added after netlify error
   optimizeDeps: {
     include: ["vue"], // Ensure Vue is pre-bundled by Vite
   },
