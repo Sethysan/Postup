@@ -17,7 +17,7 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
       "vue": "vue/dist/vue.esm-bundler.js", // Explicitly use ESM version of Vue
-      'vue3-social-sharing': path.resolve(__dirname, 'node_modules/vue3-social-sharing/dist/index.js'),
+      // 'vue3-social-sharing': path.resolve(__dirname, 'node_modules/vue3-social-sharing/dist/index.js'),
     },
   },
   base: './', //added after netlify error
