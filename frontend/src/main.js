@@ -19,7 +19,7 @@ library.add(faThumbsUp, faThumbsDown,faCircleArrowUp,faCircleArrowDown, faFacebo
 
 
 /* sets the base url for server API communication with axios */
-axios.defaults.baseURL = import.meta.env.VITE_REMOTE_API;
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 /*
  * The authorization header is set for axios when you login but what happens when 
