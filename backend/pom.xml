@@ -43,7 +43,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-messaging</artifactId>
-            <version>5.3.13</version> <!-- Ensure this matches your Spring Boot version -->
+            <version>5.2.6.RELEASE</version> <!-- Ensure this matches your Spring Boot version -->
         </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
