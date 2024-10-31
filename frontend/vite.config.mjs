@@ -1,10 +1,11 @@
-import { fileURLToPath, URL } from "node:url";
 
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
+import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: './', //added after netlify error
   plugins: [vue()],
   css: {
     preprocessorOptions: {
@@ -15,7 +16,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
+      "@": path.resolve(__dirname, "./src"),
+      'vue3-social-sharing': path.resolve(__dirname, 'node_modules/vue3-social-sharing/dist/index.js'),
     },
   },
   define: {
