@@ -26,7 +26,13 @@
 </template>
 
 <script>  
+import { defineComponent } from 'vue';
+// Import vue3-social-sharing as a CommonJS module
+import { ShareNetwork } from 'vue3-social-sharing';
 export default {
+  components: {
+    'share-network': ShareNetwork,
+  },
     props: {
         url: {
             type: String,
