@@ -1,5 +1,4 @@
 <template>
-
     <div>
         <p>Choose A Destination</p>
         <div class="social-list">
@@ -27,13 +26,7 @@
 </template>
 
 <script>  
-import { defineComponent } from 'vue';
-// import vue3-social-sharing as a CommonJS module
-// import { ShareNetwork } from 'vue3-social-sharing';
 export default {
-  components: {
-    // 'share-network': async () => (await import('vue3-social-sharing')).ShareNetwork
-  },
     props: {
         url: {
             type: String,
