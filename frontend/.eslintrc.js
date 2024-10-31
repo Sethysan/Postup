@@ -14,12 +14,15 @@ module.exports = {
   },
   settings: {
     'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
+      },
       alias: {
         map: [
           ['@', './src']
         ],
-        extensions: [".vue", ".js"]
-      }
+        extensions: ['.js', '.vue']
+      },
     },
   },
   // Needed for accessing .env from import.meta.env
