@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Create an Axios instance
 const http = axios.create({
-  baseURL: import.meta.env.VITE_REMOTE_API,
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 // Function to check if token is expired
