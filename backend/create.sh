@@ -1,5 +1,24 @@
 #!/bin/bash
 
+# Ensure the environment (development or production) is passed as an argument
+ENVIRONMENT=$1
+if [ -z "$ENVIRONMENT" ]; then
+  echo "Please specify the environment (development or production)"
+  exit 1
+fi
+
+# Load environment variables from the corresponding .env file
+if [ "$ENVIRONMENT" == "development" ]; then
+  echo "Setting up for development environment"
+  source .env.development
+elif [ "$ENVIRONMENT" == "production" ]; then
+  echo "Setting up for production environment"
+  source .env.production
+else
+  echo "Invalid environment specified. Use 'development' or 'production'."
+  exit 1
+fi
+
 # Ensure required environment variables are set
 if [ -z "$POSTGRES_PASSWORD" ] || [ -z "$DATABASE_NAME" ] || [ -z "$DB_HOST" ] || [ -z "$DB_PORT" ] || [ -z "$POSTUP_OWNER_PASSWORD" ] || [ -z "$POSTUP_APP_USER_PASSWORD" ]; then
   echo "One or more required environment variables are missing."

@@ -8,8 +8,8 @@ FROM pg_stat_activity
 --WHERE datname = 'final_capstone';
 --DROP DATABASE final_capstone;
 
-WHERE datname = 'postgres';
-DROP DATABASE postgres;
+WHERE datname = 'PostUp';
+DROP DATABASE PostUp;
 
-DROP USER final_capstone_owner;
-DROP USER final_capstone_app_user;
+DROP USER PostUp_owner;
+DROP USER PostUp_app_user;
