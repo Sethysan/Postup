@@ -29,3 +29,11 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Ignore application properties files
+application.properties
+application-*.properties
+
+# Ignore .env files
+.env
+.env.*

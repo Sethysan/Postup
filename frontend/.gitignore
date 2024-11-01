@@ -27,5 +27,6 @@ coverage
 *.sln
 *.sw?
 
-# Environment variables
-.env
+# Ignore environment configuration files
+.env*
+*.env
