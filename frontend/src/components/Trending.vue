@@ -96,20 +96,23 @@ export default {
 }
 
 .swiper-pagination-progressbar {
-    background: var(--swiper-pagination-progressbar-bg-color, rgba(0, 0, 0, .25));
+    background:  rgba(0, 0, 0, .25);
     position: absolute
 }
 
 .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
-    background: var(--swiper-pagination-color, var(--swiper-theme-color));
+    background: #e50914 !important;
     position: absolute;
     left: 0;
-    bottom: 0;
+    bottom: 0 !important;
     width: 100%;
     height: 100%;
     transform: scale(0);
-    transform-origin: left bottom
+    transform-origin: left bottom !important
 }
 
+.swiper-horizontal>.swiper-pagination-progressbar, .swiper-pagination-progressbar.swiper-pagination-horizontal {
+    bottom: 0 !important;
+}
 
 </style>

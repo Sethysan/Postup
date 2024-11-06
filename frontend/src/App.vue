@@ -184,8 +184,6 @@ body {
   --nero: #181818;
   --blue: rgb(60, 184, 255);
   --orange: rgb(248, 133, 29);
-  --swiper-theme-color: #e50914;
-
 }
 
 #nav {
@@ -202,7 +200,6 @@ body {
   right: 20px;
   height: calc(2 * 65px);
   height: calc(2 * 65px);
-  /* Adjust '60px' to match the height of your nav */
   display: flex;
   align-items: center;
 }
@@ -210,7 +207,6 @@ body {
 .logo {
   height: 100%;
   object-fit: contain;
-  /* Ensures the logo scales nicely */
 }
 
 .user-info {
@@ -239,8 +235,6 @@ body {
   padding: 3px 7px;
   text-align: center;
   border-radius: 10px;
-  /* border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px; */
   transform: translateY(50%);
 }
 
