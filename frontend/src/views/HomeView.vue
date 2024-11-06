@@ -124,6 +124,8 @@ export default {
   justify-content: flex-start;
   gap: 3rem;
   align-items: center;
+  z-index: 0
+  ;
   
 
 }
@@ -212,4 +214,5 @@ option {
   color: black
     /* Link text color */
 }
+
 </style>../components/Trending.vue

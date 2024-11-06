@@ -18,7 +18,7 @@ import ForumPostSerachView from '../views/ForumPostSerachView.vue';
 import MessagesView from '../views/MessagesView.vue';
 import DirectMessage from '../views/DirectMessage.vue';
 import Admin from '../components/Admin.vue';
-import LoggedInMessgae from '../components/LoggedInMessgae.vue';
+import LoggedInMessage from '../components/LoggedInMessage.vue';
 import ShareForm from '../components/ShareForm.vue';
 
 /**
@@ -41,7 +41,7 @@ const routes = [
   {
     path: '/logged-in',
     name:'logged-in',
-    component: useModalRouter(LoggedInMessgae),
+    component: useModalRouter(LoggedInMessage),
     meta: {
       requiresAuth: true
     }

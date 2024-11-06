@@ -13,7 +13,7 @@
       </div>
       <div class="form-input-group">
         <label for="username">Username</label>
-        <input type="text" id="username" v-model="user.username" required autofocus />
+        <input type="text" id="username" v-model="user.username" required ref="usernameInput" />
       </div>
       <div class="form-input-group">
         <label for="password">Password</label>
@@ -31,14 +31,14 @@
 </template>
 
 <script>
-import { openModal } from "jenesius-vue-modal";
-import LoggedInMessgae from "../components/LoggedInMessgae.vue";
+import { openModal} from "jenesius-vue-modal";
+import LoggedInMessage from "../components/LoggedInMessage.vue";
 import authService from "../services/AuthService";
 import ModeratorService from "../services/ModeratorService";
 
 
 export default {
-  components: {LoggedInMessgae},
+  components: { LoggedInMessage },
   data() {
     return {
       user: {
@@ -51,8 +51,11 @@ export default {
       bannedMessage: "You have been banned.",
     };
   },
+  mounted() {
+    this.$refs.usernameInput.focus();
+    },
   methods: {
-   login() {
+    async login() {
       authService
         .login(this.user)
         .then(response => {
@@ -60,52 +63,49 @@ export default {
             this.$store.commit("SET_AUTH_TOKEN", response.data.token);
             this.$store.commit("SET_USER", response.data.user);
             this.$store.commit("SET_USER_IMAGE", response.data.user.userImage);
+
             ModeratorService.getUserAccess(response.data.user.id)
-            .then(res => {
-              this.$store.dispatch('SET_ACCESS', res.data);
+              .then(res => {
+                this.$store.dispatch('SET_ACCESS', res.data);
+              });
+
+            // Show the welcome modal
+            this.showModal({
+              header: `Welcome, ${this.user.username}`,
+              message: "You are now logged into Post-Up"
             });
-            this.show({header: `Welcome, ${this.user.username}`, message: "You are now logged into Post-Up"})
-            this.$router.push("/")
           }
         })
         .catch(error => {
-
           const response = error.response;
-
           if (response.status === 401) {
             this.invalidCredentials = true;
           }
           if (response.status === 403) {
             this.bannedUser = true;
-            this.user = {
-              username: "",
-              password: ""
-            };
-            this.show({header: `Sorry, login unsuccessful`, message: "this user has been banned"})
+            this.user = { username: "", password: "" };
+            this.showModal({
+              header: `Sorry, login unsuccessful`,
+              message: "This user has been banned"
+            });
           }
         });
     },
-    async show(props){
-      const modal = await openModal(LoggedInMessgae, props);
-        let count = 1;
 
-        modal.onclose = () => {
-          count--;
-          //The modal window will be closed after five attempts.
-          if (count > 0) return false;
-        }
-      }
-  },
+    async showModal(props) {
+      const modal = await openModal(LoggedInMessage, props);
+    }
+  }
 };
+
 </script>
 
 <style scoped>
-
-form{
-  width: 50%;
+form {
+  width: 100%;
 }
 
-.text-center{
+.text-center {
   display: flex;
   justify-content: center;
   margin-bottom: 75rem;
@@ -131,7 +131,7 @@ button[type="submit"] {
   margin-top: 1rem;
   cursor: pointer;
   font-size: 1rem;
- 
+
 }
 
 input[type="text"],
@@ -185,26 +185,30 @@ button {
   button {
     padding: 0.5rem;
   }
+
   button[type="submit"] {
     margin-left: 17px;
     width: 70%;
   }
-  .text-center{
-  display: flex;
-  justify-content: center;
-  margin-bottom: 75rem;
-}
-p{
-  padding: 2rem;
-}
-.error-message{
-  margin-left: 1rem;
-  margin-top: 40px;
-  margin-bottom: 20px;
-}
-h1{
-  margin-left:1rem;
-}
-}
 
+  .text-center {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 75rem;
+  }
+
+  p {
+    padding: 2rem;
+  }
+
+  .error-message {
+    margin-left: 1rem;
+    margin-top: 40px;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    margin-left: 1rem;
+  }
+}
 </style>

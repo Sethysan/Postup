@@ -7,7 +7,7 @@
             <div class="body">
                 <swiper ref="swiper" class="swiper-wrapper" :effect="'coverflow'" :grabCursor="true"
                     :centeredSlides="false" :spaceBetween="10" :slidesPerView="1"
-                    :breakpoints="{ '640': { slidesPerView: 1, spaceBetween: 20, }, '768': { slidesPerView: 2, spaceBetween: 30, }, '1024': { slidesPerView: 3, spaceBetween: 30, }, }"
+                    :breakpoints="{ '640': { slidesPerView: 1, spaceBetween: 20, }, '1024': { slidesPerView: 3, spaceBetween: 30, }, }"
                     :coverflowEffect="{ rotate: 50, stretch: 0, depth: 100, modifier: 1, slideShadows: true, }"
                     :pagination="{ type: 'progressbar', }" :modules="modules">
                     <swiper-slide v-for="(post) in filteredPosts.slice(0, 10)" :key="post.id" class="trending-post">
