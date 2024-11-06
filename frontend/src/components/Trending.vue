@@ -111,27 +111,5 @@ export default {
     transform-origin: left bottom
 }
 
-.swiper-rtl .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
-    transform-origin: right bottom
-}
 
-.swiper-horizontal>.swiper-pagination-progressbar,
-.swiper-pagination-progressbar.swiper-pagination-horizontal,
-.swiper-vertical>.swiper-pagination-progressbar.swiper-pagination-progressbar-opposite,
-.swiper-pagination-progressbar.swiper-pagination-vertical.swiper-pagination-progressbar-opposite {
-    width: 100%;
-    height: var(--swiper-pagination-progressbar-size, 4px);
-    left: 0;
-    bottom: 0
-}
-
-.swiper-vertical>.swiper-pagination-progressbar,
-.swiper-pagination-progressbar.swiper-pagination-vertical,
-.swiper-horizontal>.swiper-pagination-progressbar.swiper-pagination-progressbar-opposite,
-.swiper-pagination-progressbar.swiper-pagination-horizontal.swiper-pagination-progressbar-opposite {
-    width: var(--swiper-pagination-progressbar-size, 4px);
-    height: 100%;
-    left: 0;
-    bottom: 0
-}
 </style>

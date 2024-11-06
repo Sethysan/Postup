@@ -184,6 +184,7 @@ body {
   --nero: #181818;
   --blue: rgb(60, 184, 255);
   --orange: rgb(248, 133, 29);
+  --swiper-theme-color: #e50914;
 
 }
 
