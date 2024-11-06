@@ -1,6 +1,6 @@
 <template>
     <section id="trending">
-        <div v-if="filteredPosts.length>0">
+        <div v-if="filteredPosts.length > 0">
             <div class="trending-now">
                 <h1> Trending Now </h1>
             </div>
@@ -32,7 +32,7 @@ import { mapState, mapMutations } from 'vuex';
 
 export default {
     props: ['filteredPosts'],
-    components: {  PostSnippet,Swiper, SwiperSlide },
+    components: { PostSnippet, Swiper, SwiperSlide },
     name: 'Trending',
     setup() {
         return {
@@ -57,13 +57,16 @@ export default {
 <style>
 .swiper-wrapper {
     display: flex;
-    align-items: center; /* Vertically centers the slides */
+    align-items: center;
+    /* Vertically centers the slides */
     padding: 20px;
 }
 
 .swiper-slide {
-    height: auto; /* Ensures the slide height adjusts to content */
-    flex-shrink: 0; /* Prevents the slide from shrinking */
+    height: auto;
+    /* Ensures the slide height adjusts to content */
+    flex-shrink: 0;
+    /* Prevents the slide from shrinking */
 }
 
 #trending {
@@ -72,12 +75,12 @@ export default {
     max-width: 1500px;
     margin: 0 auto;
     background-color: var(--nero);
-    
+
 }
 
 .trending-post {
     box-shadow: 0 15px 30px rgba(0, 0, 0, .9);
-    
+
 }
 
 .trending-now {
@@ -90,6 +93,45 @@ export default {
     width: 100%;
     min-height: 350px;
     overflow: hidden;
-    
+}
+
+.swiper-pagination-progressbar {
+    background: var(--swiper-pagination-progressbar-bg-color, rgba(0, 0, 0, .25));
+    position: absolute
+}
+
+.swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
+    background: var(--swiper-pagination-color, var(--swiper-theme-color));
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    transform: scale(0);
+    transform-origin: left bottom
+}
+
+.swiper-rtl .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
+    transform-origin: right bottom
+}
+
+.swiper-horizontal>.swiper-pagination-progressbar,
+.swiper-pagination-progressbar.swiper-pagination-horizontal,
+.swiper-vertical>.swiper-pagination-progressbar.swiper-pagination-progressbar-opposite,
+.swiper-pagination-progressbar.swiper-pagination-vertical.swiper-pagination-progressbar-opposite {
+    width: 100%;
+    height: var(--swiper-pagination-progressbar-size, 4px);
+    left: 0;
+    bottom: 0
+}
+
+.swiper-vertical>.swiper-pagination-progressbar,
+.swiper-pagination-progressbar.swiper-pagination-vertical,
+.swiper-horizontal>.swiper-pagination-progressbar.swiper-pagination-progressbar-opposite,
+.swiper-pagination-progressbar.swiper-pagination-horizontal.swiper-pagination-progressbar-opposite {
+    width: var(--swiper-pagination-progressbar-size, 4px);
+    height: 100%;
+    left: 0;
+    bottom: 0
 }
 </style>
