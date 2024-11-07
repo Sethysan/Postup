@@ -42,7 +42,7 @@ INSERT INTO forums (topic, description, author, time_of_creation) VALUES
 ( 'Welcome To Post Up', 'A forum for all things post up. Feel free to say hi!', 'admin1', '2022-03-020 13:00:00'),
 ( 'Tech Discussions', 'A forum to discuss all things tech.', 'mutex', '2024-01-01 10:00:00'),
 ( 'Gaming', 'All things related to gaming news and discussion.', 'manpac7', '2022-04-02 11:00:00'), -- 3
-('Programming Help', 'Ask for and provide programming help here.', 'mutex', '2024-08-03 12:00:00'),
+( 'Programming Help', 'Ask for and provide programming help here.', 'mutex', '2024-08-03 12:00:00'),
 ( 'Science & Space', 'Discussion about science and space exploration.', '4explore', '2023-05-13 13:00:00'),
 ( 'Not So Secret Garden', 'Discussions and advice about gardening.', 'lily_lover', '2023-12-09 13:00:00'),
 ( 'Music Today', 'All things music. Feel free to ask for recommendations and express your music taste and opinions!', 'killer_jazz4u', '2022-09-05 13:00:00'),
@@ -52,102 +52,101 @@ INSERT INTO forums (topic, description, author, time_of_creation) VALUES
 -- Insert mock posts
 INSERT INTO posts (title, description, image, author, forum_id, time_of_creation) VALUES
 -- welcome forum
-( 'Welcome New Users!', 'Drop in and make your reply on post up by saying hi!', 'https://imageio.forbes.com/specials-images/imageserve/6579be889c4f517b9631ef97/chart1/960x0.jpg?format=jpg&width=1440', 'admin1', 1, '2023-05-12 15:07:00.01799'),
+( 'Welcome New Users!', 'Drop in and make your reply on post up by saying hi!', 'https://imageio.forbes.com/specials-images/imageserve/6579be889c4f517b9631ef97/chart1/960x0.jpg?format=jpg&width=1440', 'admin1', 73, '2023-05-12 15:07:00.01799'),
 -- gaming forum
-( 'Starfield: Bethesda’s Space RPG Breaks Records', 'Bethesda’s highly anticipated space RPG, Starfield, has broken multiple records, including over 6 million players at launch. Players explore an open-world galaxy, filled with planets, space stations, and a deep narrative to uncover.', 'https://cdn.akamai.steamstatic.com/steam/apps/1716740/capsule_616x353.jpg?t=1691779121', 'halo_finite', 3, '2024-10-05 12:30:00'),
-( 'Cyberpunk 2077: Phantom Liberty Expansion Review', 'Phantom Liberty, the much-anticipated expansion for Cyberpunk 2077, introduces Idris Elba’s character Solomon Reed, expanding on the world of Night City with brand-new areas and quests. Does this expansion redeem the game after its rocky launch?', 'https://cdn.akamai.steamstatic.com/steam/apps/1091500/header.jpg?t=1693568339', 'mutex', 3, '2024-10-05 13:00:00'),
-( 'Top 10 games of 2023', 'Here’s a list of my favorite games from 2023.', 'https://newzoo.com/wp-content/uploads/2023/11/Top-10-bestselling-PC-and-console-game-releases-in-2023-from-January-through-October.png', 'diablo99', 3, '2024-10-05 15:00:00'),
-( 'The Top 10 Best-Selling Games of 2023', 'Here’s a breakdown of the best-selling games in 2023, featuring franchises like Elden Ring, The Legend of Zelda: Tears of the Kingdom, and Call of Duty: Modern Warfare II.', 'https://imageio.forbes.com/specials-images/imageserve/6579be889c4f517b9631ef97/chart1/960x0.jpg?format=jpg&width=1440', 'mutex', 3, '2024-1-05 15:07:00.01799'),
+( 'Starfield: Bethesda`s Space RPG Breaks Records', 'Bethesda`s highly anticipated space RPG, Starfield, has broken multiple records, including over 6 million players at launch. Players explore an open-world galaxy, filled with planets, space stations, and a deep narrative to uncover.', 'https://cdn.akamai.steamstatic.com/steam/apps/1716740/capsule_616x353.jpg?t=1691779121', 'halo_finite', 75, '2024-10-05 12:30:00'),
+( 'Cyberpunk 2077: Phantom Liberty Expansion Review', 'Phantom Liberty, the much-anticipated expansion for Cyberpunk 2077, introduces Idris Elba`s character Solomon Reed, expanding on the world of Night City with brand-new areas and quests. Does this expansion redeem the game after its rocky launch?', 'https://cdn.akamai.steamstatic.com/steam/apps/1091500/header.jpg?t=1693568339', 'mutex', 75, '2024-10-05 13:00:00'),
+( 'Top 10 games of 2023', 'Here`s a list of my favorite games from 2023.', 'https://newzoo.com/wp-content/uploads/2023/11/Top-10-bestselling-PC-and-console-game-releases-in-2023-from-January-through-October.png', 'diablo99', 75, '2024-10-05 15:00:00'),
+( 'The Top 10 Best-Selling Games of 2023', 'Here`s a breakdown of the best-selling games in 2023, featuring franchises like Elden Ring, The Legend of Zelda: Tears of the Kingdom, and Call of Duty: Modern Warfare II.', 'https://imageio.forbes.com/specials-images/imageserve/6579be889c4f517b9631ef97/chart1/960x0.jpg?format=jpg&width=1440', 'mutex', 75, '2024-1-05 15:07:00.01799'),
 -- programming help
-( 'Understanding JavaScript Closures', 'Can someone explain closures in JavaScript? I keep getting confused by the concept of inner functions having access to outer function variables.', 'https://edward-huang.com/images/what-is-really-so-special-about-javascript-closure-/Closure%20JS.png', 'java_jack', 4, '2024-10-05 14:00:00'),
-( 'Help with Java ArrayList', 'I need help with adding and removing elements from an ArrayList in Java. I keep getting `IndexOutOfBoundsException`. Can someone tell me what I am doing wrong?', 'https://upload.wikimedia.org/wikipedia/en/3/30/Java_programming_language_logo.svg', 'not_a_bot', 4, '2024-10-05 14:30:00'),
-( 'Python vs Java for Web Development?', 'I am trying to decide between Python (using Django) and Java (using Spring) for web development. Which one should I choose?', 'https://preview.redd.it/rxezjyf4ojx41.png?width=1080&crop=smart&auto=webp&s=38b346ba426f740eefcde2c6dfb23c5e6e810bc9', 'keanufromthematrix', 4, '2024-10-05 15:00:00'),
-( 'How to debug Java code?', 'I’m stuck on a bug and need help with debugging Java code.', 'https://i.redd.it/grzhl4arakw21.jpg', 'not_a_bot', 4, '2024-10-09 15:07:00.01799'),
+( 'Understanding JavaScript Closures', 'Can someone explain closures in JavaScript? I keep getting confused by the concept of inner functions having access to outer function variables.', 'https://edward-huang.com/images/what-is-really-so-special-about-javascript-closure-/Closure%20JS.png', 'java_jack', 76, '2024-10-05 14:00:00'),
+( 'Help with Java ArrayList', 'I need help with adding and removing elements from an ArrayList in Java. I keep getting `IndexOutOfBoundsException`. Can someone tell me what I am doing wrong?', 'https://upload.wikimedia.org/wikipedia/en/3/30/Java_programming_language_logo.svg', 'not_a_bot', 76, '2024-10-05 14:30:00'),
+( 'Python vs Java for Web Development?', 'I am trying to decide between Python (using Django) and Java (using Spring) for web development. Which one should I choose?', 'https://preview.redd.it/rxezjyf4ojx41.png?width=1080&crop=smart&auto=webp&s=38b346ba426f740eefcde2c6dfb23c5e6e810bc9', 'keanufromthematrix', 76, '2024-10-05 15:00:00'),
+( 'How to debug Java code?', 'I`m stuck on a bug and need help with debugging Java code.', 'https://i.redd.it/grzhl4arakw21.jpg', 'not_a_bot', 76, '2024-10-09 15:07:00.01799'),
 -- tech forum
-( 'The Rise of Quantum Computing', 'Quantum computing is revolutionizing the tech industry. Companies like Google and IBM are making major strides in developing quantum processors. What are your thoughts on its potential to solve complex problems?', 'https://res.cloudinary.com/dthpnue1d/image/upload/v1714979675/advantages_of_quantum_computing_f11be1ee8b.jpg', 'mutex', 2, '2024-10-05 16:00:00'),
-( 'AI and the Future of Work', 'With advancements in artificial intelligence, we are starting to see AI systems take over tasks previously done by humans. Do you think AI will cause massive job losses or create new opportunities?', 'https://www.smart-academy.in/wp-content/uploads/2023/12/BLOG-Image-Future-Trends-in-the-Age-of-Artificial-Intelligence-1.jpg', 'mutex', 2, '2024-10-05 16:30:00'),
-( '5G Technology: What Does the Future Hold?', 'As 5G networks become more widespread, we are on the verge of seeing faster, more reliable connections across the globe. What are your thoughts on the impact of 5G on industries like healthcare, IoT, and more?', 'https://imageio.forbes.com/specials-images/imageserve/5db28252c538200007815c25/What-Is-5G-Technology-And-How-Must-Businesses-Prepare-For-It-/960x0.jpg?format=jpg&width=1440', 'not_a_bot', 2, '2024-10-05 17:00:00'),
-( 'What is your favorite programming language?', 'I personally enjoy Python for its simplicity.', 'https://miro.medium.com/v2/resize:fit:1100/format:webp/1*EcrlPFA5Sdno4YvxDw73FA.png', 'keanufromthematrix', 4, '2024-10-09 15:07:00.01799'),
-( 'What is the future of AI?', 'Discuss how AI is shaping the future of technology.', 'https://d2ds8yldqp7gxv.cloudfront.net/Blog+Explanatory+Images/Future+of+Artificial+Intelligence+1.webp', 'mutex', 4, '2024-10-09 15:07:00.01799'),
-( 'NEVER obsolete', 'I wonder how many people are still getting upgrades every 2 years for $99!', 'https://i.redd.it/p33nor0btfi91.jpg', 'mutex', 4, '2024-10-09 15:07:00.01799'),
-( 'Help', 'I need help with my computer. I feel like I''m aimlessly running in cirlces like a baby chick. I need some direction', 'https://as1.ftcdn.net/v2/jpg/05/63/32/30/1000_F_563323083_iD6EXOVpPblV1w3BcRzsMx4goaFGvW7U.jpg', 'lily_lover', 4, '2024-10-09 15:07:00.01799'),
+( 'The Rise of Quantum Computing', 'Quantum computing is revolutionizing the tech industry. Companies like Google and IBM are making major strides in developing quantum processors. What are your thoughts on its potential to solve complex problems?', 'https://res.cloudinary.com/dthpnue1d/image/upload/v1714979675/advantages_of_quantum_computing_f11be1ee8b.jpg', 'mutex', 74, '2024-10-05 16:00:00'),
+( 'AI and the Future of Work', 'With advancements in artificial intelligence, we are starting to see AI systems take over tasks previously done by humans. Do you think AI will cause massive job losses or create new opportunities?', 'https://www.smart-academy.in/wp-content/uploads/2023/12/BLOG-Image-Future-Trends-in-the-Age-of-Artificial-Intelligence-1.jpg', 'mutex', 74, '2024-10-05 16:30:00'),
+( '5G Technology: What Does the Future Hold?', 'As 5G networks become more widespread, we are on the verge of seeing faster, more reliable connections across the globe. What are your thoughts on the impact of 5G on industries like healthcare, IoT, and more?', 'https://imageio.forbes.com/specials-images/imageserve/5db28252c538200007815c25/What-Is-5G-Technology-And-How-Must-Businesses-Prepare-For-It-/960x0.jpg?format=jpg&width=1440', 'not_a_bot', 74, '2024-10-05 17:00:00'),
+( 'What is your favorite programming language?', 'I personally enjoy Python for its simplicity.', 'https://miro.medium.com/v2/resize:fit:1100/format:webp/1*EcrlPFA5Sdno4YvxDw73FA.png', 'keanufromthematrix', 76, '2024-10-09 15:07:00.01799'),
+( 'What is the future of AI?', 'Discuss how AI is shaping the future of technology.', 'https://d2ds8yldqp7gxv.cloudfront.net/Blog+Explanatory+Images/Future+of+Artificial+Intelligence+1.webp', 'mutex', 76, '2024-10-09 15:07:00.01799'),
+( 'NEVER obsolete', 'I wonder how many people are still getting upgrades every 2 years for $99!', 'https://i.redd.it/p33nor0btfi91.jpg', 'mutex', 76, '2024-10-09 15:07:00.01799'),
+( 'Help', 'I need help with my computer. I feel like I''m aimlessly running in cirlces like a baby chick. I need some direction', 'https://as1.ftcdn.net/v2/jpg/05/63/32/30/1000_F_563323083_iD6EXOVpPblV1w3BcRzsMx4goaFGvW7U.jpg', 'lily_lover', 76, '2024-10-09 15:07:00.01799'),
 -- space forum
-( 'The James Webb Space Telescope was launched in 2021 and began collecting data in 2022, reshaping our understanding of the early universe while taking wondrous pictures of the cosmos.', 'A rarely seen prelude to a Supernova shows a super-bright, massive Wolf-Rayet star in a composite image taken by the James Webb Telescope. The star, WR 124, is 15,000 light-years away in the constellation Sagittarius and is 30 times the mass of our Sun.', 'https://www.reuters.com/resizer/v2/7BANAT2Q3FIK7BOTULOWAIWGBQ.jpg?auth=17a64f7408aab4b44df4f1bbd8dc98c043b37f367feeb6e957982f61d4fa34fb&width=1920&quality=80', 'nasa_rocks', 5, '2024-10-09 15:07:00.01799'),
-( 'Space odyssey: Stunning images from the James Webb telescope', 'A look at Sun-like stars being born in this detailed close-up of Rho Ophiuchi, the closest-star-forming region to Earth in a composite image taken by the James Webb Telescope and released by NASA on July 12, 2023. Dark, dense dust cocoons still-forming protostars, while an emerging stellar newborn (top center) shoots out two huge jets of molecular hydrogen. NASA', 'https://www.reuters.com/resizer/v2/O2AKCAEW4VM45D73OPETSDJNBE.jpg?auth=64c3f02b23b72ae2675010b2765ed748a4ac2defcf334a136d3003b54b339de9&width=1920&quality=80', 'nasa_rocks', 5, '2024-10-09 15:07:00.01799'),
-( 'NASA’s James Webb Telescope Captures the Fiery Remains of a Dying Star in Unprecedented Detail', 'More than a year after NASA’s James Webb Space Telescope brought us images of the Southern Ring Nebula, the world’s most powerful observer captured the remains of another celestial body with stunning clarity.', 'https://www.thisiscolossal.com/wp-content/uploads/2023/08/webb-1.jpg', 'nasa_rocks', 5, '2024-10-09 15:07:00.01799'),
-( 'Latest SpaceX launch discussion', 'Let’s talk about the recent SpaceX mission and its impact.', 'https://nss.org/wp-content/uploads/2018/02/falcon-heavy-liftoff.jpg', '4explore', 5, '2024-10-09 15:07:00.01799'),
+( 'The James Webb Space Telescope was launched in 2021 and began collecting data in 2022, reshaping our understanding of the early universe while taking wondrous pictures of the cosmos.', 'A rarely seen prelude to a Supernova shows a super-bright, massive Wolf-Rayet star in a composite image taken by the James Webb Telescope. The star, WR 124, is 15,000 light-years away in the constellation Sagittarius and is 30 times the mass of our Sun.', 'https://www.reuters.com/resizer/v2/7BANAT2Q3FIK7BOTULOWAIWGBQ.jpg?auth=17a64f7408aab4b44df4f1bbd8dc98c043b37f367feeb6e957982f61d4fa34fb&width=1920&quality=80', 'nasa_rocks', 77, '2024-10-09 15:07:00.01799'),
+( 'Space odyssey: Stunning images from the James Webb telescope', 'A look at Sun-like stars being born in this detailed close-up of Rho Ophiuchi, the closest-star-forming region to Earth in a composite image taken by the James Webb Telescope and released by NASA on July 12, 2023. Dark, dense dust cocoons still-forming protostars, while an emerging stellar newborn (top center) shoots out two huge jets of molecular hydrogen. NASA', 'https://www.reuters.com/resizer/v2/O2AKCAEW4VM45D73OPETSDJNBE.jpg?auth=64c3f02b23b72ae2675010b2765ed748a4ac2defcf334a136d3003b54b339de9&width=1920&quality=80', 'nasa_rocks', 77, '2024-10-09 15:07:00.01799'),
+( 'NASA`s James Webb Telescope Captures the Fiery Remains of a Dying Star in Unprecedented Detail', 'More than a year after NASA`s James Webb Space Telescope brought us images of the Southern Ring Nebula, the world`s most powerful observer captured the remains of another celestial body with stunning clarity.', 'https://www.thisiscolossal.com/wp-content/uploads/2023/08/webb-1.jpg', 'nasa_rocks', 77, '2024-10-09 15:07:00.01799'),
+( 'Latest SpaceX launch discussion', 'Let`s talk about the recent SpaceX mission and its impact.', 'https://nss.org/wp-content/uploads/2018/02/falcon-heavy-liftoff.jpg', '4explore', 77, '2024-10-09 15:07:00.01799'),
 -- garden forum
- ('How to Grow Tomatoes', 'Tips and tricks for growing healthy tomatoes.', '', 'lily_lover', 6, '2024-10-09 15:07:00.01799'),
- ('Best Tools for Gardening', 'A review of the best tools every gardener should have.', '', 'forester1', 6, '2024-10-09 15:07:00.01799'),
- ('Organic Gardening Methods', 'Learn about organic gardening practices.', '', 'plant_lady95', 6, '2024-10-09 15:07:00.01799'),
+ ('How to Grow Tomatoes', 'Tips and tricks for growing healthy tomatoes.', '', 'lily_lover', 78, '2024-10-09 15:07:00.01799'),
+ ('Best Tools for Gardening', 'A review of the best tools every gardener should have.', '', 'forester1', 78, '2024-10-09 15:07:00.01799'),
+ ('Organic Gardening Methods', 'Learn about organic gardening practices.', '', 'plant_lady95', 78, '2024-10-09 15:07:00.01799'),
  -- music forum
- ('Top 10 Rock Bands of All Time', 'A discussion on the greatest rock bands in history.', '', 'rockstar79', 7, '2024-10-09 15:07:00.01799'),
- ('The Rise of Indie Music', 'Exploring the growth of indie artists and their impact.', '', 'thehipthehop', 7, '2024-10-09 15:07:00.01799'),
- ('Best Soundtracks in Movies', 'A list of movies with unforgettable soundtracks.', '', 'keanufromthematrix', 7, '2024-10-09 15:07:00.01799');
+ ('Top 10 Rock Bands of All Time', 'A discussion on the greatest rock bands in history.', '', 'rockstar79', 79, '2024-10-09 15:07:00.01799'),
+ ('The Rise of Indie Music', 'Exploring the growth of indie artists and their impact.', '', 'thehipthehop', 79, '2024-10-09 15:07:00.01799'),
+ ('Best Soundtracks in Movies', 'A list of movies with unforgettable soundtracks.', '', 'keanufromthematrix', 79, '2024-10-09 15:07:00.01799');
 
 -- Populate post_upvote table
 INSERT INTO post_upvote (post_id, user_id) VALUES
-(1, 1), (1, 2), (1, 3),
-(2, 1), (2, 4),
-(3, 2), (3, 5), (3, 6),
-(4, 3), (4, 7),
-(5, 4), (5, 8), (5, 9),
-(6, 5), (6, 10),
-(7, 6), (7, 11),
-(8, 7), (8, 12), (8, 13),
-(9, 8), (9, 14),
-(10, 9), (10, 15),
-(11, 10), (11, 16), (11, 17),
-(12, 11), (12, 18),
-(13, 12), (13, 19),
-(14, 13), (14, 20), (14, 21),
-(15, 14), (15, 22),
-(16, 15), (16, 23), (16, 24),
-(17, 16), (17, 1),
-(18, 17), (18, 2),
-(19, 18), (19, 3),
-(20, 19), (20, 4),
-(21, 20), (21, 5),
-(22, 21), (22, 6),
-(23, 22), (23, 7),
-(24, 23), (24, 8),
-(25, 24), (25, 9),
-(26, 1), (26, 10);
+(79, 226), (79, 227), (79, 228),
+(80, 226), (80, 229),
+(81, 227), (81, 230), (81, 231),
+(82, 228), (82, 232),
+(83, 229), (83, 233), (83, 234),
+(86, 230), (86, 235),
+(87, 231), (87, 236),
+(88, 232), (88, 237), (88, 238),
+(89, 233), (89, 239),
+(90, 234), (90, 240),
+(91, 235), (91, 241), (91, 242),
+(92, 233), (92, 243),
+(93, 237), (93, 244),
+(94, 238), (94, 245), (94, 246),
+(95, 239), (95, 247),
+(96, 240), (96, 248), (96, 249),
+(97, 241), (97, 226),
+(98, 242), (98, 227),
+(99, 243), (99, 228),
+(100, 244), (100, 229),
+(101, 245), (101, 230),
+(102, 246), (102, 231),
+(103, 247), (103, 232),
+(104, 248), (104, 233);
+
 
 -- Populate post_downvote table
 INSERT INTO post_downvote (post_id, user_id) VALUES
-(1, 24), (1, 23),
-(2, 20), (2, 19),
-(3, 18),
-(4, 17), (4, 16),
-(5, 15), (5, 14),
-(6, 13), (6, 12), (6, 11),
-(7, 10), (7, 9),
-(8, 8), (8, 7), (8, 6),
-(9, 5), (9, 4),
-(10, 3), (10, 2),
-(11, 1), (11, 24),
-(12, 23),
-(13, 22), (13, 21),
-(14, 20),
-(15, 19), (15, 18),
-(16, 17), (16, 16),
-(17, 15),
-(18, 14), (18, 13),
-(19, 12), (19, 11),
-(20, 10), (20, 9),
-(21, 8),
-(22, 7), (22, 6),
-(23, 5), (23, 4),
-(24, 3), (24, 2),
-(25, 1), (25, 24),
-(26, 23), (26, 22);
+(79, 249), (79, 248),
+(80, 245), (80, 244),
+(80, 243),
+(80, 242), (80, 241),
+(81, 240), (81, 239),
+(82, 238), (82, 237), (82, 236),
+(83, 235), (83, 234),
+(84, 233), (84, 232), (84, 231),
+(85, 230), (85, 229),
+(86, 228), (86, 227),
+(87, 226), (87, 249),
+(88, 248),
+(89, 247), (89, 246),
+(90, 245),
+(91, 244), (91, 243),
+(92, 242), (92, 241),
+(93, 240),
+(94, 239), (94, 238),
+(95, 237), (95, 238),
+(96, 235), (96, 234),
+(97, 233),
+(98, 232), (98, 231),
+(99, 230), (99, 229),
+(100, 228), (100, 227),
+(101, 226), (101, 249),
+(102, 248), (102, 247);
 
 -- replies for the first post
 INSERT INTO replies (description, post_id, user_id) VALUES
 -- First level replies
 ('Hi everyone! Excited to be here!', 1, 2), --1
-('Hello! I’m new here too!', 1, 3), --2
+('Hello! I`m new here too!', 1, 3), --2
 ('Thanks for the welcome!', 1, 4), --3
 ('Looking forward to engaging with you all!', 1, 5), -- 4
 ('Nice to meet everyone!', 1, 6), -- 5
@@ -213,15 +212,15 @@ INSERT INTO reply_downvote (reply_id, user_id) VALUES
 
 -- Replies for the post 'Starfield: Bethesda’s Space RPG Breaks Records'
 INSERT INTO replies (description, post_id, user_id) VALUES
-('I can’t believe how many players joined at launch!', 2, 2), -- 16
+('I can`t believe how many players joined at launch!', 2, 2), -- 16
 ('The exploration mechanics are amazing!', 2, 3), --17
 ('Did anyone try the crafting system yet?', 2, 4), --18
 ('I love the visuals of the planets!', 2, 5), -- 19
 ('This game is a dream come true for space fans!', 2, 6), --20
 ('Bethesda really outdid themselves this time!', 2, 7), --21
-('I’m intrigued by the storyline!', 2, 8), -- 22
+('I`m intrigued by the storyline!', 2, 8), -- 22
 ('How does it compare to Skyrim in space?', 2, 9), --23
-('Can’t wait for the modding community to get involved!', 2, 10), --24
+('Can`t wait for the modding community to get involved!', 2, 10), --24
 ('The music score is epic!', 2, 11), -- 25
 ('I did and I loved the mechanic!', 2, 11), -- 26
 ('Thanks!', 2, 4),
@@ -235,7 +234,7 @@ INSERT INTO comment_replies (reply_id, parent_id) VALUES
 -- Replies for the post 'Cyberpunk 2077: Phantom Liberty Expansion Review'
 INSERT INTO replies (description, post_id, user_id) VALUES
 ('Idris Elba is a fantastic addition!', 3, 12), -- 29
-('I’m loving the new quests!', 3, 13), -- 30
+('I`m loving the new quests!', 3, 13), -- 30
 ('This expansion definitely feels like a redemption!', 3, 14), -- 31
 ('Night City looks even more vibrant now!', 3, 15), -- 32
 ('I had some bugs, but it was worth it!', 3, 16), --33
@@ -255,33 +254,33 @@ INSERT INTO comment_replies (reply_id, parent_id) VALUES
 INSERT INTO replies (description, post_id, user_id) VALUES
 ('I love your choices! Elden Ring is a masterpiece!', 4, 22),
 ('What about Hogwarts Legacy?', 4, 23),
-('I’d add Resident Evil 4 remake to the list!', 4, 24),
+('I`d add Resident Evil 4 remake to the list!', 4, 24),
 ('So many great games this year!', 4, 9),
 ('What criteria did you use for your list?', 4, 5),
-('I can’t believe how good Tears of the Kingdom is!', 4, 20),
+('I can`t believe how good Tears of the Kingdom is!', 4, 20),
 ('I need to check out some of these games.', 4, 21),
 ('Did you include any indie games?', 4, 19),
 ('This list sparks so much nostalgia!', 4, 18),
-('I’d love to hear more about your top picks!', 4, 17);
+('I`d love to hear more about your top picks!', 4, 17);
 
 -- Replies for the post 'Top 10 games of 2023' (post_id 3)
 INSERT INTO replies (description, post_id, user_id) VALUES
 ('I love your choices! Elden Ring is a masterpiece!', 5, 22),  -- 41
 ('What about Hogwarts Legacy?', 5, 23),  -- 42
-('I’d add Resident Evil 4 remake to the list!', 5, 24),  -- 43
+('I`d add Resident Evil 4 remake to the list!', 5, 24),  -- 43
 ('So many great games this year!', 5, 5),  -- 44
 ('What criteria did you use for your list?', 5, 6),  -- 45
-('I can’t believe how good Tears of the Kingdom is!', 5, 7),  -- 46
+('I can`t believe how good Tears of the Kingdom is!', 5, 7),  -- 46
 ('I need to check out some of these games.', 5, 8),  -- 47
 ('Did you include any indie games?', 5, 25),  -- 48
 ('This list sparks so much nostalgia!', 5, 19),  -- 49
-('I’d love to hear more about your top picks!', 5, 21), -- 50
+('I`d love to hear more about your top picks!', 5, 21), -- 50
 ('The world-building is incredible and the character development is top-notch.', 5, 23),-- 51
 ('I really enjoyed the story missions; they added so much depth to the game.', 5, 14), -- 52
 ('The lore is so rich, especially the backstories of the characters!', 5, 15), -- 53
-('Yes! I’ve been playing it nonstop. Have you finished the main story yet?', 5, 23), -- 54
+('Yes! I`ve been playing it nonstop. Have you finished the main story yet?', 5, 23), -- 54
 ('The remake is fantastic! The graphics are stunning and the gameplay is smooth.', 5, 13), -- 55
-('Absolutely! It’s hard to keep up with all the great releases!', 5, 22), -- 56
+('Absolutely! It`s hard to keep up with all the great releases!', 5, 22), -- 56
 ('I look for a mix of story, gameplay mechanics, and replayability.', 5, 23), -- 57
 ('The reveal of the floating islands was mind-blowing! What about you?', 5, 17), -- 58
 ('I loved Hollow Knight and Hades! They both offer such unique experiences.', 5, 19), -- 59
@@ -349,14 +348,14 @@ INSERT INTO comment_replies (parent_id, reply_id) VALUES
 INSERT INTO replies (description, post_id, user_id) VALUES
 ('Closures are a way to preserve the state of a function even after it has executed.', 6, 18),  -- 81
 ('Think of it as a function having access to variables from its parent scope.', 6, 11),  -- 82
-('Can you give an example? I’m still confused.', 6, 12),  -- 83
-('Here’s a simple example: a function that returns another function.', 6, 13),  -- 84
+('Can you give an example? I`m still confused.', 6, 12),  -- 83
+('Here`s a simple example: a function that returns another function.', 6, 13),  -- 84
 ('This helped me understand closures better, thanks!', 6, 14);  -- 85
 
 -- Threaded replies for 'Understanding JavaScript Closures'
 INSERT INTO replies (description, post_id, user_id) VALUES
 ('Sure! Here’s a simple example with code.', 6, 19),  -- 86
-('I’d love to see that example!', 6, 20),  -- 87
+('I`d love to see that example!', 6, 20),  -- 87
 ('Can you explain it in more detail?', 6, 21);  -- 88
 
 -- Associating threaded replies
@@ -370,8 +369,8 @@ INSERT INTO replies (description, post_id, user_id) VALUES
 ('Check if your index is within the bounds of the ArrayList!', 7, 15),  -- 89
 ('Are you sure you’re using the correct methods for adding/removing?', 7, 16),  -- 90
 ('You might want to use `add()` and `remove()` methods properly.', 7, 17),  -- 91
-('IndexOutOfBoundsException often means you’re trying to access a non-existent index.', 7, 18),  -- 92
-('Here’s a snippet that might help you:', 7, 19);  -- 93
+('IndexOutOfBoundsException often means you`re trying to access a non-existent index.', 7, 18),  -- 92
+('Here`s a snippet that might help you:', 7, 19);  -- 93
 
 -- Threaded replies for 'Help with Java ArrayList'
 INSERT INTO replies (description, post_id, user_id) VALUES
@@ -411,13 +410,13 @@ INSERT INTO replies (description, post_id, user_id) VALUES
 ('Using a debugger can help you step through your code.', 8, 6),  -- 106
 ('Have you checked for common issues like null pointers?', 8, 7),  -- 107
 ('Reviewing your code carefully can often help find hidden bugs.', 8, 2),  -- 108
-('Make sure your logic is sound; sometimes it’s just a simple mistake.', 8, 9);  -- 109
+('Make sure your logic is sound; sometimes it`s just a simple mistake.', 8, 9);  -- 109
 
 -- Threaded replies for 'How to debug Java code?'
 INSERT INTO replies (description, post_id, user_id) VALUES
 ('Debugging tools are really helpful for tracking down issues.', 8, 11),  -- 110
-('I always forget to check for null values; that’s a common mistake!', 8, 1),  -- 111
-('Do you have any specific error messages you’re seeing?', 8, 2);  -- 112
+('I always forget to check for null values; that`s a common mistake!', 8, 1),  -- 111
+('Do you have any specific error messages you`re seeing?', 8, 2);  -- 112
 
 -- Associating threaded replies
 INSERT INTO comment_replies (parent_id, reply_id) VALUES
@@ -429,11 +428,11 @@ INSERT INTO comment_replies (parent_id, reply_id) VALUES
 
 -- Replies for 'The Rise of Quantum Computing' (post_id 5)
 INSERT INTO replies (description, post_id, user_id) VALUES
-('Quantum computing has immense potential to solve problems we can’t currently tackle.', 9, 13),  -- 113
+('Quantum computing has immense potential to solve problems we can`t currently tackle.', 9, 13),  -- 113
 ('I think it could change fields like cryptography significantly.', 9, 14),  -- 114
 ('What specific problems do you think quantum computing will solve first?', 9, 15),  -- 115
 ('The advancements by Google and IBM are quite impressive!', 9, 16),  -- 116
-('I’m excited to see how it evolves in the next decade!', 9, 17);  -- 117
+('I`m excited to see how it evolves in the next decade!', 9, 17);  -- 117
 
 -- Threaded replies for 'The Rise of Quantum Computing'
 INSERT INTO replies (description, post_id, user_id) VALUES
@@ -449,9 +448,9 @@ INSERT INTO comment_replies (parent_id, reply_id) VALUES
 
 -- Replies for 'AI and the Future of Work' (post_id 6)
 INSERT INTO replies (description, post_id, user_id) VALUES
-('AI will create new job opportunities in fields we haven’t imagined yet.', 10, 11),  -- 121
-('I’m worried about the short-term job losses, though.', 6, 4),  -- 122
-('It’s likely a mix of both; some jobs will vanish, while new ones will emerge.', 10, 13),  -- 123
+('AI will create new job opportunities in fields we haven`t imagined yet.', 10, 11),  -- 121
+('I`m worried about the short-term job losses, though.', 6, 4),  -- 122
+('It`s likely a mix of both; some jobs will vanish, while new ones will emerge.', 10, 13),  -- 123
 ('What skills should we focus on to adapt to this change?', 6, 4),  -- 124
 ('AI can enhance productivity, allowing humans to focus on more creative tasks.', 10, 5);  -- 125
 
@@ -472,8 +471,8 @@ INSERT INTO replies (description, post_id, user_id) VALUES
 ('5G will definitely improve IoT applications dramatically.', 11, 21),  -- 129
 ('Healthcare can benefit from faster data transmission.', 11, 15),  -- 130
 ('What are your thoughts on the security concerns with 5G?', 11, 11),  -- 131
-('I’m excited for the new opportunities in remote work!', 11, 2),  -- 132
-('The speed of 5G will allow for innovations we can’t yet foresee.', 11, 3);  -- 133
+('I`m excited for the new opportunities in remote work!', 11, 2),  -- 132
+('The speed of 5G will allow for innovations we can`t yet foresee.', 11, 3);  -- 133
 
 -- Threaded replies for '5G Technology: What Does the Future Hold?'
 INSERT INTO replies (description, post_id, user_id) VALUES
@@ -489,16 +488,16 @@ INSERT INTO comment_replies (parent_id, reply_id) VALUES
 
 -- Replies for 'What is your favorite programming language?' (post_id 8)
 INSERT INTO replies (description, post_id, user_id) VALUES
-('I love Python too! It’s so user-friendly.', 12, 7),  -- 137
+('I love Python too! It`s so user-friendly.', 12, 7),  -- 137
 ('Java has its own charm, especially for larger applications.', 12, 8),  -- 138
 ('JavaScript is great for web development!', 12, 9),  -- 139
 ('C++ is my go-to for performance-critical applications.', 12, 6),  -- 140
-('I’m learning Rust, and it’s quite interesting!', 12, 11);  -- 141
+('I`m learning Rust, and it`s quite interesting!', 12, 11);  -- 141
 
 -- Threaded replies for 'What is your favorite programming language?'
 INSERT INTO replies (description, post_id, user_id) VALUES
 ('What features do you like most about Python?', 12, 19),  -- 142
-('Rust’s ownership model is a game changer.', 12, 10),  -- 143
+('Rust`s ownership model is a game changer.', 12, 10),  -- 143
 ('I find it hard to pick just one favorite language!', 12, 4);  -- 144
 
 -- Associating threaded replies
@@ -511,7 +510,7 @@ INSERT INTO comment_replies (parent_id, reply_id) VALUES
 INSERT INTO replies (description, post_id, user_id) VALUES
 ('AI will definitely change the landscape of many industries.', 13, 15),  -- 145
 ('Ethics in AI is a huge concern that we need to address.', 13, 6),  -- 146
-('I’m curious about the role of AI in education.', 13, 7),  -- 147
+('I`m curious about the role of AI in education.', 13, 7),  -- 147
 ('AI can enhance decision-making in many fields.', 13, 8),  -- 148
 ('We need to ensure AI is developed responsibly.', 13, 9);  -- 149
 
@@ -533,15 +532,15 @@ INSERT INTO comment_replies (parent_id, reply_id) VALUES
 -- Replies for 'The James Webb Space Telescope was launched in 2021...' (post_id 10)
 INSERT INTO replies (description, post_id, user_id) VALUES
 ('The images from JWST are absolutely breathtaking!', 14, 3),  -- 153
-('It’s amazing how far our technology has come.', 14, 14),  -- 154
+('It`s amazing how far our technology has come.', 14, 14),  -- 154
 ('What discoveries do you think will be next?', 14, 5),  -- 155
-('I love the details they capture; it’s like peering into the past.', 14, 7),  -- 156
+('I love the details they capture; it`s like peering into the past.', 14, 7),  -- 156
 ('The data they’re collecting will change our understanding of the universe.', 14, 7);  -- 157
 
 -- Threaded replies for 'The James Webb Space Telescope was launched in 2021...'
 INSERT INTO replies (description, post_id, user_id) VALUES
 ('I hope they share more images soon!', 14, 8),  -- 158
-('What’s the significance of the Wolf-Rayet star?', 14, 9),  -- 159
+('What`s the significance of the Wolf-Rayet star?', 14, 9),  -- 159
 ('Are there plans for future missions with JWST?', 14, 8);  -- 160
 
 -- Associating threaded replies
@@ -556,11 +555,11 @@ INSERT INTO replies (description, post_id, user_id) VALUES
 ('I never knew star formation could look so beautiful.', 18, 7),  -- 162
 ('What do you think is the most exciting aspect of this image?', 18, 3),  -- 163
 ('NASA has outdone themselves with the JWST!', 18, 14),  -- 164
-('I can’t wait to see what else they discover!', 18, 15);  -- 165
+('I can`t wait to see what else they discover!', 18, 15);  -- 165
 
 -- Threaded replies for 'Space odyssey: Stunning images from the James Webb telescope'
 INSERT INTO replies (description, post_id, user_id) VALUES
-('I’m curious about how they captured such clarity.', 18, 6),  -- 166
+('I`m curious about how they captured such clarity.', 18, 6),  -- 166
 ('Will we get to see more images from Rho Ophiuchi?', 18, 7),  -- 167
 ('These images remind me of the wonders of space.', 18, 8);  -- 168
 
@@ -574,7 +573,7 @@ INSERT INTO comment_replies (parent_id, reply_id) VALUES
 INSERT INTO replies (description, post_id, user_id) VALUES
 ('The Southern Ring Nebula is one of my favorites!', 19, 9),  -- 169
 ('How does JWST compare to Hubble in terms of detail?', 19, 10),  -- 170
-('I’m fascinated by the life cycle of stars.', 19, 17),  -- 171
+('I`m fascinated by the life cycle of stars.', 19, 17),  -- 171
 ('This telescope is a game changer for astronomy!', 19, 22),  -- 172
 ('What other nebulae do you think they will explore next?', 19, 23);  -- 173
 
@@ -593,10 +592,10 @@ INSERT INTO comment_replies (parent_id, reply_id) VALUES
 -- Replies for 'Latest SpaceX launch discussion' (post_id 13)
 INSERT INTO replies (description, post_id, user_id) VALUES
 ('SpaceX continues to push the boundaries of space travel!', 20, 7),  -- 177
-('I’m excited about the potential for Mars missions.', 20, 9),  -- 178
+('I`m excited about the potential for Mars missions.', 20, 9),  -- 178
 ('What do you think was the highlight of the latest launch?', 20, 19),  -- 179
 ('The technology they’re developing is fascinating!', 20, 12),  -- 180
-('I’m curious about how they handle recovery of the rockets.', 20, 10);  -- 181
+('I`m curious about how they handle recovery of the rockets.', 20, 10);  -- 181
 
 -- Threaded replies for 'Latest SpaceX launch discussion'
 INSERT INTO replies (description, post_id, user_id) VALUES
@@ -614,7 +613,7 @@ INSERT INTO comment_replies (parent_id, reply_id) VALUES
 
 -- Replies for 'How to Grow Tomatoes' (post_id 14)
 INSERT INTO replies (description, post_id, user_id) VALUES
-('I’ve had great success with cherry tomatoes!', 21, 15),  -- 188
+('I`ve had great success with cherry tomatoes!', 21, 15),  -- 188
 ('What are your tips for preventing blight?', 21, 16),  -- 189
 ('Companion planting really helps with pests!', 21, 7),  -- 190
 ('I use raised beds for better drainage.', 21, 5),  -- 191
@@ -635,14 +634,14 @@ INSERT INTO comment_replies (parent_id, reply_id) VALUES
 -- Replies for 'Best Tools for Gardening' (post_id 15)
 INSERT INTO replies (description, post_id, user_id) VALUES
 ('A good trowel is essential for any gardener!', 22, 11),  -- 196
-('I can’t live without my pruning shears!', 22, 4),  -- 197
+('I can`t live without my pruning shears!', 22, 4),  -- 197
 ('What do you think about electric garden tools?', 22, 5),  -- 198
 ('Hand tools always feel more reliable to me.', 22, 6),  -- 199
 ('I recommend investing in high-quality gloves!', 22, 7);  -- 200
 
 -- Threaded replies for 'Best Tools for Gardening'
 INSERT INTO replies (description, post_id, user_id) VALUES
-('What’s your favorite brand for gardening tools?', 22, 8),  -- 201
+('What`s your favorite brand for gardening tools?', 22, 8),  -- 201
 ('I find that lighter tools help with fatigue.', 22, 9),  -- 202
 ('Are there any tools that are worth splurging on?', 22, 10);  -- 203
 
@@ -657,12 +656,12 @@ INSERT INTO replies (description, post_id, user_id) VALUES
 ('I love using compost for my garden!', 23, 21),  -- 204
 ('Mulching has made a huge difference for me.', 23, 12),  -- 205
 ('Have you tried companion planting for pest control?', 23, 13),  -- 206
-('What’s your favorite organic pesticide?', 23, 12),  -- 207
-('I’m interested in trying more natural fertilizers.', 23, 15);  -- 208
+('What`s your favorite organic pesticide?', 23, 12),  -- 207
+('I`m interested in trying more natural fertilizers.', 23, 15);  -- 208
 
 -- Threaded replies for 'Organic Gardening Methods'
 INSERT INTO replies (description, post_id, user_id) VALUES
-('I’ve heard good things about neem oil.', 23, 6),  -- 209
+('I`ve heard good things about neem oil.', 23, 6),  -- 209
 ('Organic gardening takes patience but is so rewarding.', 23, 7),  -- 210
 ('How do you deal with weeds naturally?', 23, 8);  -- 211
 
@@ -686,7 +685,7 @@ INSERT INTO replies (description, post_id, user_id) VALUES
 -- Threaded replies for 'Top 10 Rock Bands of All Time'
 INSERT INTO replies (description, post_id, user_id) VALUES
 ('I totally agree about Queen; their music is timeless.', 24, 14),  -- 217
-('Nirvana’s influence is undeniable!', 24, 15),  -- 218
+('Nirvana`s influence is undeniable!', 24, 15),  -- 218
 ('What do you think about The Rolling Stones?', 24, 16);  -- 219
 
 -- Associating threaded replies
@@ -701,7 +700,7 @@ INSERT INTO replies (description, post_id, user_id) VALUES
 ('I love discovering new indie artists!', 25, 18),  -- 221
 ('What do you think about the DIY approach in indie music?', 25, 19),  -- 222
 ('Indie artists are changing the game in music!', 25, 14),  -- 223
-('It’s amazing how they connect with their fans!', 25, 11);  -- 224
+('It`s amazing how they connect with their fans!', 25, 11);  -- 224
 
 -- Threaded replies for 'The Rise of Indie Music'
 INSERT INTO replies (description, post_id, user_id) VALUES
@@ -726,7 +725,7 @@ INSERT INTO replies (description, post_id, user_id) VALUES
 -- Threaded replies for 'Best Soundtracks in Movies'
 INSERT INTO replies (description, post_id, user_id) VALUES
 ('Do you prefer original scores or compiled soundtracks?', 26, 15),  -- 233
-('What’s your all-time favorite soundtrack?', 26, 11),  -- 234
+('What`s your all-time favorite soundtrack?', 26, 11),  -- 234
 ('I could listen to movie soundtracks all day!', 26, 12);  -- 235
 
 -- Associating threaded replies
@@ -748,19 +747,19 @@ INSERT INTO comment_replies (parent_id, reply_id) VALUES
 
 INSERT INTO moderation (forum_id, username) VALUES
 -- Welcome Forum
-(1, 'admin1'),  -- Forum Creator
+(73, 'admin1'),  -- Forum Creator
 -- Gaming Forum
-(3, 'halo_finite'),  -- Forum Creator
+(75, 'halo_finite'),  -- Forum Creator
 -- Programming Help Forum
-(4, 'java_jack'),  -- Forum Creator
+(76, 'java_jack'),  -- Forum Creator
 -- Tech Forum
-(2, 'mutex'),  -- Forum Creator
+(74, 'mutex'),  -- Forum Creator
 -- Space Forum
-(5, 'spaceXisbetter'),  -- Forum Creator
+(77, 'spaceXisbetter'),  -- Forum Creator
 -- Gardening Forum
-(6, 'lily_lover'),  -- Forum Creator
+(78, 'lily_lover'),  -- Forum Creator
 -- Music Forum
-(7, 'rockstar79');  -- Forum Creator
+(79, 'rockstar79');  -- Forum Creator
 
 
 COMMIT TRANSACTION;

@@ -20,7 +20,7 @@ else
 fi
 
 # Ensure required environment variables are set
-if [ -z "$POSTGRES_PASSWORD" ] || [ -z "$DATABASE_NAME" ] || [ -z "$DB_HOST" ] || [ -z "$DB_PORT" ] || [ -z "$POSTUP_OWNER_PASSWORD" ] || [ -z "$POSTUP_APP_USER_PASSWORD" ]; then
+if [ -z "$POSTGRES_PASSWORD" ] || [ -z "$DATABASE_NAME" ] || [ -z "$DB_HOST" ] || [ -z "$DB_PORT" ] || [ -z "$POSTUP_OWNER_PASSWORD" ] || [ -z "$POSTUP_APP_USER_PASSWORD" ]|| [ -z "$POSTUP_POSTGRES_PASSWORD" ]; then
   echo "One or more required environment variables are missing."
   exit 1
 fi
