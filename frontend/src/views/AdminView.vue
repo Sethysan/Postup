@@ -111,14 +111,14 @@ export default {
 
 <style>
 
-.header{
+.header {
     margin-bottom: 1.5rem;
 }
 
 .search-input {
     background-color: #888;
     color: black;
-    font-weight: bolder ;
+    font-weight: bolder;
 }
 
 input::placeholder {

@@ -11,7 +11,7 @@
       </div>
       <button v-if="role === 'ROLE_ADMIN'" class="nav-btn">
         <router-link v-bind:to="{ name: 'admin' }"v-if="userName"
-        :class="getLinkClass('admin')">ADMIN ACCESS</router-link>&nbsp;
+        :class="getLinkClass('admin')">ADMIN</router-link>&nbsp;
       </button>
       <button class="nav-btn">
         <router-link v-bind:to="{ name: 'home' }" :class="getLinkClass('home')">HOME</router-link>&nbsp;
