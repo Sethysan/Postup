@@ -1,6 +1,6 @@
 <template>
-    <div>
-      <input v-model="keyword" type="text" placeholder="search" />
+    <div class="post-search-button">
+      <input v-model="keyword" type="text" placeholder="search" class="search-input"/>
       <button class="btn-post-search" type="button" :onclick="search">Search</button>
     </div>
   </template>
@@ -24,13 +24,23 @@
   <style>
 .btn-post-search{
   background-color: grey;
-  color: white;
-  border-color: black; /* Remove default border */
+  color: var(--primary);
   border-radius: 5px; /* Rounded corners */
-  padding: 2px 8px; /* Padding for size */
+  padding: 1px 8px; /* Padding for size */
   font-size: 14px; /* Font size */
   cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth transition */
+  transition: color .3s, background-color 0.3s; /* Smooth transition */
+}
+.btn-post-search:hover{
+  color: white;
+  background-color: var(--nero);
+  
+}
+
+.post-search-button{
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
 }
 </style>
   

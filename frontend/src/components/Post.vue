@@ -556,19 +556,21 @@ textarea.expanded {
 }
 
 .back-button {
-    background-color: rgba(60, 183, 255, 0.84);
-    color: white;
+    background-color: #888;
+    color: var(--primary);
     border-radius: 50%;
     padding: 8px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.4s, background-color .4s;
+    transition: color .3s, background-color .3s;
     cursor: pointer;
+    margin-bottom: 2px;
 }
 
 .back-button:hover {
-    background-color: rgb(33, 156, 228);
-    transform: scale(1.05);
+    background-color: var(--nero);
+    color: white;
+    
 }
 </style>

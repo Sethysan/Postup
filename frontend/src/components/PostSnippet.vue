@@ -18,6 +18,7 @@
                     </footer>
                 </section>
             </router-link>
+            <p class="post-description">{{ post.description }}</p>
         </div>
         <div v-else>
             <p>No post data available.</p>
@@ -129,4 +130,27 @@ footer {
     border-radius: 50%;
     /* Ensure the user image is circular */
 }
+
+.post-description {
+  opacity: 0; /* Hidden by default */
+  transition: opacity 0.5s ease; /* Smooth transition for visibility */
+  max-height: 0; /* Collapse the description initially */
+  overflow: hidden; /* Hide overflowing content */
+  line-height: 1.5rem;
+  color: var(--Primary); /* Adjust text color */
+  font-size: 0.9rem;
+  padding: 10px 0;
+  position: absolute; /* Position relative to the snippet */
+  bottom: 5px; /* Adjust position as needed */
+  left: 10px;
+  right: 10px;
+}
+
+.post-snippet:hover .post-description {
+  opacity: 1; 
+  background-color: rgba(0, 0, 0, 0.915);
+  max-height: 10rem; 
+  z-index: 30;
+}
+
 </style>

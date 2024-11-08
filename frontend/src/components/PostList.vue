@@ -1,24 +1,22 @@
 <template>
   <div class="posts">
-    
+
     <div v-for="post in posts" :key="post.id" class="post-list">
       <div v-if="post">
         <router-link :to="{ name: 'post', params: { post: post.id } }" class="post-link">
-          <header>
-            <div class="post-meta">
-              <div class="user-image-frame">
-                <img v-if="post.creator_image" :src="post.creator_image" class="user-image" />
-                <img v-else src="/images/avatars/no-image.jpg" class="user-image"/>
-              </div>
-              <p class="post-author">{{ post.creator_username }} </p>
-              <p class="post-time">• {{ getTimeElapsed(post.timeOfCreation) }}</p>
-            </div>
-              <h2 class="post-list-title">{{ post.title }}</h2>
-          </header>
-
-          <section>
+          <section class="image-container">
             <img v-if="post.image" :src="post.image" class="post-image" />
-            <!-- <p> {{ post.description }} </p> -->
+            <footer>
+              <div class="post-meta">
+                <div class="user-image-frame">
+                  <img v-if="post.creator_image" :src="post.creator_image" class="user-image" />
+                  <img v-else src="/images/avatars/no-image.jpg" class="user-image" />
+                </div>
+                <p class="post-author">{{ post.creator_username }} </p>
+                <p class="post-time">• {{ getTimeElapsed(post.timeOfCreation) }}</p>
+              </div>
+              <h2 class="post-list-title">{{ post.title }}</h2>
+            </footer>
           </section>
         </router-link>
         <button v-if="post.creator_username === user" class="btn btn-delete deletePost"

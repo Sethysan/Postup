@@ -119,6 +119,7 @@ export default {
     background-color: #888;
     color: black;
     font-weight: bolder;
+    margin-bottom: 2px;
 }
 
 input::placeholder {

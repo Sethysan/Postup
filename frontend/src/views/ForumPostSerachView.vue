@@ -1,6 +1,10 @@
 <template>
-  <div class="post-header">
+  <status-display :isLoading="isloading" :hasError="postLoadingError"
+  errorMessage="Oops, it looks like this forum couldn't load">
+  <!-- <p>Oops, it looks like this forum couldn't load</p> -->
+  <div class="forum-posts">
     <!-- Back Button -->
+    <forum-posts :posts="posts" />
     <div class="back-button" @click="goBack">
       <svg fill="currentColor" height="16" icon-name="back-outline" viewBox="0 0 20 20" width="16"
         xmlns="http://www.w3.org/2000/svg">
@@ -8,28 +12,19 @@
         </path>
       </svg>
     </div>
-  </div>
-  <div v-if="posts.length < 1 && !isloading">
-    <p>Wow, such empty!</p>
-    <img src="" />
-  </div>
-  <div v-if="isloadingPost">
-    <p>loading . . .</p>
-  </div>
-  <div v-if="error">
-    <p>Oops, it looks like this search couldn't load</p>
-  </div>
-  <post-list :posts="posts"></post-list>
+      </div>
+    </status-display>
 </template>
 
 <script>
 import PostService from '../services/PostService';
 import ForumService from '../services/ForumService';
 import PostSearchButton from '../components/PostSearchButton.vue';
-import PostList from '../components/PostList.vue';
+import ForumPosts from '../components/ForumPosts.vue';
+import StatusDisplay from '../components/StatusDisplay.vue';
 
 export default {
-  components: { PostSearchButton, PostList },
+  components: { PostSearchButton, ForumPosts, StatusDisplay },
   data() {
     return {
       forum: {},

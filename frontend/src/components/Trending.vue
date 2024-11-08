@@ -107,7 +107,7 @@ export default {
     bottom: 0 !important;
     width: 100%;
     height: 100%;
-    transform: scale(0);
+    transform: scale(0) ;
     transform-origin: left bottom !important
 }
 
