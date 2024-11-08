@@ -1,16 +1,1 @@
-2024-11-07 15:13:29.886 EST [13024] LOG:  starting PostgreSQL 12.20, compiled by Visual C++ build 1941, 64-bit
-2024-11-07 15:13:29.892 EST [13024] LOG:  could not bind IPv6 address "::1": Permission denied
-2024-11-07 15:13:29.892 EST [13024] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
-2024-11-07 15:13:29.892 EST [13024] LOG:  could not bind IPv4 address "127.0.0.1": Permission denied
-2024-11-07 15:13:29.892 EST [13024] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
-2024-11-07 15:13:29.892 EST [13024] WARNING:  could not create listen socket for "localhost"
-2024-11-07 15:13:29.892 EST [13024] FATAL:  could not create any TCP/IP sockets
-2024-11-07 15:13:29.894 EST [13024] LOG:  database system is shut down
-2024-11-07 15:19:15.012 EST [18744] LOG:  starting PostgreSQL 12.20, compiled by Visual C++ build 1941, 64-bit
-2024-11-07 15:19:15.018 EST [18744] LOG:  could not bind IPv6 address "::1": Permission denied
-2024-11-07 15:19:15.018 EST [18744] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
-2024-11-07 15:19:15.018 EST [18744] LOG:  could not bind IPv4 address "127.0.0.1": Permission denied
-2024-11-07 15:19:15.018 EST [18744] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
-2024-11-07 15:19:15.018 EST [18744] WARNING:  could not create listen socket for "localhost"
-2024-11-07 15:19:15.018 EST [18744] FATAL:  could not create any TCP/IP sockets
-2024-11-07 15:19:15.018 EST [18744] LOG:  database system is shut down
+
