@@ -1,10 +1,6 @@
 <template>
   <div class="drop-downs">
 
-    <!-- Admin access button -->
-    <button v-if="role === 'ROLE_ADMIN'" class="admin-button">
-      <router-link v-bind:to="{ name: 'admin' }">Admin Access</router-link>
-    </button>
     <!-- filter drop-down for posts -->
     <div v-if="posts.length > 0" class="filter-bar">
     <select name="filter" v-model="selectedFilter" @change="applyFilter" class="filter">
@@ -184,35 +180,6 @@ option {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-gap: 40px;
-}
-
-.admin-button {
-  display: flex;
-  height: 5vh;
-  padding: 5px;
-  min-width: auto;
-  flex-wrap: wrap;
-  align-content: end;
-  background-color: var(--nero);
-  color: var(--primary);
-  border-color: black;
-  border-radius: 8px;
-  max-height: 2.5vh;
-  font-weight: 800;
-  cursor: pointer;
-  transition: background-color 0.3s;
-
-}
-
-.admin-button:hover {
-  background-color: black;
-}
-
-.admin-button a {
-  text-decoration: none;
-  /* Remove underline from link */
-  color: black
-    /* Link text color */
 }
 
 </style>../components/Trending.vue

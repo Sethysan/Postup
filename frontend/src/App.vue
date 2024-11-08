@@ -9,6 +9,10 @@
           <p class="name">{{ userName }}</p>
         </div>
       </div>
+      <button v-if="role === 'ROLE_ADMIN'" class="nav-btn">
+        <router-link v-bind:to="{ name: 'admin' }"v-if="userName"
+        :class="getLinkClass('admin')">ADMIN ACCESS</router-link>&nbsp;
+      </button>
       <button class="nav-btn">
         <router-link v-bind:to="{ name: 'home' }" :class="getLinkClass('home')">HOME</router-link>&nbsp;
       </button>
@@ -179,7 +183,7 @@ body {
 }
 
 :root {
-  --primary: #e50914 ;
+  --primary: #e50914;
   --secondary: #0f0f0f;
   --nero: #181818;
   --blue: rgb(60, 184, 255);
@@ -312,8 +316,9 @@ body {
   border-radius: 8px;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
-.form-group input:focus{
-  outline:none;
+
+.form-group input:focus {
+  outline: none;
 }
 
 .edit-pic-btns {
@@ -345,35 +350,6 @@ body {
   ;
 
 }
-
-/* #capstone-app {
-  font-family: Arial, Helvetica, sans-serif;
-  background: radial-gradient(circle, rgb(255, 166, 107) 35%, rgba(240, 107, 19, 0.927));
-  padding-left: 2vw;
-  padding-right: 2vw;
-  margin-top: 0px;
-  padding-top: 10px;
-  margin-bottom: 0px;
-  padding-bottom: 8vh;
-} */
-
-/* #capstone-app {
-  font-family: Arial, Helvetica, sans-serif;
-  z-index: -1000;
-  left: 50%;
-  width: 50%;
-  width: 100vw;
-  height: 100vh;
-  top: 50%;
-  position: absolute;
-  background-size: cover;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  object-fit: cover;
-  background-position: center;
-} */
 
 .nav-btn {
   background-color: transparent;
@@ -423,7 +399,8 @@ router-view {
   color: black;
   text-decoration: none;
 }
-.modal-container{
+
+.modal-container {
   z-index: 2;
 }
 </style>

@@ -17,7 +17,7 @@ import FavoritesView from '../views/FavoritesView.vue';
 import ForumPostSerachView from '../views/ForumPostSerachView.vue';
 import MessagesView from '../views/MessagesView.vue';
 import DirectMessage from '../views/DirectMessage.vue';
-import Admin from '../components/Admin.vue';
+import Admin from '../views/AdminView.vue';
 import LoggedInMessage from '../components/LoggedInMessage.vue';
 import ShareForm from '../components/ShareForm.vue';
 
