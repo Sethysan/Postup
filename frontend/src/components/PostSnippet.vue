@@ -137,9 +137,10 @@ footer {
   max-height: 0; /* Collapse the description initially */
   overflow: hidden; /* Hide overflowing content */
   line-height: 1.5rem;
+  border-radius: 10px;
   color: var(--Primary); /* Adjust text color */
   font-size: 0.9rem;
-  padding: 10px 0;
+  padding: 9px 0;
   position: absolute; /* Position relative to the snippet */
   bottom: 5px; /* Adjust position as needed */
   left: 10px;
