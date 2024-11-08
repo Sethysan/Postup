@@ -1,8 +1,6 @@
 BEGIN TRANSACTION;
 
--- Insert mock users
--- Passwords are hashed using bcrypt with a cost factor of 8
--- passwords for all admins is admin and password for all users is password
+
 INSERT INTO users (username, password_hash, role, user_image) VALUES
 ( '[deleted]', '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', 'ROLE_BANNED', '/images/avatars/removed.jpg'), -- for removed or deleted users
 -- admins
