@@ -19,7 +19,7 @@ export default defineConfig({
       "vue": "vue/dist/vue.esm-bundler.js", // Explicitly use ESM version of Vue
     },
   },
-  base: '/', //added after netlify error
+  base: '/', 
   optimizeDeps: {
     include: ["vue"], // Ensure Vue is pre-bundled by Vite
   },

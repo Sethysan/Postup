@@ -28,5 +28,5 @@ coverage
 *.sw?
 
 # Ignore environment configuration files
-.env*
+.env.production
 *.env

@@ -1,6 +1,6 @@
 <template>
   <div id="login" class="text-center">
-    <form v-on:submit.prevent="login">
+    <form v-on:submit.prevent="login" class="postup-form">
       <h1>Please Sign In</h1>
       <div role="alert" v-if="invalidCredentials" class="error-message">
         Invalid username and password!
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { openModal} from "jenesius-vue-modal";
+import { openModal } from "jenesius-vue-modal";
 import LoggedInMessage from "../components/LoggedInMessage.vue";
 import authService from "../services/AuthService";
 import ModeratorService from "../services/ModeratorService";
@@ -53,7 +53,7 @@ export default {
   },
   mounted() {
     this.$refs.usernameInput.focus();
-    },
+  },
   methods: {
     async login() {
       authService
@@ -67,6 +67,7 @@ export default {
             ModeratorService.getUserAccess(response.data.user.id)
               .then(res => {
                 this.$store.dispatch('SET_ACCESS', res.data);
+                this.$router.push("/");
               });
 
             // Show the welcome modal
@@ -101,43 +102,77 @@ export default {
 </script>
 
 <style scoped>
-form {
-  width: 100%;
+.text-center {
+  position: relative;
+  padding: 0 10rem 10rem 10rem;
+}
+
+.text-center::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/images/POST-UP_logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.4;
+  /* Adjust the transparency of the logo */
+  pointer-events: none;
+  /* Ensures the overlay does not interfere with form interactions */
+  
 }
 
 .text-center {
   display: flex;
-  justify-content: center;
-  margin-bottom: 75rem;
-  margin-top: 5rem;
+  box-sizing: border-box;
 }
 
+h1{
+  color: #888;
+  font-weight: 700;
+}
 
 .form-input-group {
   /* margin-bottom: 1rem; */
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
+}
 
+.postup-form{
+  color: var(--orange);
+  font-weight: 550;
+  z-index: 1;
+}
+
+.form-input-group {
+  display: flex;
+  flex-direction: column;
+  padding: 0 1rem;
 }
 
 button[type="submit"] {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 70%;
+  width: 86%;
   max-width: 100%;
   padding: 0.75rem;
   box-sizing: border-box;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   cursor: pointer;
   font-size: 1rem;
+  margin-left: 17px;
 
 }
 
 input[type="text"],
 input[type="password"],
 button {
-  width: 70%;
+  width: 100%;
   max-width: 100%;
   max-height: 1rem;
   margin-left: 0px;
@@ -188,7 +223,7 @@ button {
 
   button[type="submit"] {
     margin-left: 17px;
-    width: 70%;
+    width: 100%;
   }
 
   .text-center {

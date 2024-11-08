@@ -1,6 +1,6 @@
 <template>
   <div id="register" class="text-center">
-    <form v-on:submit.prevent="register">
+    <form v-on:submit.prevent="register" class="postup-form">
       <h1>Create Account</h1>
       <div role="alert" v-if="registrationErrors" class="error-message">
         {{ registrationErrorMsg }}
@@ -52,7 +52,7 @@
       </div>
     </div>
   </div>
-  <p class="credit">Image by <a
+  <p class="credit">Stock Avatar Images by <a
       href="https://www.freepik.com/free-vector/collection-hand-drawn-profile-icons-different-people_18098486.htm#query=user%20profile&position=25&from_view=keyword&track=ais_hybrid&uuid=647577a9-6e46-46bd-8ca1-ad23ee67778d">Freepik</a>
   </p>
 </template>
@@ -130,22 +130,48 @@ export default {
 </script>
 
 <style scoped>
-form {
-  width: 50%;
+
+.text-center {
+  position: relative;
+  padding: 0 10rem 10rem 10rem;
+}
+
+.text-center::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/images/POST-UP_logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.4; /* Adjust the transparency of the logo */
+  pointer-events: none; /* Ensures the overlay does not interfere with form interactions */
+  
 }
 
 .text-center {
   display: flex;
-  padding-left: 4rem;
-  padding: 1rem;
   box-sizing: border-box;
 }
 
+h1{
+  color: #888;
+  font-weight: 700;
+}
+
+.postup-form{
+  color: var(--orange);
+  font-weight: 550;
+  z-index: 1;
+}
+
 .form-input-group {
-  /* margin-bottom: 1rem; */
   display: flex;
   flex-direction: column;
-
+  padding: 0 1rem;
 }
 
 button[type="submit"] {
@@ -154,8 +180,8 @@ button[type="submit"] {
   align-items: center;
   margin-top: 1rem;
   max-width: 100%;
-  margin-left: 0px;
-  width: 75%;
+  margin-left: 17px;
+  width: 88%;
   padding: .75rem;
   cursor: pointer;
   font-size: 1rem;
@@ -165,7 +191,7 @@ input[type="text"],
 input[type="password"],
 input[type="url"],
 button {
-  width: 75%;
+  width: 100%;
   max-width: 100%;
   max-height: 1rem;
   margin-left: 0px;
@@ -220,17 +246,17 @@ button {
 
 @media (max-width: 790px) {
   .form-input-group {
-    padding: .5rem;
-  }
-
-  form {
+    padding: 0 1rem;
     width: 75%;
   }
 
-  button[type="submit"] {
-    padding: .75rem;
-    margin-left: 8px;
-    width: 97%;
+  form {
+    width: 100%;
+  }
+
+  button[type="submit"] {  
+    margin-left: 17px;
+    width: 75%;
   }
 
   input[type="text"],
@@ -255,10 +281,16 @@ button {
     width: 100%;
   }
 
+  .text-center {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 75rem;
+  }
+
   button[type="submit"] {
     margin-left: 16px;
     margin-right: 50px;
-    width: 94%;
+    width: 75%;
   }
 
   input[type="text"],

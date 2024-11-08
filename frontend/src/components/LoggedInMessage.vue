@@ -18,7 +18,6 @@ export default {
     methods: {
         handleClose() {
             closeModal();
-            this.$router.push("/");
         }
     }
 }
@@ -45,7 +44,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 9999;
+
 }
 
 .pop-up {
@@ -55,7 +54,6 @@ export default {
     text-align: center;
     border: 2px solid black;
     box-shadow: 5px 10px #e5091427 ;
-    z-index: 10000;
     background-image: linear-gradient(to left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.1));
 }
 </style>

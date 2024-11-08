@@ -423,4 +423,7 @@ router-view {
   color: black;
   text-decoration: none;
 }
+.modal-container{
+  z-index: 2;
+}
 </style>
