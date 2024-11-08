@@ -43,6 +43,11 @@ export default {
       error: false
     }
   },
+  methods: {
+    goBack() {
+      this.$router.go(-1);
+    }
+  },
   created() {
     // Check if the URL contains the query parameter 'topic'
     if (this.$route.query.topic) {
