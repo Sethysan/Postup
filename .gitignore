@@ -41,6 +41,8 @@ node_modules
 .project
 .settings
 target/
+.logfile
+
 
 ### IntelliJ IDEA ###
 .idea
