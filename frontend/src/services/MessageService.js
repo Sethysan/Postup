@@ -1,6 +1,9 @@
 import http from './httpService';
 
 export default {
+    getUsers(){
+        return http.get(`/users`);
+    },
     getContacts(){
         return http.get("/api/contacts/");
     },

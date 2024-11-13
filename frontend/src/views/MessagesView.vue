@@ -1,57 +1,95 @@
 <template>
-    <h1>Messages</h1>
-  <contact-list :contacts="contacts"></contact-list>
-  <button class="btn-message" :onclick="onVisible" v-if="!visible">Start New Message</button>
-  <select v-if="visible" v-model="user">
-    <option v-for="user in users" :key="user.id" :value="user">{{ user.username }}</option>
-  </select>
-  <button class="btn-message" :onclick="goToMessages" v-if="visible">Start Message With {{ filter }}</button>
+  <button class="btn-message" @click="toggleUserList">
+    {{ buttonMessage }}
+  </button>
+  <div class="messages">
+    <div v-show="!visible">
+    <h1 class="header">Messages</h1>
+      <contact-list :contacts="contacts"></contact-list>
+    </div>
+  </div>
+  <UserList :users="users" v-show="visible">
+    <template #default="{ user }">
+      <button class="btn-message" @click="startMessage(user)">Message</button>
+    </template>
+  </UserList>
 </template>
 
 <script>
 import ContactList from "../components/ContactList.vue"
-import service from '../services/MessageService'
-import ModeratorService from "../services/ModeratorService";
+import UserList from '@/components/UserList.vue';
+import MessageService from '@/services/MessageService';
 
 export default {
-  components: { ContactList },
-  data(){
+  components: { UserList, ContactList },
+  data() {
     return {
-        contacts: [],
-        visible: false,
-        users: [],
-        user: ""
+      users: [],
+      contacts: [],
+      visible: false,
+      user: ""
+    };
+  },
+  computed: {
+    buttonMessage() {
+      return this.visible ? "Back To Messages" : "Send New Message";
     }
   },
-  created(){
-    service.getContacts()
-        .then(res => this.contacts = res.data)
-        .catch(err => alert(err.response.staus))
+  created() {
+    MessageService.getContacts()
+      .then(res => this.contacts = res.data)
+      .catch(err => alert(err.response.status))
+    MessageService.getUsers()
+      .then((response) => {
+        this.users = response.data.sort((a, b) =>
+          a.username.localeCompare(b.username)
+        );
+      })
+      .catch((error) => {
+        this.$store.commit(
+          'SET_NOTIFICATION',
+          'Error fetching users: ' + error.response.data.message
+        );
+      });
   },
   methods: {
-    onVisible(){
-      ModeratorService.getAllUsers()
-        .then(res => {
-          this.contacts = res.data;
-          this.visible = true;
-        })
+    toggleUserList() {
+      if (!this.visible) {
+        this.visible = true; // Show the user list
+      } else {
+        this.visible = false; // Hide the user list
+      }
     },
-    goToMessages(){
-      this.$router.push(`/messages/${this.user.id}`)
+    startMessage(user) {
+      this.$router.push(`/messages/${user.id}`);
     }
   }
-}
+};
 </script>
 
 <style>
 .btn-message {
   background-color: grey;
-  color: white;
-  border-color: black; /* Remove default border */
-  border-radius: 5px; /* Rounded corners */
-  padding: 2px 8px; /* Padding for size */
-  font-size: 14px; /* Font size */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth transition */
+  color: black;
+  font-weight: bold;
+  border-color: black;
+  /* Remove default border */
+  border-radius: 5px;
+  /* Rounded corners */
+  padding: 2px 8px;
+  /* Padding for size */
+  font-size: 14px;
+  /* Font size */
+  cursor: pointer;
+  /* Pointer cursor on hover */
+  transition: background-color 0.3s;
+  /* Smooth transition */
+
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>

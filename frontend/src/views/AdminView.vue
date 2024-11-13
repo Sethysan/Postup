@@ -1,73 +1,51 @@
 <template>
     <div class="admin">
-        <h1 class='header'>Admin Access </h1>
-        <input type="text" v-model="searchQuery" placeholder="Search users..." class="search-input" />
-
-        <table v-if="filteredUsers.length > 0">
-            <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Promote</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="user in filteredUsers" :key="user.id" class="users">
-                    <td>{{ user.username }}</td>
-                    <td>
-                        <button class="btn-admin" @click="promoteToAdmin(user)">Promote to Admin</button>
-                    </td>
-                    <td>
-                        <button class="btn-admin" v-if="!user.isBanned" @click="banUser(user)">BAN</button>
-                        <button class="btn-admin" v-else @click="unbanUser(user)">UNBAN</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <p v-else>No users to promote.</p>
+        <h1 class="header">Admin Access</h1>
+        <UserList :users="users">
+            <template #default="{ user }">
+                <button class="btn-admin" @click="promoteToAdmin(user)">Promote to Admin</button>
+                <button class="btn-admin" v-if="!user.isBanned" @click="banUser(user)">
+                    BAN
+                </button>
+                <button class="btn-admin" v-else @click="unbanUser(user)">UNBAN</button>
+            </template>
+        </UserList>
     </div>
 </template>
 
 <script>
+import UserList from '@/components/UserList.vue';
 import AdminService from '@/services/AdminService';
+
 export default {
+    components: { UserList },
     data() {
         return {
-            users: [],
-            searchQuery: '',
-        }
-    },
-    computed: {
-        filteredUsers() {
-            return this.users.filter(user => {
-                return user.username && user.username.toLowerCase().includes(this.searchQuery.toLowerCase());
-            });
-        }
+            users: []
+        };
     },
     methods: {
         getUsers() {
             AdminService.getUsers()
-                .then(response => {
-                    console.log(response.data);
-                    this.users = response.data.map(user => ({
+                .then((response) => {
+                    this.users = response.data.map((user) => ({
                         ...user,
                         isBanned: user.role === 'ROLE_BANNED'
-                    }))
-                        .sort((a, b) => a.username.localeCompare(b.username)); //sort alphabetically
+                    })).sort((a, b) => a.username.localeCompare(b.username));
                 })
-                .catch(error => {
-                    this.$store.commit('SET_NOTIFICATION', "Error fetching users.", error.response.data.message);
+                .catch((error) => {
+                    this.$store.commit('SET_NOTIFICATION', 'Error fetching users: ' + error.response.data.message);
                 });
         },
         promoteToAdmin(user) {
             if (confirm(`Promote ${user.username} to admin?`)) {
                 AdminService.promoteToAdmin(user.id)
                     .then(() => {
-                        this.users = this.users.filter(u => u.id !== user.id);
+                        this.users = this.users.filter((u) => u.id !== user.id);
                         this.$store.commit('PROMOTE_USER', user.username);
                     })
-                    .catch(error => {
-                        this.$store.commit('SET_NOTIFICATION', user.username + " not found.");
+                    .catch(() => {
+                        this.$store.commit('SET_NOTIFICATION', `${user.username} not found.`);
                     });
             }
         },
@@ -78,8 +56,8 @@ export default {
                         user.isBanned = true;
                         this.$store.commit('BAN_USER', user.username);
                     })
-                    .catch(error => {
-                        this.$store.commit('SET_NOTIFICATION', user.username + " not found.");
+                    .catch(() => {
+                        this.$store.commit('SET_NOTIFICATION', `${user.username} not found.`);
                     });
             }
         },
@@ -90,27 +68,19 @@ export default {
                         user.isBanned = false;
                         this.$store.commit('UNBAN_USER', user.username);
                     })
-                    .catch(error => {
-                        this.$store.commit('SET_NOTIFICATION', user.username + " not found.");
+                    .catch(() => {
+                        this.$store.commit('SET_NOTIFICATION', `${user.username} not found.`);
                     });
-            }
-        },
-        banOrUnban(user) {
-            if (user.role == 'ROLE_BANNED') {
-                this.unban = true;
-            } else {
-                this.unban = false;
             }
         }
     },
     mounted() {
         this.getUsers();
     }
-}
+};
 </script>
 
 <style>
-
 .header {
     margin-bottom: 1.5rem;
 }
