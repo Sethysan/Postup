@@ -61,11 +61,6 @@
 
     <WidgetContainerModal />
 
-    <!-- <video autoplay loop muted id="capstone-app">
-    <source src="/images/city.mp4" type="video/webm">
-    <source src="/images/city.mp4" type="video/mp4">
-  </video> -->
-
     <router-view />
   </div>
 </template>
@@ -83,12 +78,6 @@ export default {
       showEditTooltip: false,
       editFormVisible: false,
       updatedUserImage: '',
-      role: this.$store.getters.role,
-      isDragging: false,
-      dragStartX: 0,
-      dragStartY: 0,
-      offsetX: 0,
-      offsetY: 0,
       role: this.$store.getters.role,
     };
   },
@@ -166,7 +155,7 @@ export default {
 
 body,
 html {
-  scrollbar-color: var(--primary) var(--secondary);
+  scrollbar-color: var(--secondary);
   font-family: "Work Sans", sans-serif;
   font-weight: 400;
   line-height: 1.5;
@@ -183,7 +172,7 @@ body {
 }
 
 :root {
-  --primary: #e50914;
+  --primary: rgb(60, 184, 255);;
   --secondary: #0f0f0f;
   --nero: #181818;
   --blue: rgb(60, 184, 255);
@@ -234,18 +223,6 @@ body {
   position: absolute;
   bottom: -12px;
   color: white;
-  background-color: rgba(0, 0, 0, 0.733);
-  width: 100%;
-  padding: 3px 7px;
-  text-align: center;
-  border-radius: 10px;
-  transform: translateY(50%);
-}
-
-.name {
-  position: absolute;
-  bottom: -12px;
-  color: #888;
   background-color: rgba(0, 0, 0, 0.733);
   width: 100%;
   padding: 3px 7px;
@@ -396,7 +373,7 @@ router-view {
 }
 
 .post-author {
-  color: black;
+  color: var(--blue);
   text-decoration: none;
 }
 

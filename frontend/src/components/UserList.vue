@@ -84,19 +84,19 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
-  border: 2px solid var(--primary);
+  border: 2px solid var(--orange);
 }
 
 th,
 td {
   padding: 10px;
   text-align: left;
-  border-bottom: 1px solid var(--primary);
+  border-bottom: 1px solid var(--orange);
 }
 
 th {
   font-size: 1.1rem;
-  color: var(--blue);
+  color: #888;
 }
 
 .user-row {

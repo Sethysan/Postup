@@ -114,14 +114,14 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    border: 2px solid var(--primary);
+    border: 2px solid var(--orange);
 }
 
 th,
 td {
     padding: 10px;
     text-align: left;
-    border-bottom: 1px solid var(--primary);
+    border-bottom: 1px solid var(--orange);
 }
 
 th {
@@ -136,13 +136,14 @@ td:first-child {
 .btn-admin {
     background-color: grey;
     /* Primary color */
-    color: var(--primary);
+    color: black;
     /* Text color */
     border: none;
     /* Remove default border */
-    border-radius: 5px;
+    border-radius: 4px;
     /* Rounded corners */
-    padding: 5px 15px;
+    padding: 4px 12px;
+    margin-left: 10px;
     /* Padding for size */
     font-size: 14px;
     /* Font size */

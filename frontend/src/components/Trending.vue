@@ -9,11 +9,23 @@
                     :centeredSlides="false" :spaceBetween="10" :slidesPerView="1"
                     :breakpoints="{ '640': { slidesPerView: 1, spaceBetween: 20, }, '1024': { slidesPerView: 3, spaceBetween: 30, }, }"
                     :coverflowEffect="{ rotate: 50, stretch: 0, depth: 100, modifier: 1, slideShadows: true, }"
-                    :pagination="{ type: 'progressbar', }" :modules="modules">
+                    :pagination="{ type: 'progressbar', }" :modules="modules" v-if="filteredPosts.length > 2">
                     <swiper-slide v-for="(post) in filteredPosts.slice(0, 10)" :key="post.id" class="trending-post">
                         <post-snippet :post="post"></post-snippet>
                     </swiper-slide>
                 </swiper>
+                <div class="forum-slider" v-else>
+                    <swiper ref="swiper" class="swiper-wrapper" :slidesPerView="filteredPosts.length > 1 ? 2 : 1"
+                        :spaceBetween="filteredPosts.length > 1 ? 40 : 0" :breakpoints="{
+                            '640': { slidesPerView: filteredPosts.length > 1 ? 1 : 1, spaceBetween: 20 },
+                            '768': { slidesPerView: filteredPosts.length > 1 ? 2 : 1, spaceBetween: 30 },
+                            '1024': { slidesPerView: filteredPosts.length > 1 ? 2 : 1, spaceBetween: 10 }
+                        }" :pagination="{ type: 'progressbar' }" :modules="modules">
+                        <swiper-slide v-for="(post) in filteredPosts.slice(0, 2)" :key="post.id" class="trending-post">
+                            <post-snippet :post="post"></post-snippet>
+                        </swiper-slide>
+                    </swiper>
+                </div>
             </div>
         </div>
     </section>
@@ -60,6 +72,8 @@ export default {
     align-items: center;
     /* Vertically centers the slides */
     padding: 20px;
+    max-width: 100%;
+    
 }
 
 .swiper-slide {
@@ -72,13 +86,14 @@ export default {
 #trending {
     display: flex;
     flex-direction: column;
-    max-width: 1500px;
+    max-width: 1300px;
     margin: 0 auto;
     background-color: var(--nero);
 
 }
 
 .trending-post {
+    max-width: 100%;
     box-shadow: 0 15px 30px rgba(0, 0, 0, .9);
 
 }
@@ -90,13 +105,13 @@ export default {
 
 .body {
     position: relative;
-    width: 100%;
+    max-width: 100%;
     min-height: 350px;
     overflow: hidden;
 }
 
 .swiper-pagination-progressbar {
-    background:  rgba(0, 0, 0, .25);
+    background: rgba(0, 0, 0, .25);
     position: absolute
 }
 
@@ -107,12 +122,12 @@ export default {
     bottom: 0 !important;
     width: 100%;
     height: 100%;
-    transform: scale(0) ;
+    transform: scale(0);
     transform-origin: left bottom !important
 }
 
-.swiper-horizontal>.swiper-pagination-progressbar, .swiper-pagination-progressbar.swiper-pagination-horizontal {
+.swiper-horizontal>.swiper-pagination-progressbar,
+.swiper-pagination-progressbar.swiper-pagination-horizontal {
     bottom: 0 !important;
 }
-
 </style>

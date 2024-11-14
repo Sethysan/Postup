@@ -139,7 +139,7 @@ export default {
 
 .filter {
   border-radius: 8px;
-  color: var(--primary);
+  color: var(--orange);
   border-color: black;
   background-color: var(--nero);
   display: flex;
