@@ -141,9 +141,9 @@ public class JdbcReplyDao implements ReplyDao {
 
     @Transactional
     public ReplyResponseDto deleteReply(long replyId) {
-       String sql = "UPDATE replies SET user_id = 1, description = '[removed]' WHERE reply_id = ?";
+       String sql = "UPDATE replies SET user_id = 226, description = '[removed]' WHERE reply_id = ?";
        jdbcTemplate.update(sql, replyId);
-       return this.getReplyById(replyId, 1);
+       return this.getReplyById(replyId, 226);
     }
 
     @Override

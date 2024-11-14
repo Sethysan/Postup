@@ -11,10 +11,10 @@
                     <span class="reply-time">• {{ getTimeElapsed(reply.timeOfCreation) }}</span>
                 </div>
             </div>
-            <div class="reply-description">
+            <div class="reply-description" v-if="currentReply.user.username !== '[deleted]'">
                 <p>{{ currentReply.description }}</p>
             </div>
-            <div class="reply-footer">
+            <div class="reply-footer" v-if="currentReply.user.username !== '[deleted]'">
                 <!-- Voting Buttons -->
                 <div :class="['vote-container', { 'active-upvote': upvoted, 'active-downvote': downvoted }]">
                     <button @click="upvote" :class="{ 'active-upvote': upvoted, 'downvote-active': downvoted }"
