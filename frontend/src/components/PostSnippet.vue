@@ -151,6 +151,7 @@ footer {
   opacity: 1; 
   background-color: rgba(0, 0, 0, 0.915);
   max-height: 10rem; 
+  max-width: 95%;
   z-index: 30;
 }
 

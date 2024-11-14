@@ -89,18 +89,18 @@ export default {
     max-width: 1300px;
     margin: 0 auto;
     background-color: var(--nero);
-
 }
 
 .trending-post {
-    max-width: 100%;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, .9);
-
+  display: flex;
+  justify-content: center; /* Center the content horizontally */
+  max-width: 100%;
+  flex-grow: 2;
 }
 
 .trending-now {
-    /* Ensure the text inside is centered */
-    text-align: center;
+  text-align: center; /* Center the text */
+  margin-bottom: 1rem; /* Add some space below the heading */
 }
 
 .body {

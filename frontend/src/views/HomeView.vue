@@ -171,8 +171,11 @@ option {
 }
 
 .trending-posts {
-  height: auto;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
   width: 100%;
+  height: auto;
 }
 
 /* Grid for Forums (1 row, 5 columns) */
