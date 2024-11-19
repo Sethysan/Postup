@@ -10,8 +10,8 @@
         </div>
       </div>
       <button v-if="role === 'ROLE_ADMIN'" class="nav-btn">
-        <router-link v-bind:to="{ name: 'admin' }"v-if="userName"
-        :class="getLinkClass('admin')">ADMIN</router-link>&nbsp;
+        <router-link v-bind:to="{ name: 'admin' }" v-if="userName"
+          :class="getLinkClass('admin')">ADMIN</router-link>&nbsp;
       </button>
       <button class="nav-btn">
         <router-link v-bind:to="{ name: 'home' }" :class="getLinkClass('home')">HOME</router-link>&nbsp;
@@ -155,21 +155,32 @@ export default {
 
 /* Global scrollbar styling */
 ::-webkit-scrollbar {
-    width: 16px; /* Adjust the width of the scrollbar */
-    height: 16px; /* Adjust the height for horizontal scrollbars */
+  width: 16px;
+  height: 16px;
 }
 
 ::-webkit-scrollbar-track {
-    background:  #4b4a4a; /* Color of the track */
+  background: #4b4a4a;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color:  #888; /* Color of the scrollbar thumb */
+  background-color: #888;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background-color:  rgb(25, 47, 96); /* Darker color when hovering over the scrollbar */
+  cursor: grab;
+  background-color: rgba(234, 85, 11, 0.5);
 }
+
+::-webkit-scrollbar-thumb:active {
+  cursor: grabbing;
+  /* Change to grabbing when holding left click */
+}
+
+/* * {
+    scrollbar-color: #888 #4b4a4a; 
+    scrollbar-width: medium; 
+} */
 
 body,
 html {
@@ -190,7 +201,8 @@ body {
 }
 
 :root {
-  --primary: rgb(60, 184, 255);;
+  --primary: rgb(60, 184, 255);
+  ;
   --secondary: #0f0f0f;
   --nero: #181818;
   --blue: rgb(60, 184, 255);
