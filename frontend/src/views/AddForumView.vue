@@ -1,6 +1,5 @@
 <template>
-    <div>
-        <h1>Add New Forum</h1>
+    <div class="forum-form">
         <forum-form v-bind:forum="forum" />
     </div>
 </template>
@@ -27,5 +26,4 @@ data() {
 </script>
 
 <style scoped>
-
 </style>

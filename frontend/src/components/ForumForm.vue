@@ -4,16 +4,19 @@
         <form v-on:submit.prevent="submitForm">
             <div class="form-group">
                 <label for="title">Forum Title:</label>
-                <textarea class="title-input" v-model="editForum.topic" id="title" required autofocus></textarea>
+                <textarea class="input" v-model="editForum.topic" id="title" required autofocus></textarea>
             </div>
 
             <div class="form-group">
                 <label for="description">Forum Description:</label>
-                <textarea v-model="editForum.description" id="description" required></textarea>
+                <textarea class="input" v-model="editForum.description" id="description" required></textarea>
             </div>
             <div class="button-div">
-                <button class="submit-button" type="submit">Submit</button>
                 <button class="cancel-button" type="button" v-on:click="cancelForm">Cancel</button>
+                <button class="submit-button" :disabled="!isFormValid" :class="{ 'disabled-button': !isFormValid }"
+                    type="submit">
+                    Submit
+                </button>
             </div>
         </form>
 
@@ -45,7 +48,11 @@ export default {
     computed: {
         author() {
             return this.$store.state.user?.username || JSON.parse(localStorage.getItem('user')).username || 'Unknown';
-        }
+        },
+        isFormValid() {
+            // Check if both topic and description have text
+            return this.editForum.topic.trim().length > 0 && this.editForum.description.trim().length > 0;
+        },
     },
     methods: {
         submitForm() {
@@ -108,13 +115,14 @@ export default {
 .button-div {
     display: flex;
     justify-content: space-between;
+    width: 100%;
 }
 
 .cancel-button,
 .submit-button {
     display: inline-block;
-    padding: 5px 10px;
-    margin-bottom: 15px;
+    padding: 6px 15px;
+    margin-bottom: 10px;
     background-color: #e15d20;
     color: white;
     border: none;
@@ -130,37 +138,50 @@ export default {
     background-color: #a33908;
 }
 
-.title-input {
+.submit-button:disabled {
+    background-color: grey;
+    cursor: not-allowed;
+}
+
+.disabled-button {
+    background-color: grey;
+    cursor: not-allowed;
+}
+
+.input {
     padding-top: 5px;
-    width: 100%;
+    width: 97%;
     height: 20px;
 }
 
+#description {
+    height: 100px;
+}
+
 .create-forum {
-    margin: 20px;
-    padding-bottom: 20%;
-    padding-right: 65%;
+    width: 80%;
+    position: fixed;
+    bottom: 10%;
+    left: 10%;
+    padding: 20px;
+    color: black;
+    background-color: var(--blue);
+    background: radial-gradient(circle, rgb(87, 122, 199) 60%, var(--blue));
+    border: 2px solid rgb(87, 122, 199);
+    border-radius: 12px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.create-forum h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    display: block;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
 }
 
 .form-group {
     margin-bottom: 15px;
-}
-
-textarea {
-    width: 100%;
-    height: 100px;
-}
-
-button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #45a049;
 }
 </style>

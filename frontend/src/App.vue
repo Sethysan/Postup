@@ -47,7 +47,7 @@
     <!-- form for update user image -->
     <div v-if="editFormVisible" class="edit-form">
       <form @submit.prevent="updateUserDetails">
-        <div class="form-group">
+        <div class="image-group">
           <label for="userImage">Profile Image URL</label>
           <input type="text" ref="myInput" v-model="updatedUserImage" placeholder="Enter new image URL" />
         </div>
@@ -274,7 +274,7 @@ body {
   transition: transform 0.1s ease-out;
 }
 
-.form-group label {
+.image-group label {
   display: block;
   display: flex;
   justify-content: center;
