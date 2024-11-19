@@ -8,52 +8,37 @@
     <div v-if="errorMessage" class="error-message">
         <p>{{ errorMessage }}</p>
     </div>
-    <div v-if="searchDisplayed && searchForums.length > 0" class="forum-results">
-        <h2>Search Results</h2>
 
-        <div v-for="forum in searchForums" :key="forum.forum.id" v-bind:value="forum.forum.id" class="forum-item">
-            <router-link :to="{ name: 'forum', params: { id: forum.forum.id } }" class="forum-link">
-                <h2>
-                    <span v-html="highlightSearchTerm(forum.forum.topic)"></span>
-                    <p class="inline-time">{{ forum.forum.author }}</p>
-                    <p class="inline-time">created {{ getTimeElapsed(forum.forum.timeOfCreation) }}</p>
-                </h2>
-                <p v-html="highlightSearchTerm(forum.forum.description)"></p>
-
-            </router-link>
-            <div v-if="forum.posts.length > 0">
-                <h3>Related Posts</h3>
-                <ul>
-                    <li v-for="post in forum.posts" :key="post.id" v-bind:value="post.id" class="post-item">
-                        <router-link :to="{ name: 'post', params: { post: post.id } }" class="post-link">
-                            <span v-html="highlightSearchTerm(post.title)"></span>
-                            <p v-html="highlightSearchTerm(post.description)"></p>
-                        </router-link>
-                    </li>
-                </ul>
-
+    <div class="forum-results-container">
+        <h2 v-if="searchDisplayed" class="search-results-header">Search Results</h2>
+        <div class="forum-results">
+            <!-- Display forums based on search or default -->
+            <div v-for="forum in searchDisplayed ? searchForums : forums" :key="forum.id || forum.forum.id"
+                class="forum-item">
+                <router-link :to="{ name: 'forum', params: { id: forum.id || forum.forum.id } }" class="forum-link">
+                    <h2>
+                        <span
+                            v-html="searchDisplayed ? highlightSearchTerm(forum.forum?.topic || forum.topic) : forum.topic"></span>
+                        <p class="inline-time">{{ forum.author || forum.forum.author }}</p>
+                        <p class="inline-time">
+                            created {{ getTimeElapsed(forum.timeOfCreation || forum.forum.timeOfCreation) }}
+                        </p>
+                    </h2>
+                    <p
+                        v-html="searchDisplayed ? highlightSearchTerm(forum.forum?.description || forum.description) : forum.description">
+                    </p>
+                </router-link>
             </div>
         </div>
     </div>
-    <div v-if="!searchDisplayed">
-        <div v-for="forum in forums" :key="forum.id" v-bind:value="forum.id" class="forum-item">
-            <router-link :to="{ name: 'forum', params: { id: forum.id } }" class="forum-link">
-                <h2>{{ forum.topic }}
-                    <!-- formatted time elapsed display with styling -->
-                    <p class="inline-time"> {{ forum.author }} </p>
-                    <p class="inline-time"> {{ getTimeElapsed(forum.timeOfCreation) }} </p>
-                </h2>
-                <p>{{ forum.description }}</p>
-            </router-link>
-        </div>
-    </div>
+
     <div v-if="this.$route.query.topic" class="return-button">
         <router-link :to="{ name: 'forums' }">
             <button>Return to Forums</button>
         </router-link>
     </div>
-
 </template>
+
 
 <script>
 import PostService from "../services/PostService.js";
@@ -165,22 +150,40 @@ export default {
 </script>
 
 
-<style scoped>
-/* Styling the forum item container */
-.forum-item {
-    border: 1px solid #ddd;
-    padding: 1rem;
-    margin-bottom: 2rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, .2);
+<style >
+.forum-results-container {
+    text-align: center;
 }
 
-.forum-item:hover {
-    transform: scale(1.002);
-    /* Slightly enlarge */
-    box-shadow: 0 4px 15px rgba(234, 85, 11, 0.5);
+.search-results-header {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    text-align: center;
+}
 
+.forum-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+/* Styling each forum item */
+.forum-item {
+    border: 1px solid rgb(87, 122, 199);
+    background: radial-gradient(circle, var(--nero) 55%, rgba(0, 0, 0, 0.699));
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover effect for forum items */
+.forum-item:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 15px rgba(234, 85, 11, 0.5);
 }
 
 .forum-link {
@@ -189,23 +192,46 @@ export default {
     color: inherit;
 }
 
-/* <p> is displayed inline with <h2> */
+/* Styling the inline time and author */
 .inline-time {
     display: inline;
     font-size: 1rem;
-    /* Adds spacing between the topic and the timestamp */
     margin-left: 10px;
     color: #4e4949;
-
 }
 
-.container {
-    margin-bottom: 4rem;
-}
-
+/* Highlight search terms */
 :deep .highlight {
     background-color: yellow;
     font-weight: bold;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .forum-results {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        max-height: 70vh;
+    }
+
+    .forum-item {
+        padding: 0.5rem;
+    }
+
+    .inline-time {
+        display: block;
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .forum-results {
+        grid-template-columns: 1fr;
+        max-height: 70vh;
+    }
+
+    .forum-item {
+        padding: 0.5rem;
+    }
 }
 
 .forum-buttons-top {
@@ -234,10 +260,11 @@ export default {
 .clear-button {
     margin-left: 10px;
 }
-.search-button{
+
+.search-button {
     margin-bottom: 15px;
     color: white;
-    background-color:grey ;
+    background-color: grey;
     cursor: pointer;
     transition: .5s;
     margin-top: 20px;
@@ -249,7 +276,8 @@ export default {
 .clear-button:hover {
     background-color: #a33908;
 }
-.search-button:hover{
+
+.search-button:hover {
     color: white;
     background-color: rgb(4, 0, 255);
 }
@@ -268,17 +296,5 @@ export default {
     /* Add spacing around the error message */
     border-radius: 5px;
     /* Rounded corners for a softer look */
-}
-
-@media (max-width: 768px) {
-    .forum-item {
-        padding: 0.5rem;
-    }
-
-    .inline-time {
-        display: block;
-        /* Stack time and author vertically */
-        margin-left: 0;
-    }
 }
 </style>

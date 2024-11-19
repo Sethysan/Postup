@@ -153,9 +153,27 @@ export default {
   box-sizing: border-box;
 }
 
+/* Global scrollbar styling */
+::-webkit-scrollbar {
+    width: 16px; /* Adjust the width of the scrollbar */
+    height: 16px; /* Adjust the height for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-track {
+    background:  #4b4a4a; /* Color of the track */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color:  #888; /* Color of the scrollbar thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color:  rgb(25, 47, 96); /* Darker color when hovering over the scrollbar */
+}
+
 body,
 html {
-  scrollbar-color: var(--secondary);
+
   font-family: "Work Sans", sans-serif;
   font-weight: 400;
   line-height: 1.5;

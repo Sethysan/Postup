@@ -161,7 +161,7 @@ export default {
 .create-forum {
     width: 80%;
     position: fixed;
-    bottom: 10%;
+    
     left: 10%;
     padding: 20px;
     color: black;
@@ -183,5 +183,42 @@ export default {
 
 .form-group {
     margin-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+    .create-forum {
+        width: 90%;
+        left: 5%;
+        padding: 15px;
+        font-size: 0.9em; /* Adjust text size */
+    }
+
+    .button-div {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .cancel-button,
+    .submit-button {
+        margin-bottom: 10px;
+        width: 100%; /* Make buttons full-width */
+    }
+
+    .input {
+        width: 100%; /* Ensure input fields take the full width */
+    }
+}
+
+@media (max-width: 480px) {
+    .create-forum {
+        width: 95%;
+        left: 2.5%;
+        padding: 10px;
+        font-size: 0.8em; /* Further adjust text size for very small screens */
+    }
+
+    h2 {
+        font-size: 1.2em; /* Adjust heading size */
+    }
 }
 </style>
