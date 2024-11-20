@@ -254,7 +254,8 @@ button {
 .credits {
   display: flex;
   justify-content: space-evenly;
-
+  align-items: center;
+  gap: 1rem;
 }
 
 .credit {
@@ -300,9 +301,8 @@ a {
   }
 
   .credits {
-    display: flex;
     flex-direction: column;
-
+    gap: 0;
   }
 
 }
