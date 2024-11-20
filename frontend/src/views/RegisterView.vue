@@ -19,13 +19,15 @@
       </div>
       <div class="form-input-group">
         <label for="imageOption">Profile Image</label>
-        <div>
-          <input type="radio" id="urlOption" value="url" v-model="imageOption" />
-          <label for="urlOption">Use Image URL</label>
-        </div>
-        <div>
-          <input type="radio" id="stockOption" value="stock" v-model="imageOption" />
-          <label for="stockOption">Choose from Stock Images</label>
+        <div id="pic-options">
+          <div>
+            <input type="radio" id="urlOption" value="url" v-model="imageOption" />
+            <label for="urlOption">Use Image URL</label>
+          </div>
+          <div>
+            <input type="radio" id="stockOption" value="stock" v-model="imageOption" />
+            <label for="stockOption">Choose from Stock Images</label>
+          </div>
         </div>
       </div>
 
@@ -34,7 +36,7 @@
         <input type="url" id="userImage" v-model="user.user_image" placeholder="Enter image URL" />
       </div>
       <button type="submit">Create Account</button>
-      <p>
+      <p id="login-link">
         <router-link v-bind:to="{ name: 'login' }">
           Already have an account? Log in.
         </router-link>
@@ -52,9 +54,14 @@
       </div>
     </div>
   </div>
-  <p class="credit">Stock Avatar Images by <a
-      href="https://www.freepik.com/free-vector/collection-hand-drawn-profile-icons-different-people_18098486.htm#query=user%20profile&position=25&from_view=keyword&track=ais_hybrid&uuid=647577a9-6e46-46bd-8ca1-ad23ee67778d">Freepik</a>
-  </p>
+  <div class="credits">
+    <p class="credit">Stock Avatar Images provided by <a
+        href="https://www.freepik.com/free-vector/collection-hand-drawn-profile-icons-different-people_18098486.htm#query=user%20profile&position=25&from_view=keyword&track=ais_hybrid&uuid=647577a9-6e46-46bd-8ca1-ad23ee67778d">Freepik</a>
+    </p>
+    <p class="credit">PostUp logo provided by <a href="https://www.facebook.com/optikgraphicsolutions/">Optik Graphic
+        Solutions</a>
+    </p>
+  </div>
 </template>
 
 <script>
@@ -130,10 +137,9 @@ export default {
 </script>
 
 <style scoped>
-
 .text-center {
   position: relative;
-  padding: 0 10rem 10rem 10rem;
+  padding: 0 10rem;
 }
 
 .text-center::after {
@@ -147,9 +153,10 @@ export default {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  opacity: 0.4; /* Adjust the transparency of the logo */
-  pointer-events: none; /* Ensures the overlay does not interfere with form interactions */
-  
+  opacity: 0.4;
+  pointer-events: none;
+  /* Ensures the overlay does not interfere with form interactions */
+
 }
 
 .text-center {
@@ -157,12 +164,12 @@ export default {
   box-sizing: border-box;
 }
 
-h1{
+h1 {
   color: #888;
   font-weight: 700;
 }
 
-.postup-form{
+.postup-form {
   color: var(--orange);
   font-weight: 550;
   z-index: 1;
@@ -240,23 +247,44 @@ button {
   margin-left: 0px;
 }
 
+#login-link {
+  margin-top: 10rem;
+}
+
+.credits {
+  display: flex;
+  justify-content: space-evenly;
+
+}
+
 .credit {
-  padding-bottom: 20vh;
+  font-size: 1rem;
+  color: #888;
+}
+
+a {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+#pic-options {
+  color: #d4d3d3;
+  font-size: large;
 }
 
 @media (max-width: 790px) {
   .form-input-group {
     padding: 0 1rem;
-    width: 75%;
+    width: 90%;
   }
 
   form {
     width: 100%;
   }
 
-  button[type="submit"] {  
+  button[type="submit"] {
     margin-left: 17px;
-    width: 75%;
+    width: 91%;
   }
 
   input[type="text"],
@@ -265,9 +293,16 @@ button {
   button {
     width: 100%;
   }
+
   .error-message {
     margin-left: 5px;
     width: 93%;
+  }
+
+  .credits {
+    display: flex;
+    flex-direction: column;
+
   }
 
 }
@@ -284,13 +319,12 @@ button {
   .text-center {
     display: flex;
     justify-content: center;
-    margin-bottom: 75rem;
   }
 
   button[type="submit"] {
     margin-left: 16px;
     margin-right: 50px;
-    width: 75%;
+    width: 91%;
   }
 
   input[type="text"],
@@ -312,9 +346,32 @@ button {
   button {
     padding: 0.5rem;
   }
+
   .error-message {
     margin-left: 14px;
     width: 90%;
   }
+}
+
+@media (max-width: 514px) {
+  button[type="submit"] {
+    width: 100%;
+    padding: 1rem .5rem;
+    margin: 1rem .5rem;
+  }
+
+  .form-input-group {
+    padding: 0 .5rem;
+    width: 100%;
+  }
+
+  .text-center {
+    padding: 0;
+  }
+
+  .text-center::after {
+    bottom: 16rem;
+  }
+
 }
 </style>
