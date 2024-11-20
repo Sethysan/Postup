@@ -1,7 +1,6 @@
 <template>
   <status-display :isLoading="isloading" :hasError="postLoadingError"
   errorMessage="Oops, it looks like this forum couldn't load">
-  <!-- <p>Oops, it looks like this forum couldn't load</p> -->
   <div class="forum-posts">
     <!-- Back Button -->
     <forum-posts :posts="posts" />

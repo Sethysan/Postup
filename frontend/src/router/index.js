@@ -14,7 +14,7 @@ import ForumPostView from '../views/ForumPostView.vue';
 import CreatePost from '../components/CreatePost.vue';
 import Moderator from '../components/Moderator.vue';
 import FavoritesView from '../views/FavoritesView.vue';
-import ForumPostSerachView from '../views/ForumPostSerachView.vue';
+import ForumPostSearchView from '../views/ForumPostSearchView.vue';
 import MessagesView from '../views/MessagesView.vue';
 import DirectMessage from '../views/DirectMessage.vue';
 import Admin from '../views/AdminView.vue';
@@ -113,7 +113,7 @@ const routes = [
   {
     path: "/forums/:forumId/posts/search",
     name: "forum-post-search",
-    component: ForumPostSerachView,
+    component: ForumPostSearchView,
     meta: {
       requiresAuth: false
     }

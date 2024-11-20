@@ -1,4 +1,12 @@
 <template>
+  <div class="back-button" @click="goBack">
+      <svg fill="currentColor" height="16" icon-name="back-outline" viewBox="0 0 20 20" width="16"
+           xmlns="http://www.w3.org/2000/svg">
+        <path
+            d="M19 9.375H2.51l7.932-7.933-.884-.884-9 9a.625.625 0 0 0 0 .884l9 9 .884-.884-7.933-7.933H19v-1.25Z">
+        </path>
+      </svg>
+    </div>
   <div v-if="messages.length < 1 && isloading">
       <p>Wow, such empty!</p>
       <img src=""/>
@@ -38,6 +46,10 @@ export default {
 <style>
 .message-container {
     margin: 0 auto;
-    width: 75%;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh;
+    overflow-y: auto;
 }
 </style>
