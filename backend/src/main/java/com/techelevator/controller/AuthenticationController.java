@@ -64,15 +64,12 @@ public class AuthenticationController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(path = "/register", method = RequestMethod.POST)
+    @PostMapping("/register")
     public void register(@RequestBody RegisterUserDto newUser) {
-        System.out.println("Payload received: " + newUser);
         try {
             if (userDao.getUserByUsername(newUser.getUsername()) != null) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already exists.");
             } else {
-                System.out.println("User DTO received: " + newUser);
-                System.out.println("Registering user: " + newUser);
                 userDao.createUser(newUser);
             }
         }

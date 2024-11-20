@@ -23,7 +23,7 @@
       <div v-if="showWelcomeMessage" class="welcome-message">
         Welcome, {{ user.username }}!
       </div>
-      <p>
+      <p class='register-link'>
         <router-link v-bind:to="{ name: 'register' }">Need an account? Sign up.</router-link>
       </p>
     </form>
@@ -102,6 +102,26 @@ export default {
 </script>
 
 <style scoped>
+p a {
+  text-decoration: none;
+  color: #888;
+}
+
+p a:hover {
+  color: var(--orange);
+}
+
+.register-link {
+  color: #888;
+  transition: transform 0.6s, color .3s;
+}
+
+.register-link:hover {
+  color: var(--orange);
+  transform: scale(1.1);
+  text-decoration: underline;
+}
+
 .text-center {
   position: relative;
   padding: 0 10rem 10rem 10rem;
@@ -122,7 +142,7 @@ export default {
   /* Adjust the transparency of the logo */
   pointer-events: none;
   /* Ensures the overlay does not interfere with form interactions */
-  
+
 }
 
 .text-center {
@@ -130,7 +150,7 @@ export default {
   box-sizing: border-box;
 }
 
-h1{
+h1 {
   color: #888;
   font-weight: 700;
 }
@@ -142,7 +162,7 @@ h1{
   gap: 0.5rem;
 }
 
-.postup-form{
+.postup-form {
   color: var(--orange);
   font-weight: 550;
   z-index: 1;
@@ -166,7 +186,12 @@ button[type="submit"] {
   cursor: pointer;
   font-size: 1rem;
   margin-left: 17px;
+  transition: transform 0.3s, background-color .3s;
+}
 
+button[type="submit"]:hover {
+  background-color: #014ca2;
+  transform: scale(1.05);
 }
 
 input[type="text"],
