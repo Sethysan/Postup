@@ -112,7 +112,7 @@ export default {
         authService
           .register(this.user)
           .then((response) => {
-            if (response.status == 201) {
+            if (response.status == 200) {
               this.$router.push({
                 path: '/login',
                 query: { registration: 'success' },
