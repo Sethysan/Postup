@@ -16,13 +16,14 @@
             <div v-for="forum in searchDisplayed ? searchForums : forums" :key="forum.id || forum.forum.id"
                 class="forum-item">
                 <router-link :to="{ name: 'forum', params: { id: forum.id || forum.forum.id } }" class="forum-link">
+                    
+                        <p class="inline-time">{{ forum.author || forum.forum.author }}</p>
+                        <p class="inline-time"> created {{ getTimeElapsed(forum.timeOfCreation ||
+                            forum.forum.timeOfCreation) }}</p>
+                    
                     <h2>
                         <span
                             v-html="searchDisplayed ? highlightSearchTerm(forum.forum?.topic || forum.topic) : forum.topic"></span>
-                        <p class="inline-time">{{ forum.author || forum.forum.author }}</p>
-                        <p class="inline-time">
-                            created {{ getTimeElapsed(forum.timeOfCreation || forum.forum.timeOfCreation) }}
-                        </p>
                     </h2>
                     <p
                         v-html="searchDisplayed ? highlightSearchTerm(forum.forum?.description || forum.description) : forum.description">
@@ -41,10 +42,7 @@
 
 
 <script>
-import PostService from "../services/PostService.js";
 import ForumService from "../services/ForumService.js";
-
-// importing a library to handle time conversions
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
@@ -150,7 +148,7 @@ export default {
 </script>
 
 
-<style >
+<style>
 .forum-results-container {
     text-align: center;
 }
