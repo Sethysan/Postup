@@ -74,7 +74,7 @@ public class AuthenticationController {
             }
         }
         catch (DaoException e) {
-            System.out.println("user: " + newUser.toString());
+            e.printStackTrace(); // Log the stack trace
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "User registration failed.");
         }
     }

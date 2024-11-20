@@ -88,7 +88,7 @@ public class JdbcUserDao implements UserDao {
             newUser = getUserById(newUserId);
             if(newUserId > 0){
                 insertUserSql = "INSERT INTO favorite_forums(user_id, forum_id) VALUES (?, ?);";
-                jdbcTemplate.update(insertUserSql, newUserId, 1);
+                jdbcTemplate.update(insertUserSql, newUserId, 73);
             }
             if (user.getUserImage() != null && !user.getUserImage().isEmpty()) {
                 String destinationFolder = "src/main/resources/images/";
