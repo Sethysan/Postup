@@ -202,10 +202,12 @@ body {
 
 :root {
   --primary: rgb(60, 184, 255);
-  ;
   --secondary: #0f0f0f;
-  --nero: #181818;
+  --grey: #888;
+  --blend: #434242;
+  --nero: #1f1f1f;
   --blue: rgb(60, 184, 255);
+  --deepblue: rgb(87, 122, 199);
   --orange: rgb(248, 133, 29);
 }
 

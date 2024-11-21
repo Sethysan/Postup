@@ -214,7 +214,7 @@ export default {
 .reply-header {
     display: flex;
     align-items: center;
-    background-color: rgb(240, 226, 162);
+    background-color: rgba(176, 202, 255, 0.704);
     border-radius: 13px;
     margin-top: 20px;
     padding: 5px;
@@ -224,6 +224,7 @@ export default {
 
 .reply-meta {
     display: flex;
+    color: black;
     align-items: center;
     gap: 5px;
     font-size: 0.875rem;
@@ -354,9 +355,8 @@ export default {
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-    background: radial-gradient(circle, rgb(137, 181, 206) 45%, rgb(239, 149, 70));
-    border: 2px solid #ccc;
-    border-color: black;
+    background: radial-gradient(circle, #888 35%, rgba(27, 27, 27, 0.699));
+    border: 1px solid rgb(87, 122, 199);
     border-radius: 25px;
     padding-left: 15px;
     padding-right: 15px;
@@ -378,6 +378,7 @@ export default {
     margin-top: 10px;
     margin-bottom: 5px;
     background: rgba(241, 231, 199, 0.363);
+    color: black;
     border-radius: 10px;
     padding-right: 5px;
     padding-left: 5px;

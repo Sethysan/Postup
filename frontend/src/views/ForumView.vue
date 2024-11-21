@@ -85,7 +85,7 @@ export default {
 }
 </script>
 <style>
-.forum-head{
+.forum-head {
   display: flex;
   gap: 10px;
   justify-content: space-between;
@@ -101,22 +101,12 @@ export default {
 #forum-posts {
   height: auto;
   width: 100%;
+  border: 4px solid var(--nero);
+  background: radial-gradient(circle, var(--nero) 75%, rgba(0, 0, 0, 0.389));
 }
 
 #posts {
   text-align: center;
 }
 
-/* button {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #45A049;
-} */
 </style>

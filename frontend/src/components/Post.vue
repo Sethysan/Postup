@@ -5,6 +5,7 @@
         </div>
         <div v-else class="post">
             <div class="post-header">
+
                 <!-- Back Button -->
                 <div class="back-button" @click="goBack">
                     <svg fill="currentColor" height="16" icon-name="back-outline" viewBox="0 0 20 20" width="16"
@@ -18,14 +19,17 @@
                 <div class="post-meta">
                     <div class="user-image-frame">
                         <img v-if="post.creator_image" :src="imageSrc" class="user-image" />
-                        <img v-else src="/images/avatars/no-image.jpg" class="user-image"/>
+                        <img v-else src="/images/avatars/no-image.jpg" class="user-image" />
                     </div>
                     <span class="post-author">{{ post.creator_username }}</span>
                     <span class="post-time">• {{ getTimeElapsed(post.timeOfCreation) }}</span>
                 </div>
+
+                <!-- <share-form :post="post" :url="`http://localhost:5173/posts/${this.post.id}`"></share-form> -->
+                <div class="post-info">
+                    <h1 class="post-title">{{ post.title }}</h1>
+                </div>
             </div>
-            <!-- <share-form :post="post" :url="`http://localhost:5173/posts/${this.post.id}`"></share-form> -->
-            <h1 class="post-title">{{ post.title }}</h1>
             <p class="post-description">{{ post.description }}</p>
             <div v-if="post.image" class="post-image-container">
                 <img v-if="post.image" :src="post.image" class="post-image" @click="toggleImageFullscreen" />
@@ -103,22 +107,6 @@ import ShareForm from './ShareForm.vue';
 // import { useToast } from 'vue-toastification';
 
 export default {
-    // setup() {
-    //     // const toast = useToast();
-    //     // function handleError(err, message) {
-    //     //     if (err.response?.status === 401) {
-    //     //         // toast("You must be logged in to vote", {
-    //     //             // position: "bottom-center",
-
-    //     //     } else {
-    //     //         // toast.error(`${message} Status code: ${err.response?.status || 'Unknown'}`);
-    //     //     }
-    //     },
-    //     // return {
-    //     //     handleError,
-    //     //     // toast
-    //     // };
-    // // },
     props: {
         post: {
             type: Object,
@@ -290,6 +278,127 @@ export default {
 </script>
 
 <style>
+.fullscreen-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    cursor: zoom-out;
+}
+
+.post-image-fullscreen {
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    max-height: none;
+    object-fit: contain;
+    cursor: zoom-out;
+
+}
+
+.post-text {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+.post-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+.back-button {
+    background-color: var(--nero);
+    color: var(--primary);
+    border-radius: 50%;
+    padding: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .1s ease, color .3s ease, background-color .3s ease;
+    cursor: pointer;
+    margin-bottom: 2px;
+    margin-right: 10px;
+}
+
+.back-button:hover {
+    background-color: var(--blend);
+    transform: scale(1.2);
+    color: var(--deepblue);
+
+}
+
+.post-meta {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    /* Adjust spacing between author and time */
+    font-size: 0.875rem;
+    margin-right: 15rem;
+}
+
+.user-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    /* border: 2px solid #ddd;  */
+}
+
+.user-image-frame {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.587);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.post-author {
+    font-size: 1.25rem;
+}
+
+.post-time {
+    color: rgb(107, 105, 105);
+}
+
+.post-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.post-title {
+    margin-top: 10px;
+    /* Add space between metadata and title */
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.post-description {
+    font-size: 1rem;
+    margin-bottom: 12px;
+}
+
+.post-image-container img {
+    width: 100%;
+    max-height: 400px;
+    border: 4px solid var(--nero);
+    background: radial-gradient(circle, var(--nero) 75%, rgba(0, 0, 0, 0.389));
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: zoom-in;
+}
+
 .post-footer {
     display: flex;
     gap: 20px;
@@ -373,7 +482,6 @@ export default {
 
 }
 
-
 .comment-count {
     align-items: center;
     background-color: rgb(228, 228, 228);
@@ -450,127 +558,5 @@ textarea.expanded {
     background: none;
     border: none;
     cursor: pointer;
-}
-
-.post-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 12px;
-}
-
-.post-image {
-    width: 100%;
-    background-color: black;
-    max-height: 400px;
-    object-fit: contain;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.fullscreen-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    cursor: zoom-out;
-}
-
-.post-image-fullscreen {
-    width: 100vw;
-    height: 100vh;
-    max-width: none;
-    max-height: none;
-    object-fit: contain;
-    cursor: zoom-out;
-
-}
-
-.post-image-container img {
-    width: 100%;
-    max-height: 400px;
-    object-fit: contain;
-    border-radius: 8px;
-    cursor: zoom-in;
-}
-
-.post-description {
-    font-size: 1rem;
-    margin-bottom: 12px;
-}
-
-.post-meta {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    /* Adjust spacing between author and time */
-    font-size: 0.875rem;
-}
-
-.user-image {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    /* border: 2px solid #ddd;  */
-}
-.user-image-frame {
-  width: 44px; 
-  height: 44px;
-  border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.587); 
-  display: flex;
-  align-items: center;
-  justify-content: center; 
-}
-
-.post-author {
-    font-size: 1.25rem;
-}
-
-.post-time {
-    color: rgb(107, 105, 105);
-}
-
-.post-header {
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
-    margin-bottom: 12px;
-    gap: 10px;
-    /* Adjust spacing between the back button and metadata */
-}
-
-.post-title {
-    margin-top: 10px;
-    /* Add space between metadata and title */
-    font-size: 1.5rem;
-    font-weight: 600;
-}
-
-.back-button {
-    background-color: #888;
-    color: var(--primary);
-    border-radius: 50%;
-    padding: 8px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: color .3s, background-color .3s;
-    cursor: pointer;
-    margin-bottom: 2px;
-}
-
-.back-button:hover {
-    background-color: var(--nero);
-    color: white;
-    
 }
 </style>

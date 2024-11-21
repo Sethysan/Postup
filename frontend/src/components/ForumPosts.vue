@@ -7,7 +7,7 @@
             </div>
             <div class="body">
                 <swiper ref="swiper" class="swiper-wrapper" :effect="'coverflow'" :grabCursor="true"
-                    :centeredSlides="false" :spaceBetween="10" :slidesPerView="1" :breakpoints="breakpoints"
+                    :centeredSlides="false" :spaceBetween="10" :slidesPerView="3" :breakpoints="breakpoints"
                     :coverflowEffect="coverflowEffect" :pagination="{ type: 'progressbar' }" :modules="modules"
                     v-if="posts.length > 2">
                     <swiper-slide v-for="(post) in posts" :key="post.id" class="forum-post">

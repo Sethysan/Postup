@@ -56,12 +56,15 @@ export default {
     cursor: pointer;
     border: solid .01px;
     border-color: var(--nero);
-    box-shadow: 0 40px 160px rgb(0, 0, 0); 
-    transition: box-shadow 0.3s ease;
+    box-shadow: 0 40px 160px rgb(0, 0, 0);
+    transition: transform 0.3s ease, box-shadow 0.2s ease;
 
 }
+
 .post-snippet:hover {
-    box-shadow: 0 10px 5px rgba(0, 0, 0, 0);
+    transform: scale(1.02);
+    box-shadow: 0 15px 30px  rgb(87, 122, 199, 0.3);
+    /* box-shadow: 0 4px 15px rgba(234, 85, 11, 0.5); */
 }
 
 .image-container:after {
@@ -132,27 +135,34 @@ footer {
 }
 
 .post-description {
-  opacity: 0; /* Hidden by default */
-  transition: opacity 0.5s ease; /* Smooth transition for visibility */
-  max-height: 0; /* Collapse the description initially */
-  overflow: hidden; /* Hide overflowing content */
-  line-height: 1.5rem;
-  border-radius: 10px;
-  color: var(--Primary); /* Adjust text color */
-  font-size: 0.9rem;
-  padding: 9px 0;
-  position: absolute; /* Position relative to the snippet */
-  bottom: 5px; /* Adjust position as needed */
-  left: 10px;
-  right: 10px;
+    opacity: 0;
+    /* Hidden by default */
+    transition: opacity 0.5s ease;
+    /* Smooth transition for visibility */
+    max-height: 0;
+    /* Collapse the description initially */
+    overflow: hidden;
+    /* Hide overflowing content */
+    line-height: 1.5rem;
+    border-radius: 10px;
+    color: var(--Primary);
+    /* Adjust text color */
+    font-size: 0.9rem;
+    padding: 9px 0;
+    position: absolute;
+    /* Position relative to the snippet */
+    bottom: 5px;
+    /* Adjust position as needed */
+    left: 10px;
+    right: 10px;
 }
 
 .post-snippet:hover .post-description {
-  opacity: 1; 
-  background-color: rgba(0, 0, 0, 0.915);
-  max-height: 10rem; 
-  max-width: 95%;
-  z-index: 30;
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.915);
+    max-height: 10rem;
+    max-width: 95%;
+    z-index: 30;
 }
 
 </style>

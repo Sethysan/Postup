@@ -16,11 +16,9 @@
             <div v-for="forum in searchDisplayed ? searchForums : forums" :key="forum.id || forum.forum.id"
                 class="forum-item">
                 <router-link :to="{ name: 'forum', params: { id: forum.id || forum.forum.id } }" class="forum-link">
-                    
                         <p class="inline-time">{{ forum.author || forum.forum.author }}</p>
                         <p class="inline-time"> created {{ getTimeElapsed(forum.timeOfCreation ||
-                            forum.forum.timeOfCreation) }}</p>
-                    
+                            forum.forum.timeOfCreation) }}</p>                    
                     <h2>
                         <span
                             v-html="searchDisplayed ? highlightSearchTerm(forum.forum?.topic || forum.topic) : forum.topic"></span>
@@ -170,9 +168,8 @@ export default {
 
 /* Styling each forum item */
 .forum-item {
-    border: 1px solid rgb(87, 122, 199);
-    background: radial-gradient(circle, var(--nero) 55%, rgba(0, 0, 0, 0.699));
-    padding: 1rem;
+    border: 1px solid var(--deepblue);
+    padding: 1rem;background: radial-gradient(circle, var(--nero) 55%, rgba(0, 0, 0, 0.512));
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -195,13 +192,19 @@ export default {
     display: inline;
     font-size: 1rem;
     margin-left: 10px;
-    color: #4e4949;
+    color: var(--deepblue);
 }
 
 /* Highlight search terms */
 :deep .highlight {
     background-color: yellow;
     font-weight: bold;
+}
+
+@media (min-width: 1024px) {
+    .forum-results {
+        grid-template-columns: repeat(3, 1fr); /* Exactly three columns */
+    }
 }
 
 /* Responsive styles */
