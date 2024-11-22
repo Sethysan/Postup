@@ -124,8 +124,7 @@ export default {
           boxShadow: 'inset 0 -18px 4px  linear-gradient(to bottom, var(--secondary),',// Shared shadow for non-active buttons
           background: `
         radial-gradient(circle, rgba(128, 93, 32, 0.075) 50%, rgba(128, 93, 32, 0.01)),
-        linear-gradient(to bottom, rgb(9, 9, 9), rgb(9, 9, 9), var(--secondary), var(--secondary), var(--secondary), rgba(128, 93, 32, .1), rgba(128, 93, 32, 0.124))
-      `,
+        linear-gradient(to bottom, rgb(9, 9, 9), rgb(9, 9, 9), var(--secondary), var(--secondary), var(--secondary), rgba(128, 93, 32, .1), rgba(128, 93, 32, 0.124))`,
         };
       }
     },
@@ -410,6 +409,9 @@ body {
   padding: 5px;
   z-index: -1;
 } */
+.nav-btn .router-link-nonactive{
+  transition: box-shadow 0.3s ease-in-out;
+}
 
 .nav-btn {
   font-size: 18px;
@@ -423,7 +425,17 @@ body {
   color: white;
   border: none;
   border-radius: 8px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  ;
+}
+
+.nav-btn:hover .router-link-nonactive {
+  border:none;
+  text-decoration: none;
+  box-shadow: 0px 15px 25px rgba(87, 122, 199, 0.3);
+  background:
+    radial-gradient(circle, rgba(87, 122, 199, 0.099) 50%, rgba(87, 122, 199, 0.01)),
+    linear-gradient(to bottom, rgb(9, 9, 9), var(--secondary), var(--secondary), rgba(19, 26, 41, 0.4), rgba(10, 20, 40, 0.721));
 }
 
 router-view {
@@ -439,8 +451,8 @@ router-view {
   font-size: 30px;
   background-color: transparent;
   color: var(--deepblue);
-  box-shadow: 0px 15px 25px rgb(87, 122, 199, 0.3);
-  transition: .3s ease-in-out, box-shadow 0.3s ease-in-out;
+  box-shadow: 0px 15px 25px rgba(87, 122, 199, 0.3);
+  transition: 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   z-index: 2;
 }
 
@@ -453,22 +465,22 @@ router-view {
   right: 0;
   bottom: 0;
   background:
-    radial-gradient(circle, rgba(87, 122, 199, 0.075)50%, rgba(87, 122, 199, 0.01)),
-    linear-gradient(to bottom, rgb(9, 9, 9), var(--secondary), var(--secondary), rgba(87, 122, 199, 0.1), rgba(87, 122, 199, 0.174));
+    radial-gradient(circle, rgba(87, 122, 199, 0.099) 50%, rgba(87, 122, 199, 0.01)),
+    linear-gradient(to bottom, rgb(9, 9, 9), var(--secondary), var(--secondary), rgba(87, 122, 199, 0.1), rgba(74, 110, 160, 0.181));
   z-index: -1;
-  /* Ensure it stays behind the content */
   border-radius: inherit;
-  /* Match border radius if any */
+
 }
 
 .router-link-nonactive {
   text-decoration: none;
   color: var(--grey);
   box-shadow: 0 15px 25px rgba(128, 93, 32, 0.282);
-  transition: .3s ease-in-out, box-shadow 0.5s ease-in-out;
+  transition: color .3s ease-in-out, box-shadow 0.5s ease-in-out;
   z-index: 2;
   display: inline-block;
 }
+
 
 #logged-in {
   color: black;
