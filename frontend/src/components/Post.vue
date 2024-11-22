@@ -510,6 +510,7 @@ button[type="submit"] {
 
 .submit-button {
     background-color: #0366d6;
+    transition: background-color 0.3s ease;
     color: white;
     padding: 6px 12px;
     border: none;
@@ -523,6 +524,7 @@ button[type="submit"] {
 
 .cancel-button {
     background-color: #e1e1e1;
+    transition: background-color 0.3s ease;
 }
 
 .cancel-button:hover {

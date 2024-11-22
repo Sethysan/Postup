@@ -81,15 +81,12 @@ export default {
     background-color: var(--nero);
 }
 
-.forum-post {
-    box-shadow: 0 15px 30px rgba(0, 0, 0, .9);
-}
 
 #posts {
     text-align: center;
+    border-bottom: 4px solid transparent;
+    border-image: linear-gradient(to right, var(--nero), rgb(24, 24, 24), rgb(23, 23, 23), rgb(22, 22, 22), rgb(25, 25, 25), rgb(25, 25, 25), var(--nero)); 
+    border-image-slice: 1;
 }
 
-.body {
-    padding: 20px;
-}
 </style>

@@ -1,10 +1,10 @@
 <template>
     <div class="post-snippet">
-
         <div v-if="post">
             <router-link :to="{ name: 'post', params: { post: post.id } }" class="post-link">
                 <section class="image-container">
                     <img v-if="post.image" :src="post.image" class="post-image" />
+                    <img v-else src="/images/POST-UP_logo.png" alt="PostUp Logo" class="default-post-image" />
                     <footer>
                         <div class="post-meta">
                             <div class="user-image-frame">
@@ -49,9 +49,12 @@ export default {
 }
 
 .post-snippet {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
     position: relative;
-    border-radius: 5px;
-    overflow: hidden;
+    border-radius: 8px;
+    overflow: visible;
     padding: 0px;
     cursor: pointer;
     border: solid .01px;
@@ -61,9 +64,19 @@ export default {
 
 }
 
+.swiper-3d .swiper-wrapper  {
+    transform: translate3d(0px, 0px, 0px);
+    transition: transform 0.3s ease !important; /* Smooth transition for transform changes */
+}
+
+.swiper-3d .swiper-wrapper :hover {
+    transform: rotateY(0deg) scale(1.1) !important; /* Rotate back to 0 degrees and slightly enlarge */
+    z-index: 10; /* Bring the hovered slide to the front */
+}
+
 .post-snippet:hover {
     transform: scale(1.02);
-    box-shadow: 0 15px 30px  rgb(87, 122, 199, 0.3);
+    box-shadow: 0 15px 30px rgb(87, 122, 199, 0.3);
     /* box-shadow: 0 4px 15px rgba(234, 85, 11, 0.5); */
 }
 
@@ -80,6 +93,7 @@ export default {
     position: relative;
     width: 100%;
     height: 22rem;
+    max-height: 40vh;
 }
 
 footer {
@@ -99,10 +113,11 @@ footer {
 }
 
 .post-meta {
-    padding: 0.5;
     display: flex;
+    width: 100%;
     align-items: center;
-
+    justify-content: flex-start;
+    flex-wrap: wrap;
 }
 
 .post-author,
@@ -111,10 +126,12 @@ footer {
     color: var(--Primary);
 }
 
-.post-image {
+
+.default-post-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    /* Ensures the logo fills the container */
     display: block;
 }
 
@@ -123,7 +140,6 @@ footer {
     height: 30px;
     border-radius: 50%;
     overflow: hidden;
-    margin-right: 10px;
 }
 
 .user-image {
@@ -164,5 +180,4 @@ footer {
     max-width: 95%;
     z-index: 30;
 }
-
 </style>

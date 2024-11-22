@@ -9,35 +9,38 @@
           <p class="name">{{ userName }}</p>
         </div>
       </div>
-      <button v-if="role === 'ROLE_ADMIN'" class="nav-btn">
+      <button v-if="role === 'ROLE_ADMIN'" class="nav-btn" >
+        <div :style="getButtonStyle('admin')">
         <router-link v-bind:to="{ name: 'admin' }" v-if="userName"
-          :class="getLinkClass('admin')">ADMIN</router-link>&nbsp;
+          :class="getLinkClass('admin')">ADMIN</router-link></div>&nbsp;
       </button>
       <button class="nav-btn">
-        <router-link v-bind:to="{ name: 'home' }" :class="getLinkClass('home')">HOME</router-link>&nbsp;
+        <div :style="getButtonStyle('home')">
+        <router-link v-bind:to="{ name: 'home' }" :class="getLinkClass('home')">HOME</router-link></div>&nbsp;
       </button>
-      <!-- <div class="separator"></div> -->
       <button class="nav-btn">
-        <router-link v-bind:to="{ name: 'forums' }" :class="getLinkClass('forums')">FORUMS</router-link>&nbsp;
+        <div :style="getButtonStyle('forums')">
+        <router-link v-bind:to="{ name: 'forums' }" :class="getLinkClass('forums')">FORUMS</router-link></div>&nbsp;
       </button>
-      <!-- <div v-if="this.isLoggedIn" class="separator"></div> -->
       <button v-if="isLoggedIn" class="nav-btn">
+        <div :style="getButtonStyle('favorites')">
         <router-link v-bind:to="{ name: 'favorites' }" v-if="userName"
-          :class="getLinkClass('favorites')">FAVORITES</router-link>&nbsp;
+          :class="getLinkClass('favorites')">FAVORITES</router-link></div>&nbsp;
       </button>
       <button v-if="isLoggedIn" class="nav-btn">
+        <div :style="getButtonStyle('messages')">
         <router-link v-bind:to="{ name: 'messages' }" v-if="userName"
-          :class="getLinkClass('messages')">MESSAGES</router-link>&nbsp;
+          :class="getLinkClass('messages')">MESSAGES</router-link></div>&nbsp;
       </button>
-      <!-- <div v-if="this.isLoggedIn" class="separator"></div> -->
       <button v-if="isLoggedIn" class="nav-btn">
+        <div :style="getButtonStyle('logout')">
         <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''"
-          class="router-link-nonactive">LOGOUT</router-link>
+          class="router-link-nonactive">LOGOUT</router-link></div>&nbsp;
       </button>
-      <!-- <div v-if="!this.isLoggedIn" class="separator"></div> -->
       <button v-if="!this.isLoggedIn" class="nav-btn">
+        <div :style="getButtonStyle('login')">
         <router-link v-bind:to="{ name: 'login' }" v-if="$store.state.token == ''"
-          class="router-link-nonactive">LOGIN</router-link>
+          class="router-link-nonactive">LOGIN</router-link></div>&nbsp;
       </button>
       <div class="logo-container">
         <img src="/images/POST-UP_logo.png" alt="Logo" class="logo" />
@@ -105,6 +108,17 @@ export default {
     getLinkClass(routeName) {
       return this.$route.name === routeName ? 'router-link-active' : 'router-link-nonactive';
     },
+    getButtonStyle(routeName) {
+      if (this.$route.name === routeName) {
+        return {
+          boxShadow: 'inset 0 -20px 48px  rgb(87, 122, 199, 0.23)', // Unique shadow for active buttons
+        };
+      } else {
+        return {
+          boxShadow: 'inset 0 -10px 28px  rgba(128, 93, 32, 0.18)', // Shared shadow for non-active buttons
+        };
+      }
+    },
     toggleEditForm() {
       this.editFormVisible = !this.editFormVisible;
     },
@@ -165,6 +179,7 @@ export default {
 
 ::-webkit-scrollbar-thumb {
   background-color: #888;
+  transition: background-color 0.3s ease-in-out;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -177,18 +192,13 @@ export default {
   /* Change to grabbing when holding left click */
 }
 
-/* * {
-    scrollbar-color: #888 #4b4a4a; 
-    scrollbar-width: medium; 
-} */
 
 body,
 html {
-
   font-family: "Work Sans", sans-serif;
   font-weight: 400;
   line-height: 1.5;
-  color: #888;
+  color: var(--grey);
   background-color: var(--secondary);
   text-align: left;
   height: 100%;
@@ -203,7 +213,7 @@ body {
 :root {
   --primary: rgb(60, 184, 255);
   --secondary: #0f0f0f;
-  --grey: #888;
+  --grey: #969696;
   --blend: #434242;
   --nero: #1f1f1f;
   --blue: rgb(60, 184, 255);
@@ -214,6 +224,7 @@ body {
 #nav {
   display: flex;
   justify-content: space-evenly;
+  background-color: transparent;
   width: 100%;
   z-index: 1000;
   padding: 10px;
@@ -361,12 +372,13 @@ body {
 }
 
 .nav-btn {
+  position: relative;
   background-color: transparent;
   color: white;
   border: none;
   font-size: 25px;
   padding: 5px;
-  transition: transform 0.3s ease-in-out;
+  z-index: -1;
   /* Smooth transition for hover effects */
 }
 
@@ -378,27 +390,28 @@ router-view {
 
 .nav-btn .router-link-active,
 .router-link-exact-active {
+  position: relative;
   text-decoration: none;
   font-size: 30px;
-  color: var(--primary);
-  transition: .3s ease-in-out;
+  background-color: transparent;
+  color: var(--deepblue);
+  box-shadow: 0 15px 30px rgb(87, 122, 199, 0.3);
+  transition: .3s ease-in-out, box-shadow 0.3s ease-in-out;
+  z-index: 2;
 }
 
 .router-link-nonactive {
   text-decoration: none;
-  color: #888;
-  transition: .3s ease-in-out;
+  color: var(--grey);
+  box-shadow: 0 15px 25px rgba(128, 93, 32, 0.275);
+  transition: .3s ease-in-out, box-shadow 0.5s ease-in-out;
+  ;
 }
 
 #logged-in {
   color: black;
 }
 
-.router-link-nonactive:hover {
-  text-decoration: none;
-  transform: scaleX(3);
-  transition: transform 0.3s ease-in-out;
-}
 
 .separator {
   align-content: center;

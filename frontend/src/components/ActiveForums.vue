@@ -42,29 +42,29 @@ export default {
 #active {
     display: flex;
     flex-direction: column;
-}
-
-.active-forum {
-    position: relative;
-
+    max-width: 1300px;
+    margin: 0 auto;
+    border: 4px solid var(--nero);
+    background: radial-gradient(circle, var(--nero) 75%, rgba(0, 0, 0, 0.389));
 }
 
 .most-active {
     text-align: center;
+    border-bottom: 4px solid transparent;
+    border-image: linear-gradient(to right, var(--nero), rgb(24, 24, 24), rgb(23, 23, 23), rgb(22, 22, 22), rgb(25, 25, 25), rgb(25, 25, 25), var(--nero));
+    border-image-slice: 1;
 }
 
-
-
-.swiper-wrapper {
+.active-forum {
     display: flex;
-    align-items: center;
-    background-color: var(--nero);
+    justify-content: center;
+    max-width: 100%;
+    flex-grow: 2;
 }
 
 .swiper-slide {
-    background-color: transparent;
     height: auto;
     flex-shrink: 0;
-    width: 100%;
 }
+
 </style>

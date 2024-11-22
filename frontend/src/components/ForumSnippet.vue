@@ -2,6 +2,7 @@
     <div class="forum-snippet">
 
         <div v-if="forum">
+        
             <router-link :to="{ name: 'forum', params: { id: forum.id } }" class="forum-link">
                 <div class="forum-header">
                     <h2 class="forum-topic">{{ forum.topic }}
@@ -49,13 +50,18 @@ export default {
     background-color: transparent;
 }
 
-
-
 .forum-link {
-    display: block;
     text-decoration: none;
     color: inherit;
 }
+
+.forum-header{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 
 /* <p> is displayed inline with <h2> */
 .inline-time {
@@ -72,31 +78,30 @@ export default {
 }
 
 .forum-snippet {
-    border-radius: 5px;
     display: flex;
-    flex-direction: column;
-    align-content: space-evenly;
-    background: radial-gradient(circle, rgb(137, 181, 206) 45%, rgb(239, 149, 70));
-    border: 2px solid #ccc;
-    border-color: black;
-    border-radius: 25px;
-    padding-left: 15px;
-    padding-right: 15px;
-    margin: 3vh;
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Center items vertically */
+    align-items: center; /* Center items horizontally */
+    border-radius: 5px;
+    padding: 1rem;
+    background: radial-gradient(circle, var(--nero) 55%, rgba(0, 0, 0, 0.512));
+    border: 1px solid var(--deepblue);
+    margin: 1rem auto; /* Center the entire snippet horizontally in its container */
     min-height: 200px;
-    max-width: 600px;
-    /* Adjust the width as needed */
-    width: 100%;
-    /* Ensures it is responsive */
-    box-shadow: 0 40px 160px rgb(0, 0, 0); 
-    transition: box-shadow 0.3s ease;
+    max-width: 600px; /* Restrict maximum width */
+    width: 100%; /* Ensure responsiveness */
+    box-shadow: 0 40px 160px rgb(0, 0, 0);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
+
 .forum-snippet:hover{
-    box-shadow: 0 10px 5px rgba(0, 0, 0, 0);
+    transform: scale(1.02);
+    box-shadow: 0 15px 30px rgb(87, 122, 199, 0.3);
 }
 
 .forum-description{
     color: #fff;
     font-size: 1.3rem;
+    text-align: center;
 }
 </style>

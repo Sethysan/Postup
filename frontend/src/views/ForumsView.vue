@@ -169,8 +169,9 @@ export default {
 /* Styling each forum item */
 .forum-item {
     border: 1px solid var(--deepblue);
-    padding: 1rem;background: radial-gradient(circle, var(--nero) 55%, rgba(0, 0, 0, 0.512));
-    border-radius: 8px;
+    padding: 1rem;
+    background: radial-gradient(circle, var(--nero) 55%, rgba(0, 0, 0, 0.512));
+    border-radius: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -178,14 +179,10 @@ export default {
 /* Hover effect for forum items */
 .forum-item:hover {
     transform: scale(1.02);
-    box-shadow: 0 4px 15px rgba(234, 85, 11, 0.5);
+    box-shadow: 0 15px 30px rgb(87, 122, 199, 0.3);
 }
 
-.forum-link {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-}
+
 
 /* Styling the inline time and author */
 .inline-time {

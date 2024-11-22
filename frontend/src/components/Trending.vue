@@ -67,13 +67,36 @@ export default {
 </script>
 
 <style>
+#trending {
+    display: flex;
+    flex-direction: column;
+    max-width: 1300px;
+    margin: 0 auto;
+    border: 4px solid var(--nero);
+    background: radial-gradient(circle, var(--nero) 75%, rgba(0, 0, 0, 0.389));
+}
+
+.trending-now {
+    text-align: center;
+    border-bottom: 4px solid transparent;
+    border-image: linear-gradient(to right, var(--nero), rgb(24, 24, 24), rgb(23, 23, 23), rgb(22, 22, 22), rgb(25, 25, 25), rgb(25, 25, 25), var(--nero));
+    border-image-slice: 1;
+}
+
 .swiper-wrapper {
     display: flex;
     align-items: center;
-    /* Vertically centers the slides */
+    width: 94%;
     padding: 20px;
     max-width: 100%;
-    
+}
+
+.trending-post {
+    display: flex;
+    justify-content: center;
+    /* Center the content horizontally */
+    max-width: 100%;
+    flex-grow: 2;
 }
 
 .swiper-slide {
@@ -81,33 +104,6 @@ export default {
     /* Ensures the slide height adjusts to content */
     flex-shrink: 0;
     /* Prevents the slide from shrinking */
-}
-
-#trending {
-    display: flex;
-    flex-direction: column;
-    max-width: 1300px;
-    margin: 0 auto;
-    background-color: var(--nero);
-}
-
-.trending-post {
-  display: flex;
-  justify-content: center; /* Center the content horizontally */
-  max-width: 100%;
-  flex-grow: 2;
-}
-
-.trending-now {
-  text-align: center; /* Center the text */
-  margin-bottom: 1rem; /* Add some space below the heading */
-}
-
-.body {
-    position: relative;
-    max-width: 100%;
-    min-height: 350px;
-    overflow: hidden;
 }
 
 .swiper-pagination-progressbar {
@@ -129,5 +125,6 @@ export default {
 .swiper-horizontal>.swiper-pagination-progressbar,
 .swiper-pagination-progressbar.swiper-pagination-horizontal {
     bottom: 0 !important;
+    top: auto !important;
 }
 </style>
