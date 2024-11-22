@@ -48,6 +48,12 @@ export default {
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, .2);
     background-color: transparent;
+    background: radial-gradient(circle, var(--nero) 55%, rgba(0, 0, 0, 0.512));
+}
+
+.forum-item:hover{
+    transform: scale(1.02);
+    box-shadow: 0 15px 30px rgb(87, 122, 199, 0.3);
 }
 
 .forum-link {
@@ -79,17 +85,17 @@ export default {
 
 .forum-snippet {
     display: flex;
-    flex-direction: column; /* Stack items vertically */
-    justify-content: center; /* Center items vertically */
-    align-items: center; /* Center items horizontally */
-    border-radius: 5px;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+    border-radius: 20px;
     padding: 1rem;
     background: radial-gradient(circle, var(--nero) 55%, rgba(0, 0, 0, 0.512));
     border: 1px solid var(--deepblue);
-    margin: 1rem auto; /* Center the entire snippet horizontally in its container */
+    margin: 1rem auto; 
     min-height: 200px;
-    max-width: 600px; /* Restrict maximum width */
-    width: 100%; /* Ensure responsiveness */
+    max-width: 600px; 
+    /* width: 100%; */
     box-shadow: 0 40px 160px rgb(0, 0, 0);
     transition: transform 0.2s ease, box-shadow 0.3s ease;
 }

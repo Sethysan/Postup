@@ -211,7 +211,7 @@ export default {
         max-height: 70vh;
     }
 
-    .forum-item {
+    .forum-item, .forum-snippet {
         padding: 0.5rem;
     }
 
@@ -227,7 +227,7 @@ export default {
         max-height: 70vh;
     }
 
-    .forum-item {
+    .forum-item, .forum-snippet {
         padding: 0.5rem;
     }
 }

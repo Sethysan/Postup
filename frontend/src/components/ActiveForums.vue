@@ -1,44 +1,88 @@
 <template>
     <section id="active">
         <div v-if="forums.length > 0">
-            <div class="most-active">
-                <h1>Active Forums</h1>
+            <div v-if="isTabletOrDesktop" class="most-active">
+                <div class="most-active">
+                    <h1>Active Forums</h1>
+                </div>
+                <div class="forum-slider">
+                    <swiper ref="swiper" class="swiper-wrapper" :slidesPerView="2" :spaceBetween="40" :breakpoints="{
+                        '640': { slidesPerView: 1, spaceBetween: 10 },
+                        '768': { slidesPerView: 2, spaceBetween: 20 },
+                        '1024': { slidesPerView: 3, spaceBetween: 20 }
+                    }" :pagination="{ type: 'progressbar', }" :modules="modules">
+                        <swiper-slide v-for="(forum) in forums.slice(0, 6)" :key="forum.id" class="active-forum">
+                            <forum-snippet :forum="forum"></forum-snippet>
+                        </swiper-slide>
+                    </swiper>
+                </div>
             </div>
-            <div class="forum-slider">
-                <swiper ref="swiper" class="swiper-wrapper" :slidesPerView="2" :spaceBetween="40" :breakpoints="{
-                    '640': { slidesPerView: 1, spaceBetween: 10 },
-                    '768': { slidesPerView: 2, spaceBetween: 20 },
-                    '1024': { slidesPerView: 3, spaceBetween: 20 }
-                }" :pagination="{ type: 'progressbar', }" :modules="modules">
-                    <swiper-slide v-for="(forum) in forums.slice(0, 6)" :key="forum.id" class="active-forum">
-                        <forum-snippet :forum="forum"></forum-snippet>
-                    </swiper-slide>
-                </swiper>
+            <!-- Display forum-results-container for smaller screens -->
+            <div v-else class="forum-results-container">
+                <h2 v-if="searchDisplayed" class="search-results-header">Search Results</h2>
+                <div class="forum-results">
+                    <!-- Display forums based on search or default -->
+                    <div v-for="(forum) in forums.slice(0, 6)" :key="forum.id" >
+                        <forum-snippet :forum="forum">
+                            <router-link :to="{ name: 'forum', params: { id: forum.id || forum.forum.id } }"
+                                class="forum-link">
+                                <p class="inline-time">{{ forum.author || forum.forum.author }}</p>
+                                <p class="inline-time"> created {{ getTimeElapsed(forum.timeOfCreation ||
+                                    forum.forum.timeOfCreation) }}</p>
+                                <h2>
+                                    <span
+                                        v-html="searchDisplayed ? highlightSearchTerm(forum.forum?.topic || forum.topic) : forum.topic"></span>
+                                </h2>
+                                <p
+                                    v-html="searchDisplayed ? highlightSearchTerm(forum.forum?.description || forum.description) : forum.description">
+                                </p>
+                            </router-link>
+                        </forum-snippet>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 </template>
 
 <script>
+
 import ForumSnippet from '../components/ForumSnippet.vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Pagination } from 'swiper/modules';
+import { ref, onMounted, onUnmounted } from 'vue';
 
 export default {
-    props: ['forums'],
+    props: ['forums', 'searchDisplayed', 'searchForums', 'highlightSearchTerm', 'getTimeElapsed'],
     components: { ForumSnippet, Swiper, SwiperSlide },
     name: 'Active',
     setup() {
+        const modules = [Pagination];
+        const isTabletOrDesktop = ref(window.innerWidth >= 640);
+
+        // Listener to update the screen size dynamically
+        const updateScreenSize = () => {
+            isTabletOrDesktop.value = window.innerWidth >= 640;
+        };
+        onMounted(() => {
+            window.addEventListener('resize', updateScreenSize);
+        });
+
+        onUnmounted(() => {
+            window.removeEventListener('resize', updateScreenSize);
+        });
+
         return {
-            modules: [Pagination],
+            modules,
+            isTabletOrDesktop,
         };
     }
 };
 </script>
 
-<style scoped>
+<style >
 #active {
     display: flex;
     flex-direction: column;
@@ -67,8 +111,7 @@ export default {
     flex-shrink: 0;
 }
 
-.forum-slider{
+.forum-slider {
     width: 100%;
 }
-
 </style>
