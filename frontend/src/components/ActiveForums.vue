@@ -6,9 +6,9 @@
             </div>
             <div class="forum-slider">
                 <swiper ref="swiper" class="swiper-wrapper" :slidesPerView="2" :spaceBetween="40" :breakpoints="{
-                    '640': { slidesPerView: 1, spaceBetween: 20 },
-                    '768': { slidesPerView: 2, spaceBetween: 30 },
-                    '1024': { slidesPerView: 2, spaceBetween: 10 }
+                    '640': { slidesPerView: 1, spaceBetween: 10 },
+                    '768': { slidesPerView: 2, spaceBetween: 20 },
+                    '1024': { slidesPerView: 3, spaceBetween: 20 }
                 }" :pagination="{ type: 'progressbar', }" :modules="modules">
                     <swiper-slide v-for="(forum) in forums.slice(0, 6)" :key="forum.id" class="active-forum">
                         <forum-snippet :forum="forum"></forum-snippet>
@@ -58,13 +58,17 @@ export default {
 .active-forum {
     display: flex;
     justify-content: center;
-    max-width: 100%;
+    max-width: 95%;
     flex-grow: 2;
 }
 
 .swiper-slide {
     height: auto;
     flex-shrink: 0;
+}
+
+.forum-slider{
+    width: 100%;
 }
 
 </style>

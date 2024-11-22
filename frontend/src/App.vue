@@ -9,38 +9,44 @@
           <p class="name">{{ userName }}</p>
         </div>
       </div>
-      <button v-if="role === 'ROLE_ADMIN'" class="nav-btn" >
+      <button v-if="role === 'ROLE_ADMIN'" class="nav-btn">
         <div :style="getButtonStyle('admin')">
-        <router-link v-bind:to="{ name: 'admin' }" v-if="userName"
-          :class="getLinkClass('admin')">ADMIN</router-link></div>&nbsp;
+          <router-link v-bind:to="{ name: 'admin' }" v-if="userName" :class="getLinkClass('admin')">ADMIN</router-link>
+        </div>&nbsp;
       </button>
       <button class="nav-btn">
         <div :style="getButtonStyle('home')">
-        <router-link v-bind:to="{ name: 'home' }" :class="getLinkClass('home')">HOME</router-link></div>&nbsp;
+          <router-link v-bind:to="{ name: 'home' }" :class="getLinkClass('home')">HOME</router-link>
+        </div>&nbsp;
       </button>
       <button class="nav-btn">
         <div :style="getButtonStyle('forums')">
-        <router-link v-bind:to="{ name: 'forums' }" :class="getLinkClass('forums')">FORUMS</router-link></div>&nbsp;
+          <router-link v-bind:to="{ name: 'forums' }" :class="getLinkClass('forums')">FORUMS</router-link>
+        </div>&nbsp;
       </button>
       <button v-if="isLoggedIn" class="nav-btn">
         <div :style="getButtonStyle('favorites')">
-        <router-link v-bind:to="{ name: 'favorites' }" v-if="userName"
-          :class="getLinkClass('favorites')">FAVORITES</router-link></div>&nbsp;
+          <router-link v-bind:to="{ name: 'favorites' }" v-if="userName"
+            :class="getLinkClass('favorites')">FAVORITES</router-link>
+        </div>&nbsp;
       </button>
       <button v-if="isLoggedIn" class="nav-btn">
         <div :style="getButtonStyle('messages')">
-        <router-link v-bind:to="{ name: 'messages' }" v-if="userName"
-          :class="getLinkClass('messages')">MESSAGES</router-link></div>&nbsp;
+          <router-link v-bind:to="{ name: 'messages' }" v-if="userName"
+            :class="getLinkClass('messages')">MESSAGES</router-link>
+        </div>&nbsp;
       </button>
       <button v-if="isLoggedIn" class="nav-btn">
         <div :style="getButtonStyle('logout')">
-        <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''"
-          class="router-link-nonactive">LOGOUT</router-link></div>&nbsp;
+          <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''"
+            class="router-link-nonactive">LOGOUT</router-link>
+        </div>&nbsp;
       </button>
       <button v-if="!this.isLoggedIn" class="nav-btn">
         <div :style="getButtonStyle('login')">
-        <router-link v-bind:to="{ name: 'login' }" v-if="$store.state.token == ''"
-          class="router-link-nonactive">LOGIN</router-link></div>&nbsp;
+          <router-link v-bind:to="{ name: 'login' }" v-if="$store.state.token == ''"
+            class="router-link-nonactive">LOGIN</router-link>
+        </div>&nbsp;
       </button>
       <div class="logo-container">
         <img src="/images/POST-UP_logo.png" alt="Logo" class="logo" />
@@ -111,11 +117,15 @@ export default {
     getButtonStyle(routeName) {
       if (this.$route.name === routeName) {
         return {
-          boxShadow: 'inset 0 -20px 48px  rgb(87, 122, 199, 0.23)', // Unique shadow for active buttons
+          boxShadow: 'inset 0 -18px 4px  linear-gradient(to bottom, var(--secondary),rgb(87, 122, 199, 0.83))', // linear-gradient(to bottom, var(--secondary),rgb(87, 122, 199, 0.23));
         };
       } else {
         return {
-          boxShadow: 'inset 0 -10px 28px  rgba(128, 93, 32, 0.18)', // Shared shadow for non-active buttons
+          boxShadow: 'inset 0 -18px 4px  linear-gradient(to bottom, var(--secondary),',// Shared shadow for non-active buttons
+          background: `
+        radial-gradient(circle, rgba(128, 93, 32, 0.075) 50%, rgba(128, 93, 32, 0.01)),
+        linear-gradient(to bottom, rgb(9, 9, 9), rgb(9, 9, 9), var(--secondary), var(--secondary), var(--secondary), rgba(128, 93, 32, .1), rgba(128, 93, 32, 0.124))
+      `,
         };
       }
     },
@@ -221,7 +231,7 @@ body {
   --orange: rgb(248, 133, 29);
 }
 
-#nav {
+/* #nav {
   display: flex;
   justify-content: space-evenly;
   background-color: transparent;
@@ -229,15 +239,35 @@ body {
   z-index: 1000;
   padding: 10px;
   margin-bottom: 0px;
+} */
+
+#nav {
+  display: flex;
+  flex-direction: column;
+  /* Stack items vertically by default */
+  align-items: center;
+  background-color: var(--secondary);
+  width: 100%;
+  padding: 10px;
+  position: relative;
+  z-index: 1000;
 }
 
-.logo-container {
+/* .logo-container {
   top: 0;
   right: 20px;
   height: calc(2 * 65px);
   height: calc(2 * 65px);
   display: flex;
   align-items: center;
+} */
+
+.logo-container {
+  margin: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
 }
 
 .logo {
@@ -371,7 +401,7 @@ body {
 
 }
 
-.nav-btn {
+/* .nav-btn {
   position: relative;
   background-color: transparent;
   color: white;
@@ -379,7 +409,21 @@ body {
   font-size: 25px;
   padding: 5px;
   z-index: -1;
-  /* Smooth transition for hover effects */
+} */
+
+.nav-btn {
+  font-size: 18px;
+  /* Smaller font size for mobile */
+  margin: 5px 0;
+  /* Space between buttons */
+  padding: 10px 5px;
+  text-align: center;
+  /* Make buttons wider for easier tapping */
+  background-color: transparent;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 router-view {
@@ -395,26 +439,39 @@ router-view {
   font-size: 30px;
   background-color: transparent;
   color: var(--deepblue);
-  box-shadow: 0 15px 30px rgb(87, 122, 199, 0.3);
+  box-shadow: 0px 15px 25px rgb(87, 122, 199, 0.3);
   transition: .3s ease-in-out, box-shadow 0.3s ease-in-out;
   z-index: 2;
+}
+
+.nav-btn .router-link-active::after,
+.router-link-exact-active::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(circle, rgba(87, 122, 199, 0.075)50%, rgba(87, 122, 199, 0.01)),
+    linear-gradient(to bottom, rgb(9, 9, 9), var(--secondary), var(--secondary), rgba(87, 122, 199, 0.1), rgba(87, 122, 199, 0.174));
+  z-index: -1;
+  /* Ensure it stays behind the content */
+  border-radius: inherit;
+  /* Match border radius if any */
 }
 
 .router-link-nonactive {
   text-decoration: none;
   color: var(--grey);
-  box-shadow: 0 15px 25px rgba(128, 93, 32, 0.275);
+  box-shadow: 0 15px 25px rgba(128, 93, 32, 0.282);
   transition: .3s ease-in-out, box-shadow 0.5s ease-in-out;
-  ;
+  z-index: 2;
+  display: inline-block;
 }
 
 #logged-in {
   color: black;
-}
-
-
-.separator {
-  align-content: center;
 }
 
 .post-author {
@@ -424,5 +481,46 @@ router-view {
 
 .modal-container {
   z-index: 2;
+}
+
+/* Media Query for Tablets */
+@media (min-width: 768px) {
+  #nav {
+    flex-direction: row;
+    /* Switch to horizontal layout */
+    justify-content: space-around;
+    /* Evenly space buttons */
+    padding: 15px 20px;
+  }
+
+  .nav-btn {
+    font-size: 20px;
+    margin: 0 10px;
+    /* Space buttons horizontally */
+    width: auto;
+    /* Allow buttons to size dynamically */
+  }
+
+  .logo-container {
+    height: 75px;
+  }
+}
+
+/* Media Query for Desktops */
+@media (min-width: 1024px) {
+  #nav {
+    justify-content: space-between;
+    /* Spread out content */
+    padding: 20px 40px;
+  }
+
+  .nav-btn {
+    font-size: 25px;
+    padding: 10px 20px;
+  }
+
+  .logo-container {
+    height: 100px;
+  }
 }
 </style>

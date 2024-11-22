@@ -100,8 +100,7 @@ export default {
 }
 
 .forum-description{
-    color: #fff;
-    font-size: 1.3rem;
+    color: #888;
     text-align: center;
 }
 </style>

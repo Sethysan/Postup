@@ -108,6 +108,7 @@ export default {
 </script>
 
 <style>
+/* Default Styling (Mobile-First) */
 .status {
   display: flex;
   text-align: center;
@@ -120,14 +121,8 @@ export default {
   justify-content: flex-start;
   gap: 3rem;
   align-items: center;
-  z-index: 0
-  ;
-  
 
-}
 
-.title {
-  text-align: center;
 }
 
 .filter-bar {
@@ -137,24 +132,29 @@ export default {
   align-content: end;
 }
 
+.title {
+  text-align: center;
+}
+
 .filter {
   border-radius: 8px;
   color: var(--orange);
-  border-color: black;
+  border: 1px solid black;
   background-color: var(--nero);
+  padding: 5px;
   display: flex;
   flex-wrap: wrap;
   align-content: center;
   min-height: 16px;
   font-weight: 800;
   cursor: pointer;
-  transition: .3s ease-in;
-  padding: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-select:hover,
-select:focus {
-  background-color: #000000;
+.filter:hover,
+.filter:focus {
+  background-color: #000;
+  color: var(--deepblue);
   outline: none;
 }
 
@@ -172,17 +172,75 @@ option {
 
 .trending-posts {
   display: flex;
+  flex-direction: column;
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
   width: 100%;
+  gap: 20px;
   height: auto;
 }
 
-/* Grid for Forums (1 row, 5 columns) */
 .forums-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-gap: 40px;
 }
 
-</style>../components/Trending.vue
+/* Responsive Styling */
+@media (min-width: 768px) {
+  .home {
+    gap: 4rem;
+    padding: 30px;
+  }
+
+  .filter-bar {
+    justify-content: flex-start;
+    gap: 20px;
+    width: 90%;
+  }
+
+  .trending-posts {
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+
+  .forums-grid {
+    grid-template-columns: repeat(2, 1fr); /* Two columns on tablets */
+  }
+}
+
+@media (min-width: 1024px) {
+  .home {
+    gap: 5rem;
+    padding: 40px;
+  }
+
+  .filter-bar {
+    justify-content: space-between;
+    margin-bottom: 30px;
+    width: 80%;
+  }
+
+  .forums-grid {
+    grid-template-columns: repeat(3, 1fr); /* Three columns on desktops */
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-bar {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .forums-grid {
+    grid-template-columns: 1fr; /* Single column on small screens */
+  }
+
+  .trending-posts {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+</style>
