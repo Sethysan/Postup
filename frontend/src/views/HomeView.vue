@@ -3,24 +3,26 @@
 
     <!-- filter drop-down for posts -->
     <div v-if="posts.length > 0" class="filter-bar">
-    <select name="filter" v-model="selectedFilter" @change="applyFilter" class="filter">
+      <select name="filter" v-model="selectedFilter" @change="applyFilter" class="filter">
         <option value="">Sort</option>
         <option value="recent">Most Recent</option>
         <option value="popularity">Most Popular</option>
       </select>
     </div>
   </div>
-  
-  
-  
+
+
+
   <div class="home">
-    
+
     <!-- Status Display for Posts -->
     <status-display :isLoading="isloadingPost" :hasError="postLoadingError"
-    errorMessage="Oops, it looks like popular posts couldn't load">
-    <!-- Content to display when posts are successfully loaded -->
+      errorMessage="Oops, it looks like popular posts couldn't load">
+      <!-- Content to display when posts are successfully loaded -->
       <div class="trending-posts">
-        <trending :filteredPosts="filteredPosts" />
+        <div class="forums-grid">
+          <trending :filteredPosts="filteredPosts" />
+        </div>
       </div>
     </status-display>
 
@@ -170,11 +172,13 @@ option {
   padding-right: 43.2%;
 }
 
-.trending-posts {
+.trending-posts, .active-forums {
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
+  justify-content: center;
+  /* Center horizontally */
+  align-items: center;
+  /* Center vertically */
   width: 100%;
   gap: 20px;
   height: auto;
@@ -189,7 +193,7 @@ option {
 /* Responsive Styling */
 @media (min-width: 768px) {
   .home {
-    gap: 4rem;
+    gap: 2rem;
     padding: 30px;
   }
 
@@ -199,14 +203,11 @@ option {
     width: 90%;
   }
 
-  .trending-posts {
+  .trending-posts, .active-forums {
     flex-direction: row;
     justify-content: space-evenly;
   }
 
-  .forums-grid {
-    grid-template-columns: repeat(2, 1fr); /* Two columns on tablets */
-  }
 }
 
 @media (min-width: 1024px) {
@@ -222,7 +223,8 @@ option {
   }
 
   .forums-grid {
-    grid-template-columns: repeat(3, 1fr); /* Three columns on desktops */
+    grid-template-columns: repeat(3, 1fr);
+    /* Three columns on desktops */
   }
 }
 
@@ -234,13 +236,13 @@ option {
   }
 
   .forums-grid {
-    grid-template-columns: 1fr; /* Single column on small screens */
+    grid-template-columns: 1fr;
+    /* Single column on small screens */
   }
 
-  .trending-posts {
+  .trending-posts, .active-forums {
     flex-direction: column;
     gap: 10px;
   }
 }
-
 </style>

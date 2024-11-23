@@ -394,9 +394,10 @@ export default {
     max-height: 400px;
     border: 4px solid var(--nero);
     background: radial-gradient(circle, var(--nero) 75%, rgba(0, 0, 0, 0.389));
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 8px;
     cursor: zoom-in;
+    /* object-fit: contain; */
 }
 
 .post-footer {

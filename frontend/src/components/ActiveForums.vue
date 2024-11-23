@@ -6,12 +6,14 @@
                     <h1>Active Forums</h1>
                 </div>
                 <div class="forum-slider">
-                    <swiper ref="swiper" class="swiper-wrapper" :slidesPerView="2" :spaceBetween="40" :breakpoints="{
-                        '640': { slidesPerView: 1, spaceBetween: 10 },
-                        '768': { slidesPerView: 2, spaceBetween: 20 },
-                        '1024': { slidesPerView: 3, spaceBetween: 20 }
-                    }" :pagination="{ type: 'progressbar', }" :modules="modules">
-                        <swiper-slide v-for="(forum) in forums.slice(0, 6)" :key="forum.id" class="active-forum">
+                    <swiper ref="swiper" class="swiper-wrapper" :effect="'coverflow'" :slidesPerView="3"
+                        :spaceBetween="40" :breakpoints="{
+                            '640': { slidesPerView: 1, spaceBetween: 10 },
+                            '768': { slidesPerView: 2, spaceBetween: 20 },
+                            '1024': { slidesPerView: 3, spaceBetween: 20 }
+                        }" :coverflowEffect="{ rotate: 50, stretch: 0, depth: 100, modifier: 1, slideShadows: true, }"
+                        :pagination="{ type: 'progressbar', }" :modules="modules" v-if="forums.length > 2">
+                        <swiper-slide v-for="(forum) in forums.slice(0, 10)" :key="forum.id" class="active-forum">
                             <forum-snippet :forum="forum"></forum-snippet>
                         </swiper-slide>
                     </swiper>
@@ -22,7 +24,7 @@
                 <h2 v-if="searchDisplayed" class="search-results-header">Search Results</h2>
                 <div class="forum-results">
                     <!-- Display forums based on search or default -->
-                    <div v-for="(forum) in forums.slice(0, 6)" :key="forum.id" >
+                    <div v-for="(forum) in forums.slice(0, 10)" :key="forum.id">
                         <forum-snippet :forum="forum">
                             <router-link :to="{ name: 'forum', params: { id: forum.id || forum.forum.id } }"
                                 class="forum-link">
@@ -50,8 +52,10 @@
 import ForumSnippet from '../components/ForumSnippet.vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
+import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
-import { Pagination } from 'swiper/modules';
+import { EffectCoverflow, Pagination } from 'swiper/modules';
+import { mapState, mapMutations } from 'vuex';
 import { ref, onMounted, onUnmounted } from 'vue';
 
 export default {
@@ -59,7 +63,7 @@ export default {
     components: { ForumSnippet, Swiper, SwiperSlide },
     name: 'Active',
     setup() {
-        const modules = [Pagination];
+        const modules = [Pagination, EffectCoverflow];
         const isTabletOrDesktop = ref(window.innerWidth >= 640);
 
         // Listener to update the screen size dynamically
@@ -78,16 +82,26 @@ export default {
             modules,
             isTabletOrDesktop,
         };
-    }
+    },
+    computed: {
+        ...mapState(['currentPage']),
+    },
+    methods: {
+        ...mapMutations(['setCurrentPage']),
+        handleSlideChange(swiper) {
+            this.setCurrentPage(swiper.realIndex + 1);
+        }
+    },
+
 };
 </script>
 
-<style >
+<style>
 #active {
     display: flex;
     flex-direction: column;
     max-width: 1300px;
-    margin: 0 auto;
+    margin-top: 8rem;
     border: 4px solid var(--nero);
     background: radial-gradient(circle, var(--nero) 75%, rgba(0, 0, 0, 0.389));
 }

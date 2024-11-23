@@ -52,6 +52,9 @@ export default {
     display: flex;
     flex-direction: column;
     margin-bottom: 2rem;
+    justify-content: center;
+    min-height: 200px;
+    max-width: 600px;
     position: relative;
     border-radius: 8px;
     overflow: visible;
@@ -60,18 +63,21 @@ export default {
     border: solid .01px;
     border-color: var(--nero);
     box-shadow: 0 40px 160px rgb(0, 0, 0);
-    transition: transform 0.3s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
 
 }
 
-.swiper-3d .swiper-wrapper  {
+.swiper-3d .swiper-wrapper {
     transform: translate3d(0px, 0px, 0px);
-    transition: transform 0.3s ease !important; /* Smooth transition for transform changes */
+    transition: transform 0.3s ease !important;
+    /* Smooth transition for transform changes */
 }
 
 .swiper-3d .swiper-wrapper :hover {
-    transform: rotateY(0deg) scale(1.1) !important; /* Rotate back to 0 degrees and slightly enlarge */
-    z-index: 10; /* Bring the hovered slide to the front */
+    transform: rotateY(0deg) scale(1.1) !important;
+    /* Rotate back to 0 degrees and slightly enlarge */
+    z-index: 10;
+    /* Bring the hovered slide to the front */
 }
 
 .post-snippet:hover {
@@ -92,8 +98,6 @@ export default {
 .image-container {
     position: relative;
     width: 100%;
-    height: 22rem;
-    max-height: 40vh;
 }
 
 footer {
@@ -179,5 +183,22 @@ footer {
     max-height: 10rem;
     max-width: 95%;
     z-index: 30;
+}
+
+@media (max-width: 768px) {
+    .post-snippet {
+        padding: 0.5rem;
+    }
+
+    .post-time-time {
+        display: block;
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .post-snippet {
+        padding: 0.3rem;
+    }
 }
 </style>

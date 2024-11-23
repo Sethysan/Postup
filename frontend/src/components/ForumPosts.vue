@@ -1,37 +1,51 @@
 <!-- ForumPosts.vue -->
 <template>
-    <section id="forum-posts">
+    <section id="trending">
         <div v-if="posts.length > 0">
-            <div id="posts">
-                <h1>Posts</h1>
-            </div>
-            <div class="body">
-                <swiper ref="swiper" class="swiper-wrapper" :effect="'coverflow'" :grabCursor="true"
-                    :centeredSlides="false" :spaceBetween="10" :slidesPerView="3" :breakpoints="breakpoints"
-                    :coverflowEffect="coverflowEffect" :pagination="{ type: 'progressbar' }" :modules="modules"
-                    v-if="posts.length > 2">
-                    <swiper-slide v-for="(post) in posts" :key="post.id" class="forum-post">
-                        <post-snippet :post="post"></post-snippet>
-                    </swiper-slide>
-                </swiper>
-                <div class="forum-slider" v-else-if="posts.length === 1">
-                    <swiper ref="swiper" class="swiper-wrapper" :slidesPerView="1" :spaceBetween="0"
-                        :pagination="{ type: 'progressbar' }" :modules="modules">
+            <div v-if="isTabletOrDesktop" class="trending-now">
+                <div id="trending-now">
+                    <h1>Posts</h1>
+                </div>
+                <div class="body">
+                    <swiper ref="swiper" class="swiper-wrapper" :effect="'coverflow'" :grabCursor="true"
+                        :centeredSlides="false" :spaceBetween="10" :slidesPerView="3" :breakpoints="{
+                            '640': { slidesPerView: 1, spaceBetween: 80 },
+                            '768': { slidesPerView: 2, spaceBetween: 40 },
+                            '1024': { slidesPerView: 3, spaceBetween: 10 }
+                        }" :coverflowEffect="{ rotate: 50, stretch: 0, depth: 100, modifier: 1, slideShadows: true, }"
+                        :pagination="{ type: 'progressbar' }" :modules="modules" v-if="posts.length > 2">
                         <swiper-slide v-for="(post) in posts" :key="post.id" class="trending-post">
                             <post-snippet :post="post"></post-snippet>
                         </swiper-slide>
                     </swiper>
-                </div>
-                <div class="forum-slider" v-else-if="posts.length === 2">
-                    <swiper ref="swiper" class="swiper-wrapper" :slidesPerView="2" :spaceBetween="40"
+                    <div class="forum-slider" v-else-if="posts.length === 1">
+                        <swiper ref="swiper" class="swiper-wrapper" :slidesPerView="1" :spaceBetween="0"
                         :pagination="{ type: 'progressbar' }" :modules="modules">
-                        <swiper-slide v-for="(post) in posts.slice(0, 2)" :key="post.id" class="trending-post">
-                            <post-snippet :post="post"></post-snippet>
-                        </swiper-slide>
-                    </swiper>
+                            <swiper-slide v-for="(post) in posts" :key="post.id" class="trending-post">
+                                <post-snippet :post="post"></post-snippet>
+                            </swiper-slide>
+                        </swiper>
+                    </div>
+                    <div class="forum-slider" v-else-if="posts.length === 2">
+                        <swiper ref="swiper" class="swiper-wrapper" :slidesPerView="2" :spaceBetween="40"
+                        :pagination="{ type: 'progressbar' }" :modules="modules">
+                            <swiper-slide v-for="(post) in posts" :key="post.id" class="trending-post">
+                                <post-snippet :post="post"></post-snippet>
+                            </swiper-slide>
+                        </swiper>
+                    </div>
+                    <div v-else>
+                        <p>No posts available.</p>
+                    </div>
                 </div>
-                <div v-else>
-                    <p>No posts available.</p>
+            </div>
+        </div>
+        <!-- Display trending-results-container for smaller screens -->
+        <div v-else class="forum-results-container">
+            <div class="trending-results">
+                <!-- Display posts based on search or default -->
+                <div v-for="(post) in posts" :key="post.id">
+                    <post-snippet :post="post"></post-snippet>
                 </div>
             </div>
         </div>
@@ -42,28 +56,41 @@
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { EffectCoverflow, Pagination } from 'swiper/modules';
 import { mapState, mapMutations } from 'vuex';
-import dayjs from 'dayjs';
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import PostSnippet from './PostSnippet.vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 
 export default {
+    props: ['posts', 'getTimeElapsed'],
     components: { Swiper, SwiperSlide, PostSnippet },
-    props: ['posts'],
     name: 'ForumPosts',
     setup() {
+        const modules = [Pagination, EffectCoverflow];
+        const isTabletOrDesktop = ref(window.innerWidth >= 640);
+
+        // Listener to update the screen size dynamically
+        const updateScreenSize = () => {
+            isTabletOrDesktop.value = window.innerWidth >= 640;
+        };
+        onMounted(() => {
+            window.addEventListener('resize', updateScreenSize);
+        });
+
+        onUnmounted(() => {
+            window.removeEventListener('resize', updateScreenSize);
+        });
+
         return {
-            modules: [Pagination, EffectCoverflow],
+            modules,
+            isTabletOrDesktop,
         };
     },
     computed: {
         ...mapState(['currentPage']),
     },
     methods: {
-        getTimeElapsed(timeOfCreation) {
-            return dayjs(timeOfCreation).fromNow();
-        },
         ...mapMutations(['setCurrentPage']),
         handleSlideChange(swiper) {
             this.setCurrentPage(swiper.realIndex + 1);
@@ -72,21 +99,4 @@ export default {
 };
 </script>
 
-<style>
-#forum-posts {
-    display: flex;
-    flex-direction: column;
-    max-width: 1500px;
-    margin: 0 auto;
-    background-color: var(--nero);
-}
-
-
-#posts {
-    text-align: center;
-    border-bottom: 4px solid transparent;
-    border-image: linear-gradient(to right, var(--nero), rgb(24, 24, 24), rgb(23, 23, 23), rgb(22, 22, 22), rgb(25, 25, 25), rgb(25, 25, 25), var(--nero)); 
-    border-image-slice: 1;
-}
-
-</style>
+<style></style>
