@@ -9,7 +9,7 @@
                     :centeredSlides="false" :spaceBetween="10" :slidesPerView="3" :breakpoints="{
                         '640': { slidesPerView: 1, spaceBetween: 20 },
                         '768': { slidesPerView: 2, spaceBetween: 20 },
-                        '1024': { slidesPerView: 3, spaceBetween: 30 },
+                        '1024': { slidesPerView: 3, spaceBetween: 10 },
                     }" :coverflowEffect="{ rotate: 50, stretch: 0, depth: 100, modifier: 1, slideShadows: true, }"
                     :pagination="{ type: 'progressbar', }"   :modules="modules" v-if="filteredPosts.length > 2">
                     <swiper-slide v-for="(post) in filteredPosts.slice(0, 10)" :key="post.id" class="trending-post">
@@ -98,64 +98,37 @@ export default {
 </script>
 
 <style>
-/* #trending {
-    display: flex;
-    flex-direction: column;
-    max-width: 1300px;
-    margin: 0 auto;
-    border: 4px solid var(--nero);
-    background: radial-gradient(circle, var(--nero) 75%, rgba(0, 0, 0, 0.389));
-} */
 
 #trending {
     display: flex;
+    width: auto;
     flex-direction: column;
-    max-width: 1600px;
-    margin: 0 auto;
+    max-width: 2100px;
     border: none;
     background: radial-gradient(circle, var(--nero) 75%, rgba(0, 0, 0, 0.5));
-    padding: 10px;
 }
-
-/* .trending-now {
-    text-align: center;
-    border-bottom: 4px solid transparent;
-    border-image: linear-gradient(to right, var(--nero), rgb(24, 24, 24), rgb(23, 23, 23), rgb(22, 22, 22), rgb(25, 25, 25), rgb(25, 25, 25), var(--nero));
-    border-image-slice: 1;
-} */
 
 .trending-now {
     text-align: center;
-    padding: 10px 0;
     border-bottom: 4px solid transparent;
     border-image: linear-gradient(to right, var(--nero), rgb(24, 24, 24), rgb(23, 23, 23), rgb(22, 22, 22), rgb(25, 25, 25), rgb(25, 25, 25), var(--nero));
     border-image-slice: 1;
 }
-
-/* .swiper-wrapper {
-    display: flex;
-    align-items: center;
-    width: 94%;
-    padding: 20px;
-    max-width: 100%;
-} */
 
 .swiper-wrapper {
     display: flex;
     flex-direction: column;
     /* Stack items vertically */
     align-items: center;
-    
-    padding: 10px;
-    max-width: 95%;
+    padding: 1.5% 0;
 }
 
 .trending-post {
     display: flex;
     justify-content: center;
     max-width: 100%;
-    flex-grow: 2;
-    margin: 10px 0;
+    flex-grow: 0;
+    /* margin: 10px 0; */
 }
 
 .swiper-slide {
@@ -168,29 +141,12 @@ export default {
     width: 100%;
 }
 
-.swiper-pagination-progressbar {
-    background: rgba(0, 0, 0, .25);
-    position: absolute
-}
-
 .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
     background: #e50914 !important;
-    position: absolute;
     left: 0;
     bottom: 0 !important;
-    width: 100%;
-    height: 100%;
-    transform: scale(0);
     transform-origin: left bottom !important
 }
-
-/* .swiper-pagination-progressbar {
-    background: rgba(0, 0, 0, 0.25);
-}
-
-.swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
-    background: #e50914 !important; 
-}*/
 
 .swiper-horizontal>.swiper-pagination-progressbar,
 .swiper-pagination-progressbar.swiper-pagination-horizontal {
@@ -199,26 +155,15 @@ export default {
 }
 
 @media (min-width: 768px) {
-    #trending {
+    /* #trending {
         max-width: 90%;
-        /* Constrain width on tablets */
-        padding: 15px;
-    }
-
-    .trending-now {
-        font-size: 22px;
-        /* Slightly larger text */
-        padding: 15px 0;
-    }
+    } */
 
     .swiper-wrapper {
         flex-direction: row;
-        /* Align items horizontally */
-        padding: 15px;
     }
 
     .trending-post {
-        margin: 2rem;
         width: calc(50% - 20px);
         /* Two posts per row */
     }
@@ -226,14 +171,13 @@ export default {
 
 /* Desktop Breakpoint (1024px and Up) */
 @media (min-width: 1024px) {
-    #trending {
-        max-width: 1200px;
+    /* #trending {
+        max-width: 1300px;
         border: 4px solid var(--nero);
-    }
+    } */
 
     .trending-now {
         font-size: 26px;
-        padding: 20px 0;
         border-bottom: 4px solid transparent;
         border-image: linear-gradient(to right,
                 var(--nero),
@@ -245,14 +189,20 @@ export default {
         border-image-slice: 1;
     }
 
-    .swiper-wrapper {
-        padding: 3rem;
-    }
+    /* .trending-post {
+        width: calc(33.33% - 20px); */
 
-    .trending-post {
-        width: calc(33.33% - 20px);
-        /* Three posts per row */
-        margin: 0 10px;
+    
+}
+
+/* @media(min-width: 1400px){
+    #trending {
+        max-width: 1700px;
     }
 }
+@media(min-width: 1700px){
+    #trending {
+        max-width: 2100px;
+    }
+} */
 </style>

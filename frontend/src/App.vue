@@ -400,15 +400,6 @@ body {
 
 }
 
-/* .nav-btn {
-  position: relative;
-  background-color: transparent;
-  color: white;
-  border: none;
-  font-size: 25px;
-  padding: 5px;
-  z-index: -1;
-} */
 .nav-btn .router-link-nonactive{
   transition: box-shadow 0.3s ease-in-out;
 }
@@ -493,6 +484,14 @@ router-view {
 
 .modal-container {
   z-index: 2;
+}
+
+.swiper-3d .swiper-slide-shadow-left {
+  right: 8.5% !important;
+}
+
+.swiper-3d .swiper-slide-shadow-right {
+  left: 8.5% !important;
 }
 
 /* Media Query for Tablets */

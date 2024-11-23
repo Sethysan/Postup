@@ -51,47 +51,26 @@ export default {
 .post-snippet {
     display: flex;
     flex-direction: column;
-    margin-bottom: 2rem;
+    margin-bottom: 1vh;
     justify-content: center;
+    align-items: center; 
     min-height: 200px;
     max-width: 600px;
     position: relative;
-    border-radius: 8px;
     overflow: visible;
-    padding: 0px;
+    z-index: 10;
+    border-radius: 8px;
     cursor: pointer;
     border: solid .01px;
     border-color: var(--nero);
-    box-shadow: 0 40px 160px rgb(0, 0, 0);
+    box-shadow: 0 40px 80px rgb(0, 0, 0);
     transition: transform 0.2s ease, box-shadow 0.3s ease;
 
-}
-
-.swiper-3d .swiper-wrapper {
-    transform: translate3d(0px, 0px, 0px);
-    transition: transform 0.3s ease !important;
-    /* Smooth transition for transform changes */
-}
-
-.swiper-3d .swiper-wrapper :hover {
-    transform: rotateY(0deg) scale(1.1) !important;
-    /* Rotate back to 0 degrees and slightly enlarge */
-    z-index: 10;
-    /* Bring the hovered slide to the front */
 }
 
 .post-snippet:hover {
     transform: scale(1.02);
     box-shadow: 0 15px 30px rgb(87, 122, 199, 0.3);
-    /* box-shadow: 0 4px 15px rgba(234, 85, 11, 0.5); */
-}
-
-.image-container:after {
-    content: "";
-    left: 0;
-    right: 0;
-    position: absolute;
-    box-shadow: 0px 0 120px 80px var(--nero);
 }
 
 
@@ -100,12 +79,22 @@ export default {
     width: 100%;
 }
 
+.image-container:after {
+    content: "";
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    box-shadow: 0px 0 120px 90px var(--nero);
+    /* box-shadow: 0px 0 120px 80px var(--nero); */
+}
+
 footer {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    line-height: 1.5rem;
+    line-height: 2.5rem;
     font-weight: 600;
     padding: 8px;
     color: #fff;
@@ -127,9 +116,16 @@ footer {
 .post-author,
 .post-time {
     margin-left: 10px;
-    color: var(--Primary);
+    /* color: var(--Primary); */
+    color: #4e4949;
 }
 
+.post-image{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* Ensures the image fills the container */
+}
 
 .default-post-image {
     width: 100%;
@@ -163,11 +159,11 @@ footer {
     /* Collapse the description initially */
     overflow: hidden;
     /* Hide overflowing content */
-    line-height: 1.5rem;
-    border-radius: 10px;
+    /* line-height: 1.5rem; */
+    border-radius: 7px;
     color: var(--Primary);
     /* Adjust text color */
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     padding: 9px 0;
     position: absolute;
     /* Position relative to the snippet */
@@ -178,19 +174,18 @@ footer {
 }
 
 .post-snippet:hover .post-description {
-    opacity: 1;
+    opacity: .92;
     background-color: rgba(0, 0, 0, 0.915);
-    max-height: 10rem;
-    max-width: 95%;
+    max-height: 60%;
     z-index: 30;
 }
 
 @media (max-width: 768px) {
     .post-snippet {
-        padding: 0.5rem;
+        box-shadow: 0 30px 50px rgb(0, 0, 0);
     }
 
-    .post-time-time {
+    .post-time{
         display: block;
         margin-left: 0;
     }
@@ -198,7 +193,7 @@ footer {
 
 @media (max-width: 480px) {
     .post-snippet {
-        padding: 0.3rem;
+        box-shadow: 0 20px 40px rgb(0, 0, 0);
     }
 }
 </style>

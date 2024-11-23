@@ -120,8 +120,7 @@ export default {
 .home {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  gap: 3rem;
+  justify-content: space-evenly;
   align-items: center;
 
 
@@ -156,7 +155,6 @@ export default {
 .filter:hover,
 .filter:focus {
   background-color: #000;
-  color: var(--deepblue);
   outline: none;
 }
 
@@ -193,7 +191,6 @@ option {
 /* Responsive Styling */
 @media (min-width: 768px) {
   .home {
-    gap: 2rem;
     padding: 30px;
   }
 
@@ -212,7 +209,6 @@ option {
 
 @media (min-width: 1024px) {
   .home {
-    gap: 5rem;
     padding: 40px;
   }
 

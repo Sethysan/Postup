@@ -16,9 +16,10 @@
     </div>
     <status-display :isLoading="isloading" :hasError="postLoadingError"
       errorMessage="Oops, it looks like this forum couldn't load">
-      <!-- <p>Oops, it looks like this forum couldn't load</p> -->
-      <div class="forum-posts">
-        <forum-posts :posts="posts" />
+      <div class="trending-posts">
+        <div class="forums-grid">
+          <forum-posts :posts="posts" />
+        </div>
       </div>
     </status-display>
   </div>
@@ -98,15 +99,7 @@ export default {
   justify-content: center;
 }
 
-#forum-posts {
-  height: auto;
-  width: 100%;
-  border: 4px solid var(--nero);
-  background: radial-gradient(circle, var(--nero) 75%, rgba(0, 0, 0, 0.389));
-}
-
 #posts {
   text-align: center;
 }
-
 </style>

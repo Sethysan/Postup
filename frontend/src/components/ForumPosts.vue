@@ -39,16 +39,16 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- Display trending-results-container for smaller screens -->
-        <div v-else class="forum-results-container">
-            <div class="trending-results">
-                <!-- Display posts based on search or default -->
-                <div v-for="(post) in posts" :key="post.id">
-                    <post-snippet :post="post"></post-snippet>
+            <div v-else class="forum-results-container">
+                <div class="trending-results">
+                    <!-- Display posts based on search or default -->
+                    <div v-for="(post) in posts" :key="post.id">
+                        <post-snippet :post="post"></post-snippet>
+                    </div>
                 </div>
             </div>
         </div>
+        <!-- Display trending-results-container for smaller screens -->
     </section>
 </template>
 

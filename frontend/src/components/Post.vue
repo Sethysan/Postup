@@ -367,7 +367,8 @@ export default {
 }
 
 .post-time {
-    color: rgb(107, 105, 105);
+    display: inline;
+    color: #4e4949;
 }
 
 .post-info {

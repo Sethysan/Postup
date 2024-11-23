@@ -100,7 +100,8 @@ export default {
 #active {
     display: flex;
     flex-direction: column;
-    max-width: 1300px;
+    width: auto;
+    max-width: 2100px;
     margin-top: 8rem;
     border: 4px solid var(--nero);
     background: radial-gradient(circle, var(--nero) 75%, rgba(0, 0, 0, 0.389));
@@ -116,7 +117,7 @@ export default {
 .active-forum {
     display: flex;
     justify-content: center;
-    max-width: 95%;
+    max-width: 100%;
     flex-grow: 2;
 }
 

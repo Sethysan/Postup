@@ -1,10 +1,8 @@
 <template>
     <div class="forum-snippet">
-
         <div v-if="forum">
-        
             <router-link :to="{ name: 'forum', params: { id: forum.id } }" class="forum-link">
-                <div class="forum-header">
+                <div class="forum-container">
                     <h2 class="forum-topic">{{ forum.topic }}
                         <div class="sub-header">
                             <!-- formatted time elapsed display with styling -->
@@ -40,6 +38,30 @@ export default {
 </script>
 
 <style>
+
+.forum-snippet {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    padding: 1rem;
+    align-items: center;
+    overflow: visible;
+    background: radial-gradient(circle, var(--nero) 55%, rgba(0, 0, 0, 0.512));
+    border: 1px solid var(--deepblue);
+    margin: 1rem auto;
+    min-height: 200px;
+    max-width: 600px;
+    box-shadow: 0 40px 80px rgb(0, 0, 0);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.forum-snippet:hover {
+    transform: scale(1.02);
+    box-shadow: 0 15px 30px rgb(87, 122, 199, 0.3);
+}
+
 .forum-item {
     border: 1px solid #ddd;
     padding: 1rem;
@@ -51,7 +73,7 @@ export default {
     background: radial-gradient(circle, var(--nero) 55%, rgba(0, 0, 0, 0.512));
 }
 
-.forum-item:hover{
+.forum-item:hover {
     transform: scale(1.02);
     box-shadow: 0 15px 30px rgb(87, 122, 199, 0.3);
 }
@@ -61,13 +83,13 @@ export default {
     color: inherit;
 }
 
-.forum-header{
+.forum-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%;
 }
-
 
 /* <p> is displayed inline with <h2> */
 .inline-time {
@@ -76,37 +98,16 @@ export default {
     /* Adds spacing between the topic and the timestamp */
     margin-left: 10px;
     color: #4e4949;
-
 }
 
-.container {
+/* .container {
     margin-bottom: 4rem;
 }
+ */
 
-.forum-snippet {
-    display: flex;
-    flex-direction: column;
-    justify-content: center; 
-    align-items: center; 
-    border-radius: 20px;
-    padding: 1rem;
-    background: radial-gradient(circle, var(--nero) 55%, rgba(0, 0, 0, 0.512));
-    border: 1px solid var(--deepblue);
-    margin: 1rem auto; 
-    min-height: 200px;
-    max-width: 600px; 
-    /* width: 100%; */
-    box-shadow: 0 40px 160px rgb(0, 0, 0);
-    transition: transform 0.2s ease, box-shadow 0.3s ease;
-}
-
-.forum-snippet:hover{
-    transform: scale(1.02);
-    box-shadow: 0 15px 30px rgb(87, 122, 199, 0.3);
-}
-
-.forum-description{
+.forum-description {
     color: #888;
     text-align: center;
 }
+
 </style>

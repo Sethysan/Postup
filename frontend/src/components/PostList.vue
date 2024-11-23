@@ -93,7 +93,6 @@ export default {
 .post-image {
   width: 100%;
   background-color: rgb(0, 0, 0);
-  max-height: 400px;
   object-fit: contain;
   border-radius: 8px;
   cursor: pointer;
