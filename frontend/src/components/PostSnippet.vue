@@ -18,7 +18,7 @@
                     </footer>
                 </section>
             </router-link>
-            <p class="post-description">{{ post.description }}</p>
+            <p class="post-description" v-drag-scroll>{{ post.description }}</p>
         </div>
         <div v-else>
             <p>No post data available.</p>
@@ -53,7 +53,7 @@ export default {
     flex-direction: column;
     margin-bottom: 1vh;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
     min-height: 200px;
     max-width: 600px;
     position: relative;
@@ -120,7 +120,7 @@ footer {
     color: #4e4949;
 }
 
-.post-image{
+.post-image {
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -157,7 +157,7 @@ footer {
     /* Smooth transition for visibility */
     max-height: 0;
     /* Collapse the description initially */
-    overflow: hidden;
+    overflow: hidden; 
     /* Hide overflowing content */
     /* line-height: 1.5rem; */
     border-radius: 7px;
@@ -176,8 +176,9 @@ footer {
 .post-snippet:hover .post-description {
     opacity: .92;
     background-color: rgba(0, 0, 0, 0.915);
-    max-height: 60%;
-    z-index: 30;
+    max-height: 40%;
+    z-index: 300;
+    overflow-y: auto;
 }
 
 @media (max-width: 768px) {
@@ -185,7 +186,7 @@ footer {
         box-shadow: 0 30px 50px rgb(0, 0, 0);
     }
 
-    .post-time{
+    .post-time {
         display: block;
         margin-left: 0;
     }

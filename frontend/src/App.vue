@@ -230,16 +230,6 @@ body {
   --orange: rgb(248, 133, 29);
 }
 
-/* #nav {
-  display: flex;
-  justify-content: space-evenly;
-  background-color: transparent;
-  width: 100%;
-  z-index: 1000;
-  padding: 10px;
-  margin-bottom: 0px;
-} */
-
 #nav {
   display: flex;
   flex-direction: column;
@@ -252,14 +242,6 @@ body {
   z-index: 1000;
 }
 
-/* .logo-container {
-  top: 0;
-  right: 20px;
-  height: calc(2 * 65px);
-  height: calc(2 * 65px);
-  display: flex;
-  align-items: center;
-} */
 
 .logo-container {
   margin: 10px 0;
@@ -321,6 +303,7 @@ body {
   border-radius: 8px;
   font-size: 12px;
   white-space: nowrap;
+  z-index: 100;
 }
 
 .edit-form {

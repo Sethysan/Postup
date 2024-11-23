@@ -55,5 +55,9 @@ export default {
     border: 2px solid black;
     box-shadow: 5px 10px #e5091427 ;
     background-image: linear-gradient(to left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.1));
+    z-index: 1000;
+    position: absolute;
+    top: 20%;
+    left: 40%;   
 }
 </style>
