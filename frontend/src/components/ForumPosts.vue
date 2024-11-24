@@ -9,10 +9,11 @@
                 <div class="body">
                     <swiper ref="swiper" class="swiper-wrapper" :effect="'coverflow'" :grabCursor="true"
                         :centeredSlides="false" :spaceBetween="10" :slidesPerView="3" :breakpoints="{
-                            '640': { slidesPerView: 1, spaceBetween: 80 },
-                            '768': { slidesPerView: 2, spaceBetween: 40 },
-                            '1024': { slidesPerView: 3, spaceBetween: 10 }
-                        }" :coverflowEffect="{ rotate: 50, stretch: 80, depth: 140, modifier: 1, slideShadows: false, }"
+                            '1': { slidesPerView: 1, spaceBetween: 10 },
+                            '1000': { slidesPerView: 2, spaceBetween: 100 },
+                            '1024': { slidesPerView: 3, spaceBetween: 20 }
+                        }"
+                        :coverflowEffect="{ rotate: 50, stretch: 80, depth: 140, modifier: 1, slideShadows: false, }"
                         :pagination="{ type: 'progressbar' }" :modules="modules" v-if="posts.length > 2">
                         <swiper-slide v-for="(post) in posts" :key="post.id" class="trending-post">
                             <post-snippet :post="post"></post-snippet>
@@ -20,7 +21,7 @@
                     </swiper>
                     <div class="forum-slider" v-else-if="posts.length === 1">
                         <swiper ref="swiper" class="swiper-wrapper" :slidesPerView="1" :spaceBetween="0"
-                        :pagination="{ type: 'progressbar' }" :modules="modules">
+                            :pagination="{ type: 'progressbar' }" :modules="modules">
                             <swiper-slide v-for="(post) in posts" :key="post.id" class="trending-post">
                                 <post-snippet :post="post"></post-snippet>
                             </swiper-slide>
@@ -28,7 +29,7 @@
                     </div>
                     <div class="forum-slider" v-else-if="posts.length === 2">
                         <swiper ref="swiper" class="swiper-wrapper" :slidesPerView="2" :spaceBetween="40"
-                        :pagination="{ type: 'progressbar' }" :modules="modules">
+                            :pagination="{ type: 'progressbar' }" :modules="modules">
                             <swiper-slide v-for="(post) in posts" :key="post.id" class="trending-post">
                                 <post-snippet :post="post"></post-snippet>
                             </swiper-slide>

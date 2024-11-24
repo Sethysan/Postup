@@ -8,8 +8,8 @@
                 <div class="forum-slider">
                     <swiper ref="swiper" class="swiper-wrapper" :effect="'coverflow'" :slidesPerView="3"
                         :spaceBetween="40" :breakpoints="{
-                            '640': { slidesPerView: 1, spaceBetween: 10 },
-                            '768': { slidesPerView: 2, spaceBetween: 20 },
+                            '1': { slidesPerView: 1, spaceBetween: 10 },
+                            '1000': { slidesPerView: 2, spaceBetween: 100 },
                             '1024': { slidesPerView: 3, spaceBetween: 20 }
                         }" :coverflowEffect="{ rotate: 50, stretch: 80, depth: 140, modifier: 1, slideShadows: false, }"
                         :pagination="{ type: 'progressbar', }" :modules="modules" v-if="forums.length > 2">
@@ -102,7 +102,7 @@ export default {
     flex-direction: column;
     width: auto;
     max-width: 2100px;
-    margin-top: 8rem;
+    margin-top: 4rem;
     border: 4px solid var(--nero);
     background: radial-gradient(circle, var(--nero) 75%, rgba(0, 0, 0, 0.389));
 }

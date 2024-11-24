@@ -255,7 +255,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100px;
+  height: 120px;
 }
 
 .logo {
@@ -297,8 +297,8 @@ body {
 }
 
 .user-portrait {
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -502,6 +502,11 @@ body {
     height: 100px;
     width: 45%;
   }
+
+  .user-portrait {
+  width: 80px;
+  height: 80px;
+}
 
   .user-info {
     order: -1;
