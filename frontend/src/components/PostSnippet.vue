@@ -30,7 +30,7 @@
 <script>
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import dragScroll from '@/directives/dragScroll.js';
+import dragScroll from '@/directives/dragscroll.js';
 dayjs.extend(relativeTime);
 
 
