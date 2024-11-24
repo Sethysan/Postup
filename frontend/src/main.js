@@ -5,7 +5,7 @@ import router from './router';
 import axios from 'axios';
 import { MDBIcon } from 'mdb-vue-ui-kit';
 import Vue3SocialSharing from 'vue3-social-sharing';
-import dragScroll from '@/directives/dragScroll';
+import dragScroll from '@/directives/dragScroll.js';
 
 /* sets the base url for server API communication with axios */
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
