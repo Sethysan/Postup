@@ -40,6 +40,7 @@
         <!-- Display trending-results-container for smaller screens -->
         <div v-else class="forum-results-container">
             <div class="trending-results">
+                <h1> Trending Now </h1>
                 <!-- Display posts based on search or default -->
                 <div v-for="(post) in filteredPosts.slice(0, 10)" :key="post.id">
                     <post-snippet :post="post"></post-snippet>

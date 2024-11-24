@@ -24,6 +24,7 @@
                 <h2 v-if="searchDisplayed" class="search-results-header">Search Results</h2>
                 <div class="forum-results">
                     <!-- Display forums based on search or default -->
+                    <h1>Active Forums</h1>
                     <div v-for="(forum) in forums.slice(0, 10)" :key="forum.id">
                         <forum-snippet :forum="forum">
                             <router-link :to="{ name: 'forum', params: { id: forum.id || forum.forum.id } }"
