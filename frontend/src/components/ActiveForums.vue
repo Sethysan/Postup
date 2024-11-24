@@ -11,7 +11,7 @@
                             '640': { slidesPerView: 1, spaceBetween: 10 },
                             '768': { slidesPerView: 2, spaceBetween: 20 },
                             '1024': { slidesPerView: 3, spaceBetween: 20 }
-                        }" :coverflowEffect="{ rotate: 50, stretch: 80, depth: 100, modifier: 1, slideShadows: false, }"
+                        }" :coverflowEffect="{ rotate: 50, stretch: 80, depth: 140, modifier: 1, slideShadows: false, }"
                         :pagination="{ type: 'progressbar', }" :modules="modules" v-if="forums.length > 2">
                         <swiper-slide v-for="(forum) in forums.slice(0, 10)" :key="forum.id" class="active-forum">
                             <forum-snippet :forum="forum"></forum-snippet>
