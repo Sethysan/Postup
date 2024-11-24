@@ -12,7 +12,7 @@
                             '640': { slidesPerView: 1, spaceBetween: 80 },
                             '768': { slidesPerView: 2, spaceBetween: 40 },
                             '1024': { slidesPerView: 3, spaceBetween: 10 }
-                        }" :coverflowEffect="{ rotate: 50, stretch: 0, depth: 100, modifier: 1, slideShadows: true, }"
+                        }" :coverflowEffect="{ rotate: 50, stretch: 80, depth: 140, modifier: 1, slideShadows: false, }"
                         :pagination="{ type: 'progressbar' }" :modules="modules" v-if="posts.length > 2">
                         <swiper-slide v-for="(post) in posts" :key="post.id" class="trending-post">
                             <post-snippet :post="post"></post-snippet>

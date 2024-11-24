@@ -12,41 +12,48 @@
       <button v-if="role === 'ROLE_ADMIN'" class="nav-btn">
         <div :style="getButtonStyle('admin')">
           <router-link v-bind:to="{ name: 'admin' }" v-if="userName" :class="getLinkClass('admin')">ADMIN</router-link>
-        </div>&nbsp;
+        </div>
+        <!-- &nbsp; -->
       </button>
       <button class="nav-btn">
         <div :style="getButtonStyle('home')">
           <router-link v-bind:to="{ name: 'home' }" :class="getLinkClass('home')">HOME</router-link>
-        </div>&nbsp;
+        </div>
+        <!-- &nbsp; -->
       </button>
       <button class="nav-btn">
         <div :style="getButtonStyle('forums')">
           <router-link v-bind:to="{ name: 'forums' }" :class="getLinkClass('forums')">FORUMS</router-link>
-        </div>&nbsp;
+        </div>
+        <!-- &nbsp; -->
       </button>
       <button v-if="isLoggedIn" class="nav-btn">
         <div :style="getButtonStyle('favorites')">
           <router-link v-bind:to="{ name: 'favorites' }" v-if="userName"
             :class="getLinkClass('favorites')">FAVORITES</router-link>
-        </div>&nbsp;
+        </div>
+        <!-- &nbsp; -->
       </button>
       <button v-if="isLoggedIn" class="nav-btn">
         <div :style="getButtonStyle('messages')">
           <router-link v-bind:to="{ name: 'messages' }" v-if="userName"
             :class="getLinkClass('messages')">MESSAGES</router-link>
-        </div>&nbsp;
+        </div>
+        <!-- &nbsp; -->
       </button>
       <button v-if="isLoggedIn" class="nav-btn">
         <div :style="getButtonStyle('logout')">
           <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''"
             class="router-link-nonactive">LOGOUT</router-link>
-        </div>&nbsp;
+        </div>
+        <!-- &nbsp; -->
       </button>
       <button v-if="!this.isLoggedIn" class="nav-btn">
         <div :style="getButtonStyle('login')">
           <router-link v-bind:to="{ name: 'login' }" v-if="$store.state.token == ''"
             class="router-link-nonactive">LOGIN</router-link>
-        </div>&nbsp;
+        </div>
+        <!-- &nbsp; -->
       </button>
       <div class="logo-container">
         <img src="/images/POST-UP_logo.png" alt="Logo" class="logo" />
@@ -232,8 +239,8 @@ body {
 
 #nav {
   display: flex;
-  flex-direction: column;
-  /* Stack items vertically by default */
+  flex-direction: row;
+  justify-content: space-evenly;
   align-items: center;
   background-color: var(--secondary);
   width: 100%;
@@ -248,7 +255,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 50px;
+  height: 100px;
 }
 
 .logo {
@@ -258,8 +265,11 @@ body {
 
 .user-info {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
+  margin-bottom: 10px;
+  /* gap: 10px;
+  width: 100px; */
 }
 
 .user-image-container {
@@ -271,6 +281,7 @@ body {
   align-items: center;
   position: relative;
   cursor: pointer;
+  width: 100px;
 }
 
 .name {
@@ -286,11 +297,10 @@ body {
 }
 
 .user-portrait {
-  width: calc(2 * 60px);
-  height: calc(2 * 60px);
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   object-fit: cover;
-  z-index: 0;
 }
 
 .edit-tooltip {
@@ -383,7 +393,7 @@ body {
 
 }
 
-.nav-btn .router-link-nonactive{
+.nav-btn .router-link-nonactive {
   transition: box-shadow 0.3s ease-in-out;
 }
 
@@ -404,18 +414,12 @@ body {
 }
 
 .nav-btn:hover .router-link-nonactive {
-  border:none;
+  border: none;
   text-decoration: none;
   box-shadow: 0px 15px 25px rgba(87, 122, 199, 0.3);
   background:
     radial-gradient(circle, rgba(87, 122, 199, 0.099) 50%, rgba(87, 122, 199, 0.01)),
     linear-gradient(to bottom, rgb(9, 9, 9), var(--secondary), var(--secondary), rgba(19, 26, 41, 0.4), rgba(10, 20, 40, 0.721));
-}
-
-router-view {
-  position: relative;
-  z-index: 1;
-  /* Ensure the router-view content appears above the video */
 }
 
 .nav-btn .router-link-active,
@@ -466,55 +470,53 @@ router-view {
 }
 
 .modal-container {
-  z-index: 2;
+  z-index: 2000;
 }
 
-.swiper-3d .swiper-slide-shadow-left {
-  right: 8.5% !important;
-}
+@media (max-width: 850px) {
 
-.swiper-3d .swiper-slide-shadow-right {
-  left: 8.5% !important;
-}
-
-/* Media Query for Tablets */
-@media (min-width: 768px) {
   #nav {
-    flex-direction: row;
-    /* Switch to horizontal layout */
-    justify-content: space-around;
-    /* Evenly space buttons */
-    padding: 15px 20px;
-  }
-
-  .nav-btn {
-    font-size: 20px;
-    margin: 0 10px;
-    /* Space buttons horizontally */
-    width: auto;
-    /* Allow buttons to size dynamically */
-  }
-
-  .logo-container {
-    height: 75px;
-  }
-}
-
-/* Media Query for Desktops */
-@media (min-width: 1024px) {
-  #nav {
-    justify-content: space-between;
-    /* Spread out content */
+    display: flex;
+    flex-wrap: wrap;
+    /* Allow wrapping to create rows */
+    justify-content: center;
+    /* Center the buttons */
+    gap: 10px;
+    /* Add space between buttons */
     padding: 20px 40px;
   }
 
   .nav-btn {
+    width: 45%;
+    /* Make each button take up nearly half of the width */
+    margin: 5px;
+    /* Add margin for spacing */
+    text-align: center;
+    /* Center-align button content */
     font-size: 25px;
     padding: 10px 20px;
   }
 
   .logo-container {
+    order: -1;
     height: 100px;
+    width: 45%;
+  }
+
+  .user-info {
+    order: -1;
+    /* Ensure the user image appears directly below the logo */
+    width: 45%;
+  }
+}
+
+/* Media Query for Tablets */
+
+
+/* Media Query for Desktops */
+@media (min-width: 1024px) {
+  #nav {
+    justify-content: space-between;
   }
 }
 </style>

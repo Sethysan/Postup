@@ -49,10 +49,10 @@ export default {
     align-items: center;
     overflow: visible;
     background: radial-gradient(circle, var(--nero) 55%, rgba(0, 0, 0, 0.512));
-    border: 1px solid var(--deepblue);
+    border: 1px solid var(--primary);
     margin: 1rem auto;
-    min-height: 200px;
-    max-width: 600px;
+    height: 300px;
+    width: 600px;
     box-shadow: 0 40px 80px rgb(0, 0, 0);
     transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
@@ -97,7 +97,7 @@ export default {
     font-size: 1rem;
     /* Adds spacing between the topic and the timestamp */
     margin-left: 10px;
-    color: #4e4949;
+    color: var(--deepblue);
 }
 
 /* .container {
