@@ -184,10 +184,8 @@ option {
 
 .forums-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Ensure exactly two columns */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-gap: 40px;
-  justify-content: center; /* Center the grid container */
-  align-items: center; /* Vertically center items */
 }
 
 /* Responsive Styling */
@@ -220,6 +218,12 @@ option {
     width: 80%;
   }
 
+  .forums-grid {
+  grid-template-columns: repeat(2, 1fr); /* Ensure exactly two columns */
+  grid-gap: 40px;
+  justify-content: center; /* Center the grid container */
+  align-items: center; /* Vertically center items */
+}
 
 }
 
