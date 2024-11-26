@@ -59,11 +59,10 @@ export default {
     margin-bottom: 1vh;
     /* justify-content: center; */
     align-items: center;
-    min-height: 450px;
-    max-width: 500px;
-    min-width: 450px;
     position: relative;
     overflow: visible;
+    max-height: 500px; 
+
     z-index: 10;
     border-radius: 8px;
     border: solid .01px var(--primary);
@@ -83,6 +82,7 @@ export default {
 .image-container {
     position: relative;
     width: 100%;
+    min-height: 500px;
 }
 
 .image-container:after {
@@ -128,6 +128,7 @@ footer {
 .post-image {
     width: 100%;
     height: 100%;
+    max-height: 500px; 
     object-fit: contain;
     /* Ensures the image fills the container */
 }

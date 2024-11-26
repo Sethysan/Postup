@@ -20,9 +20,9 @@
       errorMessage="Oops, it looks like popular posts couldn't load">
       <!-- Content to display when posts are successfully loaded -->
       <div class="trending-posts">
-        <div class="forums-grid">
+        <!-- <div class="forums-grid"> -->
           <trending :filteredPosts="filteredPosts" />
-        </div>
+        <!-- </div> -->
       </div>
     </status-display>
 
@@ -184,8 +184,10 @@ option {
 
 .forums-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(2, 1fr); /* Ensure exactly two columns */
   grid-gap: 40px;
+  justify-content: center; /* Center the grid container */
+  align-items: center; /* Vertically center items */
 }
 
 /* Responsive Styling */
@@ -218,10 +220,7 @@ option {
     width: 80%;
   }
 
-  .forums-grid {
-    grid-template-columns: repeat(3, 1fr);
-    /* Three columns on desktops */
-  }
+
 }
 
 @media (max-width: 480px) {

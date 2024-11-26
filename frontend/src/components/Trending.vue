@@ -5,32 +5,32 @@
                 <h1> Trending Now </h1>
             </div>
             <div class="body">
-                <swiper ref="swiper" class="swiper-wrapper" :effect="'coverflow'" :grabCursor="true"
-                    :centeredSlides="false" :spaceBetween="10" :slidesPerView="3" :breakpoints="{
+                <div v-if="filteredPosts.length > 2">
+                    <swiper ref="swiper" class="swiper-wrapper" :effect="'coverflow'" :grabCursor="true"
+                        :centeredSlides="false" :spaceBetween="10" :slidesPerView="3" :breakpoints="{
                             '1': { slidesPerView: 1, spaceBetween: 10 },
                             '1000': { slidesPerView: 2, spaceBetween: 100 },
                             '1024': { slidesPerView: 3, spaceBetween: 20 }
-                    }" :coverflowEffect="{ rotate: 50, stretch: 80, depth: 140, modifier: 1, slideShadows: false, }"
-                    :pagination="{ type: 'progressbar', }" :modules="modules" v-if="filteredPosts.length > 2">
-                    <swiper-slide v-for="(post) in filteredPosts.slice(0, 10)" :key="post.id" class="trending-post">
-                        <post-snippet :post="post"></post-snippet>
-                    </swiper-slide>
-                </swiper>
-                <div class="forum-slider" v-else-if="filteredPosts.length === 1">
-                    <swiper ref="swiper" class="swiper-wrapper" :slidesPerView="1" :spaceBetween="0"
-                        :pagination="{ type: 'progressbar' }" :modules="modules">
-                        <swiper-slide v-for="(post) in filteredPosts" :key="post.id" class="trending-post">
+                        }"
+                        :coverflowEffect="{ rotate: 50, stretch: 80, depth: 140, modifier: 1, slideShadows: false, }"
+                        :pagination="{ type: 'progressbar', }" :modules="modules">
+                        <swiper-slide v-for="(post) in filteredPosts.slice(0, 10)" :key="post.id" class="trending-post">
                             <post-snippet :post="post"></post-snippet>
                         </swiper-slide>
                     </swiper>
                 </div>
-                <div class="forum-slider" v-else-if="filteredPosts.length === 2">
-                    <swiper ref="swiper" class="swiper-wrapper" :slidesPerView="2" :spaceBetween="40"
-                        :pagination="{ type: 'progressbar' }" :modules="modules">
-                        <swiper-slide v-for="(post) in filteredPosts" :key="post.id" class="trending-post">
-                            <post-snippet :post="post"></post-snippet>
-                        </swiper-slide>
-                    </swiper>
+                <div v-else-if="filteredPosts.length === 1">
+                    <div class="trending-results">
+                        <!-- Display posts based on search or default -->
+                        <div v-for="(post) in filteredPosts" :key="post.id">
+                            <post-snippet :post="post" :style="getSlideWidthStyle(filteredPosts.length)"></post-snippet>
+                        </div>
+                    </div>
+                </div>
+                <div v-else-if="filteredPosts.length === 2" class="forums-grid ">
+                    <div v-for="(post) in filteredPosts.slice(0, 10)" :key="post.id">
+                        <post-snippet :post="post"></post-snippet>
+                    </div>
                 </div>
                 <div v-else>
                     <p>No posts available.</p>
@@ -93,7 +93,15 @@ export default {
         ...mapMutations(['setCurrentPage']),
         handleSlideChange(swiper) {
             this.setCurrentPage(swiper.realIndex + 1);
-        }
+        },
+        getSlideWidthStyle(length) {
+            if (length === 1) {
+                return { width: '100%' }; // Single post takes 80% of the wrapper
+            } else if (length === 2) {
+                return { width: '50%' }; // Two posts take 40% each
+            }
+            return { width: 'auto' }; // Default for other cases
+        },
     },
 }
 </script>

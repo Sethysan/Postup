@@ -17,9 +17,9 @@
     <status-display :isLoading="isloading" :hasError="postLoadingError"
       errorMessage="Oops, it looks like this forum couldn't load">
       <div class="trending-posts">
-        <div class="forums-grid">
+        
           <forum-posts :posts="posts" />
-        </div>
+        
       </div>
     </status-display>
   </div>
