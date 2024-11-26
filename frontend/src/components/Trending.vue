@@ -16,7 +16,7 @@
                         <post-snippet :post="post"></post-snippet>
                     </swiper-slide>
                 </swiper>
-                <div class="forum-slider" v-else-if="posts.length === 1">
+                <div class="forum-slider" v-else-if="filteredPosts.length === 1">
                     <swiper ref="swiper" class="swiper-wrapper" :slidesPerView="1" :spaceBetween="0"
                         :pagination="{ type: 'progressbar' }" :modules="modules">
                         <swiper-slide v-for="(post) in filteredPosts" :key="post.id" class="trending-post">
@@ -24,7 +24,7 @@
                         </swiper-slide>
                     </swiper>
                 </div>
-                <div class="forum-slider" v-else-if="posts.length === 2">
+                <div class="forum-slider" v-else-if="filteredPosts.length === 2">
                     <swiper ref="swiper" class="swiper-wrapper" :slidesPerView="2" :spaceBetween="40"
                         :pagination="{ type: 'progressbar' }" :modules="modules">
                         <swiper-slide v-for="(post) in filteredPosts" :key="post.id" class="trending-post">
