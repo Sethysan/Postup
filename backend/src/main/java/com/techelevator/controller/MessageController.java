@@ -7,6 +7,7 @@ import com.techelevator.model.responses.ContactResponseDto;
 import com.techelevator.model.responses.DirectMessageResponseDto;
 import com.techelevator.model.responses.UserSnippetDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,6 +50,13 @@ public class MessageController {
     public DirectMessageResponseDto updateMessage(@RequestBody CreateDirectMessageDto dm, @PathVariable long message){
         return directMessageDao.updateMessage(message, dm);
     }
+
+    @PutMapping("/{id}/messages/{messageId}/read")
+    public ResponseEntity<Void> markMessageAsRead(@PathVariable long messageId) {
+        directMessageDao.markRead(messageId);
+        return ResponseEntity.noContent().build(); // Return 204 No Content
+    }
+
 
     @DeleteMapping("/{id}/messages/{message}")
     public void deleteMessage(@PathVariable long message){

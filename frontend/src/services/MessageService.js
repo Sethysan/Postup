@@ -18,5 +18,8 @@ export default {
     },
     deleteMessage(contact, id){
         return http.delete(`/api/contacts/${contact}/messages/${id}`)
+    },
+    markRead(contact, id){
+        return http.put(`/api/contacts/${contact}/messages/${id}/read`)
     }
 }

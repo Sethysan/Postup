@@ -64,9 +64,9 @@ public class JdbcDirectMessageDao implements DirectMessageDao{
         return this.getMessage(messageId);
     }
 
-    public void markRead(long id){
-        String sql = "UPDATE direct_message SET has_read = ? WHERE sent_from = ?";
-        jdbcTemplate.update(sql, true, id);
+    public void markRead(long messageId){
+        String sql = "UPDATE direct_message SET has_read = ? WHERE message_id = ?";
+        jdbcTemplate.update(sql, true, messageId);
     }
 
     @Override

@@ -6,7 +6,7 @@
       </path>
     </svg>
   </div>
-  <div v-if="messages.length < 1 && isloading">
+  <div v-if="messages.length < 1 && !isloading">
     <p>Wow, such empty!</p>
     <img src="" />
   </div>
@@ -28,28 +28,32 @@ export default {
     return {
       messages: [],
       error: false,
-      isloading: true
+      isloading: true,
     }
   },
+
   created() {
-    service.getMessages(this.$route.params.user)
-      .then(res => this.messages = res.data)
-      .catch(err => {
-        this.error = true
-        this.isloading = false
-      })
-  },
+  service.getMessages(this.$route.params.user)
+    .then(res => {
+      this.messages = res.data;
+    })
+    .then(() => this.isloading = false)
+    .catch(err => {
+      this.error = true;
+      this.isloading = false;
+    });
+},
+
   methods: {
     goBack() {
       this.$router.go(-1); // This navigates back in the history stack
-    },
+    }
   },
 }
 </script>
 
-<style >
-
-.back-button{
+<style>
+.back-button {
   margin-top: 5rem !important;
 }
 

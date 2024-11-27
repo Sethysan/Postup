@@ -2,7 +2,12 @@
   <div v-for="contact in contacts" :key="contact.id" class="message-list">
     <router-link :to="{ name: 'direct-messages', params: { user: contact.id } }" class="user-message-link">
       <h4>{{ contact.username }}</h4>
-      <p class="unread" v-if="contact.unread > 0">{{ contact.unread }} Unread Messages</p>
+      <p class="unread" v-if="contact.unread > 0">
+        {{ contact.unread }} Unread Messages
+      </p>
+      <p class="unread-sent" v-if="contact.unreadSent > 0">
+        {{ contact.unreadSent }} Unread Sent Messages
+      </p>
       <p class="timestamp" v-if="contact.latest">Latest Message Sent {{ contact.latest }}</p>
     </router-link>
   </div>
@@ -19,9 +24,24 @@ export default {
   margin-bottom: 10px;
 }
 
-.unread {
-  color: var(--orange);
-  margin-left: 5px;
+.unread-user-message {
+  background-color: rgba(255, 165, 0, 0.2);
+  /* Light orange for emphasis */
+  border: 1px solid orange;
+}
+
+.unread-others-message {
+  background-color: rgba(0, 128, 255, 0.2);
+  /* Light blue for emphasis */
+  border: 1px solid blue;
+}
+
+.user-message {
+  text-align: right;
+}
+
+.others-message {
+  text-align: left;
 }
 
 .user-message-link {
@@ -35,7 +55,8 @@ export default {
 }
 
 .username {
-  font-size: 1rem; /* Adjust font size if needed */
+  font-size: 1rem;
+  /* Adjust font size if needed */
   margin: 0;
 }
 
