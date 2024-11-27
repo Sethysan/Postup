@@ -11,7 +11,7 @@
 
     <div class="forum-results-container">
         <h2 v-if="searchDisplayed" class="search-results-header">Search Results</h2>
-        <div class="forum-results">
+        <div class="all-forums">
             <!-- Display forums based on search or default -->
             <div v-for="forum in searchDisplayed ? searchForums : forums" :key="forum.id || forum.forum.id"
                 class="forum-item">
@@ -149,6 +149,7 @@ export default {
 <style>
 .forum-results-container {
     text-align: center;
+    width: 95vw;
 }
 
 .search-results-header {
@@ -157,9 +158,9 @@ export default {
     text-align: center;
 }
 
-.forum-results {
+.all-forums {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
     gap: 1.5rem;
     max-height: 80vh;
     overflow-y: auto;

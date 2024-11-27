@@ -10,27 +10,24 @@
                         :centeredSlides="false" :spaceBetween="10" :slidesPerView="3" :breakpoints="{
                             '1': { slidesPerView: 1, spaceBetween: 10 },
                             '1000': { slidesPerView: 2, spaceBetween: 100 },
-                            '1024': { slidesPerView: 3, spaceBetween: 20 }
+                            '1324': { slidesPerView: 3, spaceBetween: 100 }
                         }"
-                        :coverflowEffect="{ rotate: 50, stretch: 80, depth: 140, modifier: 1, slideShadows: false, }"
-                        :pagination="{ type: 'progressbar', }" :modules="modules">
-                        <swiper-slide v-for="(post) in filteredPosts.slice(0, 10)" :key="post.id" class="trending-post">
+                        :coverflowEffect="{ rotate: 40, stretch: 80, depth: 140, modifier: 1, slideShadows: false, }"
+                        :pagination="{ type: 'progressbar' }" :modules="modules">
+                        <swiper-slide v-for="(post) in filteredPosts" :key="post.id" class="trending-post">
                             <post-snippet :post="post"></post-snippet>
                         </swiper-slide>
                     </swiper>
                 </div>
-                <div v-else-if="filteredPosts.length === 1">
-                    <div class="trending-results">
-                        <!-- Display posts based on search or default -->
-                        <div v-for="(post) in filteredPosts" :key="post.id">
-                            <post-snippet :post="post" :style="getSlideWidthStyle(filteredPosts.length)"></post-snippet>
-                        </div>
-                    </div>
-                </div>
-                <div v-else-if="filteredPosts.length === 2" class="forums-grid ">
-                    <div v-for="(post) in filteredPosts.slice(0, 10)" :key="post.id">
-                        <post-snippet :post="post"></post-snippet>
-                    </div>
+                <div v-else-if="filteredPosts.length <= 2" class="forums-grid ">
+                    <swiper ref="swiper" class="swiper-wrapper" :effect="'coverflow'" :grabCursor="true"
+                        :centeredSlides="false" :spaceBetween="10" :slidesPerView="1"
+                        :coverflowEffect="{ rotate: 40, stretch: 80, depth: 140, modifier: 1, slideShadows: false, }"
+                        :pagination="{ type: 'progressbar' }" :modules="modules">
+                        <swiper-slide v-for="(post) in filteredPosts" :key="post.id" class="trending-post">
+                            <post-snippet :post="post"></post-snippet>
+                        </swiper-slide>
+                    </swiper>
                 </div>
                 <div v-else>
                     <p>No posts available.</p>
@@ -41,7 +38,6 @@
         <div v-else class="forum-results-container">
             <div class="trending-results">
                 <h1> Trending Now </h1>
-                <!-- Display posts based on search or default -->
                 <div v-for="(post) in filteredPosts.slice(0, 10)" :key="post.id">
                     <post-snippet :post="post"></post-snippet>
                 </div>
@@ -67,11 +63,11 @@ export default {
     name: 'Trending',
     setup() {
         const modules = [Pagination, EffectCoverflow];
-        const isTabletOrDesktop = ref(window.innerWidth >= 640);
+        const isTabletOrDesktop = ref(window.innerWidth >= 840);
 
         // Listener to update the screen size dynamically
         const updateScreenSize = () => {
-            isTabletOrDesktop.value = window.innerWidth >= 640;
+            isTabletOrDesktop.value = window.innerWidth >= 840;
         };
         onMounted(() => {
             window.addEventListener('resize', updateScreenSize);
@@ -111,7 +107,6 @@ export default {
     display: flex;
     width: auto;
     flex-direction: column;
-    max-width: 2100px;
     border: none;
     background: radial-gradient(circle, var(--nero) 75%, rgba(0, 0, 0, 0.5));
 }
@@ -129,6 +124,7 @@ export default {
     /* Stack items vertically */
     align-items: center;
     padding: 1.5% 0;
+    max-width: 95vw;
 }
 
 .trending-post {
@@ -142,11 +138,11 @@ export default {
 .swiper-slide {
     height: auto;
     flex-shrink: 0;
-    width: 100%;
+    width: 95vw;
 }
 
 .body {
-    width: 100%;
+    max-width: 100%;
 }
 
 .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
@@ -162,10 +158,11 @@ export default {
     top: auto !important;
 }
 
-@media (min-width: 768px) {
-    /* #trending {
-        max-width: 90%;
-    } */
+.trending-results {
+    max-height: 100vh;
+}
+
+@media (min-width: 840px) {
 
     .swiper-wrapper {
         flex-direction: row;
@@ -177,12 +174,8 @@ export default {
     }
 }
 
-/* Desktop Breakpoint (1024px and Up) */
-@media (min-width: 1024px) {
-    /* #trending {
-        max-width: 1300px;
-        border: 4px solid var(--nero);
-    } */
+/* Desktop Breakpoint (1000px and Up) */
+@media (min-width: 1000px) {
 
     .trending-now {
         font-size: 26px;
@@ -196,21 +189,14 @@ export default {
                 var(--nero));
         border-image-slice: 1;
     }
-
-    /* .trending-post {
-        width: calc(33.33% - 20px); */
-
-
 }
 
-/* @media(min-width: 1400px){
-    #trending {
-        max-width: 1700px;
+@media (max-width: 840px) {
+    .trending-results {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        max-height: 70vh;
+        overflow-x: hidden;
+        overflow-y: auto;
     }
 }
-@media(min-width: 1700px){
-    #trending {
-        max-width: 2100px;
-    }
-} */
 </style>

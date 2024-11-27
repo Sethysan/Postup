@@ -38,7 +38,6 @@ export default {
 </script>
 
 <style>
-
 .forum-snippet {
     display: flex;
     flex-direction: column;
@@ -110,4 +109,9 @@ export default {
     text-align: center;
 }
 
+@media (max-width: 840px) {
+    .forum-snippet {
+        width: 90%;
+    }
+}
 </style>

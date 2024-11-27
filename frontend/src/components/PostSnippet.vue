@@ -56,21 +56,19 @@ export default {
 .post-snippet {
     display: flex;
     flex-direction: column;
-    margin-bottom: 1vh;
     /* justify-content: center; */
     align-items: center;
     position: relative;
     overflow: visible;
-    max-height: 500px; 
-
+    max-height: 500px;
+    margin: 1rem auto;
     z-index: 10;
     border-radius: 8px;
     border: solid .01px var(--primary);
-    background:  rgb(0, 0, 0);
+    background: rgb(0, 0, 0);
     /* border-color: var(--primary); */
     box-shadow: 0 40px 80px rgb(0, 0, 0);
     transition: transform 0.2s ease, box-shadow 0.3s ease;
-
 }
 
 .post-snippet:hover {
@@ -82,7 +80,8 @@ export default {
 .image-container {
     position: relative;
     width: 100%;
-    min-height: 500px;
+    height: 500px; /* This ensures the container is fixed in height */
+    overflow: hidden; /* This will clip any overflowed content */
 }
 
 .image-container:after {
@@ -128,7 +127,7 @@ footer {
 .post-image {
     width: 100%;
     height: 100%;
-    max-height: 500px; 
+    max-height: 500px;
     object-fit: contain;
     /* Ensures the image fills the container */
 }
@@ -163,7 +162,7 @@ footer {
     /* Smooth transition for visibility */
     max-height: 0;
     /* Collapse the description initially */
-    overflow: hidden; 
+    overflow: hidden;
     /* Hide overflowing content */
     /* line-height: 1.5rem; */
     border-radius: 7px;
@@ -189,9 +188,16 @@ footer {
     touch-action: auto;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 840px) {
     .post-snippet {
-        box-shadow: 0 30px 50px rgb(0, 0, 0);
+        margin-bottom: 50px;
+    }
+}
+
+@media (max-width: 840px) {
+    .post-snippet {
+        box-shadow: 0 0 0 rgb(0, 0, 0);
+        width: 90%;
     }
 
     .post-time {
@@ -200,9 +206,4 @@ footer {
     }
 }
 
-@media (max-width: 480px) {
-    .post-snippet {
-        box-shadow: 0 20px 40px rgb(0, 0, 0);
-    }
-}
 </style>

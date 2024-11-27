@@ -21,7 +21,7 @@
       <!-- Content to display when posts are successfully loaded -->
       <div class="trending-posts">
         <!-- <div class="forums-grid"> -->
-          <trending :filteredPosts="filteredPosts" />
+        <trending :filteredPosts="filteredPosts" />
         <!-- </div> -->
       </div>
     </status-display>
@@ -121,9 +121,6 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  align-items: center;
-
-
 }
 
 .filter-bar {
@@ -170,7 +167,8 @@ option {
   padding-right: 43.2%;
 }
 
-.trending-posts, .active-forums {
+.trending-posts,
+.active-forums {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -189,7 +187,7 @@ option {
 }
 
 /* Responsive Styling */
-@media (min-width: 768px) {
+@media (min-width: 840px) {
   .home {
     padding: 30px;
   }
@@ -200,14 +198,15 @@ option {
     width: 90%;
   }
 
-  .trending-posts, .active-forums {
+  .trending-posts,
+  .active-forums {
     flex-direction: row;
     justify-content: space-evenly;
   }
 
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1000px) {
   .home {
     padding: 40px;
   }
@@ -217,13 +216,6 @@ option {
     margin-bottom: 30px;
     width: 80%;
   }
-
-  .forums-grid {
-  grid-template-columns: repeat(2, 1fr); /* Ensure exactly two columns */
-  grid-gap: 40px;
-  justify-content: center; /* Center the grid container */
-  align-items: center; /* Vertically center items */
-}
 
 }
 
@@ -239,9 +231,11 @@ option {
     /* Single column on small screens */
   }
 
-  .trending-posts, .active-forums {
+  .trending-posts,
+  .active-forums {
     flex-direction: column;
     gap: 10px;
   }
+
 }
 </style>

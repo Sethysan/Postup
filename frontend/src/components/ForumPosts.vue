@@ -12,27 +12,24 @@
                             :centeredSlides="false" :spaceBetween="10" :slidesPerView="3" :breakpoints="{
                                 '1': { slidesPerView: 1, spaceBetween: 10 },
                                 '1000': { slidesPerView: 2, spaceBetween: 100 },
-                                '1024': { slidesPerView: 3, spaceBetween: 20 }
+                                '1324': { slidesPerView: 3, spaceBetween: 100 }
                             }"
-                            :coverflowEffect="{ rotate: 50, stretch: 80, depth: 140, modifier: 1, slideShadows: false, }"
+                            :coverflowEffect="{ rotate: 40, stretch: 80, depth: 140, modifier: 1, slideShadows: false, }"
                             :pagination="{ type: 'progressbar' }" :modules="modules">
                             <swiper-slide v-for="(post) in posts" :key="post.id" class="trending-post">
                                 <post-snippet :post="post"></post-snippet>
                             </swiper-slide>
                         </swiper>
                     </div>
-                    <div v-else-if="posts.length === 1">
-                        <div class="trending-results">
-                            <!-- Display posts based on search or default -->
-                            <div v-for="(post) in posts" :key="post.id">
-                                <post-snippet :post="post" :style="getSlideWidthStyle(posts.length)"></post-snippet>
-                            </div>
-                        </div>
-                    </div>
-                    <div v-else-if="posts.length === 2" class="forums-grid ">
-                        <div v-for="(post) in posts" :key="post.id">
-                            <post-snippet :post="post"></post-snippet>
-                        </div>
+                    <div v-else-if="posts.length <= 2" class="forums-grid ">
+                        <swiper ref="swiper" class="swiper-wrapper" :effect="'coverflow'" :grabCursor="true"
+                            :centeredSlides="false" :spaceBetween="10" :slidesPerView="1"
+                            :coverflowEffect="{ rotate: 40, stretch: 80, depth: 140, modifier: 1, slideShadows: false, }"
+                            :pagination="{ type: 'progressbar' }" :modules="modules">
+                            <swiper-slide v-for="(post) in posts" :key="post.id" class="trending-post">
+                                <post-snippet :post="post"></post-snippet>
+                            </swiper-slide>
+                        </swiper>
                     </div>
                     <div v-else>
                         <p>No posts available.</p>
@@ -43,12 +40,11 @@
                 <div class="trending-results">
                     <!-- Display posts based on search or default -->
                     <div v-for="(post) in posts" :key="post.id">
-                        <post-snippet :post="post" :style="getSlideWidthStyle(posts.length)"></post-snippet>
+                        <post-snippet :post="post"></post-snippet>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Display trending-results-container for smaller screens -->
     </section>
 </template>
 
@@ -68,11 +64,11 @@ export default {
     name: 'ForumPosts',
     setup(props) {
         const modules = [Pagination, EffectCoverflow];
-        const isTabletOrDesktop = ref(window.innerWidth >= 640);
+        const isTabletOrDesktop = ref(window.innerWidth >= 840);
 
         // Listener to update the screen size dynamically
         const updateScreenSize = () => {
-            isTabletOrDesktop.value = window.innerWidth >= 640;
+            isTabletOrDesktop.value = window.innerWidth >= 840;
         };
         onMounted(() => {
             console.log("posts length:", props.posts.length);
@@ -96,15 +92,16 @@ export default {
         ...mapMutations(['setCurrentPage']),
         handleSlideChange(swiper) {
             this.setCurrentPage(swiper.realIndex + 1);
-        },
-        getSlideWidthStyle(length) {
-            if (length === 1) {
-                return { width: '100%' }; // Single post takes 80% of the wrapper
-            } else if (length === 2) {
-                return { width: '50%' }; // Two posts take 40% each
-            }
-            return { width: 'auto' }; // Default for other cases
-        },
+        }
+
+        // getSlideWidthStyle(length) {
+        //     if (length === 1) {
+        //         return { width: '100%' }; 
+        //     } else if (length === 2) {
+        //         return { width: '50%' }; 
+        //     }
+        //     return { width: 'auto' };
+        // },
     }
 };
 </script>

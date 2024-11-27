@@ -1,83 +1,85 @@
 <template>
-  <div class="wrapper">
-    <div id="nav">
-      <div class="user-info" v-if="isLoggedIn">
-        <div class="user-image-container" @mouseover="showEditTooltip = true" @mouseleave="showEditTooltip = false"
-          @click="toggleEditForm">
-          <img v-if="userImage" :src="userImage" alt="User Image" class="user-portrait" />
-          <span v-if="showEditTooltip" class="edit-tooltip">Do you want to change you profile picture?</span>
-          <p class="name">{{ userName }}</p>
+  
+    <div class="wrapper">
+      <div id="nav">
+        <div class="user-info" v-if="isLoggedIn">
+          <div class="user-image-container" @mouseover="showEditTooltip = true" @mouseleave="showEditTooltip = false"
+            @click="toggleEditForm">
+            <img v-if="userImage" :src="userImage" alt="User Image" class="user-portrait" />
+            <span v-if="showEditTooltip" class="edit-tooltip">Do you want to change you profile picture?</span>
+            <p class="name">{{ userName }}</p>
+          </div>
+        </div>
+        <button v-if="role === 'ROLE_ADMIN'" class="nav-btn">
+          <div :style="getButtonStyle('admin')">
+            <router-link v-bind:to="{ name: 'admin' }" v-if="userName"
+              :class="getLinkClass('admin')">ADMIN</router-link>
+          </div>
+          <!-- &nbsp; -->
+        </button>
+        <button class="nav-btn">
+          <div :style="getButtonStyle('home')">
+            <router-link v-bind:to="{ name: 'home' }" :class="getLinkClass('home')">HOME</router-link>
+          </div>
+          <!-- &nbsp; -->
+        </button>
+        <button class="nav-btn">
+          <div :style="getButtonStyle('forums')">
+            <router-link v-bind:to="{ name: 'forums' }" :class="getLinkClass('forums')">FORUMS</router-link>
+          </div>
+          <!-- &nbsp; -->
+        </button>
+        <button v-if="isLoggedIn" class="nav-btn">
+          <div :style="getButtonStyle('favorites')">
+            <router-link v-bind:to="{ name: 'favorites' }" v-if="userName"
+              :class="getLinkClass('favorites')">FAVORITES</router-link>
+          </div>
+          <!-- &nbsp; -->
+        </button>
+        <button v-if="isLoggedIn" class="nav-btn">
+          <div :style="getButtonStyle('messages')">
+            <router-link v-bind:to="{ name: 'messages' }" v-if="userName"
+              :class="getLinkClass('messages')">MESSAGES</router-link>
+          </div>
+          <!-- &nbsp; -->
+        </button>
+        <button v-if="isLoggedIn" class="nav-btn">
+          <div :style="getButtonStyle('logout')">
+            <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''"
+              class="router-link-nonactive">LOGOUT</router-link>
+          </div>
+          <!-- &nbsp; -->
+        </button>
+        <button v-if="!this.isLoggedIn" class="nav-btn">
+          <div :style="getButtonStyle('login')">
+            <router-link v-bind:to="{ name: 'login' }" v-if="$store.state.token == ''"
+              class="router-link-nonactive">LOGIN</router-link>
+          </div>
+          <!-- &nbsp; -->
+        </button>
+        <div class="logo-container">
+          <img src="/images/POST-UP_logo.png" alt="Logo" class="logo" />
         </div>
       </div>
-      <button v-if="role === 'ROLE_ADMIN'" class="nav-btn">
-        <div :style="getButtonStyle('admin')">
-          <router-link v-bind:to="{ name: 'admin' }" v-if="userName" :class="getLinkClass('admin')">ADMIN</router-link>
-        </div>
-        <!-- &nbsp; -->
-      </button>
-      <button class="nav-btn">
-        <div :style="getButtonStyle('home')">
-          <router-link v-bind:to="{ name: 'home' }" :class="getLinkClass('home')">HOME</router-link>
-        </div>
-        <!-- &nbsp; -->
-      </button>
-      <button class="nav-btn">
-        <div :style="getButtonStyle('forums')">
-          <router-link v-bind:to="{ name: 'forums' }" :class="getLinkClass('forums')">FORUMS</router-link>
-        </div>
-        <!-- &nbsp; -->
-      </button>
-      <button v-if="isLoggedIn" class="nav-btn">
-        <div :style="getButtonStyle('favorites')">
-          <router-link v-bind:to="{ name: 'favorites' }" v-if="userName"
-            :class="getLinkClass('favorites')">FAVORITES</router-link>
-        </div>
-        <!-- &nbsp; -->
-      </button>
-      <button v-if="isLoggedIn" class="nav-btn">
-        <div :style="getButtonStyle('messages')">
-          <router-link v-bind:to="{ name: 'messages' }" v-if="userName"
-            :class="getLinkClass('messages')">MESSAGES</router-link>
-        </div>
-        <!-- &nbsp; -->
-      </button>
-      <button v-if="isLoggedIn" class="nav-btn">
-        <div :style="getButtonStyle('logout')">
-          <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''"
-            class="router-link-nonactive">LOGOUT</router-link>
-        </div>
-        <!-- &nbsp; -->
-      </button>
-      <button v-if="!this.isLoggedIn" class="nav-btn">
-        <div :style="getButtonStyle('login')">
-          <router-link v-bind:to="{ name: 'login' }" v-if="$store.state.token == ''"
-            class="router-link-nonactive">LOGIN</router-link>
-        </div>
-        <!-- &nbsp; -->
-      </button>
-      <div class="logo-container">
-        <img src="/images/POST-UP_logo.png" alt="Logo" class="logo" />
+
+      <!-- form for update user image -->
+      <div v-if="editFormVisible" class="edit-form">
+        <form @submit.prevent="updateUserDetails">
+          <div class="image-group">
+            <label for="userImage">Profile Image URL</label>
+            <input type="text" ref="myInput" v-model="updatedUserImage" placeholder="Enter new image URL" />
+          </div>
+          <div class="edit-pic-btns">
+            <button class="pic-save" type="submit">Save</button>
+            <button class="pic-cancel" type="button" @click="toggleEditForm">Cancel</button>
+          </div>
+        </form>
       </div>
-    </div>
-
-    <!-- form for update user image -->
-    <div v-if="editFormVisible" class="edit-form">
-      <form @submit.prevent="updateUserDetails">
-        <div class="image-group">
-          <label for="userImage">Profile Image URL</label>
-          <input type="text" ref="myInput" v-model="updatedUserImage" placeholder="Enter new image URL" />
-        </div>
-        <div class="edit-pic-btns">
-          <button class="pic-save" type="submit">Save</button>
-          <button class="pic-cancel" type="button" @click="toggleEditForm">Cancel</button>
-        </div>
-      </form>
-    </div>
 
 
-    <WidgetContainerModal />
+        <WidgetContainerModal />
+        <router-view />
 
-    <router-view />
   </div>
 </template>
 <script>
@@ -170,13 +172,27 @@ export default {
 </script>
 
 <style>
+#app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw; 
+  margin: 0; 
+  padding: 0;
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;
-  min-height: 100%;
+  max-width: 100vw;
+  min-width: 100vw;
   background-color: var(--secondary);
-  align-items: center
+  align-items: center;
 }
+
+/* .router-view {
+  width: 98%;
+} */
 
 ::after,
 ::before {
@@ -217,13 +233,9 @@ html {
   color: var(--grey);
   background-color: var(--secondary);
   text-align: left;
-  height: 100%;
-  min-height: 100%;
+  width: 100%;
   margin: 0;
-}
-
-body {
-  padding: 1%;
+  overflow-x: hidden;
 }
 
 :root {
@@ -243,7 +255,7 @@ body {
   justify-content: space-evenly;
   align-items: center;
   background-color: var(--secondary);
-  width: 100%;
+  width: 95%;
   padding: 10px;
   position: relative;
   z-index: 1000;
@@ -482,8 +494,6 @@ body {
     justify-content: center;
     /* Center the buttons */
     gap: 10px;
-    /* Add space between buttons */
-    padding: 20px 40px;
   }
 
   .nav-btn {
@@ -504,9 +514,9 @@ body {
   }
 
   .user-portrait {
-  width: 80px;
-  height: 80px;
-}
+    width: 80px;
+    height: 80px;
+  }
 
   .user-info {
     order: -1;

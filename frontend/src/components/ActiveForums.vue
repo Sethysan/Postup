@@ -10,8 +10,9 @@
                         :spaceBetween="40" :breakpoints="{
                             '1': { slidesPerView: 1, spaceBetween: 10 },
                             '1000': { slidesPerView: 2, spaceBetween: 100 },
-                            '1024': { slidesPerView: 3, spaceBetween: 20 }
-                        }" :coverflowEffect="{ rotate: 50, stretch: 80, depth: 140, modifier: 1, slideShadows: false, }"
+                            '1324': { slidesPerView: 3, spaceBetween: 100 }
+                        }"
+                        :coverflowEffect="{ rotate: 40, stretch: 80, depth: 140, modifier: 1, slideShadows: false, }"
                         :pagination="{ type: 'progressbar', }" :modules="modules" v-if="forums.length > 2">
                         <swiper-slide v-for="(forum) in forums.slice(0, 10)" :key="forum.id" class="active-forum">
                             <forum-snippet :forum="forum"></forum-snippet>
@@ -26,21 +27,7 @@
                     <!-- Display forums based on search or default -->
                     <h1>Active Forums</h1>
                     <div v-for="(forum) in forums.slice(0, 10)" :key="forum.id">
-                        <forum-snippet :forum="forum">
-                            <router-link :to="{ name: 'forum', params: { id: forum.id || forum.forum.id } }"
-                                class="forum-link">
-                                <p class="inline-time">{{ forum.author || forum.forum.author }}</p>
-                                <p class="inline-time"> created {{ getTimeElapsed(forum.timeOfCreation ||
-                                    forum.forum.timeOfCreation) }}</p>
-                                <h2>
-                                    <span
-                                        v-html="searchDisplayed ? highlightSearchTerm(forum.forum?.topic || forum.topic) : forum.topic"></span>
-                                </h2>
-                                <p
-                                    v-html="searchDisplayed ? highlightSearchTerm(forum.forum?.description || forum.description) : forum.description">
-                                </p>
-                            </router-link>
-                        </forum-snippet>
+                        <forum-snippet :forum="forum"></forum-snippet>
                     </div>
                 </div>
             </div>
@@ -65,11 +52,11 @@ export default {
     name: 'Active',
     setup() {
         const modules = [Pagination, EffectCoverflow];
-        const isTabletOrDesktop = ref(window.innerWidth >= 640);
+        const isTabletOrDesktop = ref(window.innerWidth >= 840);
 
         // Listener to update the screen size dynamically
         const updateScreenSize = () => {
-            isTabletOrDesktop.value = window.innerWidth >= 640;
+            isTabletOrDesktop.value = window.innerWidth >= 840;
         };
         onMounted(() => {
             window.addEventListener('resize', updateScreenSize);
