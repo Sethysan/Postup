@@ -69,7 +69,7 @@ export default {
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, .2);
     background-color: transparent;
-    background: radial-gradient(circle, var(--nero) 55%, rgba(0, 0, 0, 0.512));
+    background: radial-gradient(circle, var(--nero) 55%, rgba(0, 0, 0));
 }
 
 .forum-item:hover {

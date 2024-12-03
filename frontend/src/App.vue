@@ -131,9 +131,7 @@ export default {
       } else {
         return {
           boxShadow: 'inset 0 -18px 4px  linear-gradient(to bottom, var(--secondary),',// Shared shadow for non-active buttons
-          background: `
-        radial-gradient(circle, rgba(128, 93, 32, 0.075) 50%, rgba(128, 93, 32, 0.01)),
-        linear-gradient(to bottom, rgb(9, 9, 9), rgb(9, 9, 9), var(--secondary), var(--secondary), var(--secondary), rgba(128, 93, 32, .1), rgba(128, 93, 32, 0.124))`,
+          
         };
       }
     },
@@ -406,7 +404,10 @@ html {
 }
 
 .nav-btn .router-link-nonactive {
-  transition: box-shadow 0.3s ease-in-out;
+  background: 
+        radial-gradient(circle, rgba(128, 93, 32, 0.075) 50%, rgba(128, 93, 32, 0.01)),
+        linear-gradient(to bottom, rgb(9, 9, 9), rgb(9, 9, 9), var(--secondary), var(--secondary), var(--secondary), rgba(128, 93, 32, .1), rgba(128, 93, 32, 0.124));
+  transition: 0.3s ease-in-out, box-shadow 0.3s ease-in-out, color .3s ease-in-out;
 }
 
 .nav-btn {
@@ -421,8 +422,7 @@ html {
   color: white;
   border: none;
   border-radius: 8px;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  ;
+  
 }
 
 .nav-btn:hover .router-link-nonactive {
@@ -442,7 +442,7 @@ html {
   background-color: transparent;
   color: var(--deepblue);
   box-shadow: 0px 15px 25px rgba(87, 122, 199, 0.3);
-  transition: 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  transition: 0.3s ease-in-out, box-shadow 0.3s ease-in-out, color .3s ease-in-out;
   z-index: 2;
 }
 
@@ -459,14 +459,13 @@ html {
     linear-gradient(to bottom, rgb(9, 9, 9), var(--secondary), var(--secondary), rgba(87, 122, 199, 0.1), rgba(74, 110, 160, 0.181));
   z-index: -1;
   border-radius: inherit;
-
 }
 
 .router-link-nonactive {
   text-decoration: none;
   color: var(--grey);
   box-shadow: 0 15px 25px rgba(128, 93, 32, 0.282);
-  transition: color .3s ease-in-out, box-shadow 0.5s ease-in-out;
+  transition: 0.3s ease-in-out, color .3s ease-in-out, box-shadow 0.3s ease-in-out;
   z-index: 2;
   display: inline-block;
 }
