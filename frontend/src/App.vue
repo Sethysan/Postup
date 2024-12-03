@@ -422,7 +422,6 @@ html {
   color: white;
   border: none;
   border-radius: 8px;
-  
 }
 
 .nav-btn:hover .router-link-nonactive {
@@ -442,7 +441,7 @@ html {
   background-color: transparent;
   color: var(--deepblue);
   box-shadow: 0px 15px 25px rgba(87, 122, 199, 0.3);
-  transition: 0.3s ease-in-out, box-shadow 0.3s ease-in-out, color .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   z-index: 2;
 }
 
@@ -465,7 +464,7 @@ html {
   text-decoration: none;
   color: var(--grey);
   box-shadow: 0 15px 25px rgba(128, 93, 32, 0.282);
-  transition: 0.3s ease-in-out, color .3s ease-in-out, box-shadow 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   z-index: 2;
   display: inline-block;
 }

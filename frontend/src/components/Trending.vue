@@ -70,7 +70,14 @@ export default {
             isTabletOrDesktop.value = window.innerWidth >= 840;
         };
         onMounted(() => {
+            updateScreenSize(); // Immediately set the initial size
             window.addEventListener('resize', updateScreenSize);
+
+            // Force Swiper to reinitialize once layout stabilizes
+            nextTick(() => {
+                const swiperInstance = this.$refs.swiper.swiper;
+                swiperInstance.update();
+            });
         });
 
         onUnmounted(() => {
@@ -103,6 +110,38 @@ export default {
 </script>
 
 <style>
+#preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    overflow: hidden;
+    background: var(--background-color);
+    transition: all 0.6s ease-out;
+}
+
+#preloader:before {
+    content: "";
+    position: fixed;
+    top: calc(50% - 30px);
+    left: calc(50% - 30px);
+    border: 6px solid #ffffff;
+    border-color: var(--accent-color) transparent var(--accent-color) transparent;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: animate-preloader 1.5s linear infinite;
+}
+
+@keyframes animate-preloader {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 #trending {
     display: flex;
     width: auto;
