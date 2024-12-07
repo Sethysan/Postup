@@ -62,7 +62,7 @@ export default {
     props: ['posts', 'getTimeElapsed'],
     components: { Swiper, SwiperSlide, PostSnippet },
     name: 'ForumPosts',
-    setup(props) {
+    setup() {
         const modules = [Pagination, EffectCoverflow];
         const isTabletOrDesktop = ref(window.innerWidth >= 840);
 
@@ -71,8 +71,6 @@ export default {
             isTabletOrDesktop.value = window.innerWidth >= 840;
         };
         onMounted(() => {
-            console.log("posts length:", props.posts.length);
-            console.log("isTabletOrDesktop:", isTabletOrDesktop.value);
             window.addEventListener('resize', updateScreenSize);
         });
 

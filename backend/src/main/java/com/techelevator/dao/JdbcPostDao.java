@@ -66,8 +66,6 @@ public class JdbcPostDao implements PostDao {
     @Override
     public List<PostResponseDto> getPosts(long forum, long user, String keyword, int limit, boolean sortByPopularity, boolean today) {
         List<PostResponseDto> posts = new ArrayList<>();
-//        todo: add user_image
-//        added user_image!
         String sql = "SELECT \n" +
                 "    posts.*, \n" +
                 "    users.user_image,\n" +
@@ -76,8 +74,7 @@ public class JdbcPostDao implements PostDao {
                 "    COUNT(DISTINCT post_downvote) AS dislikes,\n" +
                 "    COUNT(upvote.user_id) AS upvotes_from_user,\n" +
                 "    COUNT(downvote.user_id) AS downvotes_from_user\n" +
-                "FROM \n" +
-                "    posts\n" +
+                "FROM posts \n" +
                 "LEFT JOIN \n" +
                 "    users ON posts.author = users.username -- Join users table to get user_image\n" +
                 "LEFT JOIN \n" +
@@ -97,7 +94,7 @@ public class JdbcPostDao implements PostDao {
             sql += " AND posts.forum_id = " + forum;
         }
         if (today) {
-            sql += " AND (CAST(posts.time_of_creation AS Date) = CURRENT_DATE\n" +
+            sql += " AND (CAST(posts.time_of_creation AS DATE) = CURRENT_DATE\n" +
                     "OR CAST(replies.time_of_creation AS DATE) = CURRENT_DATE\n" +
                     "OR CAST(post_upvote.time_of_creation AS DATE) = CURRENT_DATE\n" + "" +
                     "OR CAST(post_downvote.time_of_creation AS DATE) = CURRENT_DATE)";

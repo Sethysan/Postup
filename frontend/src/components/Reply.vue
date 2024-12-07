@@ -8,7 +8,7 @@
                         <img v-else src="/images/avatars/no-image.jpg" class="reply-user-image"/>
                     </div>
                     <span class="reply-user">{{ currentReply.user.username }}</span>
-                    <span class="reply-time">• {{ getTimeElapsed(reply.timeOfCreation) }}</span>
+                    <span class="reply-time">• {{ getTimeElapsed(reply.created) }}</span>
                 </div>
             </div>
             <div class="reply-description" v-if="currentReply.user.username !== '[deleted]'">
@@ -36,7 +36,7 @@
                     </button>
                 </div>
                 <button @click="() => { formVisibility = true }"
-                    aria-label="View comments. {{ post.replyCount }} replies available" class="comment-button">
+                    aria-label="View comments. {{ reply.replyCount }} replies available" class="comment-button">
                     <svg aria-hidden="true" class="icon-comment" height="20" viewBox="0 0 20 20" width="20"
                         xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -44,7 +44,7 @@
                             fill="#272525">
                         </path>
                     </svg>
-                    <span>Reply</span>
+                    <span> Reply </span> <!-- {{ reply.replyCount }} -->
                 </button>
                 <button v-if="reply.user.username === user || checkIfMod || role === 'ROLE_ADMIN'" class="reply-option-btn"
                     @click="deleteReply">Delete</button>
@@ -66,15 +66,11 @@
 
 <script>
 import dayjs from 'dayjs';
-import replySerive from '../services/RepliesService';
+import replyService from '../services/RepliesService';
 
 export default {
     props: ['reply', 'indent', 'forumId'],
-    // props: {
-    //     reply: Object,
-    //     indent: Number,
-    //     forumId: Number
-    // },
+
     data() {
         return {
             styles: { margin: this.indent },
@@ -100,7 +96,7 @@ export default {
     methods: {
         addReply() {
             if (this.newReply.description != "") {
-                replySerive.createReply(this.reply.postId, this.newReply)
+                replyService.createReply(this.reply.postId, this.newReply)
                     .then(res => {
                         this.reply.replies.push(res.data);
                         this.newReply = {}
@@ -112,7 +108,7 @@ export default {
         upvote() {
             if (this.upvoted) {
                 // Remove the upvote
-                replySerive.unvotingLikes(this.reply.id)
+                replyService.unvotingLikes(this.reply.id)
                     .then(res => {
                         this.reply.upvotes--;
                         this.upvoted = false;
@@ -121,7 +117,7 @@ export default {
                     .catch(err => this.handleError(err, "Failed to undo upvote."));
             } else {
                 // Add the upvote
-                replySerive.upvoteReplies(this.reply.id)
+                replyService.upvoteReplies(this.reply.id)
                     .then(() => {
                         // If already downvoted, remove downvote
                         if (this.downvoted) {
@@ -137,7 +133,7 @@ export default {
         downvote() {
             if (this.downvoted) {
                 // Remove the downvote
-                replySerive.unvotingDislikes(this.reply.id)
+                replyService.unvotingDislikes(this.reply.id)
                     .then(() => {
                         this.reply.downvotes--;
                         this.downvoted = false;  // Remove downvoted state
@@ -145,7 +141,7 @@ export default {
                     .catch(err => this.handleError(err, "Failed to undo downvote."));
             } else {
                 // Add the downvote
-                replySerive.downvoteReplies(this.reply.id)
+                replyService.downvoteReplies(this.reply.id)
                     .then(res => {
                         // If already upvoted, remove upvote
                         if (this.upvoted) {
@@ -168,7 +164,7 @@ export default {
         },
         deleteReply() {
             if (confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
-                replySerive.deleteReply(this.reply.id)
+                replyService.deleteReply(this.reply.id)
                     .then(res => {
                         this.$store.commit('SET_NOTIFICATION', `Post ${this.reply.id} was deleted.`);
                         this.currentReply.user.username = 'removed';

@@ -19,6 +19,7 @@ public class ReplyResponseDto {
     private int downvotes;
     private boolean hasUpvoted;
     private boolean hasDownvoted;
+    private int replyCount;
 
     public long getId() {
         return id;
@@ -110,6 +111,14 @@ public class ReplyResponseDto {
 
     @JsonIgnore public void addReplies(ReplyResponseDto reply) {
         this.replies.add(reply);
+    }
+
+    public int getReplyCount() {
+        return replyCount;
+    }
+
+    public void setReplyCount(int replyCount) {
+        this.replyCount = replyCount;
     }
 
     @Override

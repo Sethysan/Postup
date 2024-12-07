@@ -1,11 +1,12 @@
 <template>
-    <section id="trending" v-if="filteredPosts.length > 0">
-        <div v-if="isTabletOrDesktop" class="trending-now">
+    <div id="preloader" v-if="loading"></div>
+    <section v-else id="trending" v-if="filteredPosts.length > 0">
+        <div v-if="isTabletOrDesktop"  class="trending-now">
             <div class="trending-now">
-                <h1> Trending Now </h1>
+                <h1 class="typed" data-typed-items="Trending Now"></h1>
             </div>
             <div class="body">
-                <div v-if="filteredPosts.length > 2">
+                <div v-if="filteredPosts.length > 2 && !loading">
                     <swiper ref="swiper" class="swiper-wrapper" :effect="'coverflow'" :grabCursor="true"
                         :centeredSlides="false" :spaceBetween="10" :slidesPerView="3" :breakpoints="{
                             '1': { slidesPerView: 1, spaceBetween: 10 },
@@ -19,7 +20,7 @@
                         </swiper-slide>
                     </swiper>
                 </div>
-                <div v-else-if="filteredPosts.length <= 2" class="forums-grid ">
+                <div v-else-if="filteredPosts.length <= 2" v-if="!loading" class="forums-grid ">
                     <swiper ref="swiper" class="swiper-wrapper" :effect="'coverflow'" :grabCursor="true"
                         :centeredSlides="false" :spaceBetween="10" :slidesPerView="1"
                         :coverflowEffect="{ rotate: 40, stretch: 80, depth: 140, modifier: 1, slideShadows: false, }"
@@ -55,7 +56,8 @@ import 'swiper/css/pagination';
 import { EffectCoverflow, Pagination } from 'swiper/modules';
 import { mapState, mapMutations } from 'vuex';
 import { ref, onMounted, onUnmounted } from 'vue';
-
+import Typed from 'typed.js';
+import { nextTick } from 'vue';
 
 export default {
     props: ['filteredPosts', 'getTimeElapsed'],
@@ -64,47 +66,45 @@ export default {
     setup() {
         const modules = [Pagination, EffectCoverflow];
         const isTabletOrDesktop = ref(window.innerWidth >= 840);
+        const swiperRef = ref(null);
+        const loading = ref(true);
 
         // Listener to update the screen size dynamically
         const updateScreenSize = () => {
             isTabletOrDesktop.value = window.innerWidth >= 840;
         };
+
+        let typedInstance = null;
+
         onMounted(() => {
-            updateScreenSize(); // Immediately set the initial size
             window.addEventListener('resize', updateScreenSize);
-
-            // Force Swiper to reinitialize once layout stabilizes
-            nextTick(() => {
-                const swiperInstance = this.$refs.swiper.swiper;
-                swiperInstance.update();
+                loading.value = false; // Hide preloader
             });
-        });
-
+        
         onUnmounted(() => {
             window.removeEventListener('resize', updateScreenSize);
+            if (typedInstance) {
+                typedInstance.destroy();
+            }
         });
 
         return {
             modules,
             isTabletOrDesktop,
+            swiperRef,
+            loading,
         };
     },
     computed: {
         ...mapState(['currentPage']),
+
+
     },
     methods: {
         ...mapMutations(['setCurrentPage']),
         handleSlideChange(swiper) {
             this.setCurrentPage(swiper.realIndex + 1);
-        },
-        getSlideWidthStyle(length) {
-            if (length === 1) {
-                return { width: '100%' }; // Single post takes 80% of the wrapper
-            } else if (length === 2) {
-                return { width: '50%' }; // Two posts take 40% each
-            }
-            return { width: 'auto' }; // Default for other cases
-        },
+        }
     },
 }
 </script>
@@ -113,7 +113,46 @@ export default {
 #preloader {
     position: fixed;
     inset: 0;
-    z-index: 999999;
+    background-color: var(--background-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+#preloader:before {
+    content: '';
+    width: 50px;
+    height: 50px;
+    border: 5px solid #ffffff;
+    border-top: 5px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.typed {
+    display: inline-block;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    color: var(--primary-color);
+    /* Adjust based on your project's theme */
+}
+
+#preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
     overflow: hidden;
     background: var(--background-color);
     transition: all 0.6s ease-out;
@@ -209,7 +248,7 @@ export default {
 
     .trending-post {
         width: calc(50% - 20px);
-        /* Two posts per row */
+
     }
 }
 

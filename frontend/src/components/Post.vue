@@ -99,7 +99,7 @@
 <script>
 import dayjs from 'dayjs';
 import service from '../services/PostService';
-import replySerive from '../services/RepliesService'
+import replyService from '../services/RepliesService'
 import Replies from './Replies.vue';
 import ModeratorService from '../services/ModeratorService';
 import { openModal, promptModal } from 'jenesius-vue-modal';
@@ -161,7 +161,7 @@ export default {
                 alert('Comment cannot be empty.');
                 return;
             }
-            replySerive.createReply(this.post.id, this.newReply)
+            replyService.createReply(this.post.id, this.newReply)
                 .then(res => {
                     this.replies.unshift(res.data)
                     this.newReply = {}

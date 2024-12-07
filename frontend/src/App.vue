@@ -407,7 +407,7 @@ html {
   background: 
         radial-gradient(circle, rgba(128, 93, 32, 0.075) 50%, rgba(128, 93, 32, 0.01)),
         linear-gradient(to bottom, rgb(9, 9, 9), rgb(9, 9, 9), var(--secondary), var(--secondary), var(--secondary), rgba(128, 93, 32, .1), rgba(128, 93, 32, 0.124));
-  transition: 0.3s ease-in-out, box-shadow 0.3s ease-in-out, color .3s ease-in-out;
+
 }
 
 .nav-btn {
