@@ -3,7 +3,7 @@
       <p>Wow, such empty!</p>
       <img src=""/>
     </div>
-    <div v-if="isloadingPost">
+    <div v-if="isloading">
       <p>loading . . .</p>
     </div>
     <div v-if="error">

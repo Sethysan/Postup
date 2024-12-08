@@ -1,16 +1,18 @@
 <template>
-  <div class="user-message-link" v-for="message in localMessages" :key="message.id" :class="{
-    'user-message': message.sender.username === username,
-    'others-message': message.sender.username !== username,
-    'unread-user-message': message.sender.username === username && !message.has_read,
-    'unread-others-message': message.sender.username !== username && !message.has_read
-  }">
+  <div class="user-message-link" v-for="message in localMessages" :key="message.id">
     <Message :message="message" @messageDeleted="removeMessage"></Message>
   </div>
   <div class="send-message">
-    <textarea v-model="message.message" placeholder="Enter your message"></textarea>
-    <button @click="sendMessage" class="reply-option-btn">Send</button>
+    <textarea v-model="message.message" placeholder="Enter your message" @focus="expandTextarea"
+      :class="{ expanded: formVisibility }" @blur="!formVisibility || cancelReply()"></textarea>
+    <!-- Buttons appear only when the textarea is expanded -->
+    <div v-if="formVisibility" class="comment-buttons">
+      <button @click="sendMessage" class="submit-button">Submit</button>
+      <button @click="cancelReply" class="cancel-button">Cancel</button>
+    </div>
   </div>
+
+
 </template>
 
 <script>
@@ -25,6 +27,7 @@ export default {
       localMessages: [...this.messages], // Create a local copy of the messages array
       id: this.$store.getters.userId,
       username: this.$store.getters.username,
+      formVisibility: false,
       message: {
         sender: { username: this.$store.getters.username },
         message: '' // Ensure this is initialized
@@ -40,13 +43,20 @@ export default {
     }
   },
   methods: {
+    expandTextarea() {
+      this.formVisibility = true;  // Make the form visible
+    },
     sendMessage() {
       service.createMessage(this.contact, this.message)
         .then(res => {
-          this.localMessages.unshift(res.data); // Modify the local copy
+          this.localMessages.push(res.data); // Modify the local copy
           this.message.message = ''; // Clear the input after sending
         })
         .catch(err => alert(err.response.status));
+    },
+    cancelReply() {
+      this.message.message = '';  // Clear the message
+      this.formVisibility = false;
     },
     goBack() {
       this.$router.go(-1); // Go back to the previous page
@@ -69,10 +79,8 @@ export default {
 }
 
 .send-message {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: 1rem;
+  position: relative;
+  margin-top: 20px;
   width: 90%;
 }
 </style>

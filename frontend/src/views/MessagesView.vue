@@ -1,10 +1,10 @@
 <template>
-  <button class="btn-message" @click="toggleUserList">
-    {{ buttonMessage }}
-  </button>
   <div class="messages">
-    <div v-show="!visible">
-    <h1 class="header">Messages</h1>
+    <button class="btn-message" @click="toggleUserList">
+      {{ buttonMessage }}
+    </button>
+    <div v-show="!visible" class="messages-container">
+      <h1 id="messages">Messages</h1>
       <contact-list :contacts="contacts"></contact-list>
     </div>
   </div>
@@ -69,6 +69,7 @@ export default {
 
 <style>
 .btn-message {
+  align-items: center;
   background-color: grey;
   color: black;
   font-weight: bold;
@@ -91,5 +92,6 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 </style>

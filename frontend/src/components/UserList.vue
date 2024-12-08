@@ -1,6 +1,6 @@
 <template>
   <div class="user-list">
-    <input type="text" v-model="searchQuery" placeholder="Search users..." class="search-input" autofocus />
+    <input type="text" v-model="searchQuery" placeholder="Search users..." class="search-input" />
     <div class="user-list-container">
       <table v-if="filteredUsers.length > 0">
         <thead>

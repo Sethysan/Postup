@@ -246,7 +246,7 @@ export default {
 .clear-button {
     padding: 5px 10px;
     margin-bottom: 15px;
-    background-color: #e15d20;
+    background-color: var(--orange);
     color: white;
     border: none;
     border-radius: 5px;
@@ -273,7 +273,7 @@ export default {
 
 .btn-create:hover,
 .clear-button:hover {
-    background-color: #a33908;
+    background-color: var(--orange-dark);
 }
 
 .search-button:hover {

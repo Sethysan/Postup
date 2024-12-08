@@ -478,7 +478,7 @@ export default {
     padding-top: 5px;
     padding-bottom: 5px;
     text-justify: center;
-    background-color: rgb(228, 228, 228);
+    background-color: rgb(179, 175, 175);
     border-radius: 30px;
     transition: background-color 0.3s ease;
 

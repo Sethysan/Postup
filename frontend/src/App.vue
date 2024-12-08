@@ -245,6 +245,8 @@ html {
   --blue: rgb(60, 184, 255);
   --deepblue: rgb(87, 122, 199);
   --orange: rgb(248, 133, 29);
+  --orange-dark: #a33908;
+  --red: #e50914;
 }
 
 #nav {
@@ -252,7 +254,6 @@ html {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  background-color: var(--secondary);
   width: 95%;
   padding: 10px;
   position: relative;

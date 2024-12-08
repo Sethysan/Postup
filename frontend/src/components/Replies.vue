@@ -20,5 +20,7 @@ export default {
 </script>
 
 <style>
-
+.replies-list {
+  background-image: url("/images/patina.jpg");
+}
 </style>
