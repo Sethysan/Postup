@@ -59,7 +59,6 @@ public class JdbcPostDao implements PostDao {
         if (results.next()) {
             post = mapRowToPost(results);
         }
-        System.out.println("postbyid:\n" + post);
         return post;
     }
 
@@ -112,7 +111,6 @@ public class JdbcPostDao implements PostDao {
         while (results.next()) {
             posts.add(mapRowToPost(results));
         }
-        System.out.println("allPosts: " + posts);
         return posts;
     }
 

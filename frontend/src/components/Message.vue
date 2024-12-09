@@ -24,8 +24,8 @@
                 </div>
             </div>
             <div v-if="isSender" class="options">
-                <div v-if="!showOptions">
-                    <button @click="toggleOptions">Options</button>
+                <div v-if="!showOptions"  >
+                    <button @click="toggleOptions" class="options-btn">Options</button>
                 </div>
                 <div v-if="showOptions">
                     <div class="buttons">
@@ -273,7 +273,7 @@ textarea {
     font-size: 1rem;
 }
 
-button {
+.options-btn {
     padding: 5px 10px;
     background-color: var(--orange);
     color: white;
@@ -284,9 +284,8 @@ button {
     display: inline-block;
 }
 
-button:hover {
+.options-btn:hover {
     background-color: var(--orange-dark);
-    /* Slightly darker shade for hover */
 }
 
 .deleted-message {

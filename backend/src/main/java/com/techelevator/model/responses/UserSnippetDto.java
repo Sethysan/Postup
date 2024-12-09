@@ -2,7 +2,7 @@ package com.techelevator.model.responses;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-// TODO: FOR JASIR! Please look over and add to as needed for different dtos.
+
 public class UserSnippetDto {
     private long id;
     private String username;

@@ -136,7 +136,6 @@ footer {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    /* Ensures the logo fills the container */
     display: block;
 }
 

@@ -44,12 +44,11 @@ export default {
     },
     created() {
         if (this.forum) {
-
             // If forum data is already passed as a prop, use it
             this.currentForum = this.forum;
         } else {
             // Otherwise, fetch the forum from the service
-            service.getForum($route.params.forumId).then(res => {             
+            service.getForum($route.params.forumId).then(res => {
                 this.currentForum = res.data;
                 this.checkIfMod();
             });
@@ -57,32 +56,22 @@ export default {
     },
     methods: {
         favorite() {
-            if (this.forum.favorited) {
-                service.removeFavorite(this.forum.id)
-                    .then(res => {
-                        this.color = "white"
-                        this.forum.favorited = false;
-                    })
-                    .catch(err => service.addFavorite(this.forum.id)
-                    .then(res => {
-                        this.color = "red"
-                        this.forum.favorited = true;
-                    }))
-            }
-            else {
-                service.addFavorite(this.forum.id)
-                    .then(res => {
-                        this.color = "red"
-                        this.forum.favorited = true;
-                    })
-                    .catch(err => service.removeFavorite(this.forum.id)
-                    .then(res => {
-                        this.color = "white"
-                        this.forum.favorited = false;
-                    })
-                    .catch(err => alert(err)))
-                    .catch(err => alert(err))
-            }
+            const isFavorited = this.forum.favorited;
+
+            const serviceCall = isFavorited
+                ? service.removeFavorite(this.forum.id)
+                : service.addFavorite(this.forum.id);
+
+            serviceCall
+                .then(() => {
+                    this.forum.favorited = !isFavorited; // Toggle the favorited state
+                    this.color = this.forum.favorited ? "red" : "white"; // Update the button color
+                })
+                .catch((err) => {
+                    console.error("Error updating favorite status:", err.response ? err.response.data : err);
+                    alert(err.response?.data?.message || "Failed to update favorite status.");
+                });
+
         },
         getTimeElapsed(creationTime) {
             // dayjs converts time into a readable format and calculates the elapsed time
@@ -93,11 +82,14 @@ export default {
         checkIfMod() {
             const access = this.$store.getters.access;
             if (Array.isArray(access)) {
+                // console.log(access);
+                // console.log(this.role)
                 return access.map(item => item.forumId).findIndex(id => id === this.forumId) !== -1
             }
             try {
                 const parsedAccess = JSON.parse(access);
                 if (Array.isArray(parsedAccess)) {
+                    // console.log(parsedAccess);
                     return parsedAccess.map(item => item.forumId).findIndex(id => id === this.forum.id) !== -1;
                 }
             } catch (error) {
@@ -116,25 +108,33 @@ export default {
     align-items: center;
     font-weight: bolder;
     font-size: xx-large;
-    
-}
-.forum-description {
-    font-size: medium;
-    margin-bottom: 10px; /* Adjust space between the description and sub-header */
-    text-align: center; /* Center the description text */
+
 }
 
-.sub-header{
+.forum-description {
+    font-size: medium;
+    margin-bottom: 10px;
+    /* Adjust space between the description and sub-header */
+    text-align: center;
+    /* Center the description text */
+}
+
+.sub-header {
     display: flex;
     flex-direction: row;
     align-content: space-evenly;
 }
+
 .sub-header {
     display: flex;
-    flex-direction: row; /* Make the sub-header items appear in a row */
-    justify-content: center; /* Center-align the buttons */
-    gap: 10px; /* Space between buttons */
-    margin-top: 10px; /* Add some space between the description and sub-header */
+    flex-direction: row;
+    /* Make the sub-header items appear in a row */
+    justify-content: center;
+    /* Center-align the buttons */
+    gap: 10px;
+    /* Space between buttons */
+    margin-top: 10px;
+    /* Add some space between the description and sub-header */
 }
 
 button {

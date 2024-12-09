@@ -46,8 +46,11 @@ public class ForumController {
     @GetMapping("/forums/{forumId}")
     public Forum getForumById(@PathVariable long forumId, Principal principal) {
         long user = -1;
-        if(principal != null && principal.getName().isBlank()){
-            user = userDao.getUserByUsername(principal.getName()).getId();
+        if(principal != null){
+            User yup = userDao.getUserByUsername(principal.getName());
+            if(yup != null){
+                user = yup.getId();
+            }
         }
         return forumsDao.getForumById(forumId, user);
     }
@@ -104,7 +107,7 @@ public class ForumController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/forums/favorites")
-    public List<Forum> getFavoritedForums(Principal principal){
+    public List<Forum> getFavoriteForums(Principal principal){
         long user = -1;
         if(principal != null){
             User yup = userDao.getUserByUsername(principal.getName());
@@ -119,13 +122,27 @@ public class ForumController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/forum/{id}/favorites")
     public void addFavorite(@PathVariable long id,  Principal principal){
-        forumsDao.addFavorite(id, userDao.getUserByUsername(principal.getName()).getId());
+        long user = -1;
+        if(principal != null){
+            User yup = userDao.getUserByUsername(principal.getName());
+            if(yup != null){
+                user = yup.getId();
+            }
+        }
+        forumsDao.addFavorite(id, user);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/forum/{id}/favorites")
     public void removeFavorite(@PathVariable long id,  Principal principal){
-        forumsDao.removeFavorite(id, userDao.getUserByUsername(principal.getName()).getId());
+        long user = -1;
+        if(principal != null){
+            User yup = userDao.getUserByUsername(principal.getName());
+            if(yup != null){
+                user = yup.getId();
+            }
+        }
+        forumsDao.removeFavorite(id, user);
     }
 }

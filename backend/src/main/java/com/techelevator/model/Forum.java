@@ -1,5 +1,7 @@
 package com.techelevator.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.sql.Timestamp;
 
 public class Forum {
@@ -9,8 +11,11 @@ public class Forum {
     private String author;
     private Timestamp timeOfCreation;
     private Timestamp mostRecentPost;
-    boolean isFavorited;
-    String moderator;
+
+    @JsonProperty("favorited")
+    private boolean isFavorited;
+
+    private String moderator;
 
     public long getId() {
         return id;
@@ -52,11 +57,7 @@ public class Forum {
         this.timeOfCreation = timeOfCreation;
     }
 
-    public boolean setIsFavorited(){
-        return isFavorited;
-    }
-
-    public boolean isFavorited() {
+    public boolean getIsFavorited() {
         return isFavorited;
     }
 
@@ -89,7 +90,7 @@ public class Forum {
                 ", author='" + author + '\'' +
                 ", timeOfCreation=" + timeOfCreation +
                 ", mostRecentPost=" + mostRecentPost +
-                ", isFavorited=" + isFavorited +
+                ", favorited=" + isFavorited +
                 ", moderator='" + moderator + '\'' +
                 '}';
     }

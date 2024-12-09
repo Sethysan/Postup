@@ -30,11 +30,11 @@ export default {
          service.getPostById(this.postId)
           .then(res => {
             this.postData = res.data
-            console.log(this.postData)
+            // console.log(this.postData)
             reviewService.getReplies(this.postId)
               .then(res => {
                   this.replies = res.data
-                  console.log(this.replies)
+                  // console.log(this.replies)
                   this.isLoading = false;
                 })
               .catch(err => this.error = true)

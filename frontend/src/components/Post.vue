@@ -30,9 +30,12 @@
                     <h1 class="post-title">{{ post.title }}</h1>
                 </div>
             </div>
-            <p class="post-description">{{ post.description }}</p>
-            <div v-if="post.image" class="post-image-container">
+            <div>
+                <p class="description">{{ post.description }}</p>
+            </div>
+            <div class="post-image-container">
                 <img v-if="post.image" :src="post.image" class="post-image" @click="toggleImageFullscreen" />
+                <div v-else class="default-post-image"></div> 
 
                 <!-- Post Footer: Votes, Comments, Delete Button -->
                 <div class="post-footer">
@@ -87,10 +90,10 @@
                 <!-- Replies Component -->
                 <div v-if="!isImageFullscreen">
                 </div>
-            </div>
-            <div>
-                <!-- <replies :replies="replies" :isMod="checkIfMod"></replies> -->
-                <replies :replies="replies" :forumId="post.forum_id"></replies>
+                <div>
+                    <!-- <replies :replies="replies" :isMod="checkIfMod"></replies> -->
+                    <replies :replies="replies" :forumId="post.forum_id"></replies>
+                </div>
             </div>
         </div>
     </div>
@@ -312,6 +315,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-end;
+    margin: 0 20px 0 20px;
 }
 
 .back-button {
@@ -385,20 +389,30 @@ export default {
     font-weight: 600;
 }
 
-.post-description {
+.description {
     font-size: 1rem;
     margin-bottom: 12px;
 }
 
-.post-image-container img {
+.post-image-container {
     width: 100%;
     max-height: 400px;
     border: 4px solid var(--nero);
-    background: radial-gradient(circle, var(--nero) 75%, rgba(0, 0, 0, 0.389));
+    background: radial-gradient(circle, var(--nero) 75%, rgba(0, 0, 0, .389));
     object-fit: contain;
     border-radius: 8px;
     cursor: zoom-in;
-    /* object-fit: contain; */
+}
+
+.default-post-image {
+    width: 100%; /* Ensure it spans the container */
+    height: 400px; /* Set the height */
+    background-image: url('/images/POST-UP_logo.png'); /* Background image */
+    background-size: contain; /* Keep the aspect ratio */
+    background-repeat: no-repeat; /* Prevent repetition */
+    background-position: center; /* Center the image horizontally and vertically */
+    margin: 0 auto; /* Center horizontally (in case of inline-block quirks) */
+    display: block; /* Ensure it behaves as a block-level element */
 }
 
 .post-footer {
@@ -556,6 +570,7 @@ textarea.expanded {
 
 .vote-count {
     font-size: 1rem;
+    color: var(--secondary);
 }
 
 .vote-button {

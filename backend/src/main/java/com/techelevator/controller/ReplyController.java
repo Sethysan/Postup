@@ -43,7 +43,6 @@ public class ReplyController {
                 user = yup.getId();
             }
         }
-        System.out.println("user: " + user);
         return replyDao.getPostThreads(id, user);
     }
 

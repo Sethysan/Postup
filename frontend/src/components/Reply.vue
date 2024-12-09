@@ -46,7 +46,7 @@
                     </svg>
                     <span> Reply </span> <!-- {{ reply.replyCount }} -->
                 </button>
-                <button v-if="reply.user.username === user || checkIfMod || role === 'ROLE_ADMIN'" class="reply-option-btn"
+                <button v-if="reply.user.username === user || checkIfMod || role === 'ROLE_ADMIN'" class="delete-button"
                     @click="deleteReply">Delete</button>
             </div>
             <div v-if="formVisibility">

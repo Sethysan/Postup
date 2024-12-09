@@ -56,8 +56,16 @@ public class JdbcForumDao implements ForumsDao {
 
     public Forum getForumById(long forumId, long user) {
         Forum forum = null;
-        String sql = "SELECT forums.*, MAX(posts.time_of_creation) AS most_recent_post, COUNT(favorite_forums.forum_id) AS favorited, moderation.username AS moderator  FROM forums \n" +
-                "LEFT JOIN moderation ON moderation.username = forums.author LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? LEFT JOIN posts ON posts.forum_id = forums.forum_id WHERE forums.forum_id = ? GROUP BY forums.forum_id, moderator";
+        String sql = "SELECT \n" +
+                "    forums.*, \n" +
+                "    MAX(posts.time_of_creation) AS most_recent_post, \n" +
+                "    COUNT(favorite_forums.forum_id) AS favorited, moderation.username AS moderator \n" +
+                "FROM forums \n" +
+                "LEFT JOIN moderation ON moderation.username = forums.author \n" +
+                "LEFT JOIN favorite_forums ON favorite_forums.forum_id = forums.forum_id AND favorite_forums.user_id = ? \n" +
+                "LEFT JOIN posts ON posts.forum_id = forums.forum_id \n" +
+                "WHERE forums.forum_id = ? \n" +
+                "GROUP BY forums.forum_id, moderator;";
 
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, user, forumId);
 
@@ -96,7 +104,6 @@ public class JdbcForumDao implements ForumsDao {
         while(results.next()){
             favorites.add(mapRowToForum(results));
         }
-        System.out.println(favorites);
         return favorites;
     }
 
@@ -181,10 +188,9 @@ public class JdbcForumDao implements ForumsDao {
         forum.setDescription(rs.getString("description"));
         forum.setAuthor(rs.getString("author"));
         forum.setTimeOfCreation(rs.getTimestamp("time_of_creation"));
-        forum.setIsFavorited(rs.getInt("favorited") > 0);
         forum.setMostRecentPost(rs.getTimestamp("most_recent_post"));
+        forum.setIsFavorited(rs.getBoolean("favorited"));
         forum.setModerator(rs.getString("moderator"));
-        System.out.println(forum);
         return forum;
     }
 

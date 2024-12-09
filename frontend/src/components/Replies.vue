@@ -21,6 +21,8 @@ export default {
 
 <style>
 .replies-list {
-  background-image: url("/images/patina.jpg");
+  height: auto;
+    background: radial-gradient(circle, var(--nero) 75%, rgba(0, 0, 0, 0.389));
+    background-position: center;
 }
 </style>

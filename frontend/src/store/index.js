@@ -115,9 +115,14 @@ export function createStore(
         return state.user.user_image;
       },
       role(state) {
+
         if (!state.user || !state.user.authorities) {
+          // console.log("User state:", state.user);
+          // console.log("User authorities:", state.user.authorities);
           return "ROLE_USER";
         }
+        // console.log("User state:", state.user);
+        // console.log("User authorities:", state.user.authorities);
         return state.user.authorities.length > 0
           ? state.user.authorities[0].name
           : "ROLE_USER";
