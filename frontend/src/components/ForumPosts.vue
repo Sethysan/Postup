@@ -21,7 +21,7 @@
                             </swiper-slide>
                         </swiper>
                     </div>
-                    <div v-else-if="posts.length <= 2" class="forums-grid ">
+                    <div v-else-if="posts.length === 2" class="forums-grid ">
                         <swiper ref="swiper" class="swiper-wrapper" :effect="'coverflow'" :grabCursor="true"
                             :centeredSlides="false" :spaceBetween="10" :slidesPerView="1"
                             :coverflowEffect="{ rotate: 40, stretch: 80, depth: 140, modifier: 1, slideShadows: false, }"
@@ -30,6 +30,12 @@
                                 <post-snippet :post="post"></post-snippet>
                             </swiper-slide>
                         </swiper>
+                    </div>
+                    <div v-else-if="posts.length === 1" class="forum-results-container">
+                        <!-- Display posts based on search or default -->
+                        <div v-for="(post) in posts" :key="post.id" class="trending-results" >
+                            <post-snippet :post="post"></post-snippet>
+                        </div>
                     </div>
                     <div v-else>
                         <p>No posts available.</p>

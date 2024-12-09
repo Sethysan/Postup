@@ -188,9 +188,7 @@ export default {
   align-items: center;
 }
 
-/* .router-view {
-  width: 98%;
-} */
+
 
 ::after,
 ::before {

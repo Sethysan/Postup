@@ -207,6 +207,10 @@ export default {
 </script>
 
 <style>
+
+.thread{
+    padding: 0 10px;
+}
 .reply-header {
     display: flex;
     align-items: center;

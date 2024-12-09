@@ -151,7 +151,6 @@ export default {
     text-align: center;
     width: 95vw;
 }
-
 .search-results-header {
     margin-bottom: 1rem;
     font-size: 1.5rem;
@@ -162,7 +161,7 @@ export default {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
     gap: 1.5rem;
-    max-height: 80vh;
+    max-height: 100vh;
     overflow-y: auto;
     padding: 1rem;
 }

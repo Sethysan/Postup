@@ -1,7 +1,7 @@
 <template>
     <div id="preloader" v-if="loading"></div>
     <section v-else id="trending" v-if="filteredPosts.length > 0">
-        <div v-if="isTabletOrDesktop"  class="trending-now">
+        <div v-if="isTabletOrDesktop" class="trending-now">
             <div class="trending-now">
                 <h1 class="typed" data-typed-items="Trending Now"></h1>
             </div>
@@ -78,9 +78,9 @@ export default {
 
         onMounted(() => {
             window.addEventListener('resize', updateScreenSize);
-                loading.value = false; // Hide preloader
-            });
-        
+            loading.value = false; // Hide preloader
+        });
+
         onUnmounted(() => {
             window.removeEventListener('resize', updateScreenSize);
             if (typedInstance) {
@@ -110,7 +110,6 @@ export default {
 </script>
 
 <style>
-
 #trending {
     display: flex;
     width: auto;
@@ -168,6 +167,10 @@ export default {
 
 .trending-results {
     max-height: 100vh;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 @media (min-width: 840px) {
@@ -201,7 +204,8 @@ export default {
 
 @media (max-width: 840px) {
     .trending-results {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 2fr));
         max-height: 70vh;
         overflow-x: hidden;
         overflow-y: auto;
