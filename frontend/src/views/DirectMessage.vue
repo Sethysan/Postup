@@ -54,10 +54,10 @@ export default {
 }
 </script>
 
-<style>
+<style >
 .back-button {
   margin-top: 5rem !important;
-  margin-left: 5rem !important;
+  /* margin-left: 5rem !important; */
 }
 
 .message-container {

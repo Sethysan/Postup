@@ -92,12 +92,23 @@ public class JdbcPostDao implements PostDao {
         if (forum > 0) {
             sql += " AND posts.forum_id = " + forum;
         }
+
+        // Limits home page trending posts to current day activity
+//        if (today) {
+//            sql += " AND (CAST(posts.time_of_creation AS DATE) = CURRENT_DATE\n" +
+//                    "OR CAST(replies.time_of_creation AS DATE) = CURRENT_DATE\n" +
+//                    "OR CAST(post_upvote.time_of_creation AS DATE) = CURRENT_DATE\n" + "" +
+//                    "OR CAST(post_downvote.time_of_creation AS DATE) = CURRENT_DATE)";
+//        }
+
         if (today) {
-            sql += " AND (CAST(posts.time_of_creation AS DATE) = CURRENT_DATE\n" +
-                    "OR CAST(replies.time_of_creation AS DATE) = CURRENT_DATE\n" +
-                    "OR CAST(post_upvote.time_of_creation AS DATE) = CURRENT_DATE\n" + "" +
-                    "OR CAST(post_downvote.time_of_creation AS DATE) = CURRENT_DATE)";
+            sql += " AND (posts.time_of_creation >= NOW() - INTERVAL '7 DAYS'\n" +
+                    "OR replies.time_of_creation >= NOW() - INTERVAL '7 DAYS'\n" +
+                    "OR post_upvote.time_of_creation >= NOW() - INTERVAL '7 DAYS'\n" +
+                    "OR post_downvote.time_of_creation >= NOW() - INTERVAL '7 DAYS')";
         }
+
+
         sql += " GROUP BY posts.post_id, users.user_image "; //added user_image
         sql += sortByPopularity ? " ORDER BY COUNT(post_upvote.post_id) - COUNT(post_downvote.post_id) DESC" : " ORDER BY post_id DESC";
         if (limit > 0) {

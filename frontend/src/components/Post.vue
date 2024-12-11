@@ -26,9 +26,9 @@
                 </div>
 
                 <!-- <share-form :post="post" :url="`http://localhost:5173/posts/${this.post.id}`"></share-form> -->
-                <div class="post-info">
-                    <h1 class="post-title">{{ post.title }}</h1>
-                </div>
+            </div>
+            <div class="post-info">
+                <h1 class="post-title">{{ post.title }}</h1>
             </div>
             <div>
                 <p class="description">{{ post.description }}</p>
@@ -77,9 +77,9 @@
                     @click="deletePost">Delete</button>
             </div>
             <!-- Reply Form -->
-            <div v-if="user">
+            
                 <!-- Textarea for adding a comment, expanding when clicked -->
-                <div class="reply-container">
+                <div v-if="user" class="reply-container">
                     <textarea v-model="newReply.description" placeholder="Add a comment" @focus="expandTextarea"
                         :class="{ expanded: formVisibility }" @blur="formVisibility || cancelReply()"></textarea>
                     <!-- Buttons appear only when the textarea is expanded -->
@@ -88,7 +88,7 @@
                         <button @click="cancelReply" class="cancel-button">Cancel</button>
                     </div>
                 </div>
-            </div>
+            
             <!-- Replies Component -->
             <div v-if="!isImageFullscreen">
             </div>
@@ -315,9 +315,8 @@ export default {
 
 .post-header {
     display: flex;
-    flex-wrap: wrap;
     align-items: flex-end;
-    margin: 0 20px 0 20px;
+    margin: 0 1.5rem 0 1.5rem;
 }
 
 .back-button {
@@ -330,7 +329,7 @@ export default {
     justify-content: center;
     transition: transform .1s ease, color .3s ease, background-color .3s ease;
     cursor: pointer;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
     margin-right: 10px;
 }
 
@@ -344,18 +343,22 @@ export default {
 .post {
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 0 1.5rem 0 1.5rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .post-meta {
     display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-end;
     align-items: center;
-    gap: 5px;
+    gap: 15px;
     /* Adjust spacing between author and time */
-    font-size: 0.875rem;
-    margin-right: 15rem;
+    /* margin-right: 15rem; */
+    justify-content: space-around;
+
 }
 
 .user-image {
@@ -382,7 +385,6 @@ export default {
 
 .post-time {
     display: inline;
-    color: #4e4949;
 }
 
 .post-info {
@@ -401,49 +403,42 @@ export default {
 
 .description {
     font-size: 1rem;
-    margin-bottom: 12px;
+    margin: 0 1.5rem 1rem 1.5rem;
 }
 
 .post-image-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-left: 5%;
-    max-width: 90%;
+    margin: 0 .8rem 0 .8rem;
     max-height: 400px;
     background: radial-gradient(circle, var(--nero) 75%, rgba(0, 0, 0, .389));
     object-fit: contain;
     border-radius: 8px;
     cursor: zoom-in;
     border-bottom: 2px solid black;
+    border-right: 1px solid black;;
     border-top: 2px solid rgba(91, 89, 89, 0.537);
+    border-left: 1px solid black;
 }
 
 .post-image {
     width: 100%;
     height: 400px;
-    box-shadow: 0 20px 30px rgba(0, 0, 0, .7);
-    border-top: 1px solid rgba(91, 89, 89, 0.537);
-    border-left: 1px solid rgba(91, 89, 89, 0.537);
+    box-shadow: 0 20px 30px rgba(0, 0, 0, .8);
+    border-radius: 4px;
 }
 
 .default-post-image {
     width: 100%;
-    /* Ensure it spans the container */
     height: 400px;
-    /* Set the height */
     background-image: url('/images/POST-UP_logo.png');
-    /* Background image */
     background-size: contain;
-    /* Keep the aspect ratio */
     background-repeat: no-repeat;
-    /* Prevent repetition */
     background-position: center;
-    /* Center the image horizontally and vertically */
     margin: 0 auto;
-    /* Center horizontally (in case of inline-block quirks) */
     display: block;
-    /* Ensure it behaves as a block-level element */
+
 }
 
 .post-footer {
@@ -451,8 +446,7 @@ export default {
     gap: 20px;
     align-items: center;
     justify-content: start;
-    margin-top: 1rem;
-    padding-left: 1rem;
+    margin: 1rem 1.5rem 0 1.5rem;
 }
 
 /* Voting container */
@@ -460,6 +454,7 @@ export default {
     display: flex;
     align-items: center;
     background-color: rgb(228, 228, 228);
+    box-shadow: 3px 5px 15px rgb(61 64 137 / 25%);
     border-radius: 30px;
     transition: background-color 0.3s ease;
 
@@ -524,6 +519,7 @@ export default {
     padding-bottom: 5px;
     text-justify: center;
     background-color: rgb(179, 175, 175);
+    box-shadow: 1px 3px 15px rgb(61 64 137 / 36%);
     border-radius: 30px;
     transition: background-color 0.3s ease;
 
@@ -596,7 +592,9 @@ textarea.expanded {
 
 .reply-container {
     position: relative;
-    margin: 20px 40px 0 20px;
+    margin: 0 1.5rem 0 1.5rem;
+    padding-right: 1rem;
+    box-shadow: 0 10px 20px rgb(0 72 172 / 51%);
 }
 
 .vote-count {

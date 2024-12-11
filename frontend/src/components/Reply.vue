@@ -209,14 +209,14 @@ export default {
 <style>
 
 .thread{
-    padding: 0 10px;
+    margin: 0 1rem;
 }
 .reply-header {
     display: flex;
     align-items: center;
     background-color: rgba(176, 202, 255, 0.704);
     border-radius: 13px;
-    margin-top: 20px;
+    margin: 10px 10px 0 10px;
     padding: 5px;
     margin-bottom: 12px;
     gap: 10px;
@@ -241,7 +241,8 @@ export default {
   width: 44px; 
   height: 44px;
   border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.587); 
+  background-color: rgb(207 196 164 / 76%); 
+  box-shadow: 0 0 8px rgb(230 226 201 / 74%);
   display: flex;
   align-items: center;
   justify-content: center; 
@@ -249,6 +250,7 @@ export default {
 
 .reply-user {
     font-size: 1rem;
+    font-weight: 600;
 }
 
 .reply-time {
@@ -260,8 +262,7 @@ export default {
     justify-content: flex-start;
     align-items: center;
     gap: 10px;
-    margin-top: auto;
-    margin-bottom: 1vh;
+    margin: 10px 10px 5px 10px;
 }
 
 .vote-container {
@@ -356,13 +357,10 @@ export default {
     display: flex;
     flex-direction: column;
     background: radial-gradient(circle, #888 35%, rgba(27, 27, 27, 0.699));
+    box-shadow: 0 20px 30px rgba(0, 0, 0, .8);
     border: 1px solid rgb(87, 122, 199);
-    border-radius: 25px;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-bottom: 10px;
-    margin: 3vh;
-    min-height: 200px;
+    border-radius: 20px;
+    margin: 3vh 0 0 0;
     max-width: 600px; /* Adjust the width as needed */
     width: 100%; /* Ensures it is responsive */
 }
@@ -375,13 +373,13 @@ export default {
 }
 
 .reply-description {
-    margin-top: 10px;
-    margin-bottom: 5px;
     background: rgba(241, 231, 199, 0.363);
+    font-weight: 400;
     color: black;
     border-radius: 10px;
     padding-right: 5px;
     padding-left: 5px;
+    margin: 0 10px 5px 10px;
     display: block; 
     width: auto; 
     max-width: 100%; 

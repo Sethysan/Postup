@@ -188,7 +188,7 @@ option {
 
 /* Responsive Styling */
 @media (min-width: 840px) {
-  .home {
+  /* .home {
     padding: 30px;
   }
 
@@ -196,7 +196,7 @@ option {
     justify-content: flex-start;
     gap: 20px;
     width: 90%;
-  }
+  } */
 
   .trending-posts,
   .active-forums {
@@ -206,7 +206,7 @@ option {
 
 }
 
-@media (min-width: 1000px) {
+/* @media (min-width: 1000px) {
   .home {
     padding: 40px;
   }
@@ -217,14 +217,14 @@ option {
     width: 80%;
   }
 
-}
+} */
 
 @media (max-width: 480px) {
-  .filter-bar {
+  /* .filter-bar {
     flex-direction: column;
     align-items: center;
     gap: 10px;
-  }
+  } */
 
   .forums-grid {
     grid-template-columns: 1fr;
