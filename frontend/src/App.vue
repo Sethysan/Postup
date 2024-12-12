@@ -270,6 +270,7 @@ html {
 .logo {
   height: 100%;
   object-fit: contain;
+  
 }
 
 .user-info {

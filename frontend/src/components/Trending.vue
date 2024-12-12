@@ -3,7 +3,7 @@
     <section v-else id="trending" v-if="filteredPosts.length > 0">
         <div v-if="isTabletOrDesktop" class="trending-now">
             <div class="trending-now">
-                <h1 class="typed" data-typed-items="Trending Now"></h1>
+                <h1>Trending Now</h1>
             </div>
             <div class="body">
                 <div v-if="filteredPosts.length > 2 && !loading">
@@ -13,7 +13,7 @@
                             '1000': { slidesPerView: 2, spaceBetween: 100 },
                             '1324': { slidesPerView: 3, spaceBetween: 100 }
                         }"
-                        :coverflowEffect="{ rotate: 40, stretch: 80, depth: 140, modifier: 1, slideShadows: false, }"
+                        :coverflowEffect="{ rotate: 30, stretch: 100, depth: 200, modifier: 1, slideShadows: false, }"
                         :pagination="{ type: 'progressbar' }" :modules="modules">
                         <swiper-slide v-for="(post) in filteredPosts" :key="post.id" class="trending-post">
                             <post-snippet :post="post"></post-snippet>
@@ -56,7 +56,6 @@ import 'swiper/css/pagination';
 import { EffectCoverflow, Pagination } from 'swiper/modules';
 import { mapState, mapMutations } from 'vuex';
 import { ref, onMounted, onUnmounted } from 'vue';
-import Typed from 'typed.js';
 import { nextTick } from 'vue';
 
 export default {
@@ -74,8 +73,6 @@ export default {
             isTabletOrDesktop.value = window.innerWidth >= 840;
         };
 
-        let typedInstance = null;
-
         onMounted(() => {
             window.addEventListener('resize', updateScreenSize);
             loading.value = false; // Hide preloader
@@ -83,9 +80,6 @@ export default {
 
         onUnmounted(() => {
             window.removeEventListener('resize', updateScreenSize);
-            if (typedInstance) {
-                typedInstance.destroy();
-            }
         });
 
         return {

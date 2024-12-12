@@ -22,9 +22,7 @@ export default {
 <style>
 .replies-list {
   height: auto;
-  background: radial-gradient(circle, var(--nero) 75%, rgba(0, 0, 0, 0.389));
-  background-position: center;
+  background: radial-gradient(circle, var(--nero) 75%, rgba(0, 0, 0, .389));
   padding: 5px 0 0 20px;
-
 }
 </style>
