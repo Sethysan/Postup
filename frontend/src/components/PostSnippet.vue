@@ -66,7 +66,6 @@ export default {
     border-radius: 8px;
     border: solid .01px var(--primary);
     background: rgb(0, 0, 0);
-    /* border-color: var(--primary); */
     box-shadow: 0 40px 80px rgb(0, 0, 0);
     transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
@@ -80,8 +79,11 @@ export default {
 .image-container {
     position: relative;
     width: 100%;
-    height: 500px; /* This ensures the container is fixed in height */
-    overflow: hidden; /* This will clip any overflowed content */
+    height: 500px;
+    border-radius: 8px;
+    /* This ensures the container is fixed in height */
+    overflow: hidden;
+    /* This will clip any overflowed content */
 }
 
 .image-container:after {
@@ -204,5 +206,4 @@ footer {
         margin-left: 0;
     }
 }
-
 </style>
