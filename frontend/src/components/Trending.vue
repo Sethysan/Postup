@@ -108,7 +108,7 @@ export default {
     display: flex;
     width: auto;
     flex-direction: column;
-    border: none;
+    border: 4px solid var(--nero);
     background: radial-gradient(circle, var(--nero) 75%, rgba(0, 0, 0, 0.5));
 }
 
