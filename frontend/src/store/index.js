@@ -33,7 +33,6 @@ export function createStore(
       },
       SET_USER(state, user) {
         state.user = user;
-        console.log("Storing user in localStorage:", user);
         localStorage.setItem("user", JSON.stringify(user));
       },
       LOGOUT(state) {
