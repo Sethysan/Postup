@@ -24,13 +24,13 @@ export default {
   props: ['messages', 'contact'],
   data() {
     return {
-      localMessages: [...this.messages], // Create a local copy of the messages array
+      localMessages: [...this.messages], 
       id: this.$store.getters.userId,
       username: this.$store.getters.username,
       formVisibility: false,
       message: {
         sender: { username: this.$store.getters.username },
-        message: '' // Ensure this is initialized
+        message: '' 
       },
     };
   },
@@ -44,13 +44,14 @@ export default {
   },
   methods: {
     expandTextarea() {
-      this.formVisibility = true;  // Make the form visible
+      this.formVisibility = true;  
     },
     sendMessage() {
       service.createMessage(this.contact, this.message)
         .then(res => {
           this.localMessages.push(res.data); // Modify the local copy
           this.message.message = ''; // Clear the input after sending
+          this.formVisibility = false; // Hide the textarea
         })
         .catch(err => alert(err.response.status));
     },
