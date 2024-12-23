@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div v-if="isSender" class="options">
-                <div v-if="!showOptions"  >
+                <div v-if="!showOptions">
                     <button @click="toggleOptions" class="options-btn">Options</button>
                 </div>
                 <div v-if="showOptions">
@@ -145,11 +145,10 @@ export default {
     padding-bottom: .5rem;
     overflow-y: auto;
     max-height: 80vh;
-    background-image: url('/images/patina.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
-  height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    height: 100%;
 }
 
 .message {
