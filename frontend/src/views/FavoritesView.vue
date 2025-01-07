@@ -3,23 +3,23 @@
       <p>Wow, such empty!</p>
       <img src=""/>
     </div>
-    <div v-if="isloading">
-      <p>loading . . .</p>
-    </div>
-    <div v-if="error">
-      <p>Oops, it looks like this post couldn't load</p>
-    </div>
-    <div v-for="forum in favorites" :key="forum.id">
-        <forum-snippet :forum="forum"></forum-snippet>
-    </div>
+    <status-display :isLoading="isloading" :hasError="error"
+      error="Oops, it looks like favorite forums couldn't load">
+      <!-- Content to display when posts are successfully loaded -->
+      <div v-for="forum in favorites" :key="forum.id">
+          <forum-snippet :forum="forum"></forum-snippet>
+      </div>
+    </status-display>
 </template>
 
 <script>
 import ForumSnippet from '../components/ForumSnippet.vue';
 import service from '../services/ForumService';
+import StatusDisplay from '../components/StatusDisplay.vue';
+
 
 export default {
-    components: { ForumSnippet },
+    components: { ForumSnippet, StatusDisplay },
     data() {
         return {
             favorites: [],

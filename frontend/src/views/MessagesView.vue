@@ -3,10 +3,13 @@
     <button class="btn-message" @click="toggleUserList">
       {{ buttonMessage }}
     </button>
+    <status-display :isLoading="isloading" :hasError="error"
+    error="Oops, it looks like favorite forums couldn't load">
     <div v-show="!visible" class="messages-container">
       <h1 id="messages">Messages</h1>
       <contact-list :contacts="contacts"></contact-list>
     </div>
+  </status-display>
   </div>
   <UserList :users="users" v-show="visible">
     <template #default="{ user }">
@@ -19,13 +22,16 @@
 import ContactList from "../components/ContactList.vue"
 import UserList from '@/components/UserList.vue';
 import MessageService from '@/services/MessageService';
+import StatusDisplay from '@/components/StatusDisplay.vue';
 
 export default {
-  components: { UserList, ContactList },
+  components: { UserList, ContactList, StatusDisplay },
   data() {
     return {
       users: [],
       contacts: [],
+      isloading: true,
+      error: false,
       visible: false,
       user: ""
     };
@@ -36,9 +42,14 @@ export default {
     }
   },
   created() {
+  this.isloading = true; // Start loading
+  Promise.all([
     MessageService.getContacts()
       .then(res => this.contacts = res.data)
-      .catch(err => alert(err.response.status))
+      .catch(err => {
+        this.error = true;
+        console.error('Error fetching contacts:', err.response?.status);
+      }),
     MessageService.getUsers()
       .then((response) => {
         this.users = response.data.sort((a, b) =>
@@ -46,12 +57,17 @@ export default {
         );
       })
       .catch((error) => {
+        this.error = true;
+        console.error('Error fetching users:', error.response?.data?.message);
         this.$store.commit(
           'SET_NOTIFICATION',
-          'Error fetching users: ' + error.response.data.message
+          'Error fetching users: ' + error.response?.data?.message
         );
-      });
-  },
+      }),
+  ]).finally(() => {
+    this.isloading = false; // Stop loading
+  });
+},
   methods: {
     toggleUserList() {
       if (!this.visible) {
