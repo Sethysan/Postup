@@ -92,7 +92,7 @@ export default {
             }
         },
         markAsRead() {
-            //  mark messages  read that were sent from the contact
+            //  mark messages read that were sent from the contact
             if (this.isSender || this.message.read) { // Only mark unread messages as read
                 console.log('Message already read', this.message.read);
                 console.log('Message from sender', this.isSender);
